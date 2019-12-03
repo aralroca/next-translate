@@ -1,0 +1,3 @@
+{
+  "example-with-variable": "Aquest és un exemple amb variable {{count}}"
+}
