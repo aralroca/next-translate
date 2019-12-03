@@ -6,6 +6,9 @@ The main goal of this library is to keep the translations as simple as possible 
 
 This library is very tiny (~1kb). 
 
+![i18n-next-static](public/translation-prerendered.gif "Translations in prerendered pages")
+
+
 ## How it works?
 
 Instead of working on `/pages` directory to write our pages, we are going to generate this folder before build the app, an each page will be have all the necessary translations from the locale.
