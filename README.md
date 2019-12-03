@@ -51,12 +51,82 @@ And each page and page children can consume the translations with the hook `useT
 
 ```js
 const { t, lang } = useTranslation()
-const title = 'common:title'
+const title = t('common:title')
 ```
 
 ## Getting started
 
-@TODO
+### Add this lib to your project
+
+* `yarn install i18n-next-static`
+
+And then, in your **package.json**:
+
+```json
+"scripts": {
+  "dev": "yarn i18n && next dev",
+  "build": "yarn i18n && next build",
+  "start": "next start",
+  "i18n": "node ./lib/builder.js"
+}
+```
+
+### Create /locales directory with translations JSONs
+
+The locales directory should be like: 
+
+**/locales**
+
+```bash
+.
+├── ca
+│   ├── common.json
+│   └── home.json
+├── en
+│   ├── common.json
+│   └── home.json
+└── es
+    ├── common.json
+    └── home.json
+```
+
+And each locales file is like:
+
+```json
+{
+  "title": "Hello world",
+  "variable-example": "Using a variable {{count}}"
+}
+```
+
+### Use translations in your pages
+
+First, define in the `/i18n.json` the namespaces of the page:
+
+```json
+{
+  "pages": {
+    "/index.js": ["common", "home"]
+  }
+}
+```
+
+Then, use translations in the page / children page component:
+
+```jsx
+import useTranslation from 'i18n-next-static/useTranslation'
+// ...
+const { t, lang } = useTranslation()
+const example = t('common:variable-example', { count: 42 })
+// ...
+return <div>{example}</div>
+```
+
+When the final i18n key to use in the code will be `common:title`, when the namespace `common` is the name of the file, and `title` the translation key.
+
+### Add /pages to .gitignore
+
+`/pages` directory is going to be generated every time based on `/pages_`, so is not necessary to track in git.
 
 ## Configuration
 
@@ -87,33 +157,6 @@ String with the directory that is going to build the pages. Only "pages" and "sr
 ### localesPath
 
 String with the directory that are the JSON locales. ("locales" as default).
-
-Example:
-
-**locales**
-
-```bash
-.
-├── ca
-│   ├── common.json
-│   └── home.json
-├── en
-│   ├── common.json
-│   └── home.json
-└── es
-    ├── common.json
-    └── home.json
-```
-
-And each locales file is like:
-
-```json
-{
-  "title": "Hello world"
-}
-```
-
-When the final i18n key to use in the code will be `common:title`, when the namespace `common` is the name of the file, and `title` the translation key.
 
 ### pages
 
