@@ -1,3 +1,7 @@
 {
-  "example-with-variable": "This is an example with variable {{count}}"
+  "example-with-variable": "This is an example with variable {{count}}",
+  "plural-example": "This is singular because the value is {{count}}",
+  "plural-example_0": "Is zero because the value is {{count}}",
+  "plural-example_2": "Is two because the value is {{count}}",
+  "plural-example_plural": "Is in plural because the value is {{count}}"
 }

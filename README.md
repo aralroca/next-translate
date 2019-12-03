@@ -175,6 +175,48 @@ Example:
 }
 ```
 
+## Plurals
+
+You can define plurals in this way:
+
+```json
+{
+  "plural-example": "This is singular because the value is {{count}}",
+  "plural-example_0": "Is zero because the value is {{count}}",
+  "plural-example_2": "Is two because the value is {{count}}",
+  "plural-example_plural": "Is in plural because the value is {{count}}"
+}
+```
+
+Code:
+
+```jsx
+function PluralExample(){
+  const [count, setCount] = useState(0)
+  const { t } = useTranslation()
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount(v => v === 5 ? 0 : v + 1)
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <p>
+      {t('more-examples:plural-example', { count })}
+    </p>
+  )
+}
+```
+
+Result:
+
+![plural](public/plural.gif "Plural example")
+
+***Note**: Only works if the name of the variable is {{count}}.*
+
 ## How to run the example of this repo
 
 * `yarn install`

@@ -1,4 +1,5 @@
 import useTranslation from "../../lib/useTranslation"
+import PluralExample from '../../components/plural-example'
 
 export default function MoreExamples(){
   const { t } = useTranslation()
@@ -9,6 +10,7 @@ export default function MoreExamples(){
   return (
     <>
       <h2>{exampleWithVariable}</h2>
+      <PluralExample />
     </>
   )
 }
