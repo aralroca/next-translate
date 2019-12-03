@@ -58,6 +58,8 @@ const title = 'common:title'
 
 @TODO
 
+## Configuration
+
 Configuration file `i18n.json` in the root of the project:
 
 ```json
