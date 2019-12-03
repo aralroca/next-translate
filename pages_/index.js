@@ -1,6 +1,7 @@
 import React from 'react'
+import useTranslation from '../lib/useTranslation'
+
 import Header from '../components/header'
-import { useTranslation } from '../lib'
 
 export default function Home(){
   const { t } = useTranslation()

@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/Head'
 import Link from 'next/link'
-import { useTranslation } from '../lib'
+import useTranslation from '../lib/useTranslation'
 
 export default function Header(){
   const { t, lang } = useTranslation()
