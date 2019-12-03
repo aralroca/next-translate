@@ -188,7 +188,7 @@ You can define plurals in this way:
 }
 ```
 
-Code:
+Example of usage:
 
 ```jsx
 function PluralExample(){
