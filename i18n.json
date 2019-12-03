@@ -1,6 +1,7 @@
 {
   "defaultLanguage": "ca",
   "pages": {
-    "/index.js": ["common", "home"]
+    "/index.js": ["common", "home"],
+    "/more-examples/index.js": ["common", "more-examples"]
   }
 }
