@@ -1,3 +1,7 @@
 {
-  "example-with-variable": "Aquest és un exemple amb variable {{count}}"
+  "example-with-variable": "Aquest és un exemple amb variable {{count}}",
+  "plural-example": "És en singular perquè el valor és {{count}}",
+  "plural-example_0": "És cero perquè el valor és {{count}}",
+  "plural-example_2": "És dos perquè el valor és {{count}}",
+  "plural-example_plural": "És en plural perquè el valor és {{count}}"
 }
