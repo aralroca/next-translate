@@ -109,7 +109,7 @@ And each locales file is like:
 
 ```json
 {
-  "title": "i18n-next-static library"
+  "title": "Hello world"
 }
 ```
 
