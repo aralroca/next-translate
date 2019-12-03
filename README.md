@@ -67,7 +67,7 @@ Configuration file `i18n.json` in the root of the project:
   "defaultLanguage": "en",
   "currentPagesDir": "pages_",
   "finalPagesDir": "pages",
-  "localesPath": "locales"
+  "localesPath": "locales",
   "pages": {}
 }
 ```
