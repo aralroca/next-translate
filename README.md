@@ -8,7 +8,7 @@ This library is very tiny (~1kb).
 
 ## How it works?
 
-Instead of working on `/pages` directory to write our pages, we are going to generate this folder before build the app, an each page will be have all the necessary translations form the locale.
+Instead of working on `/pages` directory to write our pages, we are going to generate this folder before build the app, an each page will be have all the necessary translations from the locale.
 
 So imagine that we are working in an alternative `/pages_` to build our pages:
 
