@@ -1,5 +1,9 @@
 # ㊗️ i18n-next-static
 
+<p align="center">
+    <b>i18n</b> for Next.js static pages ⚡️
+</p>
+
 * [About the library](#about-the-library)
     * [How it works statically?](#how-it-works-statically)
 * [Getting started](#getting-started)
