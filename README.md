@@ -14,6 +14,13 @@
 * [Configuration](#configuration)
 * [Plurals](#plurals)
 * [Use HTML inside the translation](#use-html-inside-the-translation)
+* [Demos](#demos)
+    * [Static site example](#static-site-example)
+    * [With server example](#with-server-example)
+ 
+<p align="center">
+    <img src="images/translation-prerendered.gif" alt="Translations in prerendered pages" />
+</p>
 
 ## About the library
 
@@ -22,8 +29,6 @@ Utility to translate Next.js pages without the need of a server (static i18n pag
 The main goal of this library is to keep the translations as simple as possible in a Next.js environment. 
 
 This library is very tiny (~5kb). 
-
-![i18n-next-static](images/translation-prerendered.gif "Translations in prerendered pages")
 
 
 ### How it works statically?
@@ -246,7 +251,7 @@ Each index of `components` array is corresponding on `<index></index>` of the de
 
 In the `components` array is not necessary to pass the children of each element. The children will be calculed.
 
-## How to run the examples of this repo
+## Demos
 
 ### Static site example
 
