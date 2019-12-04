@@ -1,4 +1,15 @@
-# i18n-next-static
+# ㊗️ i18n-next-static
+
+* [About the library](#about-the-library)
+    * [How it works statically?](#how-it-works-statically)
+* [Getting started](#getting-started)
+    * [Add to your project](#add-to-your-project)
+    * [Create /locales directory with translations JSONs](#create-locales-directory-with-translations-jsons)
+    * [Use translations in your pages](#use-translations-in-your-pages)
+    * [Add pages to .gitignore](#add-pages-to-gitignore)
+* [Configuration](#configuration)
+* [Plurals](#plurals)
+* [Use HTML inside the translation](#use-html-inside-the-translation)
 
 ## About the library
 
@@ -61,7 +72,7 @@ const title = t('common:title')
 
 ## Getting started
 
-### Add this lib to your project
+### Add to your project
 
 * `yarn install i18n-next-static`
 
