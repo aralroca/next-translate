@@ -11,22 +11,38 @@
     "next",
     "translation",
     "localization",
-    "locale"
+    "locale",
+    "static"
   ],
-  "scripts": {
-    "test": "jest",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch",
-    "clean": "rm -rf examples/static-site/.next && rm -rf examples/with-server/.next",
-    "example:static-site": "yarn clean && cd examples/static-site && node ../../src/builder.js && yarn && yarn dev",
-    "example:with-server": "yarn clean && cd examples/with-server && node ../../src/builder.js && yarn && yarn dev"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vinissimus/i18n-next-static.git"
   },
-  "main": "src",
-  "module": "src",
+  "author": {
+    "name": "Aral Roca Gòmez",
+    "email": "aral-rg@hotmail.com"
+  },
+  "scripts": {
+    "build": "yarn clean && NODE_ENV=production babel src -d dist",
+    "clean": "rm -rf dist && rm -rf examples/static-site/.next && rm -rf examples/with-server/.next",
+    "example:static-site": "yarn build && cd examples/static-site && node ../../src/builder.js && yarn && yarn dev",
+    "example:with-server": "yarn build && cd examples/with-server && node ../../src/builder.js && yarn && yarn dev",
+    "prepublish": "yarn test && yarn build",
+    "test": "NODE_ENV=test jest",
+    "test:coverage": "NODE_ENV=test jest --coverage",
+    "test:watch": "NODE_ENV=test jest --watch"
+  },
+  "main": "dist",
+  "files": [
+    "dist"
+  ],
   "bin": {
-    "i18nns-builder":  "./lib/builder"
+    "i18nns-builder": "./lib/builder"
   },
   "devDependencies": {
+    "@babel/cli": "7.7.4",
+    "@babel/core": "7.7.4",
+    "@babel/preset-env": "7.7.4",
     "@testing-library/react": "9.3.2",
     "babel-jest": "24.9.0",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
@@ -37,8 +53,8 @@
     "react-dom": "16.12.0"
   },
   "peerDependencies": {
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0"
+    "next": ">= 7.0.0",
+    "react": ">= 16.8.0"
   },
   "husky": {
     "hooks": {
@@ -46,7 +62,9 @@
     }
   },
   "jest": {
-    "roots": ["<rootDir>/__tests__"],
+    "roots": [
+      "<rootDir>/__tests__"
+    ],
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
     }

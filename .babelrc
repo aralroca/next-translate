@@ -12,5 +12,6 @@
       ],
       "presets": [["next/babel", { "preset-env": { "modules": "commonjs" } }]]
     }
-  }
+  },
+  "ignore": ["node_modules"]
 }
