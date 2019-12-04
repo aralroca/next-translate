@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 const fs = require('fs')
 const execSync = require('child_process').execSync
 const path = require('path')
@@ -10,32 +9,34 @@ const {
   pages = {},
   finalPagesDir = 'pages',
   localesPath = 'locales',
-} = require(process.cwd() + '/i18n.json') || {}
+} = require(process.cwd() + '/i18n.json') || {}
 
 function readDirR(dir) {
   return fs.statSync(dir).isDirectory()
-    ? Array.prototype.concat(...fs.readdirSync(dir).map(f => readDirR(path.join(dir, f))))
-    : dir;
+    ? Array.prototype.concat(
+        ...fs.readdirSync(dir).map(f => readDirR(path.join(dir, f)))
+      )
+    : dir
 }
 
 /**
  * STEP 1: Read current available locales
  */
 fs.readdir(localesPath, (err, allLanguages) => {
-  if(err) throw new Error(err)
+  if (err) throw new Error(err)
   createPagesDir(allLanguages)
-}) 
+})
 
 /**
  * STEP 2: Create /pages/ dir with their langs:
- * 
+ *
  * /pages/en/ - /pages/es/ ...
  */
 async function createPagesDir(langs = []) {
-  execSync(`rm -rf ${finalPagesDir} && mkdir ${finalPagesDir}`);
+  execSync(`rm -rf ${finalPagesDir} && mkdir ${finalPagesDir}`)
 
   langs.forEach(async lang => {
-    execSync(`mkdir ${finalPagesDir}/${lang}`);
+    execSync(`mkdir ${finalPagesDir}/${lang}`)
   })
 
   console.log(`Building pages | from ${currentPagesDir} to ${finalPagesDir}`)
@@ -45,10 +46,10 @@ async function createPagesDir(langs = []) {
 /**
  * STEP 3: Read each page namespaces
  */
-function readPageNamespaces(langs){
+function readPageNamespaces(langs) {
   readDirR(currentPagesDir).forEach(page => {
     const pageId = page.replace(currentPagesDir, '')
-    const namespaces = pages[pageId] || []
+    const namespaces = pages[pageId] || []
 
     console.log(`🔨 ${pageId}`, namespaces)
     buildPageInAllLocales(page, namespaces, langs)
@@ -58,17 +59,17 @@ function readPageNamespaces(langs){
 /**
  * STEP 4: Build page in each lang path
  */
-function getPageTemplate(prefix, page, lang, namespaces){
+function getPageTemplate(prefix, page, lang, namespaces) {
   return `import { I18nProvider } from 'i18n-next-static'
 import React from 'react'
 import C from '${prefix}/${page}'
-${
-  namespaces.map((ns, i) => (
-    `import ns${i} from '${prefix}/${localesPath}/${lang}/${ns}'`
-  )).join('\n')
-}
+${namespaces
+  .map((ns, i) => `import ns${i} from '${prefix}/${localesPath}/${lang}/${ns}'`)
+  .join('\n')}
 
-const namespaces = { ${namespaces.map((ns, i) => `'${ns}': ns${i}`).join(', ')} }
+const namespaces = { ${namespaces
+    .map((ns, i) => `'${ns}': ns${i}`)
+    .join(', ')} }
 
 export default function Page(p){
   return (
@@ -82,17 +83,20 @@ Page.getInitialProps = C.getInitialProps
 `
 }
 
-function buildPageLocale({ prefix, pagePath, namespaces, lang, path }){
-    const finalPath = pagePath.replace(currentPagesDir, path)
-    const template = getPageTemplate(prefix, pagePath, lang, namespaces)
-    const [filename] = finalPath.split('/').reverse()
-    const dirs = finalPath.replace(`/${filename}`, '')
-    execSync(`mkdir -p ${dirs}`)
-    fs.writeFileSync(finalPath, template)
+function buildPageLocale({ prefix, pagePath, namespaces, lang, path }) {
+  const finalPath = pagePath.replace(currentPagesDir, path)
+  const template = getPageTemplate(prefix, pagePath, lang, namespaces)
+  const [filename] = finalPath.split('/').reverse()
+  const dirs = finalPath.replace(`/${filename}`, '')
+  execSync(`mkdir -p ${dirs}`)
+  fs.writeFileSync(finalPath, template)
 }
 
 function buildPageInAllLocales(pagePath, namespaces, langs) {
-  const prefix = pagePath.split('/').map(() => '..').join('/')
+  const prefix = pagePath
+    .split('/')
+    .map(() => '..')
+    .join('/')
   const rootPrefix = prefix.replace('/..', '')
 
   // For each lang
@@ -106,8 +110,8 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
     })
   })
 
-  // For default lang 
-  if(langs.includes(defaultLanguage)) {
+  // For default lang
+  if (langs.includes(defaultLanguage)) {
     buildPageLocale({
       lang: defaultLanguage,
       namespaces,

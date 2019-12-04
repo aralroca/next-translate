@@ -25,8 +25,9 @@
   "scripts": {
     "build": "yarn clean && NODE_ENV=production babel src -d dist",
     "clean": "rm -rf dist && rm -rf examples/static-site/.next && rm -rf examples/with-server/.next",
-    "example:static-site": "yarn build && cd examples/static-site && node ../../src/builder.js && yarn && yarn dev",
-    "example:with-server": "yarn build && cd examples/with-server && node ../../src/builder.js && yarn && yarn dev",
+    "example:static-site": "yarn build && cd examples/static-site && yarn && yarn dev",
+    "example:with-server": "yarn build && cd examples/with-server && yarn && yarn dev",
+    "format": "pretty-quick",
     "prepublish": "yarn test && yarn build",
     "test": "NODE_ENV=test jest",
     "test:coverage": "NODE_ENV=test jest --coverage",
@@ -37,7 +38,7 @@
     "dist"
   ],
   "bin": {
-    "i18nns-builder": "./lib/builder"
+    "i18nns": "./cli/builder.js"
   },
   "devDependencies": {
     "@babel/cli": "7.7.4",
@@ -49,6 +50,8 @@
     "husky": "3.1.0",
     "jest": "24.9.0",
     "next": "9.1.4",
+    "prettier": "1.19.1",
+    "pretty-quick": "2.0.1",
     "react": "16.12.0",
     "react-dom": "16.12.0"
   },
@@ -58,8 +61,14 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn test"
+      "pre-commit": "yarn format && git add . && yarn test"
     }
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
   },
   "jest": {
     "roots": [
