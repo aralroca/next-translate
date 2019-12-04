@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/examples/static-site/node_modules
+
 /.pnp
 .pnp.js
 
@@ -10,6 +12,8 @@
 
 # next.js
 /.next/
+/examples/static-site/.next/
+
 /out/
 
 # production
@@ -25,4 +29,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # build pages
-/pages/
+/pages
+/examples/static-site/pages
