@@ -24,7 +24,8 @@
   },
   "scripts": {
     "build": "yarn clean && NODE_ENV=production babel src -d dist",
-    "clean": "rm -rf dist && rm -rf examples/static-site/.next && rm -rf examples/with-server/.next",
+    "clean": "rm -rf dist && yarn clean:examples",
+    "clean:examples": "rm -rf examples/**/.next && rm -rf examples/**/node_modules && rm -rf examples/**/yarn.lock",
     "example:static-site": "yarn build && cd examples/static-site && yarn && yarn dev",
     "example:with-server": "yarn build && cd examples/with-server && yarn && yarn dev",
     "format": "pretty-quick",
@@ -37,9 +38,7 @@
   "files": [
     "dist"
   ],
-  "bin": {
-    "i18nns": "./cli/builder.js"
-  },
+  "bin": "cli/builder.js",
   "devDependencies": {
     "@babel/cli": "7.7.4",
     "@babel/core": "7.7.4",

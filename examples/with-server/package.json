@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "i18nns && next dev"
+    "dev": "i18n-next-static  && next dev"
   },
   "dependencies": {
     "next": "link:../../node_modules/next",

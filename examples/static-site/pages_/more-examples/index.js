@@ -1,19 +1,21 @@
-import { useTranslation, Trans } from 'i18n-next-static'
+import { useTranslation, Trans } from 'i18n-next-static'
 import PluralExample from '../../components/plural-example'
+import Header from '../../components/header'
 
-const Component = (props) => <p {...props} />
+const Component = props => <p {...props} />
 
-export default function MoreExamples(){
+export default function MoreExamples() {
   const { t } = useTranslation()
   const exampleWithVariable = t('more-examples:example-with-variable', {
-    count: 42
+    count: 42,
   })
 
   return (
     <>
+      <Header />
       <h2>{exampleWithVariable}</h2>
       <PluralExample />
-      <Trans 
+      <Trans
         i18nKey="more-examples:example-with-html"
         components={[<Component />, <b className="red" />]}
       />

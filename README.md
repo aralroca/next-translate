@@ -91,7 +91,7 @@ And then, in your **package.json**:
   "dev": "yarn i18n && next dev",
   "build": "yarn i18n && next build",
   "start": "next start",
-  "i18n": "i18nns"
+  "i18n": "i18n-next-static"
 }
 ```
 
