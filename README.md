@@ -1,6 +1,8 @@
 # i18n-next-static
 
-i18n-next-static is a Next.js utility to translate pages without the need of a server (static i18n pages generator).
+## About the library
+
+Utility to translate Next.js pages without the need of a server (static i18n pages generator).
 
 The main goal of this library is to keep the translations as simple as possible in a Next.js environment. 
 
@@ -9,7 +11,7 @@ This library is very tiny (~5kb).
 ![i18n-next-static](images/translation-prerendered.gif "Translations in prerendered pages")
 
 
-## How it works?
+### How it works?
 
 Instead of working on `/pages` directory to write our pages, we are going to generate this folder before build the app, an each page will be have all the necessary translations from the locale.
 
