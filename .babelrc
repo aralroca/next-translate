@@ -4,7 +4,7 @@
       "presets": ["next/babel"]
     },
     "production": {
-      "presets": ["next/babel"]
+      "presets": ["next/babel", "minify"]
     },
     "test": {
       "plugins": [
