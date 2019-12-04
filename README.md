@@ -117,7 +117,7 @@ First, define in the `/i18n.json` the namespaces of the page:
 Then, use translations in the page / children page component:
 
 ```jsx
-import useTranslation from 'i18n-next-static/useTranslation'
+import { useTranslation } from 'i18n-next-static'
 // ...
 const { t, lang } = useTranslation()
 const example = t('common:variable-example', { count: 42 })
@@ -230,7 +230,7 @@ You can define HTML inside the translation in this way:
 Example of usage:
 
 ```jsx
-import Trans from 'i18n-next-static/Trans'
+import { Trans } from 'i18n-next-static'
 // ...
 const Component = (props) => <p {...props} />
 // ...
