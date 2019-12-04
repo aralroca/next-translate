@@ -4,7 +4,7 @@ i18n-next-static is a Next.js utility to translate pages without the need of a s
 
 The main goal of this library is to keep the translations as simple as possible in a Next.js environment. 
 
-This library is very tiny (~1kb). 
+This library is very tiny (~5kb). 
 
 ![i18n-next-static](images/translation-prerendered.gif "Translations in prerendered pages")
 
