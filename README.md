@@ -145,35 +145,14 @@ Configuration file `i18n.json` in the root of the project:
 }
 ```
 
-### defaultLanguage
+| Option                         | Description                                                                                                                                                                                    | Type              | Default |
+|-------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|---------|
+| `defaultLanguage`                     | String with the ISO locale ("en" as default). | `string` | "en"  |
+| `currentPagesDir`                   | String with the directory that you have the pages code.  | `string` | "pages_" |
+| `finalPagesDir`         | String with the directory that is going to build the pages. Only "pages" and "src/pages" is possible.  | `string` | "pages" |
+| `localesPath`                  |String with the directory that are the JSON locales. | `string` | "locales" |
+| `pages`                 |Is an object that define the namespaces used in each page. Ex: `{"/index.js": ["common", "home"]}` | `Object<Array<string>>` | {} |
 
-String with the ISO locale ("en" as default).
-
-### currentPagesDir
-
-String with the directory that you have the pages code ("pages_" as default).
-
-### finalPagesDir 
-
-String with the directory that is going to build the pages. Only "pages" and "src/pages" is possible. ("pages" as default).
-
-### localesPath
-
-String with the directory that are the JSON locales. ("locales" as default).
-
-### pages
-
-Is an object that define the namespaces used in each page.
-
-Example:
-
-```json
-{
-  "pages": {
-    "/index.js": ["common", "home"]
-  }
-}
-```
 
 ## Plurals
 
