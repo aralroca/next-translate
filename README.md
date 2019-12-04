@@ -205,7 +205,7 @@ function PluralExample(){
 
   return (
     <p>
-      {t('more-examples:plural-example', { count })}
+      {t('namespace:plural-example', { count })}
     </p>
   )
 }
@@ -216,6 +216,39 @@ Result:
 ![plural](public/plural.gif "Plural example")
 
 ***Note**: Only works if the name of the variable is {{count}}.*
+
+## Use HTML inside the translation
+
+You can define HTML inside the translation in this way:
+
+```json
+{
+  "example-with-html": "<0>This is an example <1>using HTML</1> inside the translation</0>"
+}
+```
+
+Example of usage:
+
+```jsx
+import Trans from 'i18n-next-static/Trans'
+// ...
+const Component = (props) => <p {...props} />
+// ...
+<Trans 
+  i18nKey="namespace:example-with-html"
+  components={[<Component />, <b className="red" />]}
+/>
+```
+
+Rendered result:
+
+```html
+<p>This is an example <b class="red">using HTML</b> inside the translation</p>
+```
+
+Each index of `components` array is corresponding on `<index></index>` of the definition.
+
+In the `components` array is not necessary to pass the children of each element. The children will be calculed.
 
 ## How to run the example of this repo
 
