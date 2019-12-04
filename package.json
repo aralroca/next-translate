@@ -1,17 +1,41 @@
 {
   "name": "i18n-next-static",
   "version": "0.1.0",
+  "description": "Next.js utility to translate pages without the need of a server (static i18n pages generator).",
+  "keywords": [
+    "react",
+    "i18n",
+    "nextjs",
+    "next",
+    "translation",
+    "localization",
+    "locale"
+  ],
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "clean": "rm -rf examples/static-site/.next && rm -rf examples/with-server/.next",
+    "example:static-site": "yarn clean && cd examples/static-site && node ../../src/builder.js && yarn && yarn dev",
+    "example:with-server": "yarn clean && cd examples/with-server && node ../../src/builder.js && yarn && yarn dev"
+  },
+  "main": "src/index.js",
+  "bin": {
+    "i18nns-builder":  "./lib/builder"
   },
   "devDependencies": {
-    "husky": "3.1.0",
-    "jest": "24.9.0",
+    "@testing-library/react": "9.3.2",
     "babel-jest": "24.9.0",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
-    "@testing-library/react": "9.3.2"
+    "husky": "3.1.0",
+    "jest": "24.9.0",
+    "next": "9.1.4",
+    "react": "16.12.0",
+    "react-dom": "16.12.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
   },
   "husky": {
     "hooks": {
@@ -19,7 +43,7 @@
     }
   },
   "jest": {
-    "roots": ["<rootDir>/lib"],
+    "roots": ["<rootDir>/__tests__"],
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
     }

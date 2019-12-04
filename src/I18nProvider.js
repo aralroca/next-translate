@@ -1,3 +1,4 @@
+import React from 'react'
 import I18nContext from './_context'
 
 /**

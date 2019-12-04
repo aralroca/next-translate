@@ -70,7 +70,7 @@ And then, in your **package.json**:
   "dev": "yarn i18n && next dev",
   "build": "yarn i18n && next build",
   "start": "next start",
-  "i18n": "node ./lib/builder.js"
+  "i18n": "i18nns-builder"
 }
 ```
 
@@ -254,12 +254,10 @@ In the `components` array is not necessary to pass the children of each element.
 
 ### Static site example
 
-* `cd examples/static-site`
 * `yarn install`
-* `yarn dev`
+* `yarn example:static-site`
 
 ### With server example
 
-* `cd examples/with-server`
 * `yarn install`
-* `yarn dev`
+* `yarn example:with-server`
