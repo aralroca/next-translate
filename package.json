@@ -2,10 +2,12 @@
   "name": "i18n-next-static",
   "version": "0.1.0",
   "description": "Next.js utility to translate pages without the need of a server (static i18n pages generator).",
+  "license": "MIT",
   "keywords": [
     "react",
     "i18n",
     "nextjs",
+    "next.js",
     "next",
     "translation",
     "localization",
@@ -19,7 +21,8 @@
     "example:static-site": "yarn clean && cd examples/static-site && node ../../src/builder.js && yarn && yarn dev",
     "example:with-server": "yarn clean && cd examples/with-server && node ../../src/builder.js && yarn && yarn dev"
   },
-  "main": "src/index.js",
+  "main": "src",
+  "module": "src",
   "bin": {
     "i18nns-builder":  "./lib/builder"
   },
