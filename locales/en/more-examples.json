@@ -3,5 +3,6 @@
   "plural-example": "This is singular because the value is {{count}}",
   "plural-example_0": "Is zero because the value is {{count}}",
   "plural-example_2": "Is two because the value is {{count}}",
-  "plural-example_plural": "Is in plural because the value is {{count}}"
+  "plural-example_plural": "Is in plural because the value is {{count}}",
+  "example-with-html": "<0>This is an example <1>using HTML</1> inside the translation</0>"
 }
