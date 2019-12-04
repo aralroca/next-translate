@@ -1,3 +1,4 @@
+import React from 'react'
 import I18nContext from './_context'
 
 /**
@@ -28,7 +29,7 @@ function interpolation(text, query) {
   }, text)
 }
 
-export default function I18nProvider({ lang, namespaces = {}, children }){
+export function I18nProvider({ lang, namespaces = {}, children }){
   function t(key = '', query){
     const [namespace, i18nKey] = key.split(':')
     const dic = namespaces[namespace] || {}

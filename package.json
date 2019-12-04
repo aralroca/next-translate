@@ -1,27 +1,60 @@
 {
   "name": "i18n-next-static",
   "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "yarn i18n && next dev",
-    "build": "yarn i18n && next build",
-    "start": "next start",
-    "i18n": "node ./lib/builder.js",
-    "test": "jest",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch"
+  "description": "Next.js utility to translate pages without the need of a server (static i18n pages generator).",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "i18n",
+    "nextjs",
+    "next.js",
+    "next",
+    "translation",
+    "localization",
+    "locale",
+    "static"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vinissimus/i18n-next-static.git"
   },
-  "dependencies": {
+  "author": {
+    "name": "Aral Roca Gòmez",
+    "email": "aral-rg@hotmail.com"
+  },
+  "scripts": {
+    "build": "yarn clean && NODE_ENV=production babel src -d dist",
+    "clean": "rm -rf dist && rm -rf examples/static-site/.next && rm -rf examples/with-server/.next",
+    "example:static-site": "yarn build && cd examples/static-site && node ../../src/builder.js && yarn && yarn dev",
+    "example:with-server": "yarn build && cd examples/with-server && node ../../src/builder.js && yarn && yarn dev",
+    "prepublish": "yarn test && yarn build",
+    "test": "NODE_ENV=test jest",
+    "test:coverage": "NODE_ENV=test jest --coverage",
+    "test:watch": "NODE_ENV=test jest --watch"
+  },
+  "main": "dist",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "i18nns-builder": "./lib/builder"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.7.4",
+    "@babel/core": "7.7.4",
+    "@babel/preset-env": "7.7.4",
+    "@testing-library/react": "9.3.2",
+    "babel-jest": "24.9.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
+    "husky": "3.1.0",
+    "jest": "24.9.0",
     "next": "9.1.4",
     "react": "16.12.0",
     "react-dom": "16.12.0"
   },
-  "devDependencies": {
-    "husky": "3.1.0",
-    "jest": "24.9.0",
-    "babel-jest": "24.9.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
-    "@testing-library/react": "9.3.2"
+  "peerDependencies": {
+    "next": ">= 7.0.0",
+    "react": ">= 16.8.0"
   },
   "husky": {
     "hooks": {
@@ -29,7 +62,9 @@
     }
   },
   "jest": {
-    "roots": ["<rootDir>/lib"],
+    "roots": [
+      "<rootDir>/__tests__"
+    ],
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
     }

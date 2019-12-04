@@ -1,5 +1,5 @@
 import { cloneElement, useMemo } from 'react'
-import useTranslation from './useTranslation'
+import { useTranslation } from './useTranslation'
 
 const tagRe = /<(\d+)>(.*?)<\/\1>|<(\d+)\/>/
 const nlRe = /(?:\r\n|\r|\n)/g
@@ -51,7 +51,7 @@ function formatElements(
  * <0>This is an <1>example</1><0>
  * to -> <h1>This is an <b>example</b><h1>
  */
-export default function Trans({ i18nKey, values, components }){
+export function Trans({ i18nKey, values, components }){
   const { t } = useTranslation()
 
   /**

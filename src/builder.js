@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const fs = require('fs')
 const execSync = require('child_process').execSync
 const path = require('path')
@@ -8,7 +10,7 @@ const {
   pages = {},
   finalPagesDir = 'pages',
   localesPath = 'locales',
-} = require('../i18n.json') || {}
+} = require(process.cwd() + '/i18n.json') || {}
 
 function readDirR(dir) {
   return fs.statSync(dir).isDirectory()
@@ -57,13 +59,14 @@ function readPageNamespaces(langs){
  * STEP 4: Build page in each lang path
  */
 function getPageTemplate(prefix, page, lang, namespaces){
-  return `import C from '${prefix}/${page}'
+  return `import { I18nProvider } from 'i18n-next-static'
+import React from 'react'
+import C from '${prefix}/${page}'
 ${
   namespaces.map((ns, i) => (
     `import ns${i} from '${prefix}/${localesPath}/${lang}/${ns}'`
   )).join('\n')
 }
-import I18nProvider from '${prefix}/lib/I18nProvider'
 
 const namespaces = { ${namespaces.map((ns, i) => `'${ns}': ns${i}`).join(', ')} }
 
@@ -84,7 +87,7 @@ function buildPageLocale({ prefix, pagePath, namespaces, lang, path }){
     const template = getPageTemplate(prefix, pagePath, lang, namespaces)
     const [filename] = finalPath.split('/').reverse()
     const dirs = finalPath.replace(`/${filename}`, '')
-    execSync(`mkdir -p ${dirs} && touch ${filename}`)
+    execSync(`mkdir -p ${dirs}`)
     fs.writeFileSync(finalPath, template)
 }
 

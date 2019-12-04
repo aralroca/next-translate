@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/examples/*/node_modules
+
 /.pnp
 .pnp.js
 
@@ -10,10 +12,13 @@
 
 # next.js
 /.next/
+/examples/*/.next/
+
 /out/
 
 # production
 /build
+/dist
 
 # misc
 .DS_Store
@@ -25,4 +30,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # build pages
-/pages/
+/pages
+/examples/*/pages

@@ -1,6 +1,5 @@
-import useTranslation from "../../lib/useTranslation"
+import { useTranslation, Trans } from 'i18n-next-static'
 import PluralExample from '../../components/plural-example'
-import Trans from "../../lib/Trans"
 
 const Component = (props) => <p {...props} />
 

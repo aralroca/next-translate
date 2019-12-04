@@ -6,7 +6,7 @@ The main goal of this library is to keep the translations as simple as possible 
 
 This library is very tiny (~1kb). 
 
-![i18n-next-static](public/translation-prerendered.gif "Translations in prerendered pages")
+![i18n-next-static](images/translation-prerendered.gif "Translations in prerendered pages")
 
 
 ## How it works?
@@ -70,7 +70,7 @@ And then, in your **package.json**:
   "dev": "yarn i18n && next dev",
   "build": "yarn i18n && next build",
   "start": "next start",
-  "i18n": "node ./lib/builder.js"
+  "i18n": "i18nns-builder"
 }
 ```
 
@@ -213,7 +213,7 @@ function PluralExample(){
 
 Result:
 
-![plural](public/plural.gif "Plural example")
+![plural](images/plural.gif "Plural example")
 
 ***Note**: Only works if the name of the variable is {{count}}.*
 
@@ -250,7 +250,14 @@ Each index of `components` array is corresponding on `<index></index>` of the de
 
 In the `components` array is not necessary to pass the children of each element. The children will be calculed.
 
-## How to run the example of this repo
+## How to run the examples of this repo
+
+### Static site example
 
 * `yarn install`
-* `yarn dev`
+* `yarn example:static-site`
+
+### With server example
+
+* `yarn install`
+* `yarn example:with-server`

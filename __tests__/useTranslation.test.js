@@ -1,6 +1,7 @@
+import React from 'react'
 import { render, cleanup } from '@testing-library/react'
-import I18nProvider from '../I18nProvider'
-import useTranslation from '../useTranslation'
+import { I18nProvider } from '../src'
+import { useTranslation } from '../src'
 
 const Inner = ({ i18nKey, query }) => {
   const { t } = useTranslation()

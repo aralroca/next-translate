@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import useTranslation from '../lib/useTranslation'
+import { useTranslation } from 'i18n-next-static'
 
 export default function PluralExample(){
   const [count, setCount] = useState(0)
