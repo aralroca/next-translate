@@ -13,7 +13,9 @@ export default function Home() {
     <>
       <Header />
       <p>{description}</p>
-      <Link href={`/${lang}/more-examples`}>{linkName}</Link>
+      <Link href={`/${lang}/more-examples`}>
+        <a>{linkName}</a>
+      </Link>
     </>
   )
 }

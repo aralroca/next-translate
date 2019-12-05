@@ -17,9 +17,9 @@ export default function Header() {
       </Head>
       <header>
         <h1>{title}</h1>
-        {lang !== 'es' && <Link href="/es">Español</Link>}
-        {lang !== 'ca' && <Link href="/ca">Català</Link>}
-        {lang !== 'en' && <Link href="/en">English</Link>}
+        {lang !== 'es' && <Link href="/es"><a>Español</a></Link>}
+        {lang !== 'ca' && <Link href="/ca"><a>Català</a></Link>}
+        {lang !== 'en' && <Link href="/en"><a>English</a></Link>}
       </header>
       <style jsx>
         {`

@@ -31,4 +31,4 @@ yarn-error.log*
 
 # build pages
 /pages
-/examples/*/pages
+/examples/static-site/pages
