@@ -4,20 +4,20 @@
     <b>i18n</b> for Next.js static pages ⚡️
 </p>
 
-- [1. About the library](#about-the-library)
+- [1. About the library](#1-about-the-library)
   - [How it works statically?](#how-it-works-statically)
-- [2. Getting started (static site)](#getting-started)
+- [2. Getting started (static site)](#2-getting-started-static-site)
   - [Add to your project](#add-to-your-project)
   - [Use translations in your pages](#use-translations-in-your-pages)
   - [Add pages to .gitignore](#add-pages-to-gitignore)
-- [3. Getting started (with a server)](#getting-started)
+- [3. Getting started (with a server)](#3-getting-started)
   - [Add to your project](#add-to-your-project)
   - [Use translations in your pages](#use-translations-in-your-pages)
-- [4. Create /locales directory with translations JSONs](#create-locales-directory-with-translations-jsons)
-- [5. Configuration](#configuration)
-- [6. Plurals](#plurals)
-- [7. Use HTML inside the translation](#use-html-inside-the-translation)
-- [8. Demos](#demos)
+- [4. Create /locales directory with translations JSONs](#4-create-locales-directory-with-translations-jsons)
+- [5. Configuration](#5-configuration)
+- [6. Plurals](#6-plurals)
+- [7. Use HTML inside the translation](#7.use-html-inside-the-translation)
+- [8. Demos](#8.demos)
   - [Static site example](#static-site-example)
   - [With server example](#with-server-example)
 
@@ -102,7 +102,7 @@ And then, in your **package.json**:
 
 You should create your namespaces files inside `/locales`. [See how to do it](#create-locales-directory-with-translations-jsons)
 
-For static site you should add a configuration file `i18n.json` in the root of the project. Each page should have their namespaces. Take a look to the [config](#configuration) section to more details.
+For static site you should add a configuration file `i18n.json` in the root of the project. Each page should have their namespaces. Take a look to the [config](#5-configuration) section to more details.
 
 ```json
 {
@@ -142,9 +142,9 @@ return <div>{example}</div>
 
 ### Use translations in your pages
 
-You should create your namespaces files inside `/locales`. [See how to do it](#create-locales-directory-with-translations-jsons)
+You should create your namespaces files inside `/locales`. [See how to do it](#4-create-locales-directory-with-translations-jsons)
 
-Using a server, you should pass the configuration into the `appWithI18n` wrapper of your app. Each page should have their namespaces. Take a look to the [config](#configuration) section to more details.
+Using a server, you should pass the configuration into the `appWithI18n` wrapper of your app. Each page should have their namespaces. Take a look to the [config](#5-configuration) section to more details.
 
 _app.js
 
@@ -220,7 +220,7 @@ And the id to use it in the projec is `namespace:key` (ex: `common:variable-exam
 ` this configuration doesn't have any effect.                                                                                                                          | `string`                | "pages\_" |
 | `finalPagesDir`   | String with the directory that is going to build the pages. Only "pages" and "src/pages" is possible. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration doesn't have any effect.                                                                           | `string`                | "pages"   |
 | `localesPath`     | String with the directory that are the JSON locales. IT ONLY WORKS with static sites. If you use the `appWithI18n` then you should use the `loadLocaleFrom` config. | `string`                | "locales" |
-| `loadLocaleFrom`           | Function to return the dynamic import of each locale. IT ONLY WORKS with a server (`appWithI18n`). For static site use the `localesPath` instead. [See an example](#with-a-server-config) | `Function` | null        |
+| `loadLocaleFrom`           | Function to return the dynamic import of each locale. IT ONLY WORKS with a server (`appWithI18n`). For static site use the `localesPath` instead. [See an example](#use-translations-in-your-pages-1) | `Function` | null        |
 | `pages`           | Is an object that define the namespaces used in each page (Only used by the builder tool to generate static i18n pages). Example of object: `{"/": ["common", "home"]}`. This configuration is for both: static sites and with a server. | `Object<Array<string>>` | {}        |
 
 
