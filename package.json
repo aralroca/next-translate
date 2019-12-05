@@ -35,10 +35,10 @@
     "test:watch": "NODE_ENV=test jest --watch"
   },
   "main": "dist",
-  "files": [
-    "dist"
-  ],
-  "bin": "cli/builder.js",
+  "files": ["dist"],
+  "bin": {
+    "i18n-next-static": "./cli/builder.js"
+  },
   "devDependencies": {
     "@babel/cli": "7.7.4",
     "@babel/core": "7.7.4",

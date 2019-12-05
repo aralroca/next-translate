@@ -1,20 +1,22 @@
-# ㊗ ️ i18n-next-static
+<h1 align="center"> ㊗ ️ i18n-next-static</h1>
 
 <p align="center">
     <b>i18n</b> for Next.js static pages ⚡️
 </p>
 
-- [About the library](#about-the-library)
+- [1. About the library](#about-the-library)
   - [How it works statically?](#how-it-works-statically)
-- [Getting started](#getting-started)
+- [2. Getting started](#getting-started)
   - [Add to your project](#add-to-your-project)
   - [Create /locales directory with translations JSONs](#create-locales-directory-with-translations-jsons)
   - [Use translations in your pages](#use-translations-in-your-pages)
   - [Add pages to .gitignore](#add-pages-to-gitignore)
-- [Configuration](#configuration)
-- [Plurals](#plurals)
-- [Use HTML inside the translation](#use-html-inside-the-translation)
-- [Demos](#demos)
+- [3. Configuration](#configuration)
+  - [Static site config](#static-site-config)
+  - [With a server config](#with-a-server-config)
+- [4. Plurals](#plurals)
+- [5. Use HTML inside the translation](#use-html-inside-the-translation)
+- [6. Demos](#demos)
   - [Static site example](#static-site-example)
   - [With server example](#with-server-example)
 
@@ -22,7 +24,7 @@
     <img src="images/translation-prerendered.gif" alt="Translations in prerendered pages" />
 </p>
 
-## About the library
+## 1. About the library
 
 Utility to translate Next.js pages without the need of a server (static i18n pages generator).
 
@@ -78,7 +80,7 @@ const { t, lang } = useTranslation()
 const title = t('common:title')
 ```
 
-## Getting started
+## 2. Getting started
 
 ### Add to your project
 
@@ -130,7 +132,7 @@ First, define in the `/i18n.json` the namespaces of the page:
 ```json
 {
   "pages": {
-    "/index.js": ["common", "home"]
+    "/": ["common", "home"]
   }
 }
 ```
@@ -152,9 +154,21 @@ When the final i18n key to use in the code will be `common:title`, when the name
 
 `/pages` directory is going to be generated every time based on `/pages_`, so is not necessary to track in git.
 
-## Configuration
+## 3. Configuration
 
-Configuration file `i18n.json` in the root of the project:
+
+| Option            | Description                                                                                                                                                                     | Type                    | Default   |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | --------- |
+| `defaultLanguage` | String with the ISO locale ("en" as default).                                                                                                                                   | `string`                | "en"      |
+| `currentPagesDir` | String with the directory that you have the pages code. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration doesn't have any effect.                                                                                                                          | `string`                | "pages\_" |
+| `finalPagesDir`   | String with the directory that is going to build the pages. Only "pages" and "src/pages" is possible. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration doesn't have any effect.                                                                           | `string`                | "pages"   |
+| `localesPath`     | String with the directory that are the JSON locales. IT ONLY WORKS with static sites. If you use the `appWithI18n` then you should use the `loadLocaleFrom` config. | `string`                | "locales" |
+| `loadLocaleFrom`           | Function to return the dynamic import of each locale. IT ONLY WORKS with a server (`appWithI18n`). For static site use the `localesPath` instead. [See an example](#with-a-server-config) | `Function` | null        |
+| `pages`           | Is an object that define the namespaces used in each page (Only used by the builder tool to generate static i18n pages). Example of object: `{"/": ["common", "home"]}`. This configuration is for both: static sites and with a server. | `Object<Array<string>>` | {}        |
+
+### Static site config
+
+For static site you should add a configuration file `i18n.json` in the root of the project:
 
 ```json
 {
@@ -162,19 +176,40 @@ Configuration file `i18n.json` in the root of the project:
   "currentPagesDir": "pages_",
   "finalPagesDir": "pages",
   "localesPath": "locales",
-  "pages": {}
+  "pages": {
+    "/": ["common", "home"],
+    "/about": ["common", "about"]
+  }
 }
 ```
 
-| Option            | Description                                                                                                                                                                     | Type                    | Default   |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | --------- |
-| `defaultLanguage` | String with the ISO locale ("en" as default).                                                                                                                                   | `string`                | "en"      |
-| `currentPagesDir` | String with the directory that you have the pages code.                                                                                                                         | `string`                | "pages\_" |
-| `finalPagesDir`   | String with the directory that is going to build the pages. Only "pages" and "src/pages" is possible.                                                                           | `string`                | "pages"   |
-| `localesPath`     | String with the directory that are the JSON locales.                                                                                                                            | `string`                | "locales" |
-| `pages`           | Is an object that define the namespaces used in each page (Only used by the builder tool to generate static i18n pages). Example of object: `{"/index.js": ["common", "home"]}` | `Object<Array<string>>` | {}        |
+### With a server config
 
-## Plurals
+Using a server, you should pass the configuration into the `appWithI18n` wrapper of your app.
+
+_app.js
+
+```js
+import { appWithI18n } from 'i18n-next-static'
+
+function MyApp({ Component, pageProps }) {
+  return <Component {...pageProps} />
+}
+
+export default appWithI18n(MyApp, {
+  defaultLanguage: 'es',
+  loadLocaleFrom: (lang, ns) => (
+    import(`../locales/${lang}/${ns}.json`)
+    .then(m => m.default)
+  ),
+  pages: {
+    '/': ['common', 'home'],
+    '/more-examples': ['common', 'more-examples']
+  }
+})
+```
+
+## 4. Plurals
 
 You can define plurals in this way:
 
@@ -212,7 +247,7 @@ Result:
 
 **\*Note**: Only works if the name of the variable is {{count}}.\*
 
-## Use HTML inside the translation
+## 5. Use HTML inside the translation
 
 You can define HTML inside the translation in this way:
 
@@ -245,7 +280,7 @@ Each index of `components` array is corresponding on `<index></index>` of the de
 
 In the `components` array is not necessary to pass the children of each element. The children will be calculed.
 
-## Demos
+## 6. Demos
 
 ### Static site example
 

@@ -6,9 +6,9 @@ const path = require('path')
 const {
   currentPagesDir = 'pages_',
   defaultLanguage = 'en',
-  pages = {},
   finalPagesDir = 'pages',
   localesPath = 'locales',
+  pages = {},
 } = require(process.cwd() + '/i18n.json') || {}
 
 function readDirR(dir) {
@@ -49,6 +49,8 @@ async function createPagesDir(langs = []) {
 function readPageNamespaces(langs) {
   readDirR(currentPagesDir).forEach(page => {
     const pageId = page.replace(currentPagesDir, '')
+    .replace(/(\/index.js)|(\/index.jsx)|(\.js)|(\.jsx)/gm, '') || '/'
+
     const namespaces = pages[pageId] || []
 
     console.log(`🔨 ${pageId}`, namespaces)

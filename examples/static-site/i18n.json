@@ -1,7 +1,7 @@
 {
   "defaultLanguage": "en",
   "pages": {
-    "/index.js": ["common", "home"],
-    "/more-examples/index.js": ["common", "more-examples"]
+    "/": ["common", "home"],
+    "/more-examples": ["common", "more-examples"]
   }
 }
