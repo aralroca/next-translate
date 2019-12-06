@@ -3,6 +3,7 @@ import Trans from 'next-translate/Trans'
 
 import PluralExample from '../../components/plural-example'
 import Header from '../../components/header'
+import NoFunctionalComponent from '../../components/no-functional-component'
 
 const Component = props => <p {...props} />
 
@@ -21,6 +22,7 @@ export default function MoreExamples() {
         i18nKey="more-examples:example-with-html"
         components={[<Component />, <b className="red" />]}
       />
+      <NoFunctionalComponent />
       <style jsx>{`
         .red {
           color: red;

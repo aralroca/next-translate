@@ -39,7 +39,8 @@
     "appWithi18n",
     "I18nProvider",
     "Trans",
-    "useTranslation"
+    "useTranslation",
+    "withTranslation"
   ],
   "bin": {
     "next-translate": "./cli/builder.js"
