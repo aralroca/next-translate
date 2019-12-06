@@ -1,7 +1,7 @@
 <h1 align="center"> ㊗ ️ i18n-next-static</h1>
 
 <p align="center">
-    <b>i18n</b> for Next.js static pages ⚡️
+    <b>i18n</b> for Next.js static pages ⚡️ (~5kb + tree shakable)
 </p>
 
 - [1. About the library](#1-about-the-library)
