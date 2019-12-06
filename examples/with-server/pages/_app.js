@@ -1,4 +1,4 @@
-import { appWithI18n } from 'i18n-next-static'
+import appWithI18n from 'i18n-next-static/appWithI18n'
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />

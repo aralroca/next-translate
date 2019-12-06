@@ -29,7 +29,7 @@ function interpolation(text, query) {
   }, text)
 }
 
-export function I18nProvider({ lang, namespaces = {}, children }){
+export default function I18nProvider({ lang, namespaces = {}, children }){
   function t(key = '', query){
     const [namespace, i18nKey] = key.split(':')
     const dic = namespaces[namespace] || {}

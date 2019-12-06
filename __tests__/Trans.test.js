@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, cleanup } from '@testing-library/react'
-import { I18nProvider } from '../src'
-import { Trans } from '../src'
+import I18nProvider from '../src/I18nProvider'
+import Trans from '../src/Trans'
 
 const TestEnglish = ({  namespaces, ...props }) => {
   return (

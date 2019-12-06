@@ -120,7 +120,7 @@ For static site you should add a configuration file `i18n.json` in the root of t
 Then, use translations in the page / children page component:
 
 ```jsx
-import { useTranslation } from 'i18n-next-static'
+import useTranslation from 'i18n-next-static/useTranslation'
 // ...
 const { t, lang } = useTranslation()
 const example = t('common:variable-example', { count: 42 })
@@ -149,7 +149,7 @@ Using a server, you should pass the configuration into the `appWithI18n` wrapper
 _app.js
 
 ```js
-import { appWithI18n } from 'i18n-next-static'
+import appWithI18n from 'i18n-next-static/appWithI18n'
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />
@@ -171,7 +171,7 @@ export default appWithI18n(MyApp, {
 Then, use translations in the page / children page component:
 
 ```jsx
-import { useTranslation } from 'i18n-next-static'
+import useTranslation from 'i18n-next-static/useTranslation'
 // ...
 const { t, lang } = useTranslation()
 const example = t('common:variable-example', { count: 42 })
@@ -275,7 +275,7 @@ You can define HTML inside the translation in this way:
 Example of usage:
 
 ```jsx
-import { Trans } from 'i18n-next-static'
+import Trans from 'i18n-next-static/Trans'
 // ...
 const Component = (props) => <p {...props} />
 // ...

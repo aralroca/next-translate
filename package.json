@@ -23,8 +23,8 @@
     "email": "aral-rg@hotmail.com"
   },
   "scripts": {
-    "build": "yarn clean && NODE_ENV=production babel src -d dist",
-    "clean": "rm -rf dist && yarn clean:examples",
+    "build": "yarn clean && NODE_ENV=production babel src -d .",
+    "clean": "rm -f *.js && yarn clean:examples",
     "clean:examples": "rm -rf examples/**/.next && rm -rf examples/**/node_modules && rm -rf examples/**/yarn.lock",
     "example:static-site": "yarn build && cd examples/static-site && yarn && yarn dev",
     "example:with-server": "yarn build && cd examples/with-server && yarn && yarn dev",
@@ -34,8 +34,13 @@
     "test:coverage": "NODE_ENV=test jest --coverage",
     "test:watch": "NODE_ENV=test jest --watch"
   },
-  "main": "dist",
-  "files": ["dist"],
+  "main": "index.js",
+  "files": [
+    "appWithi18n",
+    "I18nProvider",
+    "Trans",
+    "useTranslation"
+  ],
   "bin": {
     "i18n-next-static": "./cli/builder.js"
   },
