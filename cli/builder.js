@@ -48,8 +48,10 @@ async function createPagesDir(langs = []) {
  */
 function readPageNamespaces(langs) {
   readDirR(currentPagesDir).forEach(page => {
-    const pageId = page.replace(currentPagesDir, '')
-    .replace(/(\/index.js)|(\/index.jsx)|(\.js)|(\.jsx)/gm, '') || '/'
+    const pageId =
+      page
+        .replace(currentPagesDir, '')
+        .replace(/(\/index.js)|(\/index.jsx)|(\.js)|(\.jsx)/gm, '') || '/'
 
     const namespaces = pages[pageId] || []
 
@@ -62,7 +64,7 @@ function readPageNamespaces(langs) {
  * STEP 4: Build page in each lang path
  */
 function getPageTemplate(prefix, page, lang, namespaces) {
-  return `import I18nProvider from 'i18n-next-static/I18nProvider'
+  return `import I18nProvider from 'next-translate/I18nProvider'
 import React from 'react'
 import C from '${prefix}/${page}'
 ${namespaces

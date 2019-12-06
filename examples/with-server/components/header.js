@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/Head'
 import Link from 'next/link'
-import useTranslation from 'i18n-next-static/useTranslation'
+import useTranslation from 'next-translate/useTranslation'
 
 export default function Header() {
   const { t, lang } = useTranslation()
@@ -17,9 +17,21 @@ export default function Header() {
       </Head>
       <header>
         <h1>{title}</h1>
-        {lang !== 'es' && <Link href="/es"><a>Español</a></Link>}
-        {lang !== 'ca' && <Link href="/ca"><a>Català</a></Link>}
-        {lang !== 'en' && <Link href="/en"><a>English</a></Link>}
+        {lang !== 'es' && (
+          <Link href="/es">
+            <a>Español</a>
+          </Link>
+        )}
+        {lang !== 'ca' && (
+          <Link href="/ca">
+            <a>Català</a>
+          </Link>
+        )}
+        {lang !== 'en' && (
+          <Link href="/en">
+            <a>English</a>
+          </Link>
+        )}
       </header>
       <style jsx>
         {`

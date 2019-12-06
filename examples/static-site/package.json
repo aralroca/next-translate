@@ -4,11 +4,11 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "i18n-next-static && next dev"
+    "dev": "next-translate && next dev"
   },
   "dependencies": {
     "next": "link:../../node_modules/next",
-    "i18n-next-static": "link:../../",
+    "next-translate": "link:../../",
     "react": "link:../../node_modules/react",
     "react-dom": "link:../../node_modules/react-dom"
   }
