@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "next": "link:../../node_modules/next",
-    "i18n-next-static": "link:../../",
+    "next-translate": "link:../../",
     "react": "link:../../node_modules/react",
     "react-dom": "link:../../node_modules/react-dom"
   }

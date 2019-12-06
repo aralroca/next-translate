@@ -1,4 +1,4 @@
-import appWithI18n from 'i18n-next-static/appWithI18n'
+import appWithI18n from 'next-translate/appWithI18n'
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />
@@ -6,12 +6,10 @@ function MyApp({ Component, pageProps }) {
 
 export default appWithI18n(MyApp, {
   defaultLanguage: 'es',
-  loadLocaleFrom: (lang, ns) => (
-    import(`../locales/${lang}/${ns}.json`)
-    .then(m => m.default)
-  ),
+  loadLocaleFrom: (lang, ns) =>
+    import(`../locales/${lang}/${ns}.json`).then(m => m.default),
   pages: {
     '/': ['common', 'home'],
-    '/more-examples': ['common', 'more-examples']
-  }
+    '/more-examples': ['common', 'more-examples'],
+  },
 })

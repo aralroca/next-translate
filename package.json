@@ -1,5 +1,5 @@
 {
-  "name": "i18n-next-static",
+  "name": "next-translate",
   "version": "0.1.0",
   "description": "Next.js utility to translate pages without the need of a server (static i18n pages generator).",
   "license": "MIT",
@@ -16,7 +16,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/vinissimus/i18n-next-static.git"
+    "url": "https://github.com/vinissimus/next-translate.git"
   },
   "author": {
     "name": "Aral Roca Gòmez",
@@ -42,7 +42,7 @@
     "useTranslation"
   ],
   "bin": {
-    "i18n-next-static": "./cli/builder.js"
+    "next-translate": "./cli/builder.js"
   },
   "devDependencies": {
     "@babel/cli": "7.7.4",

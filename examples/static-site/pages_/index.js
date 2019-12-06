@@ -1,10 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
-import useTranslation from 'i18n-next-static/useTranslation'
+import useTranslation from 'next-translate/useTranslation'
 
 import Header from '../components/header'
 
-export default function Home(){
+export default function Home() {
   const { t, lang } = useTranslation()
   const description = t('home:description')
   const linkName = t('home:more-examples')
@@ -17,5 +17,5 @@ export default function Home(){
         <a>{linkName}</a>
       </Link>
     </>
-   )
+  )
 }
