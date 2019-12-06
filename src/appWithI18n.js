@@ -1,7 +1,7 @@
 import React from 'react'
-import { I18nProvider } from './I18nProvider'
+import I18nProvider from './I18nProvider'
 
-export function appWithI18n(AppToTranslate, config = {}) {
+export default function appWithI18n(AppToTranslate, config = {}) {
   function AppWithTranslations(props) {
     const { lang, namespaces } = props
   

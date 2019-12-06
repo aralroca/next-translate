@@ -62,7 +62,7 @@ function readPageNamespaces(langs) {
  * STEP 4: Build page in each lang path
  */
 function getPageTemplate(prefix, page, lang, namespaces) {
-  return `import { I18nProvider } from 'i18n-next-static'
+  return `import I18nProvider from 'i18n-next-static/I18nProvider'
 import React from 'react'
 import C from '${prefix}/${page}'
 ${namespaces

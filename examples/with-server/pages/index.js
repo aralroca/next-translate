@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { useTranslation } from 'i18n-next-static'
+import useTranslation from 'i18n-next-static/useTranslation'
 
 import Header from '../components/header'
 
