@@ -91,10 +91,9 @@ And then, in your **package.json**:
 
 ```json
 "scripts": {
-  "dev": "yarn i18n && next dev",
-  "build": "yarn i18n && next build",
-  "start": "next start",
-  "i18n": "next-translate"
+  "dev": "next-translate && next dev",
+  "build": "next-translate && next build",
+  "start": "next start"
 }
 ```
 
