@@ -15,9 +15,15 @@
   - [Use translations in your pages](#use-translations-in-your-pages-1)
 - [4. Create /locales directory with translations JSONs](#4-create-locales-directory-with-translations-jsons)
 - [5. Configuration](#5-configuration)
-- [6. Plurals](#6-plurals)
-- [7. Use HTML inside the translation](#7-use-html-inside-the-translation)
-- [8. Demos](#8-demos)
+- [5. API](#6-api)
+  - [appWithI18n](#-appwithi18n)
+  - [useTranslation](#-usetranslation)
+  - [withTranslation](#-withtranslation)
+  - [Trans Component](#-trans-component)
+  - [I18nProvider (rare use case)](#i18nprovider-rare-use-case)
+- [7. Plurals](#7-plurals)
+- [8. Use HTML inside the translation](#8-use-html-inside-the-translation)
+- [9. Demos](#9-demos)
   - [Static site example](#static-site-example)
   - [With server example](#with-server-example)
 
@@ -216,7 +222,29 @@ And the id to use it in the projec is `namespace:key` (ex: `common:variable-exam
 | `loadLocaleFrom`                                                   | Function to return the dynamic import of each locale. IT ONLY WORKS with a server (`appWithI18n`). For static site use the `localesPath` instead. [See an example](#use-translations-in-your-pages-1)                                    | `Function`              | null      |
 | `pages`                                                            | Is an object that define the namespaces used in each page (Only used by the builder tool to generate static i18n pages). Example of object: `{"/": ["common", "home"]}`. This configuration is for both: static sites and with a server. | `Object<Array<string>>` | {}        |
 
-## 6. Plurals
+## 6. API
+
+### appWithI18n
+
+@todo
+
+### useTranslation
+
+@todo
+
+### withTranslation
+
+@todo
+
+### Trans Component
+
+@todo
+
+### I18nProvider (rare use case)
+
+@todo
+
+## 7. Plurals
 
 You can define plurals in this way:
 
@@ -254,7 +282,7 @@ Result:
 
 **\*Note**: Only works if the name of the variable is {{count}}.\*
 
-## 7. Use HTML inside the translation
+## 8. Use HTML inside the translation
 
 You can define HTML inside the translation in this way:
 
@@ -287,7 +315,7 @@ Each index of `components` array is corresponding on `<index></index>` of the de
 
 In the `components` array is not necessary to pass the children of each element. The children will be calculed.
 
-## 8. Demos
+## 9. Demos
 
 ### Static site example
 
