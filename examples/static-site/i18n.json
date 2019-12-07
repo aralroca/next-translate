@@ -2,6 +2,7 @@
   "defaultLanguage": "en",
   "pages": {
     "/": ["common", "home"],
-    "/more-examples": ["common", "more-examples"]
+    "/more-examples": ["common", "more-examples"],
+    "/more-examples/dynamic-namespace": ["common"]
   }
 }

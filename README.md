@@ -20,7 +20,7 @@
   - [withTranslation](#withtranslation)
   - [Trans Component](#trans-component)
   - [appWithI18n](#appwithi18n)
-  - [I18nProvider (rare use case)](#i18nprovider-rare-use-case)
+  - [DynamicNamespaces](#dynamicnamespaces)
 - [7. Plurals](#7-plurals)
 - [8. Use HTML inside the translation](#8-use-html-inside-the-translation)
 - [9. Demos](#9-demos)
@@ -228,8 +228,8 @@ And the id to use it in the projec is `namespace:key` (ex: `common:variable-exam
 
 This hook is the recommended way to use translations in your pages / components.
 
-* **Input**: void
-* **Output**: Object { t: Function, lang: string }
+- **Input**: void
+- **Output**: Object { t: Function, lang: string }
 
 Example of usage:
 
@@ -247,12 +247,10 @@ export default function Description() {
 
 The `t` function:
 
-
-* **Input**:
-    * i18nKey: string (namespace:key)
-    * query: Object (example: { name: 'Leonard' })
-* **Output**: string
-
+- **Input**:
+  - i18nKey: string (namespace:key)
+  - query: Object (example: { name: 'Leonard' })
+- **Output**: string
 
 ### withTranslation
 
@@ -267,7 +265,7 @@ import React from 'react'
 import withTranslation from 'next-translate/withTranslation'
 
 class Description extends React.Component {
-  render(){
+  render() {
     const { t, lang } = this.props.i18n
     const description = t('common:description')
 
@@ -285,17 +283,17 @@ Sometimes we need to do some translations with HTML inside the text (bolds, link
 Example of usage:
 
 ```jsx
-// The defined dictionary enter is like: 
+// The defined dictionary enter is like:
 // "extended-description": "<0>This is an example <1>using HTML</1> inside the translation</0>",
 <Trans
-    i18nKey="common:extended-description"
-    components={[<Component />, <b className="red" />]}
+  i18nKey="common:extended-description"
+  components={[<Component />, <b className="red" />]}
 />
 ```
 
-* **Props**:
-  * `i18nKey` - string - key of i18n entry (namespace:key)
-  * `components` - Array<Node> - Each index correspont to the defined tag `<0>`/`<1>`.
+- **Props**:
+  - `i18nKey` - string - key of i18n entry (namespace:key)
+  - `components` - Array<Node> - Each index correspont to the defined tag `<0>`/`<1>`.
 
 ### appWithI18n
 
@@ -318,10 +316,9 @@ export default appWithI18n(MyApp, {
     import(`../locales/${lang}/${ns}.json`).then(m => m.default),
   pages: {
     '/': ['common', 'home'], // namespaces used in "/" page
-    '/about': ['common', 'about'],  // namespaces used in "about" page
+    '/about': ['common', 'about'], // namespaces used in "about" page
   },
 })
-
 ```
 
 ### DynamicNamespaces
@@ -362,13 +359,13 @@ And `['dynamic']` namespace should **not** be listed on `pages` configuration:
  pages: {
     '/my-page': ['common'], // only common namespace
   }
- ```
- 
- **Props**:
- * `dynamic` - Function - Generic dynamic import of all namespaces (mandatory). 
- * `namespaces` - Array<string> - List of namespaces to load dynamically (mandatory).
- * `fallback` - Any - Fallback to render meanwhile namespaces are loading (default: `null`)
+```
 
+**Props**:
+
+- `dynamic` - Function - Generic dynamic import of all namespaces (mandatory).
+- `namespaces` - Array<string> - List of namespaces to load dynamically (mandatory).
+- `fallback` - Any - Fallback to render meanwhile namespaces are loading (default: `null`)
 
 ## 7. Plurals
 
