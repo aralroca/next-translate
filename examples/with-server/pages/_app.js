@@ -11,5 +11,6 @@ export default appWithI18n(MyApp, {
   pages: {
     '/': ['common', 'home'],
     '/more-examples': ['common', 'more-examples'],
+    '/more-examples/dynamic-namespace': ['common'],
   },
 })

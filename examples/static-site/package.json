@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "next-translate && next dev"
+    "dev": "node ../../cli/builder.js && next dev"
   },
   "dependencies": {
     "next": "link:../../node_modules/next",
