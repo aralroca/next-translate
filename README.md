@@ -16,10 +16,10 @@
 - [4. Create /locales directory with translations JSONs](#4-create-locales-directory-with-translations-jsons)
 - [5. Configuration](#5-configuration)
 - [5. API](#6-api)
-  - [appWithI18n](#appwithi18n)
   - [useTranslation](#usetranslation)
   - [withTranslation](#withtranslation)
   - [Trans Component](#trans-component)
+  - [appWithI18n](#appwithi18n)
   - [I18nProvider (rare use case)](#i18nprovider-rare-use-case)
 - [7. Plurals](#7-plurals)
 - [8. Use HTML inside the translation](#8-use-html-inside-the-translation)
@@ -224,25 +224,151 @@ And the id to use it in the projec is `namespace:key` (ex: `common:variable-exam
 
 ## 6. API
 
-### appWithI18n
-
-@todo
-
 ### useTranslation
 
-@todo
+This hook is the recommended way to use translations in your pages / components.
+
+* **Input**: void
+* **Output**: Object { t: Function, lang: string }
+
+Example of usage:
+
+```jsx
+import React from 'react'
+import useTranslation from 'next-translate/useTranslation'
+
+export default function Description() {
+  const { t, lang } = useTranslation()
+  const description = t('common:description')
+
+  return <p>{description}</p>
+}
+```
+
+The `t` function:
+
+
+* **Input**:
+    * i18nKey: string (namespace:key)
+    * query: Object (example: { name: 'Leonard' })
+* **Output**: string
+
 
 ### withTranslation
 
-@todo
+Is an alternative to `useTranslation` hook, but in a HOC for these components that are no-functional.
+
+The `withTranslation` HOC returns a Component with an extra prop named `i18n` (Object { t: Function, lang: string }).
+
+Example of usage:
+
+```jsx
+import React from 'react'
+import withTranslation from 'next-translate/withTranslation'
+
+class Description extends React.Component {
+  render(){
+    const { t, lang } = this.props.i18n
+    const description = t('common:description')
+
+    return <p>{description}</p>
+  }
+}
+
+export default withTranslation(NoFunctionalComponent)
+```
 
 ### Trans Component
 
-@todo
+Sometimes we need to do some translations with HTML inside the text (bolds, links, etc). The `Trans` component is exactly to do that. We recommend to use this component only in this case, for other cases we highly recommend the usage of `useTranslation` hook instead.
 
-### I18nProvider (rare use case)
+Example of usage:
 
-@todo
+```jsx
+// The defined dictionary enter is like: 
+// "extended-description": "<0>This is an example <1>using HTML</1> inside the translation</0>",
+<Trans
+    i18nKey="common:extended-description"
+    components={[<Component />, <b className="red" />]}
+/>
+```
+
+* **Props**:
+  * `i18nKey` - string - key of i18n entry (namespace:key)
+  * `components` - Array<Node> - Each index correspont to the defined tag `<0>`/`<1>`.
+
+### appWithI18n
+
+This HOC is the way to wrap all your app under translations in the case that you are using a server. This method should not be used in a static site. This HOC adds logic to the `getInitialProps` to download the necessary namespaces in order to use it in your pages.
+
+Example of usage:
+
+`_app.js`
+
+```jsx
+import appWithI18n from 'next-translate/appWithI18n'
+
+function MyApp({ Component, pageProps }) {
+  return <Component {...pageProps} />
+}
+
+export default appWithI18n(MyApp, {
+  defaultLanguage: 'es',
+  loadLocaleFrom: (lang, ns) =>
+    import(`../locales/${lang}/${ns}.json`).then(m => m.default),
+  pages: {
+    '/': ['common', 'home'], // namespaces used in "/" page
+    '/about': ['common', 'about'],  // namespaces used in "about" page
+  },
+})
+
+```
+
+### DynamicNamespaces
+
+The `DynamicNamespaces` component is useful to load dynamic namespaces, for example, in modals. This component works in both cases (static sites and with a server).
+
+Example of usage:
+
+```jsx
+import React from 'react'
+import Trans from 'next-translate/Trans'
+import DynamicNamespaces from 'next-translate/DynamicNamespaces'
+
+export default function ExampleWithDynamicNamespace() {
+  return (
+    <DynamicNamespaces
+      dynamic={(lang, ns) =>
+        import(`../../locales/${lang}/${ns}.json`).then(m => m.default)
+      }
+      namespaces={['dynamic']}
+      fallback="Loading..."
+    >
+      {/* ALSO IS POSSIBLE TO USE NAMESPACES FROM THE PAGE */}
+      <h1>
+        <Trans i18nKey="common:title" />
+      </h1>
+
+      {/* USING DYNAMIC NAMESPACE */}
+      <Trans i18nKey="dynamic:example-of-dynamic-translation" />
+    </DynamicNamespaces>
+  )
+}
+```
+
+And `['dynamic']` namespace should **not** be listed on `pages` configuration:
+
+```js
+ pages: {
+    '/my-page': ['common'], // only common namespace
+  }
+ ```
+ 
+ **Props**:
+ * `dynamic` - Function - Generic dynamic import of all namespaces (mandatory). 
+ * `namespaces` - Array<string> - List of namespaces to load dynamically (mandatory).
+ * `fallback` - Any - Fallback to render meanwhile namespaces are loading (default: `null`)
+
 
 ## 7. Plurals
 
