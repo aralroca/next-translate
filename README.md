@@ -1,7 +1,7 @@
 <h1 align="center"> ㊗ ️ next-translate</h1>
 
 <p align="center">
-    <b>i18n</b> for Next.js static pages ⚡️ (~5kb + tree shakable)
+    <b>i18n</b> for Next.js static pages ⚡️
 </p>
 
 - [1. About the library](#1-about-the-library)
@@ -228,6 +228,8 @@ And the id to use it in the projec is `namespace:key` (ex: `common:variable-exam
 
 ### useTranslation
 
+📦**Size**: ~1.5kb
+
 This hook is the recommended way to use translations in your pages / components.
 
 - **Input**: void
@@ -256,6 +258,8 @@ The `t` function:
 
 ### withTranslation
 
+📦**Size**: ~2.5kb
+
 Is an alternative to `useTranslation` hook, but in a HOC for these components that are no-functional.
 
 The `withTranslation` HOC returns a Component with an extra prop named `i18n` (Object { t: Function, lang: string }).
@@ -280,6 +284,8 @@ export default withTranslation(NoFunctionalComponent)
 
 ### Trans Component
 
+📦**Size**: ~5kb
+
 Sometimes we need to do some translations with HTML inside the text (bolds, links, etc). The `Trans` component is exactly to do that. We recommend to use this component only in this case, for other cases we highly recommend the usage of `useTranslation` hook instead.
 
 Example of usage:
@@ -298,6 +304,8 @@ Example of usage:
   - `components` - Array<Node> - Each index correspont to the defined tag `<0>`/`<1>`.
 
 ### appWithI18n
+
+📦**Size**: ~10kb
 
 This HOC is the way to wrap all your app under translations in the case that you are using a server. This method should not be used in a static site. This HOC adds logic to the `getInitialProps` to download the necessary namespaces in order to use it in your pages.
 
@@ -324,6 +332,8 @@ export default appWithI18n(MyApp, {
 ```
 
 ### DynamicNamespaces
+
+📦**Size**: ~13kb
 
 The `DynamicNamespaces` component is useful to load dynamic namespaces, for example, in modals. This component works in both cases (static sites and with a server).
 
