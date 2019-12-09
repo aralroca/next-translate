@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install tree
-        run:  apt-get install tree
+        run:  sudo apt-get install tree
       - uses: actions/checkout@v1
       - uses: borales/actions-yarn@v2.0.0
         with:
