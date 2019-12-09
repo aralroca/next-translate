@@ -421,7 +421,7 @@ Result:
 
 ![plural](images/plural.gif 'Plural example')
 
-**\*Note**: Only works if the name of the variable is {{count}}.\*
+***Note**: Only works if the name of the variable is {{count}}.*
 
 ## 8. Use HTML inside the translation
 
