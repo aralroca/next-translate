@@ -4,6 +4,13 @@
     <b>i18n</b> for Next.js static pages ⚡️
 </p>
 
+<div align="center">
+
+[![PRs Welcome][Badge-PRWelcome]][PRWelcome]
+[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)][Spectrum]
+
+</div>
+
 - [1. About the library](#1-about-the-library)
   - [How it works statically?](#how-it-works-statically)
 - [2. Getting started (static site)](#2-getting-started-static-site)
@@ -461,3 +468,9 @@ In the `components` array is not necessary to pass the children of each element.
 
 - `yarn install`
 - `yarn example:with-server`
+
+
+
+[Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
+[PRWelcome]: http://makeapullrequest.com
+[Spectrum]: https://spectrum.chat/next-translate
