@@ -133,6 +133,8 @@ const example = t('common:variable-example', { count: 42 })
 return <div>{example}</div>
 ```
 
+⚠️ **Important**: _app.js, _document.js and _error.js are not going to be wrapped with the translations context, so it's not possible to direclty translate these files. In order to do that, you should take a look at [DynamicNamespaces](#dynamicnamespaces) to load the namespaces dynamically.
+
 ### Add /pages to .gitignore
 
 `/pages` directory is going to be generated every time based on `/pages_`, so is not necessary to track in git.
