@@ -1,1 +1,6 @@
-export default null
+export { default as DynamicNamespaces } from './DynamicNamespaces'
+export { default as I18nProvider } from './I18nProvider'
+export { default as Trans } from './Trans'
+export { default as appWithI18n } from './appWithI18n'
+export { default as useTranslation } from './useTranslation'
+export { default as withTranslation } from './withTranslation'
