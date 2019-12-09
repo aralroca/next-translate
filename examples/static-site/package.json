@@ -4,7 +4,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "node ../../cli/builder.js && next dev"
+    "dev": "yarn i18n && next dev",
+    "i18n": "node ../../cli/builder.js"
   },
   "dependencies": {
     "next": "link:../../node_modules/next",
