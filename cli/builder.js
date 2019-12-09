@@ -43,6 +43,10 @@ async function createPagesDir(langs = []) {
   readPageNamespaces(langs)
 }
 
+function isNextInternal(pagePath) {
+  return pagePath.startsWith(`${currentPagesDir}/_`)
+}
+
 /**
  * STEP 3: Read each page namespaces
  */
@@ -55,7 +59,10 @@ function readPageNamespaces(langs) {
 
     const namespaces = pages[pageId] || []
 
-    console.log(`🔨 ${pageId}`, namespaces)
+    if(!isNextInternal(page)) {
+      console.log(`🔨 ${pageId}`, namespaces)
+    }
+
     buildPageInAllLocales(page, namespaces, langs)
   })
 }
@@ -102,6 +109,12 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
     .map(() => '..')
     .join('/')
   const rootPrefix = prefix.replace('/..', '')
+  
+  // _app.js , _document.js _error.js
+  if(isNextInternal(pagePath)) {
+    execSync(`cp ${pagePath} ${pagePath.replace(currentPagesDir, finalPagesDir)}`)
+    return
+  }
 
   // For each lang
   langs.forEach(lang => {
