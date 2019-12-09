@@ -12,7 +12,7 @@
 </div>
 
 - [1. About the library](#1-about-the-library)
-  - [How it works statically?](#how-it-works-statically)
+  - [How does it work statically?](#how-does-it-work-statically)
 - [2. Getting started (static site)](#2-getting-started-static-site)
   - [Add to your project](#add-to-your-project)
   - [Use translations in your pages](#use-translations-in-your-pages)
@@ -40,17 +40,17 @@
 
 ## 1. About the library
 
-Utility to translate Next.js pages without the need of a server (static i18n pages generator).
+Tool to translate Next.js pages without the need of a server (static i18n pages generator).
 
 The main goal of this library is to keep the translations as simple as possible in a Next.js environment.
 
-This library is very tiny (~5kb).
+This library is very tiny and tree shakable.
 
-### How it works statically?
+### How does it work statically?
 
-Instead of working on `/pages` directory to write our pages, we are going to generate this folder before build the app, an each page will be have all the necessary translations from the locale.
+Instead of working on `/pages` directory to write our pages, we are going to generate this folder before building the app, an each page will have all the necessary translations from the locale.
 
-So imagine that we are working in an alternative `/pages_` to build our pages:
+Imagine that we are working in an alternative `/pages_` to build our pages:
 
 **/pages\_**
 
@@ -62,7 +62,7 @@ So imagine that we are working in an alternative `/pages_` to build our pages:
     └── index.js
 ```
 
-And when we build the app, this **/pages** is automatically generated:
+Then, when we build the app, this **/pages** structure is going to be automatically generated:
 
 ```bash
 .
@@ -87,7 +87,7 @@ And when we build the app, this **/pages** is automatically generated:
     └── index.js
 ```
 
-And each page and page children can consume the translations with the hook `useTranslation`.
+Each page and its components can consume the translations with the `useTranslation` hook.
 
 ```js
 const { t, lang } = useTranslation()
@@ -100,7 +100,7 @@ const title = t('common:title')
 
 - `yarn install next-translate`
 
-And then, in your **package.json**:
+In your **package.json**:
 
 ```json
 "scripts": {
@@ -114,7 +114,7 @@ And then, in your **package.json**:
 
 You should create your namespaces files inside `/locales`. [See how to do it](#create-locales-directory-with-translations-jsons)
 
-For static site you should add a configuration file `i18n.json` in the root of the project. Each page should have their namespaces. Take a look to the [config](#5-configuration) section to more details.
+For a static site you should add a configuration file `i18n.json` in the root of the project. Each page should have its namespaces. Take a look to the [config](#5-configuration) section for more details.
 
 ```json
 {
@@ -129,7 +129,7 @@ For static site you should add a configuration file `i18n.json` in the root of t
 }
 ```
 
-Then, use translations in the page / children page component:
+Then, use the translations in the page and its components:
 
 ```jsx
 import useTranslation from 'next-translate/useTranslation'
@@ -224,8 +224,7 @@ And the id to use it in the projec is `namespace:key` (ex: `common:variable-exam
 | Option                                                             | Description                                                                                                                                                                                                                              | Type                    | Default   |
 | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | --------- |
 | `defaultLanguage`                                                  | String with the ISO locale ("en" as default).                                                                                                                                                                                            | `string`                | "en"      |
-| `currentPagesDir`                                                  | String with the directory that you have the pages code. IT ONLY APPLIES in static sites. If you use the `                                                                                                                                |
-| `this configuration doesn't have any effect. |`string` | "pages\_" |
+| `currentPagesDir`                                                  | String with the directory that you have the pages code. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration doesn't have any effect. |`string` | "pages\_" |
 | `finalPagesDir`                                                    | String with the directory that is going to build the pages. Only "pages" and "src/pages" is possible. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration doesn't have any effect.                          | `string`                | "pages"   |
 | `localesPath`                                                      | String with the directory that are the JSON locales. IT ONLY WORKS with static sites. If you use the `appWithI18n` then you should use the `loadLocaleFrom` config.                                                                      | `string`                | "locales" |
 | `loadLocaleFrom`                                                   | Function to return the dynamic import of each locale. IT ONLY WORKS with a server (`appWithI18n`). For static site use the `localesPath` instead. [See an example](#use-translations-in-your-pages-1)                                    | `Function`              | null      |
