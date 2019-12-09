@@ -112,7 +112,7 @@ In your **package.json**:
 
 ### Use translations in your pages
 
-You should create your namespaces files inside `/locales`. [See how to do it](#create-locales-directory-with-translations-jsons)
+You should create your namespaces files inside `/locales`. [See how to do it](#4-create-locales-directory-with-translations-jsons)
 
 For a static site you should add a configuration file `i18n.json` in the root of the project. Each page should have its namespaces. Take a look to the [config](#5-configuration) section for more details.
 
