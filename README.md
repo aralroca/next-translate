@@ -144,7 +144,7 @@ return <div>{example}</div>
 
 ### Add /pages to .gitignore
 
-`/pages` directory is going to be generated every time based on `/pages_`, so is not necessary to track in git.
+`/pages` directory is going to be generated every time based on `/pages_`, so it's not necessary to track it in git.
 
 ## 3. Getting started (with a server)
 
@@ -156,7 +156,7 @@ return <div>{example}</div>
 
 You should create your namespaces files inside `/locales`. [See how to do it](#4-create-locales-directory-with-translations-jsons)
 
-Using a server, you should pass the configuration into the `appWithI18n` wrapper of your app. Each page should have their namespaces. Take a look to the [config](#5-configuration) section to more details.
+Using a server, you should pass the configuration into the `appWithI18n` wrapper of your app. Each page should have its namespaces. Take a look to the [config](#5-configuration) section for more details.
 
 \_app.js
 
@@ -178,7 +178,7 @@ export default appWithI18n(MyApp, {
 })
 ```
 
-Then, use translations in the page / children page component:
+Now, use translations in the page and its components:
 
 ```jsx
 import useTranslation from 'next-translate/useTranslation'
@@ -191,7 +191,7 @@ return <div>{example}</div>
 
 ## 4. Create /locales directory with translations JSONs
 
-The locales directory should be like:
+The locales directory should be like this:
 
 **/locales**
 
@@ -208,7 +208,7 @@ The locales directory should be like:
     └── home.json
 ```
 
-When each filename is the namespace. And each file should be like:
+Each filename matches the namespace, while each file content should be similar to this:
 
 ```json
 {
@@ -217,18 +217,18 @@ When each filename is the namespace. And each file should be like:
 }
 ```
 
-And the id to use it in the projec is `namespace:key` (ex: `common:variable-example`)
+In order to use each translation in the project, use the *translation id* composed by `namespace:key`(ex: `common:variable-example`).
 
 ## 5. Configuration
 
 | Option                                                             | Description                                                                                                                                                                                                                              | Type                    | Default   |
 | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | --------- |
-| `defaultLanguage`                                                  | String with the ISO locale ("en" as default).                                                                                                                                                                                            | `string`                | "en"      |
-| `currentPagesDir`                                                  | String with the directory that you have the pages code. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration doesn't have any effect. |`string` | "pages\_" |
-| `finalPagesDir`                                                    | String with the directory that is going to build the pages. Only "pages" and "src/pages" is possible. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration doesn't have any effect.                          | `string`                | "pages"   |
-| `localesPath`                                                      | String with the directory that are the JSON locales. IT ONLY WORKS with static sites. If you use the `appWithI18n` then you should use the `loadLocaleFrom` config.                                                                      | `string`                | "locales" |
-| `loadLocaleFrom`                                                   | Function to return the dynamic import of each locale. IT ONLY WORKS with a server (`appWithI18n`). For static site use the `localesPath` instead. [See an example](#use-translations-in-your-pages-1)                                    | `Function`              | null      |
-| `pages`                                                            | Is an object that define the namespaces used in each page (Only used by the builder tool to generate static i18n pages). Example of object: `{"/": ["common", "home"]}`. This configuration is for both: static sites and with a server. | `Object<Array<string>>` | {}        |
+| `defaultLanguage`                                                  | A string with the ISO locale ("en" as default).                                                                                                                                                                                            | `string`                | "en"      |
+| `currentPagesDir`                                                  | A string with the directory where you have the pages code. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect. |`string` | "pages\_" |
+| `finalPagesDir`                                                    | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect.                          | `string`                | "pages"   |
+| `localesPath`                                                      | A string with the directory of JSONs locales. THIS ONLY WORKS with static sites. If you use the `appWithI18n` then you should use the `loadLocaleFrom` config.                                                                      | `string`                | "locales" |
+| `loadLocaleFrom`                                                   | A function to return the dynamic import of each locale. IT ONLY WORKS with a server (`appWithI18n`). For static site use the `localesPath` instead. [See an example](#use-translations-in-your-pages-1)                                    | `Function`              | null      |
+| `pages`                                                            | An object that defines the namespaces used in each page. Example of object: `{"/": ["common", "home"]}`. This configuration is for both: static sites and with a server. | `Object<Array<string>>` | {}        |
 
 ## 6. API
 
@@ -241,7 +241,7 @@ This hook is the recommended way to use translations in your pages / components.
 - **Input**: void
 - **Output**: Object { t: Function, lang: string }
 
-Example of usage:
+Example:
 
 ```jsx
 import React from 'react'
@@ -266,11 +266,11 @@ The `t` function:
 
 📦**Size**: ~2.5kb
 
-Is an alternative to `useTranslation` hook, but in a HOC for these components that are no-functional.
+It's an alternative to `useTranslation` hook, but in a HOC for these components that are no-functional.
 
 The `withTranslation` HOC returns a Component with an extra prop named `i18n` (Object { t: Function, lang: string }).
 
-Example of usage:
+Example:
 
 ```jsx
 import React from 'react'
@@ -292,9 +292,9 @@ export default withTranslation(NoFunctionalComponent)
 
 📦**Size**: ~5kb
 
-Sometimes we need to do some translations with HTML inside the text (bolds, links, etc). The `Trans` component is exactly to do that. We recommend to use this component only in this case, for other cases we highly recommend the usage of `useTranslation` hook instead.
+Sometimes we need to do some translations with HTML inside the text (bolds, links, etc). The `Trans` component is exactly what you need for this. We recommend to use this component only in this case, for other cases we highly recommend the usage of `useTranslation` hook instead.
 
-Example of usage:
+Example:
 
 ```jsx
 // The defined dictionary enter is like:
@@ -315,7 +315,7 @@ Example of usage:
 
 This HOC is the way to wrap all your app under translations in the case that you are using a server. This method should not be used in a static site. This HOC adds logic to the `getInitialProps` to download the necessary namespaces in order to use it in your pages.
 
-Example of usage:
+Example:
 
 `_app.js`
 
@@ -343,7 +343,7 @@ export default appWithI18n(MyApp, {
 
 The `DynamicNamespaces` component is useful to load dynamic namespaces, for example, in modals. This component works in both cases (static sites and with a server).
 
-Example of usage:
+Example:
 
 ```jsx
 import React from 'react'
@@ -371,7 +371,7 @@ export default function ExampleWithDynamicNamespace() {
 }
 ```
 
-And `['dynamic']` namespace should **not** be listed on `pages` configuration:
+Remember that `['dynamic']` namespace should **not** be listed on `pages` configuration:
 
 ```js
  pages: {
@@ -387,7 +387,7 @@ And `['dynamic']` namespace should **not** be listed on `pages` configuration:
 
 ## 7. Plurals
 
-You can define plurals in this way:
+You can define plurals this way:
 
 ```json
 {
@@ -398,7 +398,7 @@ You can define plurals in this way:
 }
 ```
 
-Example of usage:
+Example:
 
 ```jsx
 function PluralExample() {
@@ -425,7 +425,7 @@ Result:
 
 ## 8. Use HTML inside the translation
 
-You can define HTML inside the translation in this way:
+You can define HTML inside the translation this way:
 
 ```json
 {
@@ -433,7 +433,7 @@ You can define HTML inside the translation in this way:
 }
 ```
 
-Example of usage:
+Example:
 
 ```jsx
 import Trans from 'next-translate/Trans'
@@ -452,9 +452,9 @@ Rendered result:
 <p>This is an example <b class="red">using HTML</b> inside the translation</p>
 ```
 
-Each index of `components` array is corresponding on `<index></index>` of the definition.
+Each index of `components` array corresponds with `<index></index>` of the definition.
 
-In the `components` array is not necessary to pass the children of each element. The children will be calculed.
+In the `components` array it's not necessary to pass the children of each element. Children will be calculed.
 
 ## 9. Demos
 
