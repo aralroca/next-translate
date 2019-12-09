@@ -4,16 +4,19 @@ jobs:
   build:
     name: Test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
     steps:
-      - uses: actions/checkout@v1
-      - name: Install tree
-        run:  sudo apt-get install tree
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: install # will run `yarn install` command
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: build # will run `yarn build` command
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: test # will run `yarn test` command
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+      run: npm install -g yarn 
+      run: sudo apt-get install tree
+    - name: yarn install, build, and test
+      run: |
+        yarn install
+        yarn build
+        yarn test
