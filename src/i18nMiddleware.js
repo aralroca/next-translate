@@ -9,6 +9,7 @@ export default function i18nMiddleware(config = {}) {
     ],
     defaultLanguage = 'en',
     allLanguages = [],
+    redirectToDefaultLang = false,
   } = config
 
   return (req, res, next) => {
@@ -24,6 +25,10 @@ export default function i18nMiddleware(config = {}) {
      * Add defaultLang if is not present on the url
      */
     if (!startsWithLang) {
+      if(redirectToDefaultLang) {
+        res.redirect(301, `/${defaultLanguage}${req.url}`)
+        return
+      }
       req.lang = defaultLanguage
       req.query = { ...req.query, lang: defaultLanguage }
       return next()
