@@ -24,7 +24,7 @@ function loadServerWithMiddleware(config, port) {
 
 jest.mock('next', () => () => ({
   prepare: () => Promise.resolve(),
-  getRequestHandler: () => (req, res) => res.send('Welcome to Next.js!'),
+  getRequestHandler: () => (req, res) => res.send(req.lang),
   render: (req, res) => res.send(''),
 }))
 
@@ -36,18 +36,24 @@ let server2
 
 describe('i18nMiddleware', () => {
   beforeAll(async () => {
-    server1 = await loadServerWithMiddleware({
-      allLanguages,
-      defaultLanguage,
-    }, 3005)
-    server2 = await loadServerWithMiddleware({
-      allLanguages,
-      defaultLanguage,
-      redirectToDefaultLang: true,
-    }, 3006)
+    server1 = await loadServerWithMiddleware(
+      {
+        allLanguages,
+        defaultLanguage,
+      },
+      3005
+    )
+    server2 = await loadServerWithMiddleware(
+      {
+        allLanguages,
+        defaultLanguage,
+        redirectToDefaultLang: true,
+      },
+      3006
+    )
   })
   describe('redirectToDefaultLang=false', () => {
-    [
+    ;[
       ['/_next/chunk.js', 200, null],
       ['/ca/test', 200, 'ca'],
       ['/en/test', 200, 'en'],
@@ -60,21 +66,22 @@ describe('i18nMiddleware', () => {
       ['/es/manifest.json', 301, null, '/manifest.json'],
       ['/static/images/logo.svg', 200, null],
       ['/es/static/images/logo.svg', 301, null, '/static/images/logo.svg'],
-      ['/test', 200, defaultLanguage]
+      ['/test', 200, defaultLanguage],
     ].forEach(([path, status, lang, redirect]) => {
-      test(`${path} -> ${status}${
-        redirect ? ` to ${redirect}` : ''
-      }`, async () => {
-        await request(server1)
+      test(`${path} -> ${status}${redirect ? ` to ${redirect}` : ''}`, done => {
+        request(server1)
           .get(path)
           .set('Host', 'www.test.com')
-          .expect(status)
+          .expect(status, (err, res) => {
+            if (lang) expect(res.text).toBe(lang)
+            done()
+          })
       })
     })
   })
 
   describe('redirectToDefaultLang=true', () => {
-    [
+    ;[
       ['/_next/chunk.js', 200, null],
       ['/ca/test', 200, 'ca'],
       ['/en/test', 200, 'en'],
@@ -87,16 +94,17 @@ describe('i18nMiddleware', () => {
       ['/es/manifest.json', 301, null, '/manifest.json'],
       ['/static/images/logo.svg', 200, null],
       ['/es/static/images/logo.svg', 301, null, '/static/images/logo.svg'],
-      ['/test', 301, defaultLanguage, `/${defaultLanguage}/test`],
-      [`/${defaultLanguage}/test`, 200]
+      ['/test', 301, null, `/${defaultLanguage}/test`],
+      [`/${defaultLanguage}/test`, 200, defaultLanguage],
     ].forEach(([path, status, lang, redirect]) => {
-      test(`${path} -> ${status}${
-        redirect ? ` to ${redirect}` : ''
-      }`, async () => {
-        await request(server2)
+      test(`${path} -> ${status}${redirect ? ` to ${redirect}` : ''}`, done => {
+        request(server2)
           .get(path)
           .set('Host', 'www.test.com')
-          .expect(status)
+          .expect(status, (err, res) => {
+            if (lang) expect(res.text).toBe(lang)
+            done()
+          })
       })
     })
   })

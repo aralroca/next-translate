@@ -22,10 +22,11 @@ export default function i18nMiddleware(config = {}) {
     if (ignore) return next()
 
     /**
-     * Add defaultLang if is not present on the url
+     * When lang is not present on the url
+     * Redirect or add lang without redirecting (depending the config)
      */
     if (!startsWithLang) {
-      if(redirectToDefaultLang) {
+      if (redirectToDefaultLang) {
         res.redirect(301, `/${defaultLanguage}${req.url}`)
         return
       }
@@ -48,7 +49,7 @@ export default function i18nMiddleware(config = {}) {
 
     // Add lang if is present on the url
     req.lang = lang
-    req.query = { ...req.query,  lang }
+    req.query = { ...req.query, lang }
     return next()
   }
 }
