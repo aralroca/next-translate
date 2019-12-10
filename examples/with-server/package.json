@@ -4,12 +4,13 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "next dev"
+    "dev": "node server.js"
   },
   "dependencies": {
     "next": "link:../../node_modules/next",
     "next-translate": "link:../../",
     "react": "link:../../node_modules/react",
+    "express": "link:../../node_modules/express",
     "react-dom": "link:../../node_modules/react-dom"
   }
 }

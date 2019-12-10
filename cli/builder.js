@@ -4,6 +4,7 @@ const execSync = require('child_process').execSync
 const path = require('path')
 
 const {
+  allLanguages = [],
   currentPagesDir = 'pages_',
   defaultLanguage = 'en',
   finalPagesDir = 'pages',
@@ -19,16 +20,10 @@ function readDirR(dir) {
     : dir
 }
 
-/**
- * STEP 1: Read current available locales
- */
-fs.readdir(localesPath, (err, allLanguages) => {
-  if (err) throw new Error(err)
-  createPagesDir(allLanguages)
-})
+createPagesDir(allLanguages)
 
 /**
- * STEP 2: Create /pages/ dir with their langs:
+ * STEP 1: Create /pages/ dir with their langs:
  *
  * /pages/en/ - /pages/es/ ...
  */
@@ -48,7 +43,7 @@ function isNextInternal(pagePath) {
 }
 
 /**
- * STEP 3: Read each page namespaces
+ * STEP 2: Read each page namespaces
  */
 function readPageNamespaces(langs) {
   readDirR(currentPagesDir).forEach(page => {
@@ -59,7 +54,7 @@ function readPageNamespaces(langs) {
 
     const namespaces = pages[pageId] || []
 
-    if(!isNextInternal(page)) {
+    if (!isNextInternal(page)) {
       console.log(`🔨 ${pageId}`, namespaces)
     }
 
@@ -68,7 +63,7 @@ function readPageNamespaces(langs) {
 }
 
 /**
- * STEP 4: Build page in each lang path
+ * STEP 3: Build page in each lang path
  */
 function getPageTemplate(prefix, page, lang, namespaces) {
   return `import I18nProvider from 'next-translate/I18nProvider'
@@ -109,10 +104,12 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
     .map(() => '..')
     .join('/')
   const rootPrefix = prefix.replace('/..', '')
-  
+
   // _app.js , _document.js _error.js
-  if(isNextInternal(pagePath)) {
-    execSync(`cp ${pagePath} ${pagePath.replace(currentPagesDir, finalPagesDir)}`)
+  if (isNextInternal(pagePath)) {
+    execSync(
+      `cp ${pagePath} ${pagePath.replace(currentPagesDir, finalPagesDir)}`
+    )
     return
   }
 
