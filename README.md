@@ -6,8 +6,8 @@
 
 <div align="center">
 
-[![PRs Welcome][Badge-PRWelcome]][PRWelcome]
-[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)][Spectrum]
+[![PRs Welcome][badge-prwelcome]][prwelcome]
+[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)][spectrum]
 
 </div>
 
@@ -118,6 +118,7 @@ For a static site you should add a configuration file `i18n.json` in the root of
 
 ```json
 {
+  "allLanguages": ["en", "ca", "es"],
   "defaultLanguage": "en",
   "currentPagesDir": "pages_",
   "finalPagesDir": "pages",
@@ -140,7 +141,7 @@ const example = t('common:variable-example', { count: 42 })
 return <div>{example}</div>
 ```
 
-⚠️ **Important**: _app.js, _document.js and _error.js are not going to be wrapped with the translations context, so it's not possible to direclty translate these files. In order to do that, you should take a look at [DynamicNamespaces](#dynamicnamespaces) to load the namespaces dynamically.
+⚠️ **Important**: \_app.js, \_document.js and \_error.js are not going to be wrapped with the translations context, so it's not possible to direclty translate these files. In order to do that, you should take a look at [DynamicNamespaces](#dynamicnamespaces) to load the namespaces dynamically.
 
 ### Add /pages to .gitignore
 
@@ -168,6 +169,7 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default appWithI18n(MyApp, {
+  allLanguages: ['en', 'ca', 'es'],
   defaultLanguage: 'es',
   loadLocaleFrom: (lang, ns) =>
     import(`../locales/${lang}/${ns}.json`).then(m => m.default),
@@ -217,18 +219,21 @@ Each filename matches the namespace, while each file content should be similar t
 }
 ```
 
-In order to use each translation in the project, use the *translation id* composed by `namespace:key`(ex: `common:variable-example`).
+In order to use each translation in the project, use the _translation id_ composed by `namespace:key`(ex: `common:variable-example`).
 
 ## 5. Configuration
 
-| Option                                                             | Description                                                                                                                                                                                                                              | Type                    | Default   |
-| ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | --------- |
-| `defaultLanguage`                                                  | A string with the ISO locale ("en" as default).                                                                                                                                                                                            | `string`                | "en"      |
-| `currentPagesDir`                                                  | A string with the directory where you have the pages code. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect. |`string` | "pages\_" |
-| `finalPagesDir`                                                    | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect.                          | `string`                | "pages"   |
-| `localesPath`                                                      | A string with the directory of JSONs locales. THIS ONLY WORKS with static sites. If you use the `appWithI18n` then you should use the `loadLocaleFrom` config.                                                                      | `string`                | "locales" |
-| `loadLocaleFrom`                                                   | A function to return the dynamic import of each locale. IT ONLY WORKS with a server (`appWithI18n`). For static site use the `localesPath` instead. [See an example](#use-translations-in-your-pages-1)                                    | `Function`              | null      |
-| `pages`                                                            | An object that defines the namespaces used in each page. Example of object: `{"/": ["common", "home"]}`. This configuration is for both: static sites and with a server. | `Object<Array<string>>` | {}        |
+| Option            | Description                                                                                                                                                                                                                 | Type                    | Default                                                                    |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | -------------------------------------------------------------------------- |
+| `defaultLanguage` | A string with the ISO locale ("en" as default).                                                                                                                                                                             | `string`                | `"en"`                                                                     |
+| `allLanguages`    | An array with all the languages to use in the project.                                                                                                                                                                      | `Array<string>`         | `[]`                                                                       |
+| `ignoreRoutes`    | An array with all the routes to ignore in the middleware. This config property only effect using a custom server with the `i18nMiddleware`.                                                                                 | `Array<string>`         | `['/_next/', '/static/', '/favicon.ico', '/manifest.json', '/robots.txt']` |
+| `redirectToDefaultLang`    |    When is set to `true` the route `/some-page` redirects to `/en/some-path` (if `en` is the default language). When is set to `false` entering to `/some-path` is rendering the page with the default language but without redirecting. IT ONLY APPLIES using a server with the `i18nMiddleware`.                                                                            | `boolean`         | `false` |
+| `currentPagesDir` | A string with the directory where you have the pages code. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect.                                                          | `string`                | `"pages\_"`                                                                |
+| `finalPagesDir`   | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect. | `string`                | `"pages"`                                                                  |
+| `localesPath`     | A string with the directory of JSONs locales. THIS ONLY WORKS with static sites. If you use the `appWithI18n` then you should use the `loadLocaleFrom` config.                                                              | `string`                | `"locales"`                                                                |
+| `loadLocaleFrom`  | A function to return the dynamic import of each locale. IT ONLY WORKS with a server (`appWithI18n`). For static site use the `localesPath` instead. [See an example](#use-translations-in-your-pages-1)                     | `Function`              | `null`                                                                     |
+| `pages`           | An object that defines the namespaces used in each page. Example of object: `{"/": ["common", "home"]}`. This configuration is for both: static sites and with a server.                                                    | `Object<Array<string>>` | `{}`                                                                       |
 
 ## 6. API
 
@@ -421,7 +426,7 @@ Result:
 
 ![plural](images/plural.gif 'Plural example')
 
-***Note**: Only works if the name of the variable is {{count}}.*
+**\*Note**: Only works if the name of the variable is {{count}}.\*
 
 ## 8. Use HTML inside the translation
 
@@ -468,8 +473,6 @@ In the `components` array it's not necessary to pass the children of each elemen
 - `yarn install`
 - `yarn example:with-server`
 
-
-
-[Badge-PRWelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
-[PRWelcome]: http://makeapullrequest.com
-[Spectrum]: https://spectrum.chat/next-translate
+[badge-prwelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
+[prwelcome]: http://makeapullrequest.com
+[spectrum]: https://spectrum.chat/next-translate

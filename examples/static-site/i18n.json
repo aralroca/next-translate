@@ -1,4 +1,5 @@
 {
+  "allLanguages": ["en", "ca", "es"],
   "defaultLanguage": "en",
   "pages": {
     "/": ["common", "home"],

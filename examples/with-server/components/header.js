@@ -18,17 +18,17 @@ export default function Header() {
       <header>
         <h1>{title}</h1>
         {lang !== 'es' && (
-          <Link href="/es">
+          <Link href="/" as="/es">
             <a>Español</a>
           </Link>
         )}
         {lang !== 'ca' && (
-          <Link href="/ca">
+          <Link href="/" as="/ca">
             <a>Català</a>
           </Link>
         )}
         {lang !== 'en' && (
-          <Link href="/en">
+          <Link href="/" as="/en">
             <a>English</a>
           </Link>
         )}

@@ -13,7 +13,7 @@ export default function Home() {
     <>
       <Header />
       <p>{description}</p>
-      <Link href={`/${lang}/more-examples`}>
+      <Link href="/more-examples" as={`/${lang}/more-examples`}>
         <a>{linkName}</a>
       </Link>
     </>

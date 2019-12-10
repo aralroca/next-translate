@@ -40,7 +40,8 @@
     "I18nProvider",
     "Trans",
     "useTranslation",
-    "withTranslation"
+    "withTranslation",
+    "i18nMiddleware"
   ],
   "bin": {
     "next-translate": "./cli/builder.js"
@@ -53,13 +54,15 @@
     "babel-jest": "24.9.0",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
     "babel-preset-minify": "0.5.1",
+    "express": "4.17.1",
     "husky": "3.1.0",
     "jest": "24.9.0",
     "next": "9.1.5",
     "prettier": "1.19.1",
     "pretty-quick": "2.0.1",
     "react": "16.12.0",
-    "react-dom": "16.12.0"
+    "react-dom": "16.12.0",
+    "supertest": "4.0.2"
   },
   "peerDependencies": {
     "next": ">= 7.0.0",
@@ -78,7 +81,8 @@
   },
   "jest": {
     "roots": [
-      "<rootDir>/__tests__"
+      "<rootDir>/__tests__",
+      "<rootDir>/src"
     ],
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
