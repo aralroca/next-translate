@@ -19,6 +19,7 @@
   - [Add pages to .gitignore](#add-pages-to-gitignore)
 - [3. Getting started (with a server)](#3-getting-started-with-a-server)
   - [Add to your project](#add-to-your-project-1)
+  - [Add i18nMiddleware to your server](#add-i18nmiddleware-to-yout-server)
   - [Use translations in your pages](#use-translations-in-your-pages-1)
 - [4. Create /locales directory with translations JSONs](#4-create-locales-directory-with-translations-jsons)
 - [5. Configuration](#5-configuration)
@@ -28,6 +29,7 @@
   - [Trans Component](#trans-component)
   - [appWithI18n](#appwithi18n)
   - [DynamicNamespaces](#dynamicnamespaces)
+  - [i18nMiddleware](#i18nmiddleware)
 - [7. Plurals](#7-plurals)
 - [8. Use HTML inside the translation](#8-use-html-inside-the-translation)
 - [9. Demos](#9-demos)
@@ -153,6 +155,57 @@ return <div>{example}</div>
 
 - `yarn install next-translate`
 
+### Add i18nMiddleware to your server
+
+Using a server you should add the `i18nMiddleware` in order to add the language and allow to render the pages behind the `/{lang}` prefix.
+
+```js
+const express = require('express')
+const next = require('next')
+const i18nMiddleware = require('next-translate/i18nMiddleware').default
+const i18nConfig = require('./i18n')
+
+const dev = process.env.NODE_ENV !== 'production'
+const app = next({ dev })
+const handle = app.getRequestHandler()
+const server = express()
+const PORT = parseInt(process.env.PORT, 10) || 3000
+
+// You should add this middleware
+server.use(i18nMiddleware(i18nConfig))
+
+server.get('*', handle)
+
+module.exports = app
+  .prepare()
+  .then(() =>
+    server.listen(PORT, err => {
+      if (err) throw err
+      console.log(`> Ready on http://localhost:${PORT}`)
+    })
+  )
+  .catch(console.error)
+```
+
+Where the config is in the root path as `i18n.js`:
+
+```js
+module.exports = {
+  allLanguages: ['en', 'ca', 'es'],
+  defaultLanguage: 'es',
+  redirectToDefaultLang: true,
+  loadLocaleFrom: (lang, ns) =>
+    import(`./locales/${lang}/${ns}.json`).then(m => m.default),
+  pages: {
+    '/': ['common', 'home'],
+    '/more-examples': ['common', 'more-examples'],
+    '/more-examples/dynamic-namespace': ['common'],
+  },
+}
+```
+
+It's important to move the configuration in another file because in the next step also you are going to use it.
+
 ### Use translations in your pages
 
 You should create your namespaces files inside `/locales`. [See how to do it](#4-create-locales-directory-with-translations-jsons)
@@ -163,21 +216,13 @@ Using a server, you should pass the configuration into the `appWithI18n` wrapper
 
 ```js
 import appWithI18n from 'next-translate/appWithI18n'
+import i18nConfig from '../i18n'
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />
 }
 
-export default appWithI18n(MyApp, {
-  allLanguages: ['en', 'ca', 'es'],
-  defaultLanguage: 'es',
-  loadLocaleFrom: (lang, ns) =>
-    import(`../locales/${lang}/${ns}.json`).then(m => m.default),
-  pages: {
-    '/': ['common', 'home'],
-    '/more-examples': ['common', 'more-examples'],
-  },
-})
+export default appWithI18n(MyApp, i18nConfig)
 ```
 
 Now, use translations in the page and its components:
@@ -223,17 +268,17 @@ In order to use each translation in the project, use the _translation id_ compos
 
 ## 5. Configuration
 
-| Option            | Description                                                                                                                                                                                                                 | Type                    | Default                                                                    |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | -------------------------------------------------------------------------- |
-| `defaultLanguage` | A string with the ISO locale ("en" as default).                                                                                                                                                                             | `string`                | `"en"`                                                                     |
-| `allLanguages`    | An array with all the languages to use in the project.                                                                                                                                                                      | `Array<string>`         | `[]`                                                                       |
-| `ignoreRoutes`    | An array with all the routes to ignore in the middleware. This config property only effect using a custom server with the `i18nMiddleware`.                                                                                 | `Array<string>`         | `['/_next/', '/static/', '/favicon.ico', '/manifest.json', '/robots.txt']` |
-| `redirectToDefaultLang`    |    When is set to `true` the route `/some-page` redirects to `/en/some-path` (if `en` is the default language). When is set to `false` entering to `/some-path` is rendering the page with the default language but without redirecting. IT ONLY APPLIES using a server with the `i18nMiddleware`.                                                                            | `boolean`         | `false` |
-| `currentPagesDir` | A string with the directory where you have the pages code. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect.                                                          | `string`                | `"pages\_"`                                                                |
-| `finalPagesDir`   | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect. | `string`                | `"pages"`                                                                  |
-| `localesPath`     | A string with the directory of JSONs locales. THIS ONLY WORKS with static sites. If you use the `appWithI18n` then you should use the `loadLocaleFrom` config.                                                              | `string`                | `"locales"`                                                                |
-| `loadLocaleFrom`  | A function to return the dynamic import of each locale. IT ONLY WORKS with a server (`appWithI18n`). For static site use the `localesPath` instead. [See an example](#use-translations-in-your-pages-1)                     | `Function`              | `null`                                                                     |
-| `pages`           | An object that defines the namespaces used in each page. Example of object: `{"/": ["common", "home"]}`. This configuration is for both: static sites and with a server.                                                    | `Object<Array<string>>` | `{}`                                                                       |
+| Option                  | Description                                                                                                                                                                                                                                                                                     | Type                    | Default                                                                    |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | -------------------------------------------------------------------------- |
+| `defaultLanguage`       | A string with the ISO locale ("en" as default).                                                                                                                                                                                                                                                 | `string`                | `"en"`                                                                     |
+| `allLanguages`          | An array with all the languages to use in the project.                                                                                                                                                                                                                                          | `Array<string>`         | `[]`                                                                       |
+| `ignoreRoutes`          | An array with all the routes to ignore in the middleware. This config property only effect using a custom server with the `i18nMiddleware`.                                                                                                                                                     | `Array<string>`         | `['/_next/', '/static/', '/favicon.ico', '/manifest.json', '/robots.txt']` |
+| `redirectToDefaultLang` | When is set to `true` the route `/some-page` redirects to `/en/some-path` (if `en` is the default language). When is set to `false` entering to `/some-path` is rendering the page with the default language but without redirecting. IT ONLY APPLIES using a server with the `i18nMiddleware`. | `boolean`               | `false`                                                                    |
+| `currentPagesDir`       | A string with the directory where you have the pages code. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect.                                                                                                                              | `string`                | `"pages\_"`                                                                |
+| `finalPagesDir`         | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect.                                                                     | `string`                | `"pages"`                                                                  |
+| `localesPath`           | A string with the directory of JSONs locales. THIS ONLY WORKS with static sites. If you use the `appWithI18n` then you should use the `loadLocaleFrom` config.                                                                                                                                  | `string`                | `"locales"`                                                                |
+| `loadLocaleFrom`        | A function to return the dynamic import of each locale. IT ONLY WORKS with a server (`appWithI18n`). For static site use the `localesPath` instead. [See an example](#use-translations-in-your-pages-1)                                                                                         | `Function`              | `null`                                                                     |
+| `pages`                 | An object that defines the namespaces used in each page. Example of object: `{"/": ["common", "home"]}`. This configuration is for both: static sites and with a server.                                                                                                                        | `Object<Array<string>>` | `{}`                                                                       |
 
 ## 6. API
 
@@ -326,21 +371,16 @@ Example:
 
 ```jsx
 import appWithI18n from 'next-translate/appWithI18n'
+import i18nConfig from '../i18n'
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />
 }
 
-export default appWithI18n(MyApp, {
-  defaultLanguage: 'es',
-  loadLocaleFrom: (lang, ns) =>
-    import(`../locales/${lang}/${ns}.json`).then(m => m.default),
-  pages: {
-    '/': ['common', 'home'], // namespaces used in "/" page
-    '/about': ['common', 'about'], // namespaces used in "about" page
-  },
-})
+export default appWithI18n(MyApp, i18nConfig)
 ```
+
+See more details about the [config](#5-configuration) that you can use.
 
 ### DynamicNamespaces
 
@@ -383,6 +423,22 @@ Remember that `['dynamic']` namespace should **not** be listed on `pages` config
     '/my-page': ['common'], // only common namespace
   }
 ```
+
+### i18nMiddleware
+
+📦**Size**: ~4kb
+
+This middleware is to use translations behind a server. You should add this middleware in your custom server:
+
+```js
+const i18nMiddleware = require('next-translate/i18nMiddleware').default
+const i18nConfig = require('./i18n')
+
+// ...
+server.use(i18nMiddleware(i18nConfig))
+```
+
+See more details about the [config](#5-configuration) that you can use.
 
 **Props**:
 
