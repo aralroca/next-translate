@@ -34,16 +34,6 @@
     "test:coverage": "NODE_ENV=test jest --coverage",
     "test:watch": "NODE_ENV=test jest --watch"
   },
-  "main": "index.js",
-  "files": [
-    "appWithi18n",
-    "I18nProvider",
-    "Trans",
-    "useTranslation",
-    "withTranslation",
-    "i18nMiddleware",
-    "cli"
-  ],
   "bin": {
     "next-translate": "./cli/builder.js"
   },

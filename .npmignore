@@ -1,1 +1,4 @@
-!*.js
+__tests__
+.github
+examples
+images
