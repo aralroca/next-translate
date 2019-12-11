@@ -26,10 +26,10 @@ export default function appWithI18n(AppToTranslate, config = {}) {
 
   AppWithTranslations.getInitialProps = async ({ Component, ctx }) => {
     const lang = getLang(ctx, config)
-    let pageProps = {}
+    let appProps = { pageProps: {} }
 
     if (AppToTranslate.getInitialProps) {
-      pageProps = (await AppToTranslate.getInitialProps({
+      appProps = (await AppToTranslate.getInitialProps({
         Component, ctx, lang
       })) || {}
     }
@@ -45,7 +45,7 @@ export default function appWithI18n(AppToTranslate, config = {}) {
     )
 
     return {
-      pageProps,
+      ...appProps,
       lang,
       namespaces: namespaces.reduce((obj, ns, i) => {
         obj[ns] = pageNamespaces[i]
