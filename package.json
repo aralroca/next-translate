@@ -50,7 +50,7 @@
     "@babel/cli": "7.7.5",
     "@babel/core": "7.7.5",
     "@babel/preset-env": "7.7.6",
-    "@testing-library/react": "9.3.2",
+    "@testing-library/react": "9.3.3",
     "babel-jest": "24.9.0",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
     "babel-preset-minify": "0.5.1",
