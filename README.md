@@ -6,6 +6,7 @@
 
 <div align="center">
 
+[![npm version](https://badge.fury.io/js/next-translate.svg)](https://badge.fury.io/js/next-translate)
 [![PRs Welcome][badge-prwelcome]][prwelcome]
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)][spectrum]
 
