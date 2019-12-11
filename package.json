@@ -1,6 +1,6 @@
 {
   "name": "next-translate",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Next.js utility to translate pages without the need of a server (static i18n pages generator).",
   "license": "MIT",
   "keywords": [
@@ -34,16 +34,6 @@
     "test:coverage": "NODE_ENV=test jest --coverage",
     "test:watch": "NODE_ENV=test jest --watch"
   },
-  "main": "index.js",
-  "files": [
-    "appWithi18n",
-    "I18nProvider",
-    "Trans",
-    "useTranslation",
-    "withTranslation",
-    "i18nMiddleware",
-    "cli"
-  ],
   "bin": {
     "next-translate": "./cli/builder.js"
   },
