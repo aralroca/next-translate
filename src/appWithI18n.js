@@ -29,10 +29,13 @@ export default function appWithI18n(AppToTranslate, config = {}) {
     let pageProps = {}
 
     if (AppToTranslate.getInitialProps) {
-      appProps = (await AppToTranslate.getInitialProps(ctx)) || {}
+      pageProps = (await AppToTranslate.getInitialProps({
+        Component, ctx, lang
+      })) || {}
     }
 
-    const namespaces = config.pages[ctx.pathname] || []
+    const { pages = {} } = config
+    const namespaces = pages[ctx.pathname] || []
     const pageNamespaces = await Promise.all(
       namespaces.map(ns =>
         typeof config.loadLocaleFrom === 'function'
