@@ -147,5 +147,47 @@ describe('useTranslation', () => {
       )
       expect(container.textContent).toContain(expected)
     })
+
+    test('should return the key as fallback', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const test = t('ns:template-string')
+        return (
+          <>
+            {test} | {typeof test}
+          </>
+        )
+      }
+
+      const expected = 'ns:template-string | string'
+      
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{}} >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should return the key as fallback using a template string', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const test = t`ns:template-string`
+        return (
+          <>
+            {test} | {typeof test}
+          </>
+        )
+      }
+
+      const expected = 'ns:template-string | string'
+      
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{}} >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
   })
 })

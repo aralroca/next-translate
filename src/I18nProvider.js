@@ -41,7 +41,7 @@ export default function I18nProvider({ lang, namespaces = {}, children }) {
     const dic = allNamespaces[namespace] || {}
     const keyWithPlural = plural(dic, i18nKey, query)
 
-    return interpolation(dic[keyWithPlural], query) || key
+    return interpolation(dic[keyWithPlural], query) || k
   }
 
   return (
