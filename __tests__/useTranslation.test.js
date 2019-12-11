@@ -128,5 +128,24 @@ describe('useTranslation', () => {
       )
       expect(container.textContent).toContain(expected)
     })
+
+    test('should work as a template string', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        return t`ns:template-string`
+      }
+
+      const expected = 'Example with template string'
+      const templateString = {   
+        'template-string': 'Example with template string',
+      }
+      
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }} >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
   })
 })

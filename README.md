@@ -299,9 +299,17 @@ import useTranslation from 'next-translate/useTranslation'
 
 export default function Description() {
   const { t, lang } = useTranslation()
-  const description = t('common:description')
+  const title = t('title')
+  const description = t`common:description` // also works as template string
+  const example = t('common:example', { count: 3 }) // and with query params
 
-  return <p>{description}</p>
+  return (
+    <>
+      <h1>{title}</h1>
+      <p>{description}</p>
+      <p>{example}</p>
+    <>
+  )
 }
 ```
 

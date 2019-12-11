@@ -36,7 +36,8 @@ export default function I18nProvider({ lang, namespaces = {}, children }) {
   const allNamespaces = { ...ns, ...namespaces }
 
   function t(key = '', query) {
-    const [namespace, i18nKey] = key.split(':')
+    const k = Array.isArray(key) ? key[0] : key
+    const [namespace, i18nKey] = k.split(':')
     const dic = allNamespaces[namespace] || {}
     const keyWithPlural = plural(dic, i18nKey, query)
 
