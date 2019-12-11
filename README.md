@@ -356,16 +356,18 @@ Example:
 
 ```jsx
 // The defined dictionary enter is like:
-// "extended-description": "<0>This is an example <1>using HTML</1> inside the translation</0>",
+// "example": "<0>The number is <1>{{count}}</1></0>",
 <Trans
-  i18nKey="common:extended-description"
+  i18nKey="common:example"
   components={[<Component />, <b className="red" />]}
+  values={{ count: 42 }}
 />
 ```
 
 - **Props**:
   - `i18nKey` - string - key of i18n entry (namespace:key)
   - `components` - Array<Node> - Each index correspont to the defined tag `<0>`/`<1>`.
+  - `values` - Object - query params
 
 ### appWithI18n
 
