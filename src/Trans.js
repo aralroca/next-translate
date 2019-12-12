@@ -1,4 +1,4 @@
-import { cloneElement, useMemo } from 'react'
+import { cloneElement, useMemo, Fragment } from 'react'
 import useTranslation from './useTranslation'
 
 const tagRe = /<(\d+)>(.*?)<\/\1>|<(\d+)\/>/
@@ -28,7 +28,8 @@ function formatElements(
   if (before) tree.push(before)
 
   for (const [index, children, after] of getElements(parts)) {
-    const element = elements[index]
+    const element = elements[index] || <Fragment />
+
     tree.push(
       cloneElement(
         element,
