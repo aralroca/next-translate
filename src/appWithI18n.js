@@ -13,6 +13,10 @@ function getLang(ctx, config) {
   return startsWithLang ? asPath.split('/')[1] : config.defaultLanguage
 }
 
+function removeTrailingSlash(path = '') {
+  return path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path
+}
+
 export default function appWithI18n(AppToTranslate, config = {}) {
   function AppWithTranslations(props) {
     const { lang, namespaces } = props
@@ -33,9 +37,9 @@ export default function appWithI18n(AppToTranslate, config = {}) {
         Component, ctx, lang
       })) || {}
     }
-
+    const page = removeTrailingSlash(ctx.pathname)
     const { pages = {} } = config
-    const namespaces = pages[ctx.pathname] || []
+    const namespaces = pages[page] || []
     const pageNamespaces = await Promise.all(
       namespaces.map(ns =>
         typeof config.loadLocaleFrom === 'function'
