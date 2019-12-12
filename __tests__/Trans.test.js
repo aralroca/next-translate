@@ -98,9 +98,9 @@ describe('Trans', () => {
 
     test('should work without replacing the HTMLElement if the index is incorrectly', () => {
       const i18nKey = 'common:test-html'
-      const expectedHTML = "test with link."
+      const expectedHTML = "test with bad index."
       const common = {   
-        "test-html": "test <10>with link</10>.",
+        "test-html": "test <10>with bad index</10>.",
       }
 
       const { container } = render(
