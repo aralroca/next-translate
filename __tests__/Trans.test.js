@@ -95,5 +95,22 @@ describe('Trans', () => {
       expect(container.textContent).toContain(expectedText)
       expect(container.innerHTML).toContain(expectedHTML)
     })
+
+    test('should work without replacing the HTMLElement if the index is incorrectly', () => {
+      const i18nKey = 'common:test-html'
+      const expectedHTML = "test with link."
+      const common = {   
+        "test-html": "test <10>with link</10>.",
+      }
+
+      const { container } = render(
+        <TestEnglish 
+          namespaces={{ common }} 
+          i18nKey={i18nKey} 
+          components={[<b />]}
+        />
+      )
+      expect(container.innerHTML).toContain(expectedHTML)
+    })
   })
 })

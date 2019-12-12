@@ -2,7 +2,7 @@ import React from 'react'
 import I18nProvider from './I18nProvider'
 
 function getLang(ctx, config) {
-  const { req, asPath } = ctx
+  const { req, asPath = '' } = ctx
 
   if (req) return req.query.lang || config.defaultLanguage
 
