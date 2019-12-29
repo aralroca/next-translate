@@ -2,8 +2,8 @@
   "allLanguages": ["en", "ca", "es"],
   "defaultLanguage": "en",
   "pages": {
-    "/": ["common", "home"],
-    "/more-examples": ["common", "more-examples"],
-    "/more-examples/dynamic-namespace": ["common"]
+    "*": ["common"],
+    "/": ["home"],
+    "/more-examples": ["more-examples"]
   }
 }

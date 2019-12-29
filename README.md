@@ -127,8 +127,9 @@ For a static site you should add a configuration file `i18n.json` in the root of
   "finalPagesDir": "pages",
   "localesPath": "locales",
   "pages": {
-    "/": ["common", "home"],
-    "/about": ["common", "about"]
+    "*": ["common"],
+    "/": ["home", "example"],
+    "/about": ["about"]
   }
 }
 ```
@@ -279,7 +280,7 @@ In order to use each translation in the project, use the _translation id_ compos
 | `finalPagesDir`         | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect.                                                                     | `string`                | `"pages"`                                                                  |
 | `localesPath`           | A string with the directory of JSONs locales. THIS ONLY WORKS with static sites. If you use the `appWithI18n` then you should use the `loadLocaleFrom` config.                                                                                                                                  | `string`                | `"locales"`                                                                |
 | `loadLocaleFrom`        | A function to return the dynamic import of each locale. IT ONLY WORKS with a server (`appWithI18n`). For static site use the `localesPath` instead. [See an example](#use-translations-in-your-pages-1)                                                                                         | `Function`              | `null`                                                                     |
-| `pages`                 | An object that defines the namespaces used in each page. Example of object: `{"/": ["common", "home"]}`. This configuration is for both: static sites and with a server.                                                                                                                        | `Object<Array<string>>` | `{}`                                                                       |
+| `pages`                 | An object that defines the namespaces used in each page. Example of object: `{"/": ["home", "example"]}`. This configuration is for both: static sites and with a server. To add namespaces to all pages you should use the key `"*"`, ex: `{"*": ["common"]}`.                                 | `Object<Array<string>>` | `{}`                                                                       |
 
 ## 6. API
 

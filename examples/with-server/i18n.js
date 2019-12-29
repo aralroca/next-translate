@@ -5,8 +5,8 @@ module.exports = {
   loadLocaleFrom: (lang, ns) =>
     import(`./locales/${lang}/${ns}.json`).then(m => m.default),
   pages: {
-    '/': ['common', 'home'],
-    '/more-examples': ['common', 'more-examples'],
-    '/more-examples/dynamic-namespace': ['common'],
+    '*': ['common'],
+    '/': ['home'],
+    '/more-examples': ['more-examples'],
   },
 }

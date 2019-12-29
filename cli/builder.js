@@ -52,7 +52,7 @@ function readPageNamespaces(langs) {
         .replace(currentPagesDir, '')
         .replace(/(\/index.js)|(\/index.jsx)|(\.js)|(\.jsx)/gm, '') || '/'
 
-    const namespaces = pages[pageId] || []
+    const namespaces = [...(pages['*'] || []), ...(pages[pageId] || [])]
 
     if (!isNextInternal(page)) {
       console.log(`🔨 ${pageId}`, namespaces)

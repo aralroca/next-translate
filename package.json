@@ -1,6 +1,6 @@
 {
   "name": "next-translate",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "description": "Next.js utility to translate pages without the need of a server (static i18n pages generator).",
   "license": "MIT",
   "keywords": [
@@ -38,9 +38,9 @@
     "next-translate": "./cli/builder.js"
   },
   "devDependencies": {
-    "@babel/cli": "7.7.5",
-    "@babel/core": "7.7.5",
-    "@babel/preset-env": "7.7.6",
+    "@babel/cli": "7.7.7",
+    "@babel/core": "7.7.7",
+    "@babel/preset-env": "7.7.7",
     "@testing-library/react": "9.4.0",
     "babel-jest": "24.9.0",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
