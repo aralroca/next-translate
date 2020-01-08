@@ -25,8 +25,10 @@ export default function MoreExamples() {
       />
       <NoFunctionalComponent />
       <br />
+      {t`more-examples:nested-example.very-nested.nested`}
+      <br />
       <Link href={`/${lang}/more-examples/dynamic-namespace`}>
-        {t('more-examples:dynamic-namespaces-link')}
+        <a>{t('more-examples:dynamic-namespaces-link')}</a>
       </Link>
       <style jsx>{`
         .red {
