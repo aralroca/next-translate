@@ -5,5 +5,10 @@
   "plural-example_2": "Es dos porque el valor es {{count}}",
   "plural-example_plural": "Es en plural porque el valor es {{count}}",
   "example-with-html": "<0>Este es un ejemplo <1>usando HTML</1> dentro de la traducción</0>",
-  "no-functional-example": "Traducción hecha desde un componente no funcional"
+  "no-functional-example": "Traducción hecha desde un componente no funcional",
+  "nested-example": {
+    "very-nested": {
+      "nested": "¡Ejemplo anidado!"
+    }
+  }
 }

@@ -4,16 +4,24 @@ import I18nContext from './_context'
 const NsContext = createContext({})
 
 /**
+ * Get value from key (allow nested keys as parent.children)
+ */
+function getDicValue(dic, key) {
+  return key.split('.').reduce((val, key) => val[key], dic)
+}
+
+/**
  * Control plural keys depending the {{count}} variable
  */
 function plural(dic, key, query) {
   if (!query || typeof query.count !== 'number') return key
 
   const numKey = `${key}_${query.count}`
-  if (dic[numKey] !== undefined) return numKey
+  if (getDicValue(dic, numKey) !== undefined) return numKey
 
   const pluralKey = `${key}_plural`
-  if (query.count > 1 && dic[pluralKey] !== undefined) return pluralKey
+  if (query.count > 1 && getDicValue(dic, pluralKey) !== undefined)
+    return pluralKey
 
   return key
 }
@@ -40,8 +48,9 @@ export default function I18nProvider({ lang, namespaces = {}, children }) {
     const [namespace, i18nKey] = k.split(':')
     const dic = allNamespaces[namespace] || {}
     const keyWithPlural = plural(dic, i18nKey, query)
+    const value = getDicValue(dic, keyWithPlural)
 
-    return interpolation(dic[keyWithPlural], query) || k
+    return interpolation(value, query) || k
   }
 
   return (

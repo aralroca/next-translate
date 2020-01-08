@@ -19,6 +19,144 @@ const TestEnglish = ({ i18nKey, query, namespaces }) => {
 describe('useTranslation', () => {
   afterEach(cleanup)
 
+  describe('fallbacks', () => {
+    test('should return the key as fallback WITH PROVIDER', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const test = t('ns:template-string')
+        return (
+          <>
+            {test} | {typeof test}
+          </>
+        )
+      }
+
+      const expected = 'ns:template-string | string'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{}}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should return the key as fallback WITHOUT PROVIDER', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const test = t('ns:template-string')
+        return (
+          <>
+            {test} | {typeof test}
+          </>
+        )
+      }
+
+      const expected = 'ns:template-string | string'
+
+      const { container } = render(<Inner />)
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should return the key as fallback using a template string WITH PROVIDER', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const test = t`ns:template-string`
+        return (
+          <>
+            {test} | {typeof test}
+          </>
+        )
+      }
+
+      const expected = 'ns:template-string | string'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{}}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should return the key as fallback using a template string WITHOUT PROVIDER', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const test = t`ns:template-string`
+        return (
+          <>
+            {test} | {typeof test}
+          </>
+        )
+      }
+
+      const expected = 'ns:template-string | string'
+
+      const { container } = render(<Inner />)
+      expect(container.textContent).toBe(expected)
+    })
+  })
+
+  describe('nested', () => {
+    test('should work with nested keys', () => {
+      const i18nKey = 'ns:grandfather.parent.child'
+      const expected = 'I am the child'
+      const nested = {
+        grandfather: {
+          parent: {
+            child: expected,
+          },
+        },
+      }
+      const { container } = render(
+        <TestEnglish namespaces={{ ns: nested }} i18nKey={i18nKey} />
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work with nested keys + plural', () => {
+      const i18nKey = 'ns:grandfather.parent.child'
+      const expected = 'Plural! 2'
+      const nested = {
+        grandfather: {
+          parent: {
+            child: 'Singular {{count}}',
+            child_plural: 'Plural! {{count}}',
+          },
+        },
+      }
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ ns: nested }}
+          i18nKey={i18nKey}
+          query={{ count: 2 }}
+        />
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work with nested keys + count=1', () => {
+      const i18nKey = 'ns:grandfather.parent.child'
+      const expected = 'One! 1'
+      const nested = {
+        grandfather: {
+          parent: {
+            child: 'Singular {{count}}',
+            child_1: 'One! {{count}}',
+          },
+        },
+      }
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ ns: nested }}
+          i18nKey={i18nKey}
+          query={{ count: 1 }}
+        />
+      )
+      expect(container.textContent).toContain(expected)
+    })
+  })
+
   describe('plurals', () => {
     test('should work with singular | count=1', () => {
       const i18nKey = 'ns:withsingular'
@@ -145,82 +283,6 @@ describe('useTranslation', () => {
         </I18nProvider>
       )
       expect(container.textContent).toContain(expected)
-    })
-
-    test('should return the key as fallback WITH PROVIDER', () => {
-      const Inner = () => {
-        const { t } = useTranslation()
-        const test = t('ns:template-string')
-        return (
-          <>
-            {test} | {typeof test}
-          </>
-        )
-      }
-
-      const expected = 'ns:template-string | string'
-
-      const { container } = render(
-        <I18nProvider lang="en" namespaces={{}}>
-          <Inner />
-        </I18nProvider>
-      )
-      expect(container.textContent).toBe(expected)
-    })
-
-    test('should return the key as fallback WITHOUT PROVIDER', () => {
-      const Inner = () => {
-        const { t } = useTranslation()
-        const test = t('ns:template-string')
-        return (
-          <>
-            {test} | {typeof test}
-          </>
-        )
-      }
-
-      const expected = 'ns:template-string | string'
-
-      const { container } = render(<Inner />)
-      expect(container.textContent).toBe(expected)
-    })
-
-    test('should return the key as fallback using a template string WITH PROVIDER', () => {
-      const Inner = () => {
-        const { t } = useTranslation()
-        const test = t`ns:template-string`
-        return (
-          <>
-            {test} | {typeof test}
-          </>
-        )
-      }
-
-      const expected = 'ns:template-string | string'
-
-      const { container } = render(
-        <I18nProvider lang="en" namespaces={{}}>
-          <Inner />
-        </I18nProvider>
-      )
-      expect(container.textContent).toBe(expected)
-    })
-
-    test('should return the key as fallback using a template string WITHOUT PROVIDER', () => {
-      const Inner = () => {
-        const { t } = useTranslation()
-        const test = t`ns:template-string`
-        return (
-          <>
-            {test} | {typeof test}
-          </>
-        )
-      }
-
-      const expected = 'ns:template-string | string'
-
-      const { container } = render(<Inner />)
-      expect(container.textContent).toBe(expected)
     })
   })
 })

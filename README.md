@@ -33,7 +33,8 @@
   - [i18nMiddleware](#i18nmiddleware)
 - [7. Plurals](#7-plurals)
 - [8. Use HTML inside the translation](#8-use-html-inside-the-translation)
-- [9. Demos](#9-demos)
+- [9. Nested translations](#9-nested-translations)
+- [10. Demos](#10-demos)
   - [Static site example](#static-site-example)
   - [With server example](#with-server-example)
 
@@ -529,7 +530,27 @@ Each index of `components` array corresponds with `<index></index>` of the defin
 
 In the `components` array it's not necessary to pass the children of each element. Children will be calculed.
 
-## 9. Demos
+## 9. Nested translations
+
+In the namespace is possible to define nested keys like:
+
+```json
+{
+  "nested-example": {
+    "very-nested": {
+      "nested": "Nested example!"
+    }
+  }
+}
+```
+
+In order to use it, you should use "." as id separator:
+
+```js
+t`namespace:nested-example.very-nested.nested`
+```
+
+## 10. Demos
 
 ### Static site example
 
