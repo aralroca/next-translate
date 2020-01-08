@@ -6,8 +6,9 @@ const NsContext = createContext({})
 /**
  * Get value from key (allow nested keys as parent.children)
  */
-function getDicValue(dic, key) {
-  return key.split('.').reduce((val, key) => val[key], dic)
+function getDicValue(dic, key = '') {
+  const value = key.split('.').reduce((val, key) => val[key], dic)
+  return typeof value === 'string' ? value : undefined
 }
 
 /**

@@ -20,6 +20,43 @@ describe('useTranslation', () => {
   afterEach(cleanup)
 
   describe('fallbacks', () => {
+    test('should return an empty string if t(undefined)', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const test = t(undefined)
+        return (
+          <>
+            {test} | {typeof test}
+          </>
+        )
+      }
+
+      const expected = ' | string'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{}}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should return the key as fallback using wrong the nested translations', () => {
+      const i18nKey = 'ns:grandfather.parent'
+      const expected = 'ns:grandfather.parent'
+      const nested = {
+        grandfather: {
+          parent: {
+            child: 'I am the child',
+          },
+        },
+      }
+      const { container } = render(
+        <TestEnglish namespaces={{ ns: nested }} i18nKey={i18nKey} />
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
     test('should return the key as fallback WITH PROVIDER', () => {
       const Inner = () => {
         const { t } = useTranslation()
