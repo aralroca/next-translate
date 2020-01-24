@@ -1,16 +1,17 @@
 import React from 'react'
 import I18nProvider from './I18nProvider'
+import getDefaultLang from './_helpers/getDefaultLang'
 
 function getLang(ctx, config) {
   const { req, asPath = '' } = ctx
 
-  if (req) return req.query.lang || config.defaultLanguage
+  if (req) return req.query.lang || getDefaultLang(req, config)
 
   const startsWithLang = config.allLanguages.some(l =>
     asPath.startsWith(`/${l}`)
   )
 
-  return startsWithLang ? asPath.split('/')[1] : config.defaultLanguage
+  return startsWithLang ? asPath.split('/')[1] : getDefaultLang(req, config)
 }
 
 function removeTrailingSlash(path = '') {

@@ -1,3 +1,5 @@
+import getDefaultLang from './_helpers/getDefaultLang'
+
 export default function i18nMiddleware(config = {}) {
   const {
     ignoreRoutes = [
@@ -7,7 +9,6 @@ export default function i18nMiddleware(config = {}) {
       '/manifest.json',
       '/robots.txt',
     ],
-    defaultLanguage = 'en',
     allLanguages = [],
     redirectToDefaultLang = false,
   } = config
@@ -26,6 +27,8 @@ export default function i18nMiddleware(config = {}) {
      * Redirect or add lang without redirecting (depending the config)
      */
     if (!startsWithLang) {
+      const defaultLanguage = getDefaultLang(req, config) || 'en'
+
       if (redirectToDefaultLang) {
         res.redirect(301, `/${defaultLanguage}${req.url}`)
         return

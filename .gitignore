@@ -35,6 +35,6 @@ yarn-error.log*
 
 # lib build
 *.js
-!src/*.js
+!src/**/*.js
 !__tests__/*.js
 !examples/**/*.js
