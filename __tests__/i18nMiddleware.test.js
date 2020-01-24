@@ -46,7 +46,7 @@ describe('i18nMiddleware', () => {
     server2 = await loadServerWithMiddleware(
       {
         allLanguages,
-        defaultLanguage,
+        defaultLanguage: () => defaultLanguage,
         redirectToDefaultLang: true,
       },
       3006
