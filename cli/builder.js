@@ -42,15 +42,18 @@ function isNextInternal(pagePath) {
   return pagePath.startsWith(`${currentPagesDir}/_`)
 }
 
+function clearPageExt(page) {
+  const rgx = /(\/index.jsx)|(\/index.js)|(\/index.tsx)|(\/index.ts)|(\.jsx)|(\.js)|(\.tsx)|(\.ts)/gm
+
+  return page.replace(rgx, '')
+}
+
 /**
  * STEP 2: Read each page namespaces
  */
 function readPageNamespaces(langs) {
   readDirR(currentPagesDir).forEach(page => {
-    const pageId =
-      page
-        .replace(currentPagesDir, '')
-        .replace(/(\/index.js)|(\/index.jsx)|(\.js)|(\.jsx)/gm, '') || '/'
+    const pageId = clearPageExt(page.replace(currentPagesDir, '')) || '/'
 
     const namespaces = [...(pages['*'] || []), ...(pages[pageId] || [])]
 
@@ -66,11 +69,16 @@ function readPageNamespaces(langs) {
  * STEP 3: Build page in each lang path
  */
 function getPageTemplate(prefix, page, lang, namespaces) {
+  const isTypeScript = page.endsWith('.ts') || page.endsWith('.tsx')
+
   return `import I18nProvider from 'next-translate/I18nProvider'
 import React from 'react'
-import C from '${prefix}/${page}'
+import C from '${prefix}/${clearPageExt(page)}'
 ${namespaces
-  .map((ns, i) => `import ns${i} from '${prefix}/${localesPath}/${lang}/${ns}'`)
+  .map(
+    (ns, i) =>
+      `import ns${i} from '${prefix}/${localesPath}/${lang}/${ns}.json'`
+  )
   .join('\n')}
 
 const namespaces = { ${namespaces
@@ -85,7 +93,7 @@ export default function Page(p){
   )
 }
 
-Page.getInitialProps = C.getInitialProps
+Page.getInitialProps = ${isTypeScript ? '(C as any)' : 'C'}.getInitialProps
 `
 }
 
