@@ -10,7 +10,7 @@
     "next": "link:../../node_modules/next",
     "next-translate": "link:../../",
     "react": "link:../../node_modules/react",
-    "express": "link:../../node_modules/express",
+    "express": "4.17.1",
     "react-dom": "link:../../node_modules/react-dom"
   }
 }

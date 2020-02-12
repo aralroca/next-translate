@@ -6,6 +6,7 @@
   "plural-example_plural": "És en plural perquè el valor és {{count}}",
   "example-with-html": "<0>Aquest és un exempre <1>utilitzant HTML</1> dintre de la traducció</0>",
   "no-functional-example": "Traducció feta des d'un component no funcional",
+  "dynamic-namespaces-link": "Namespaces dinàmics",
   "nested-example": {
     "very-nested": {
       "nested": "Exemple anidat!"
