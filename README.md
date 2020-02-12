@@ -34,7 +34,8 @@
 - [7. Plurals](#7-plurals)
 - [8. Use HTML inside the translation](#8-use-html-inside-the-translation)
 - [9. Nested translations](#9-nested-translations)
-- [10. Demos](#10-demos)
+- [10. How to change the language](#10-how-to-change-the-language)
+- [11. Demos](#11-demos)
   - [Static site example](#static-site-example)
   - [With server example](#with-server-example)
 
@@ -550,7 +551,41 @@ In order to use it, you should use "." as id separator:
 t`namespace:nested-example.very-nested.nested`
 ```
 
-## 10. Demos
+## 10. How to change the language
+
+In order to change the current language you don't need anything of this library, you can do it directly with the next navigation:
+
+- https://nextjs.org/learn/basics/navigate-between-pages
+
+The only thing to remember, is to navigate with the **/lang/** on front.
+
+One example of a possible `ChangeLanguage` component:
+
+```js
+import React from 'react'
+import useTranslation from 'next-translate/useTranslation'
+import i18nConfig from '../i18n.json'
+
+const { allLanguages } = i18nConfig
+
+function ChangeLanguage() {
+  const { t, lang } = useTranslation()
+
+  return allLanguages.map(lng => {
+    if (lng === lang) return null
+
+    // Or you can attach the current pathame at the end
+    // to keep the same page
+    return (
+      <Link href={`/${lang}`} key={lng}>
+        {t(`layout:language-name-${lng}`)}
+      </Link>
+    )
+  })
+}
+```
+
+## 11. Demos
 
 ### Static site example
 
