@@ -46,7 +46,7 @@
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
     "babel-preset-minify": "0.5.1",
     "express": "4.17.1",
-    "husky": "4.2.1",
+    "husky": "4.2.2",
     "jest": "25.1.0",
     "next": "9.2.1",
     "prettier": "1.19.1",
