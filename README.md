@@ -103,7 +103,7 @@ const title = t('common:title')
 
 ### Add to your project
 
-- `yarn install next-translate`
+- `yarn add next-translate`
 
 In your **package.json**:
 
