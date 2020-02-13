@@ -39,7 +39,10 @@ async function createPagesDir(langs = []) {
 }
 
 function isNextInternal(pagePath) {
-  return pagePath.startsWith(`${currentPagesDir}/_`)
+  return (
+    pagePath.startsWith(`${currentPagesDir}/_`) ||
+    pagePath.startsWith(`${currentPagesDir}/api/`)
+  )
 }
 
 function clearPageExt(page) {
@@ -113,8 +116,11 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
     .join('/')
   const rootPrefix = prefix.replace('/..', '')
 
-  // _app.js , _document.js _error.js
+  // _app.js , _document.js, _error.js, /api/*
   if (isNextInternal(pagePath)) {
+    if (pagePath.includes('/api/')) {
+      execSync(`mkdir -p ${finalPagesDir}/api`)
+    }
     execSync(
       `cp ${pagePath} ${pagePath.replace(currentPagesDir, finalPagesDir)}`
     )
