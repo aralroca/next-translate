@@ -1,3 +1,4 @@
 {
-  "example-of-dynamic-translation": "I'm a dynamic loaded content"
+  "example-of-dynamic-translation": "I'm a dynamic loaded content",
+  "different-namespaces-example": "I'm an example loaded from 'dynamic' namespace"
 }

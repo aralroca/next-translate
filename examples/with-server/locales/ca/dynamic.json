@@ -1,3 +1,4 @@
 {
-  "example-of-dynamic-translation": "Sóc contingut carregat de forma dinàmica"
+  "example-of-dynamic-translation": "Sóc contingut carregat de forma dinàmica",
+  "different-namespaces-example": "Sóc un exemple carregat desde el namespace 'dynamic'"
 }

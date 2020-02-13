@@ -25,8 +25,25 @@ export default function MoreExamples() {
       <br />
       {t`more-examples:nested-example.very-nested.nested`}
       <br />
-      <Link href={`/${lang}/more-examples/dynamic-namespace`}>
+      <Link
+        href={`/more-examples/dynamic-namespace`}
+        as={`/${lang}/more-examples/dynamic-namespace`}
+      >
         <a>{t('more-examples:dynamic-namespaces-link')}</a>
+      </Link>
+      <br />
+      <Link
+        href={`/more-examples/different-namespaces-by-query`}
+        as={`/${lang}/more-examples/different-namespaces-by-query`}
+      >
+        <a>{t('more-examples:different-namespaces-link')}</a>
+      </Link>
+      <br />
+      <Link
+        href={`/more-examples/different-namespaces-by-query?fromDynamic=1`}
+        as={`/${lang}/more-examples/different-namespaces-by-query?fromDynamic=1`}
+      >
+        <a>{t('more-examples:different-namespaces-link-dynamic')}</a>
       </Link>
       <style jsx>{`
         .red {
