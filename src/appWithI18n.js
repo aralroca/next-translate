@@ -1,6 +1,7 @@
 import React from 'react'
 import I18nProvider from './I18nProvider'
 import getDefaultLang from './_helpers/getDefaultLang'
+import getServerPageNamespaces from './_helpers/getServerPageNamespaces'
 
 function getLang(ctx, config) {
   const { req, asPath = '' } = ctx
@@ -42,8 +43,7 @@ export default function appWithI18n(AppToTranslate, config = {}) {
         })) || {}
     }
     const page = removeTrailingSlash(ctx.pathname)
-    const { pages = {} } = config
-    const namespaces = [...(pages['*'] || []), ...(pages[page] || [])]
+    const namespaces = await getServerPageNamespaces(ctx, config, page)
     const pageNamespaces = await Promise.all(
       namespaces.map(ns =>
         typeof config.loadLocaleFrom === 'function'
