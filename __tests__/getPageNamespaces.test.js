@@ -1,6 +1,6 @@
-import getServerPageNamespaces from '../src/_helpers/getServerPageNamespaces'
+import getPageNamespaces from '../src/_helpers/getPageNamespaces'
 
-describe('getServerPageNamespaces', () => {
+describe('getPageNamespaces', () => {
   let ctx
   beforeAll(() => {
     ctx = { query: {} }
@@ -8,27 +8,50 @@ describe('getServerPageNamespaces', () => {
 
   describe('empty', () => {
     test('should not return any namespace with empty pages', async () => {
-      const input = [ctx, { pages: {} }, '/test-page']
-      const output = await getServerPageNamespaces(...input)
+      const input = [{ pages: {} }, '/test-page', ctx]
+      const output = await getPageNamespaces(...input)
 
       expect(output.length).toBe(0)
     })
     test('should not return any namespace with pages as undefined', async () => {
-      const input = [ctx, {}, '/test-page']
-      const output = await getServerPageNamespaces(...input)
+      const input = [{}, '/test-page', ctx]
+      const output = await getPageNamespaces(...input)
 
       expect(output.length).toBe(0)
+    })
+  })
+
+  describe('regular expressions', () => {
+    test('should return namespaces that match the rgx', async () => {
+      const config = {
+        pages: {
+          '*': ['common'],
+          '/example/form': ['valid'],
+          '/example/form/other': ['invalid'],
+          'rgx:/form$': ['form'],
+          'rgx:/invalid$': ['invalid'],
+          'rgx:^/example': ['example'],
+        },
+      }
+      const input = [config, '/example/form']
+      const output = await getPageNamespaces(...input)
+
+      expect(output.length).toBe(4)
+      expect(output[0]).toBe('common')
+      expect(output[1]).toBe('valid')
+      expect(output[2]).toBe('form')
+      expect(output[3]).toBe('example')
     })
   })
 
   describe('as array', () => {
     test('should return the page namespace', async () => {
       const input = [
-        ctx,
         { pages: { '/test-page': ['test-ns'] } },
         '/test-page',
+        ctx,
       ]
-      const output = await getServerPageNamespaces(...input)
+      const output = await getPageNamespaces(...input)
       const expected = ['test-ns']
 
       expect(output.length).toBe(1)
@@ -37,7 +60,6 @@ describe('getServerPageNamespaces', () => {
 
     test('should return the page namespace + common', async () => {
       const input = [
-        ctx,
         {
           pages: {
             '*': ['common'],
@@ -45,8 +67,9 @@ describe('getServerPageNamespaces', () => {
           },
         },
         '/test-page',
+        ctx,
       ]
-      const output = await getServerPageNamespaces(...input)
+      const output = await getPageNamespaces(...input)
       const expected = ['common', 'test-ns']
 
       expect(output.length).toBe(2)
@@ -59,15 +82,15 @@ describe('getServerPageNamespaces', () => {
     test('should work as a fn', async () => {
       ctx.query.example = '1'
       const input = [
-        ctx,
         {
           pages: {
             '/test-page': ({ query }) => (query.example ? ['test-ns'] : []),
           },
         },
         '/test-page',
+        ctx,
       ]
-      const output = await getServerPageNamespaces(...input)
+      const output = await getPageNamespaces(...input)
       const expected = ['test-ns']
 
       expect(output.length).toBe(1)
@@ -77,7 +100,6 @@ describe('getServerPageNamespaces', () => {
     test('should work as an async fn', async () => {
       ctx.query.example = '1'
       const input = [
-        ctx,
         {
           pages: {
             '*': () => ['common'],
@@ -86,8 +108,9 @@ describe('getServerPageNamespaces', () => {
           },
         },
         '/test-page',
+        ctx,
       ]
-      const output = await getServerPageNamespaces(...input)
+      const output = await getPageNamespaces(...input)
       const expected = ['common', 'test-ns']
 
       expect(output.length).toBe(2)

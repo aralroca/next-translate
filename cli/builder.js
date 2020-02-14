@@ -2,6 +2,7 @@
 const fs = require('fs')
 const execSync = require('child_process').execSync
 const path = require('path')
+const getPageNamespaces = require('../_helpers/getPageNamespaces').default
 
 const {
   allLanguages = [],
@@ -55,10 +56,9 @@ function clearPageExt(page) {
  * STEP 2: Read each page namespaces
  */
 function readPageNamespaces(langs) {
-  readDirR(currentPagesDir).forEach(page => {
+  readDirR(currentPagesDir).forEach(async page => {
     const pageId = clearPageExt(page.replace(currentPagesDir, '')) || '/'
-
-    const namespaces = [...(pages['*'] || []), ...(pages[pageId] || [])]
+    const namespaces = await getPageNamespaces({ pages }, pageId)
 
     if (!isNextInternal(page)) {
       console.log(`🔨 ${pageId}`, namespaces)
