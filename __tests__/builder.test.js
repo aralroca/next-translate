@@ -3,6 +3,7 @@ const execSync = require('child_process').execSync
 
 describe('builder', () => {
   beforeAll(() => {
+    execSync('yarn build')
     execSync('rm -rf examples/static-site/pages')
     execSync('cd examples/static-site/ && yarn i18n && cd ../../')
   })
@@ -13,7 +14,9 @@ describe('builder', () => {
 
   describe('files tree', () => {
     test('should build all the necessary files for all languages', () => {
-      const pages_ = execSync('tree examples/static-site/pages_').toString().split('\n')
+      const pages_ = execSync('tree examples/static-site/pages_')
+        .toString()
+        .split('\n')
       expect(pages_[1]).toContain('_app.js')
       expect(pages_[2]).toContain('index.js')
       expect(pages_[3]).toContain('more-examples')
@@ -21,7 +24,9 @@ describe('builder', () => {
       expect(pages_[5]).toContain('index.js')
       expect(pages_[7]).toContain('1 directory, 4 files')
 
-      const pages = execSync('tree examples/static-site/pages').toString().split('\n')
+      const pages = execSync('tree examples/static-site/pages')
+        .toString()
+        .split('\n')
       expect(pages[1]).toContain('_app.js')
 
       expect(pages[2]).toContain('ca')
@@ -57,7 +62,6 @@ describe('builder', () => {
       const pages = fs.readFileSync('examples/static-site/pages/_app.js')
 
       expect(pages_.equals(pages)).toBe(true)
-
     })
   })
 
@@ -68,7 +72,9 @@ describe('builder', () => {
 
       expect(pages_.equals(pages)).toBe(false)
       expect(pages.toString()).toContain('I18nProvider')
-      expect(pages.toString()).toContain('Page.getInitialProps = C.getInitialProps')
+      expect(pages.toString()).toContain(
+        'Page.getInitialProps = C.getInitialProps'
+      )
     })
   })
 })
