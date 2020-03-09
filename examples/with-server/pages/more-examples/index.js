@@ -19,7 +19,7 @@ export default function MoreExamples() {
       <PluralExample />
       <Trans
         i18nKey="more-examples:example-with-html"
-        components={[<Component />, <b className="red" />]}
+        components={[<Component />, <b style={{ color: 'red' }} />]}
       />
       <NoFunctionalComponent />
       <br />
@@ -45,11 +45,6 @@ export default function MoreExamples() {
       >
         <a>{t('more-examples:different-namespaces-link-dynamic')}</a>
       </Link>
-      <style jsx>{`
-        .red {
-          color: red;
-        }
-      `}</style>
     </>
   )
 }

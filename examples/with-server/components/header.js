@@ -3,6 +3,8 @@ import Head from 'next/Head'
 import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
 
+import styles from 'header.module.css'
+
 export default function Header() {
   const { t, lang } = useTranslation()
   const title = t('common:title')
@@ -15,7 +17,7 @@ export default function Header() {
         </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header>
+      <header className={styles.header}>
         <h1>{title}</h1>
         {lang !== 'es' && (
           <Link href="/" as="/es">
@@ -33,14 +35,6 @@ export default function Header() {
           </Link>
         )}
       </header>
-      <style jsx>
-        {`
-          header {
-            display: flex;
-            flex-direction: column;
-          }
-        `}
-      </style>
     </>
   )
 }

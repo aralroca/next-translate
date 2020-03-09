@@ -96,7 +96,7 @@ export default function Page(p){
   )
 }
 
-Page.getInitialProps = ${isTypeScript ? '(C as any)' : 'C'}.getInitialProps
+Page = Object.assign(Page, { ...${isTypeScript ? '(C as any)' : 'C'} })
 `
 }
 

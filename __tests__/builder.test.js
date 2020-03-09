@@ -72,9 +72,7 @@ describe('builder', () => {
 
       expect(pages_.equals(pages)).toBe(false)
       expect(pages.toString()).toContain('I18nProvider')
-      expect(pages.toString()).toContain(
-        'Page.getInitialProps = C.getInitialProps'
-      )
+      expect(pages.toString()).toContain('Page = Object.assign(Page, { ...C })')
     })
   })
 })
