@@ -1,6 +1,6 @@
 {
   "name": "next-translate",
-  "version": "0.10.0-canary.1",
+  "version": "0.10.0",
   "description": "Next.js utility to translate pages without the need of a server (static i18n pages generator).",
   "license": "MIT",
   "keywords": [
@@ -39,24 +39,24 @@
   },
   "devDependencies": {
     "@babel/cli": "7.8.4",
-    "@babel/core": "7.8.4",
-    "@babel/preset-env": "7.8.4",
-    "@testing-library/react": "9.4.0",
+    "@babel/core": "7.8.7",
+    "@babel/preset-env": "7.8.7",
+    "@testing-library/react": "9.5.0",
     "babel-jest": "25.1.0",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
     "babel-preset-minify": "0.5.1",
     "express": "4.17.1",
     "husky": "4.2.3",
     "jest": "25.1.0",
-    "next": "9.2.3-canary.8",
+    "next": "9.3.0",
     "prettier": "1.19.1",
     "pretty-quick": "2.0.1",
-    "react": "16.12.0",
-    "react-dom": "16.12.0",
+    "react": "16.13.0",
+    "react-dom": "16.13.0",
     "supertest": "4.0.2"
   },
   "peerDependencies": {
-    "next": ">= 7.0.0",
+    "next": ">= 9.3.0",
     "react": ">= 16.8.0"
   },
   "husky": {
