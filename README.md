@@ -51,6 +51,10 @@ The main goal of this library is to keep the translations as simple as possible 
 
 This library is very tiny and tree shakable.
 
+<p align="center">
+    <img src="images/bundle-size.png" alt="Bundle size" />
+</p>
+
 ### How does it work statically?
 
 Instead of working on `/pages` directory to write our pages, we are going to generate this folder before building the app, an each page will have all the necessary translations from the locale.
