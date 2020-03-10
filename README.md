@@ -52,7 +52,7 @@ The main goal of this library is to keep the translations as simple as possible 
 This library is very tiny and tree shakable.
 
 <p align="center">
-    <img src="images/bundle-size.png" alt="Bundle size" />
+    <img width="500" src="images/bundle-size.png" alt="Bundle size" />
 </p>
 
 ### How does it work statically?
