@@ -72,7 +72,7 @@ function readPageNamespaces(langs) {
  * STEP 3: Build page in each lang path
  */
 function getPageTemplate(prefix, page, lang, namespaces) {
-  return `// @ts-ignore
+  return `// @ts-nocheck
 import I18nProvider from 'next-translate/I18nProvider'
 import React from 'react'
 import C from '${prefix}/${clearPageExt(page)}'
@@ -87,7 +87,6 @@ const namespaces = { ${namespaces
     .map((ns, i) => `'${ns}': ns${i}`)
     .join(', ')} }
 
-// @ts-ignore
 export default function Page(p){
   return (
     <I18nProvider lang="${lang}" namespaces={namespaces} >
@@ -96,7 +95,6 @@ export default function Page(p){
   )
 }
 
-// @ts-ignore
 Page = Object.assign(Page, { ...C })
 `
 }
@@ -107,7 +105,7 @@ function buildPageLocale({ prefix, pagePath, namespaces, lang, path }) {
   const [filename] = finalPath.split('/').reverse()
   const dirs = finalPath.replace(`/${filename}`, '')
   execSync(`mkdir -p ${dirs}`)
-  fs.writeFileSync(finalPath, template)
+  fs.writeFileSync(finalPath.replace(/(\.tsx|\.ts)$/, '.js'), template)
 }
 
 function buildPageInAllLocales(pagePath, namespaces, langs) {
