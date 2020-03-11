@@ -88,7 +88,7 @@ const namespaces = { ${namespaces
     .map((ns, i) => `'${ns}': ns${i}`)
     .join(', ')} }
 
-export default function Page(p){
+export default function Page(${isTypeScript ? 'p as any' : 'p'}){
   return (
     <I18nProvider lang="${lang}" namespaces={namespaces} >
       <C {...p} />
