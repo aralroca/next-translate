@@ -30,24 +30,24 @@ describe('builder', () => {
       expect(pages[1]).toContain('_app.js')
 
       expect(pages[2]).toContain('ca')
-      expect(pages[3]).toContain('index.tsx')
+      expect(pages[3]).toContain('index.js')
       expect(pages[4]).toContain('more-examples')
       expect(pages[5]).toContain('dynamic-namespace.js')
       expect(pages[6]).toContain('index.js')
 
       expect(pages[7]).toContain('en')
-      expect(pages[8]).toContain('index.tsx')
+      expect(pages[8]).toContain('index.js')
       expect(pages[9]).toContain('more-examples')
       expect(pages[10]).toContain('dynamic-namespace.js')
       expect(pages[11]).toContain('index.js')
 
       expect(pages[12]).toContain('es')
-      expect(pages[13]).toContain('index.tsx')
+      expect(pages[13]).toContain('index.js')
       expect(pages[14]).toContain('more-examples')
       expect(pages[15]).toContain('dynamic-namespace.js')
       expect(pages[16]).toContain('index.js')
 
-      expect(pages[17]).toContain('index.tsx')
+      expect(pages[17]).toContain('index.js')
       expect(pages[18]).toContain('more-examples')
       expect(pages[19]).toContain('dynamic-namespace.js')
       expect(pages[20]).toContain('index.js')
@@ -66,9 +66,9 @@ describe('builder', () => {
   })
 
   describe('index.js', () => {
-    test('Should NOT be the same than the pages_/index.tsx', () => {
+    test('Should NOT be the same than the pages_/index.js', () => {
       const pages_ = fs.readFileSync('examples/static-site/pages_/index.tsx')
-      const pages = fs.readFileSync('examples/static-site/pages/index.tsx')
+      const pages = fs.readFileSync('examples/static-site/pages/index.js')
 
       expect(pages_.equals(pages)).toBe(false)
       expect(pages.toString()).toContain('I18nProvider')
