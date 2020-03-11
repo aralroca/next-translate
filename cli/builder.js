@@ -72,9 +72,8 @@ function readPageNamespaces(langs) {
  * STEP 3: Build page in each lang path
  */
 function getPageTemplate(prefix, page, lang, namespaces) {
-  const isTypeScript = page.endsWith('.ts') || page.endsWith('.tsx')
-
-  return `import I18nProvider from 'next-translate/I18nProvider'
+  return `// @ts-ignore
+import I18nProvider from 'next-translate/I18nProvider'
 import React from 'react'
 import C from '${prefix}/${clearPageExt(page)}'
 ${namespaces
@@ -88,7 +87,8 @@ const namespaces = { ${namespaces
     .map((ns, i) => `'${ns}': ns${i}`)
     .join(', ')} }
 
-export default function Page(${isTypeScript ? 'p: any' : 'p'}){
+// @ts-ignore
+export default function Page(p){
   return (
     <I18nProvider lang="${lang}" namespaces={namespaces} >
       <C {...p} />
@@ -96,7 +96,8 @@ export default function Page(${isTypeScript ? 'p: any' : 'p'}){
   )
 }
 
-Page = Object.assign(Page, { ...${isTypeScript ? '(C as any)' : 'C'} })
+// @ts-ignore
+Page = Object.assign(Page, { ...C })
 `
 }
 

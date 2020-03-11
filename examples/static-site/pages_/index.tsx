@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+// @ts-ignore
 import useTranslation from 'next-translate/useTranslation'
 import Header from '../components/header'
 
