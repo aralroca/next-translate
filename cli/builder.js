@@ -96,6 +96,8 @@ export default function Page(p){
 }
 
 Page = Object.assign(Page, { ...C })
+
+export * from '${prefix}/${clearPageExt(page)}'
 `
 }
 

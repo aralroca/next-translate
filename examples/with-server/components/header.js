@@ -3,7 +3,7 @@ import Head from 'next/Head'
 import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
 
-import styles from 'header.module.css'
+import styles from './header.module.css'
 
 export default function Header() {
   const { t, lang } = useTranslation()
