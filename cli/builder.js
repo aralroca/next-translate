@@ -38,6 +38,7 @@ async function createPagesDir(langs = []) {
 
   if (redirectToDefaultLang) {
     fs.writeFileSync(`${finalPagesDir}/[...path].js`, getCatchAllTemplate())
+    fs.writeFileSync(`${finalPagesDir}/index.js`, getIndexRedirectTemplate())
   }
 
   console.log(`Building pages | from ${currentPagesDir} to ${finalPagesDir}`)
@@ -156,17 +157,27 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
   }
 }
 
+function getIndexRedirectTemplate() {
+  return `import { useEffect } from 'react'
+  import { useRouter } from 'next/router'
+  
+  export default function Index() {
+    const router = useRouter()
+    useEffect(() => { router.replace('/${defaultLanguage}') }, [])
+    return null
+  }
+  `
+}
+
 function getCatchAllTemplate() {
   return `import { useRouter } from 'next/router';
 
-const CatchAll = () => {
-  const router = useRouter();
-  if (router.query.path) {
-    router.push(\`/${defaultLanguage}/\${router.query.path}\`);
+export default function CatchAll() {
+  const router = useRouter()
+  if (Array.isArray(router.query.path) && router.query.path[0] !== '${defaultLanguage}') {
+    router.replace(\`/${defaultLanguage}/\${router.query.path.join('/')}\`)
   }
-  return <></>;
-};
-
-export default CatchAll;
-  `
+  return null
+}
+`
 }
