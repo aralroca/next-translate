@@ -11,6 +11,7 @@ const {
   finalPagesDir = 'pages',
   localesPath = 'locales',
   pages = {},
+  redirectToDefaultLang = false,
 } = require(process.cwd() + '/i18n.json') || {}
 
 function readDirR(dir) {
@@ -34,6 +35,10 @@ async function createPagesDir(langs = []) {
   langs.forEach(async lang => {
     execSync(`mkdir ${finalPagesDir}/${lang}`)
   })
+
+  if (redirectToDefaultLang) {
+    fs.writeFileSync(`${finalPagesDir}/[...path].js`, getCatchAllTemplate())
+  }
 
   console.log(`Building pages | from ${currentPagesDir} to ${finalPagesDir}`)
   readPageNamespaces(langs)
@@ -140,7 +145,7 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
   })
 
   // For default lang
-  if (langs.includes(defaultLanguage)) {
+  if (langs.includes(defaultLanguage) && !redirectToDefaultLang) {
     buildPageLocale({
       lang: defaultLanguage,
       namespaces,
@@ -149,4 +154,19 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
       prefix: rootPrefix,
     })
   }
+}
+
+function getCatchAllTemplate() {
+  return `import { useRouter } from 'next/router';
+
+const CatchAll = () => {
+  const router = useRouter();
+  if (router.query.path) {
+    router.push(\`/${defaultLanguage}/\${router.query.path}\`);
+  }
+  return <></>;
+};
+
+export default CatchAll;
+  `
 }
