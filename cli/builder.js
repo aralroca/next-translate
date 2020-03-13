@@ -159,14 +159,18 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
 
 function getIndexRedirectTemplate() {
   return `import { useEffect } from 'react'
-  import { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
+import C from './${defaultLanguage}/index'
   
-  export default function Index() {
-    const router = useRouter()
-    useEffect(() => { router.replace('/${defaultLanguage}') }, [])
-    return null
-  }
-  `
+export default function Index(props) {
+  const router = useRouter()
+  useEffect(() => { router.replace('/${defaultLanguage}') }, [])
+  return <C {...props} />
+}
+
+Index = Object.assign(Index, { ...C })
+export * from './${defaultLanguage}/index'
+`
 }
 
 function getCatchAllTemplate() {
