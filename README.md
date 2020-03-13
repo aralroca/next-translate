@@ -1,7 +1,7 @@
 <h1 align="center"> ㊗ ️ next-translate</h1>
 
 <p align="center">
-    <b>i18n</b> for Next.js static pages ⚡️
+    <b>i18n</b> for Next.js. Compatible with SSG ⚡️ (also with SSR and with a custom server)
 </p>
 
 <div align="center">
