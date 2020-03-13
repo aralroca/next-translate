@@ -14,7 +14,7 @@
 
 - [1. About the library](#1-about-the-library)
   - [How does it work statically?](#how-does-it-work-statically)
-- [2. Getting started without a custom server (SSG / SSR)](#2-getting-started-without-a-custom-server-ssg-ssr)
+- [2. Getting started without a custom server (SSG / SSR)](#2-getting-started-without-a-custom-server-ssg--ssr)
   - [Add to your project](#add-to-your-project)
   - [Use translations in your pages](#use-translations-in-your-pages)
   - [Add pages to .gitignore](#add-pages-to-gitignore)
