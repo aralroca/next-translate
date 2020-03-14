@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from 'react'
 import I18nContext from './_context'
+import { setInternals } from './_helpers/_internals'
 
 const NsContext = createContext({})
 
@@ -40,9 +41,16 @@ function interpolation(text, query) {
   }, text)
 }
 
-export default function I18nProvider({ lang, namespaces = {}, children }) {
+export default function I18nProvider({
+  lang,
+  namespaces = {},
+  children,
+  isStaticMode,
+}) {
   const ns = useContext(NsContext)
   const allNamespaces = { ...ns, ...namespaces }
+
+  setInternals({ lang, isStaticMode })
 
   function t(key = '', query) {
     const k = Array.isArray(key) ? key[0] : key

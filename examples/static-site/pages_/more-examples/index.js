@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation'
 import Trans from 'next-translate/Trans'
-import Link from 'next/link'
+import Link from 'next-translate/Link'
 
 import PluralExample from '../../components/plural-example'
 import Header from '../../components/header'
@@ -9,7 +9,7 @@ import NoFunctionalComponent from '../../components/no-functional-component'
 const Component = props => <p {...props} />
 
 export default function MoreExamples() {
-  const { t, lang } = useTranslation()
+  const { t } = useTranslation()
   const exampleWithVariable = t('more-examples:example-with-variable', {
     count: 42,
   })
@@ -27,7 +27,7 @@ export default function MoreExamples() {
       <br />
       {t`more-examples:nested-example.very-nested.nested`}
       <br />
-      <Link href={`/${lang}/more-examples/dynamic-namespace`}>
+      <Link href="/more-examples/dynamic-namespace">
         <a>{t('more-examples:dynamic-namespaces-link')}</a>
       </Link>
     </>
