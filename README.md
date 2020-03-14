@@ -15,7 +15,7 @@
 </div>
 
 - [1. About the library](#1-about-the-library)
-  - [How does it work in Static / SSG pages?](#how-does-it-work-statically)
+  - [How does it work in Static / SSG pages?](#how-does-it-work-in-static--ssg-pages)
 - [2. Getting started without a custom server (○ Static, ● SSG)](#2-getting-started-without-a-custom-server--static--ssg)
   - [Add to your project](#add-to-your-project)
   - [Use translations in your pages](#use-translations-in-your-pages)
