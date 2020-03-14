@@ -297,7 +297,7 @@ In order to use each translation in the project, use the _translation id_ compos
 
 ### useTranslation
 
-📦**Size**: ~1.5kb
+📦**Size**: ~614b
 
 This hook is the recommended way to use translations in your pages / components.
 
@@ -335,7 +335,7 @@ The `t` function:
 
 ### withTranslation
 
-📦**Size**: ~2.5kb
+📦**Size**: ~759b
 
 It's an alternative to `useTranslation` hook, but in a HOC for these components that are no-functional.
 
@@ -361,7 +361,7 @@ export default withTranslation(NoFunctionalComponent)
 
 ### Trans Component
 
-📦**Size**: ~5kb
+📦**Size**: ~1.5kb
 
 Sometimes we need to do some translations with HTML inside the text (bolds, links, etc). The `Trans` component is exactly what you need for this. We recommend to use this component only in this case, for other cases we highly recommend the usage of `useTranslation` hook instead.
 
@@ -384,7 +384,7 @@ Example:
 
 ### appWithI18n
 
-📦**Size**: ~10kb
+📦**Size**: ~4.7kb
 
 This HOC is the way to wrap all your app under translations in the case that you are using a custom server. This method should not be used in a static site. This HOC adds logic to the `getInitialProps` to download the necessary namespaces in order to use it in your pages.
 
@@ -407,7 +407,7 @@ See more details about the [config](#5-configuration) that you can use.
 
 ### DynamicNamespaces
 
-📦**Size**: ~13kb
+📦**Size**: ~4.1kb
 
 The `DynamicNamespaces` component is useful to load dynamic namespaces, for example, in modals. This component works in both cases (static sites and with a custom server).
 
@@ -449,7 +449,7 @@ Remember that `['dynamic']` namespace should **not** be listed on `pages` config
 
 ### i18nMiddleware
 
-📦**Size**: ~4kb
+📦**Size**: ~1.4kb
 
 This middleware is to use translations behind a custom server. You should add this middleware:
 
