@@ -117,7 +117,7 @@ const title = t('common:title')
 
 - `yarn add next-translate`
 
-**Note**: For a Next.js version below than 9.3.0, use next-translate@0.9.0 or below
+**Note**: For a Next.js version below than `9.3.0`, use `next-translate@0.9.0` or below
 
 In your **package.json**:
 
@@ -172,6 +172,8 @@ return <div>{example}</div>
 ### Add to your project
 
 - `yarn install next-translate`
+
+**Note**: For a Next.js version below than `9.3.0`, use `next-translate@0.9.0` or below
 
 ### Add i18nMiddleware to your custom server
 
