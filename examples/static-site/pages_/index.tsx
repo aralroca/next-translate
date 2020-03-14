@@ -1,5 +1,7 @@
 import React from 'react'
-import Link from 'next/link'
+
+// @ts-ignore
+import Link from 'next-translate/Link'
 
 // @ts-ignore
 import useTranslation from 'next-translate/useTranslation'
@@ -18,7 +20,7 @@ export default function Home(props) {
     <>
       <Header />
       <p>{description}</p>
-      <Link href={`/${lang}/more-examples`}>
+      <Link href="/more-examples">
         <a>{linkName}</a>
       </Link>
     </>

@@ -31,6 +31,9 @@
   - [appWithI18n](#appwithi18n)
   - [DynamicNamespaces](#dynamicnamespaces)
   - [i18nMiddleware](#i18nmiddleware)
+  - [Link](#link)
+  - [Router](#router)
+  - [clientSideLang](#clientsidelang)
 - [7. Plurals](#7-plurals)
 - [8. Use HTML inside the translation](#8-use-html-inside-the-translation)
 - [9. Nested translations](#9-nested-translations)
@@ -569,6 +572,7 @@ One example of a possible `ChangeLanguage` component:
 
 ```js
 import React from 'react'
+import Link from 'next-translate/Link'
 import useTranslation from 'next-translate/useTranslation'
 import i18nConfig from '../i18n.json'
 
@@ -583,7 +587,7 @@ function ChangeLanguage() {
     // Or you can attach the current pathame at the end
     // to keep the same page
     return (
-      <Link href={`/${lang}`} key={lng}>
+      <Link href="/" lang={lng} key={lng}>
         {t(`layout:language-name-${lng}`)}
       </Link>
     )
