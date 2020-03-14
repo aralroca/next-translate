@@ -11,7 +11,7 @@ export default function Header() {
   const title = t('common:title')
 
   function changeToEn() {
-    Router.push({ url: '/', options: { lang: 'en' } })
+    Router.pushI18n({ url: '/', options: { lang: 'en' } })
   }
 
   return (

@@ -13,8 +13,7 @@ const nav = ev => (a1, a2, a3) => {
   return NextRouter[ev](fixHref(url, lng), fixAs(as, url, lng), options)
 }
 
-export default {
-  ...NextRouter,
-  push: nav('push'),
-  replace: nav('replace'),
-}
+NextRouter.pushI18n = nav('push')
+NextRouter.replaceI18n = nav('replace')
+
+export default NextRouter
