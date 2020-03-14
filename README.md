@@ -1,7 +1,9 @@
 <h1 align="center"> ㊗ ️ next-translate</h1>
 
 <p align="center">
-    <b>i18n</b> for Next.js. Compatible with SSG ⚡️ (also with SSR and with a custom server)
+    <b>i18n</b> for Next.js | ○  (Static)  | ●  (SSG) | λ  (Server)
+    
+    
 </p>
 
 <div align="center">
@@ -14,11 +16,11 @@
 
 - [1. About the library](#1-about-the-library)
   - [How does it work statically?](#how-does-it-work-statically)
-- [2. Getting started without a custom server (SSG / SSR)](#2-getting-started-without-a-custom-server-ssg--ssr)
+- [2. Getting started without a custom server (○ Static, ● SSG)](#2-getting-started-without-a-custom-server-static--ssg)
   - [Add to your project](#add-to-your-project)
   - [Use translations in your pages](#use-translations-in-your-pages)
   - [Add pages to .gitignore](#add-pages-to-gitignore)
-- [3. Getting started with a custom server](#3-getting-started-with-a-custom-server)
+- [3. Getting started with a custom server (λ Server)](#3-getting-started-with-a-custom-server)
   - [Add to your project](#add-to-your-project-1)
   - [Add i18nMiddleware to your custom server](#add-i18nmiddleware-to-your-custom-server)
   - [Use translations in your pages](#use-translations-in-your-pages-1)
@@ -48,7 +50,10 @@
 
 ## 1. About the library
 
-Tool to translate Next.js pages without the need of a custom server (it works with SSG).
+Tool to translate Next.js pages. There are two ways to work:
+
+* Using a middleware in a custom server (λ Server)
+* Building pages before `next build` with the CLI (○ Static | ● SSG) 
 
 The main goal of this library is to keep the translations as simple as possible in a Next.js environment.
 
@@ -106,7 +111,7 @@ const { t, lang } = useTranslation()
 const title = t('common:title')
 ```
 
-## 2. Getting started without a custom server (SSG / SSR)
+## 2. Getting started without a custom server (○ Static, ● SSG)
 
 ### Add to your project
 
@@ -162,7 +167,7 @@ return <div>{example}</div>
 
 `/pages` directory is going to be generated every time based on `/pages_`, so it's not necessary to track it in git.
 
-## 3. Getting started with a custom server
+## 3. Getting started with a custom server (λ Server)
 
 ### Add to your project
 
@@ -286,7 +291,7 @@ In order to use each translation in the project, use the _translation id_ compos
 | `defaultLanguage`       | A string with the ISO locale ("en" as default). Also you can pass it as a function to return the language depending the `req` param (in case to use a custom server).                                                                                                                                                                                                                                                                                                                    | `string|function`               | `"en"`                                                                     |
 | `allLanguages`          | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                   | `Array<string>`                 | `[]`                                                                       |
 | `ignoreRoutes`          | An array with all the routes to ignore in the middleware. This config property only effect using a custom server with the `i18nMiddleware`.                                                                                                                                                                                                                                                                                                                                              | `Array<string>`                 | `['/_next/', '/static/', '/favicon.ico', '/manifest.json', '/robots.txt']` |
-| `redirectToDefaultLang` | When is set to `true` the route `/some-page` redirects to `/en/some-path` (if `en` is the default language). When is set to `false` entering to `/some-path` is rendering the page with the default language but without redirecting. Using SSG the redirect is done in the browser with Route.replace meanwhile using a custom server is doing a real 301 status redirect.                                                                                                              | `boolean`                       | `false`                                                                    |
+| `redirectToDefaultLang` | When is set to `true` the route `/some-page` redirects to `/en/some-path` (if `en` is the default language). When is set to `false` entering to `/some-path` is rendering the page with the default language but without redirecting. Using Static/SSG the redirect is done in the browser with Route.replace meanwhile using a custom server is doing a real 301 status redirect.                                                                                                              | `boolean`                       | `false`                                                                    |
 | `currentPagesDir`       | A string with the directory where you have the pages code. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect.                                                                                                                                                                                                                                                                                                                       | `string`                        | `"pages\_"`                                                                |
 | `finalPagesDir`         | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect.                                                                                                                                                                                                                                                              | `string`                        | `"pages"`                                                                  |
 | `localesPath`           | A string with the directory of JSONs locales. THIS ONLY WORKS with static sites. If you use the `appWithI18n` then you should use the `loadLocaleFrom` config.                                                                                                                                                                                                                                                                                                                           | `string`                        | `"locales"`                                                                |
