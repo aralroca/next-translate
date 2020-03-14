@@ -16,11 +16,11 @@
 
 - [1. About the library](#1-about-the-library)
   - [How does it work statically?](#how-does-it-work-statically)
-- [2. Getting started without a custom server (○ Static, ● SSG)](#2-getting-started-without-a-custom-server-static--ssg)
+- [2. Getting started without a custom server (○ Static, ● SSG)](#2-getting-started-without-a-custom-server--static--ssg)
   - [Add to your project](#add-to-your-project)
   - [Use translations in your pages](#use-translations-in-your-pages)
   - [Add pages to .gitignore](#add-pages-to-gitignore)
-- [3. Getting started with a custom server (λ Server)](#3-getting-started-with-a-custom-server)
+- [3. Getting started with a custom server (λ Server)](#3-getting-started-with-a-custom-server-λ-server)
   - [Add to your project](#add-to-your-project-1)
   - [Add i18nMiddleware to your custom server](#add-i18nmiddleware-to-your-custom-server)
   - [Use translations in your pages](#use-translations-in-your-pages-1)
