@@ -31,6 +31,9 @@
   - [appWithI18n](#appwithi18n)
   - [DynamicNamespaces](#dynamicnamespaces)
   - [i18nMiddleware](#i18nmiddleware)
+  - [Link](#link)
+  - [Router](#router)
+  - [clientSideLang](#clientsidelang)
 - [7. Plurals](#7-plurals)
 - [8. Use HTML inside the translation](#8-use-html-inside-the-translation)
 - [9. Nested translations](#9-nested-translations)
@@ -283,7 +286,7 @@ In order to use each translation in the project, use the _translation id_ compos
 | `defaultLanguage`       | A string with the ISO locale ("en" as default). Also you can pass it as a function to return the language depending the `req` param (in case to use a custom server).                                                                                                                                                                                                                                                                                                                    | `string|function`               | `"en"`                                                                     |
 | `allLanguages`          | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                   | `Array<string>`                 | `[]`                                                                       |
 | `ignoreRoutes`          | An array with all the routes to ignore in the middleware. This config property only effect using a custom server with the `i18nMiddleware`.                                                                                                                                                                                                                                                                                                                                              | `Array<string>`                 | `['/_next/', '/static/', '/favicon.ico', '/manifest.json', '/robots.txt']` |
-| `redirectToDefaultLang` | When is set to `true` the route `/some-page` redirects to `/en/some-path` (if `en` is the default language). When is set to `false` entering to `/some-path` is rendering the page with the default language but without redirecting. IT ONLY APPLIES using a custom server with the `i18nMiddleware`.                                                                                                                                                                                   | `boolean`                       | `false`                                                                    |
+| `redirectToDefaultLang` | When is set to `true` the route `/some-page` redirects to `/en/some-path` (if `en` is the default language). When is set to `false` entering to `/some-path` is rendering the page with the default language but without redirecting. Using SSG the redirect is done in the browser with Route.replace meanwhile using a custom server is doing a real 301 status redirect.                                                                                                              | `boolean`                       | `false`                                                                    |
 | `currentPagesDir`       | A string with the directory where you have the pages code. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect.                                                                                                                                                                                                                                                                                                                       | `string`                        | `"pages\_"`                                                                |
 | `finalPagesDir`         | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect.                                                                                                                                                                                                                                                              | `string`                        | `"pages"`                                                                  |
 | `localesPath`           | A string with the directory of JSONs locales. THIS ONLY WORKS with static sites. If you use the `appWithI18n` then you should use the `loadLocaleFrom` config.                                                                                                                                                                                                                                                                                                                           | `string`                        | `"locales"`                                                                |
@@ -294,7 +297,7 @@ In order to use each translation in the project, use the _translation id_ compos
 
 ### useTranslation
 
-📦**Size**: ~1.5kb
+📦**Size**: ~614b
 
 This hook is the recommended way to use translations in your pages / components.
 
@@ -332,7 +335,7 @@ The `t` function:
 
 ### withTranslation
 
-📦**Size**: ~2.5kb
+📦**Size**: ~759b
 
 It's an alternative to `useTranslation` hook, but in a HOC for these components that are no-functional.
 
@@ -358,7 +361,7 @@ export default withTranslation(NoFunctionalComponent)
 
 ### Trans Component
 
-📦**Size**: ~5kb
+📦**Size**: ~1.5kb
 
 Sometimes we need to do some translations with HTML inside the text (bolds, links, etc). The `Trans` component is exactly what you need for this. We recommend to use this component only in this case, for other cases we highly recommend the usage of `useTranslation` hook instead.
 
@@ -381,7 +384,7 @@ Example:
 
 ### appWithI18n
 
-📦**Size**: ~10kb
+📦**Size**: ~4.7kb
 
 This HOC is the way to wrap all your app under translations in the case that you are using a custom server. This method should not be used in a static site. This HOC adds logic to the `getInitialProps` to download the necessary namespaces in order to use it in your pages.
 
@@ -404,7 +407,7 @@ See more details about the [config](#5-configuration) that you can use.
 
 ### DynamicNamespaces
 
-📦**Size**: ~13kb
+📦**Size**: ~4.1kb
 
 The `DynamicNamespaces` component is useful to load dynamic namespaces, for example, in modals. This component works in both cases (static sites and with a custom server).
 
@@ -446,7 +449,7 @@ Remember that `['dynamic']` namespace should **not** be listed on `pages` config
 
 ### i18nMiddleware
 
-📦**Size**: ~4kb
+📦**Size**: ~1.4kb
 
 This middleware is to use translations behind a custom server. You should add this middleware:
 
@@ -465,6 +468,86 @@ See more details about the [config](#5-configuration) that you can use.
 - `dynamic` - Function - Generic dynamic import of all namespaces (mandatory).
 - `namespaces` - Array<string> - List of namespaces to load dynamically (mandatory).
 - `fallback` - Any - Fallback to render meanwhile namespaces are loading (default: `null`)
+
+### Link
+
+📦**Size**: ~11kb (`next/link` size included)
+
+It is a wrapper of `next/link` that adds the current language at the beginning of the path, without to worry to add the language in every navigation. In order to change the language, you can pass the `lang` as props:
+
+```jsx
+import Link from 'next-translate/Link'
+
+// If the current language is 'en':
+
+// -> Navigate to /en/some-path
+<Link href="/some-path"><a>Navigate</a></Link>
+
+ // -> Navigate to /es/route-in-spanish
+<Link href="/route-in-spanish" lang="es"><a>Navigate</a></Link>
+
+```
+
+**Props**: Same props than `next/link` + only one additional prop:
+
+- `lang`: `<String>` prop useful to navigate to a different language than the current one. The default value, if this prop is not provided, is the current language. So you don't need to worry about passing this prop for normal navigation.
+
+### Router
+
+📦**Size**: ~10kb (`next/router` size included)
+
+It is a wrapper of `next/router` when you can use the normal router of next.js, adding two extra methods:
+
+- **Router.pushI18n**: It is exactly the same as `Router.push`, with the difference that it adds the current language at the beginning of the URL. In order to change the language, you can pass the `lang` into the `options`.
+- **Router.replaceI18n**: It is exactly the same as `Router.replace`, with the difference that it adds the current language at the beginning of the URL. In order to change the language, you can pass the `lang` into the `options`.
+
+```js
+import Router from 'next-translate/Router'
+
+// If the current language is 'en':
+
+// -> Navigate to /en/some-path
+Router.pushI18n('/some-path')
+
+// -> Navigate to /es/route-in-spanish
+Router.pushI18n({ url: '/route-in-spanish', options: { lang: 'es' } })
+// or
+Router.pushI18n('/route-in-spanish', undefined, { lang: 'es' })
+```
+
+### clientSideLang
+
+📦**Size**: ~590b
+
+Useful to get the language outside Components.
+
+Example using a custom server:
+
+```js
+import clientSideLang from 'next-translate/clientSideLang'
+
+// ...
+
+Page.getInitialProps({ req }) {
+   const lang = req ? req.lang : clientSideLang()
+  // ...
+}
+```
+
+Or just for helpers:
+
+```js
+import clientSideLang from 'next-translate/clientSideLang'
+
+// ...
+
+export function myClientSideHelper() {
+  const lang = clientSideLang()
+  // ...
+}
+```
+
+It is **not recommended** to use the `clientSideLang` on the server-side directly because is stored in a global variable and it can cause some concurrency issues.
 
 ## 7. Plurals
 
