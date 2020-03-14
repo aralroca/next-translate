@@ -15,7 +15,7 @@
 </div>
 
 - [1. About the library](#1-about-the-library)
-  - [How does it work statically?](#how-does-it-work-statically)
+  - [How does it work in Static / SSG pages?](#how-does-it-work-statically)
 - [2. Getting started without a custom server (○ Static, ● SSG)](#2-getting-started-without-a-custom-server--static--ssg)
   - [Add to your project](#add-to-your-project)
   - [Use translations in your pages](#use-translations-in-your-pages)
@@ -52,8 +52,8 @@
 
 Tool to translate Next.js pages. There are two ways to work:
 
-* Using a middleware in a custom server (λ Server)
 * Building pages before `next build` with the CLI (○ Static | ● SSG) 
+* Using a middleware in a custom server (λ Server)
 
 The main goal of this library is to keep the translations as simple as possible in a Next.js environment.
 
@@ -63,7 +63,7 @@ This library is very tiny and tree shakable.
     <img width="500" src="images/bundle-size.png" alt="Bundle size" />
 </p>
 
-### How does it work statically?
+### How does it work in Static / SSG pages?
 
 Instead of working on `/pages` directory to write our pages, we are going to generate this folder before building the app, an each page will have all the necessary translations from the locale.
 
