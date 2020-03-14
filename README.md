@@ -469,6 +469,86 @@ See more details about the [config](#5-configuration) that you can use.
 - `namespaces` - Array<string> - List of namespaces to load dynamically (mandatory).
 - `fallback` - Any - Fallback to render meanwhile namespaces are loading (default: `null`)
 
+### Link
+
+📦**Size**: ~11kb (`next/link` size included)
+
+It is a wrapper of `next/link` that adds the current language at the beginning of the path, without to worry to add the language in every navigation. In order to change the language, you can pass the `lang` as props:
+
+```jsx
+import Link from 'next-translate/Link'
+
+// If the current language is 'en':
+
+// -> Navigate to /en/some-path
+<Link href="/some-path"><a>Navigate</a></Link>
+
+ // -> Navigate to /es/route-in-spanish
+<Link href="/route-in-spanish" lang="es"><a>Navigate</a></Link>
+
+```
+
+**Props**: Same props than `next/link` + only one additional prop:
+
+- `lang`: `<String>` prop useful to navigate to a different language than the current one. The default value, if this prop is not provided, is the current language. So you don't need to worry about passing this prop for normal navigation.
+
+### Router
+
+📦**Size**: ~10kb (`next/router` size included)
+
+It is a wrapper of `next/router` when you can use the normal router of next.js, adding two extra methods:
+
+- **Router.pushI18n**: It is exactly the same as `Router.push`, with the difference that it adds the current language at the beginning of the URL. In order to change the language, you can pass the `lang` into the `options`.
+- **Router.replaceI18n**: It is exactly the same as `Router.replace`, with the difference that it adds the current language at the beginning of the URL. In order to change the language, you can pass the `lang` into the `options`.
+
+```js
+import Router from 'next-translate/Router'
+
+// If the current language is 'en':
+
+// -> Navigate to /en/some-path
+Router.pushI18n('/some-path')
+
+// -> Navigate to /es/route-in-spanish
+Router.pushI18n({ url: '/route-in-spanish', options: { lang: 'es' } })
+// or
+Router.pushI18n('/route-in-spanish', undefined, { lang: 'es' })
+```
+
+### clientSideLang
+
+📦**Size**: ~590b
+
+Useful to get the language outside Components.
+
+Example using a custom server:
+
+```js
+import clientSideLang from 'next-translate/clientSideLang'
+
+// ...
+
+Page.getInitialProps({ req }) {
+   const lang = req ? req.lang : clientSideLang()
+  // ...
+}
+```
+
+Or just for helpers:
+
+```js
+import clientSideLang from 'next-translate/clientSideLang'
+
+// ...
+
+export function myClientSideHelper() {
+  const lang = clientSideLang()
+  // ...
+}
+```
+
+It is **not recommended** to use the `clientSideLang` on the server-side directly because is stored in a global variable and it can cause some concurrency issues.
+
 ## 7. Plurals
 
 You can define plurals this way:
