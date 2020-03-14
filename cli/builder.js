@@ -95,7 +95,7 @@ const namespaces = { ${namespaces
 
 export default function Page(p){
   return (
-    <I18nProvider lang="${lang}" namespaces={namespaces} >
+    <I18nProvider lang="${lang}" namespaces={namespaces} isStaticMode>
       <C {...p} />
     </I18nProvider>
   )

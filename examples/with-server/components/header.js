@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/Head'
-import Link from 'next/link'
+import Link from 'next-translate/Link'
 import useTranslation from 'next-translate/useTranslation'
 
 import styles from './header.module.css'
@@ -20,17 +20,17 @@ export default function Header() {
       <header className={styles.header}>
         <h1>{title}</h1>
         {lang !== 'es' && (
-          <Link href="/" as="/es">
+          <Link href="/" lang="es">
             <a>Español</a>
           </Link>
         )}
         {lang !== 'ca' && (
-          <Link href="/" as="/ca">
+          <Link href="/" lang="ca">
             <a>Català</a>
           </Link>
         )}
         {lang !== 'en' && (
-          <Link href="/" as="/en">
+          <Link href="/" lang="en">
             <a>English</a>
           </Link>
         )}
