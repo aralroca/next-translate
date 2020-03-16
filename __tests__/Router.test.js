@@ -104,4 +104,20 @@ describe('Router', () => {
       })
     })
   })
+
+  test('should work without specifying a language', () => {
+    function nav() {
+      Router.pushI18n('/some/route')
+    }
+    function Component() {
+      return (
+        <I18nProvider lang="en" namespaces={{}} isStaticMode>
+          <button onClick={nav}>Navigate</button>
+        </I18nProvider>
+      )
+    }
+    const { container } = render(<Component />)
+    fireEvent.click(container.firstChild)
+    expectNavigation({ href: '/en/some/route', as: undefined })
+  })
 })
