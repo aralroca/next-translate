@@ -52,8 +52,8 @@
 
 Tool to translate Next.js pages. There are two ways to work:
 
-* Building pages before `next build` with the CLI (○ Static | ● SSG) 
-* Using a middleware in a custom server (λ Server)
+- Building pages before `next build` with the CLI (○ Static | ● SSG)
+- Using a middleware in a custom server (λ Server)
 
 The main goal of this library is to keep the translations as simple as possible in a Next.js environment.
 
@@ -293,7 +293,7 @@ In order to use each translation in the project, use the _translation id_ compos
 | `defaultLanguage`       | A string with the ISO locale ("en" as default). Also you can pass it as a function to return the language depending the `req` param (in case to use a custom server).                                                                                                                                                                                                                                                                                                                    | `string|function`               | `"en"`                                                                     |
 | `allLanguages`          | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                   | `Array<string>`                 | `[]`                                                                       |
 | `ignoreRoutes`          | An array with all the routes to ignore in the middleware. This config property only effect using a custom server with the `i18nMiddleware`.                                                                                                                                                                                                                                                                                                                                              | `Array<string>`                 | `['/_next/', '/static/', '/favicon.ico', '/manifest.json', '/robots.txt']` |
-| `redirectToDefaultLang` | When is set to `true` the route `/some-page` redirects to `/en/some-path` (if `en` is the default language). When is set to `false` entering to `/some-path` is rendering the page with the default language but without redirecting. Using Static/SSG the redirect is done in the browser with Route.replace meanwhile using a custom server is doing a real 301 status redirect.                                                                                                              | `boolean`                       | `false`                                                                    |
+| `redirectToDefaultLang` | When is set to `true` the route `/some-page` redirects to `/en/some-path` (if `en` is the default language). When is set to `false` entering to `/some-path` is rendering the page with the default language but without redirecting. Using Static/SSG the redirect is done in the browser with Route.replace meanwhile using a custom server is doing a real 301 status redirect.                                                                                                       | `boolean`                       | `false`                                                                    |
 | `currentPagesDir`       | A string with the directory where you have the pages code. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect.                                                                                                                                                                                                                                                                                                                       | `string`                        | `"pages\_"`                                                                |
 | `finalPagesDir`         | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. IT ONLY APPLIES in static sites. If you use the `appWithI18n` this configuration won't have any effect.                                                                                                                                                                                                                                                              | `string`                        | `"pages"`                                                                  |
 | `localesPath`           | A string with the directory of JSONs locales. THIS ONLY WORKS with static sites. If you use the `appWithI18n` then you should use the `loadLocaleFrom` config.                                                                                                                                                                                                                                                                                                                           | `string`                        | `"locales"`                                                                |
@@ -493,11 +493,14 @@ import Link from 'next-translate/Link'
  // -> Navigate to /es/route-in-spanish
 <Link href="/route-in-spanish" lang="es"><a>Navigate</a></Link>
 
+// -> Navigate to /some-path
+<Link noLang href="/some-path"><a>Navigate</a></Link>
 ```
 
 **Props**: Same props than `next/link` + only one additional prop:
 
 - `lang`: `<String>` prop useful to navigate to a different language than the current one. The default value, if this prop is not provided, is the current language. So you don't need to worry about passing this prop for normal navigation.
+- `noLang`: `<Boolean>` prop to disable appending the current language to the route.
 
 ### Router
 
