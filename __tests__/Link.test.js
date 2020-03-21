@@ -1,5 +1,5 @@
+import { cleanup, render } from '@testing-library/react'
 import React from 'react'
-import { render, cleanup } from '@testing-library/react'
 import I18nProvider from '../src/I18nProvider'
 import Link from '../src/Link'
 
@@ -68,6 +68,14 @@ describe('Link', () => {
           </LinkComponent>
         )
         expect(container.innerHTML).toBe('<a href="/es/some/route">link</a>')
+      })
+      test('Should not add the current language to the route', () => {
+        const { container } = render(
+          <LinkComponent noLang href="/some/route" lang="es">
+            <a>link</a>
+          </LinkComponent>
+        )
+        expect(container.innerHTML).toBe('<a href="/some/route">link</a>')
       })
     })
   })
