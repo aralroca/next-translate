@@ -2,8 +2,6 @@
 
 <p align="center">
     <b>i18n</b> for Next.js | ○  (Static)  | ●  (SSG) | λ  (Server)
-    
-    
 </p>
 
 <div align="center">
@@ -171,9 +169,19 @@ return <div>{example}</div>
 
 ### Add to your project
 
-- `yarn install next-translate`
+- `yarn add next-translate`
 
 **Note**: For a Next.js version below than `9.3.0`, use `next-translate@0.9.0` or below
+
+In your **package.json**:
+
+```json
+"scripts": {
+  "dev": "next-translate && node server.js",
+  "build": "next-translate && next build",
+  "start": "NODE_ENV=production node server.js"
+}
+```
 
 ### Add i18nMiddleware to your custom server
 
