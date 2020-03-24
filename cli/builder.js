@@ -17,7 +17,7 @@ const {
 function readDirR(dir) {
   return fs.statSync(dir).isDirectory()
     ? Array.prototype.concat(
-        ...fs.readdirSync(dir).map(f => readDirR(path.join(dir, f)))
+        ...fs.readdirSync(dir).map((f) => readDirR(path.join(dir, f)))
       )
     : dir
 }
@@ -32,7 +32,7 @@ createPagesDir(allLanguages)
 async function createPagesDir(langs = []) {
   execSync(`rm -rf ${finalPagesDir} && mkdir ${finalPagesDir}`)
 
-  langs.forEach(async lang => {
+  langs.forEach(async (lang) => {
     execSync(`mkdir ${finalPagesDir}/${lang}`)
   })
 
@@ -62,7 +62,7 @@ function clearPageExt(page) {
  * STEP 2: Read each page namespaces
  */
 function readPageNamespaces(langs) {
-  readDirR(currentPagesDir).forEach(async page => {
+  readDirR(currentPagesDir).forEach(async (page) => {
     const pageId = clearPageExt(page.replace(currentPagesDir, '')) || '/'
     const namespaces = await getPageNamespaces({ pages }, pageId)
 
@@ -75,7 +75,9 @@ function readPageNamespaces(langs) {
 }
 
 function hasSpecialMethod(data, name) {
-  return data.match(new RegExp(`export (const|var|let|function) ${name}`))
+  return data.match(
+    new RegExp(`export (const|var|let|async function|function) ${name}`)
+  )
 }
 
 function specialMethod(name, lang) {
@@ -160,7 +162,7 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
   }
 
   // For each lang
-  langs.forEach(lang => {
+  langs.forEach((lang) => {
     buildPageLocale({
       lang,
       namespaces,
