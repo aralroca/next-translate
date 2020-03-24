@@ -74,14 +74,35 @@ function readPageNamespaces(langs) {
   })
 }
 
+function hasSpecialMethod(data, name) {
+  return data.match(new RegExp(`export (const|var|let|function) ${name}`))
+}
+
+function specialMethod(name, lang) {
+  return `export const ${name} = ctx => _rest.${name}({ ...ctx, lang: '${lang}' })`
+}
+
 /**
  * STEP 3: Build page in each lang path
  */
 function getPageTemplate(prefix, page, lang, namespaces) {
+  const clearCommentsRgx = /\/\*[\s\S]*?\*\/|\/\/.*/g
+  const pageData = fs
+    .readFileSync(page)
+    .toString('UTF-8')
+    .replace(clearCommentsRgx, '')
+  const isGetStaticProps = hasSpecialMethod(pageData, 'getStaticProps')
+  const isGetStaticPaths = hasSpecialMethod(pageData, 'getStaticPaths')
+  const isGetServerSideProps = hasSpecialMethod(pageData, 'getServerSideProps')
+  const hasSomeSpecialMethod =
+    isGetStaticProps || isGetStaticPaths || isGetServerSideProps
+
   return `// @ts-nocheck
 import I18nProvider from 'next-translate/I18nProvider'
 import React from 'react'
-import C from '${prefix}/${clearPageExt(page)}'
+import C${
+    hasSomeSpecialMethod ? ', * as _rest' : ''
+  } from '${prefix}/${clearPageExt(page)}'
 ${namespaces
   .map(
     (ns, i) =>
@@ -102,6 +123,10 @@ export default function Page(p){
 }
 
 Page = Object.assign(Page, { ...C })
+
+${isGetStaticProps ? specialMethod('getStaticProps', lang) : ''}
+${isGetStaticPaths ? specialMethod('getStaticPaths', lang) : ''}
+${isGetServerSideProps ? specialMethod('getServerSideProps', lang) : ''}
 
 export * from '${prefix}/${clearPageExt(page)}'
 `
