@@ -74,5 +74,25 @@ describe('builder', () => {
       expect(pages.toString()).toContain('I18nProvider')
       expect(pages.toString()).toContain('Page = Object.assign(Page, { ...C })')
     })
+
+    test('Should inject lang to getStaticProps', () => {
+      const deflt = fs.readFileSync('examples/static-site/pages/index.js')
+      const es = fs.readFileSync('examples/static-site/pages/es/index.js')
+      const ca = fs.readFileSync('examples/static-site/pages/ca/index.js')
+      const en = fs.readFileSync('examples/static-site/pages/en/index.js')
+
+      expect(deflt.toString()).toContain(
+        `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'en' })`
+      )
+      expect(es.toString()).toContain(
+        `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'es' })`
+      )
+      expect(ca.toString()).toContain(
+        `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'ca' })`
+      )
+      expect(en.toString()).toContain(
+        `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'en' })`
+      )
+    })
   })
 })
