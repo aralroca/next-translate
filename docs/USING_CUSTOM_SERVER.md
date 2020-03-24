@@ -106,3 +106,47 @@ const example = t('common:variable-example', { count: 42 })
 // ...
 return <div>{example}</div>
 ```
+
+## 5. Get language in the special Next.js functions
+
+Consider to don't use a custom server to have fully support of this feature. Read more about it [here](/README.md#10-get-language-in-the-special-nextjs-functions).
+
+### getStaticProps
+
+_❌ Not available with a custom server_
+
+### getStaticPaths
+
+_❌ Not available with a custom server_
+
+### getServerSideProps
+
+In order to get the language, you can use `req.lang`.
+
+```js
+export async function getServerSideProps({ req }) {
+  return {
+    props: {
+      data: getDataFromLang(req.lang),
+    },
+  }
+}
+```
+
+### getInitialProps
+
+In order to get the language, you can use `req.lang` on server side, and `clientSideLang` on client side.
+
+```js
+import clientSideLang from 'next-translate/clientSideLang'
+
+// ...
+
+Page.getInitialProps = async ({ req }) => {
+  const lang = req ? req.lang : clientSideLang()
+
+  return {
+    data: getDataFromLang(lang),
+  }
+}
+```

@@ -39,7 +39,12 @@
 - [7. Use HTML inside the translation](#7-use-html-inside-the-translation)
 - [8. Nested translations](#8-nested-translations)
 - [9. How to change the language](#9-how-to-change-the-language)
-- [10. Demos](#10-demos)
+- [10. Get language in the special Next.js functions](#10-get-language-in-the-special-nextjs-functions)
+  - [getStaticProps](#getstaticprops)
+  - [getStaticPaths](#getstaticpaths)
+  - [getServerSideProps](#getserversideprops)
+  - [getInitialProps](#getinitialprops)
+- [11. Demos](#10-demos)
   - [Static site example](#static-site-example)
   - [With custom server example](#with-custom-server-example)
 
@@ -444,21 +449,6 @@ Router.pushI18n('/route-in-spanish', undefined, { lang: 'es' })
 
 Useful to get the language outside Components.
 
-Example using a custom server:
-
-```js
-import clientSideLang from 'next-translate/clientSideLang'
-
-// ...
-
-Page.getInitialProps({ req }) {
-   const lang = req ? req.lang : clientSideLang()
-  // ...
-}
-```
-
-Or just for helpers:
-
 ```js
 import clientSideLang from 'next-translate/clientSideLang'
 
@@ -598,7 +588,68 @@ function ChangeLanguage() {
 }
 ```
 
-## 10. Demos
+## 10. Get language in the special Next.js functions
+
+In the case to use a custom server, this section is not applicable. In this case, you can take a look how to get the current language on these methods [here](/docs/USING_CUSTOM_SERVER.md#5-get-language-in-the-special-nextjs-functions).
+
+In order to use the `lang` in the special Next.js functions, the `lang` property is added to the context.
+
+### getStaticProps
+
+```js
+export async function getStaticProps({ lang }) {
+  return {
+    props: {
+      data: fetchMyDataFromLang(lang),
+    },
+  }
+}
+```
+
+See [here](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) the official Next.js docs about `getStaticProps`.
+
+### getStaticPaths
+
+```js
+export async function getStaticPaths({ lang }) {
+  return {
+    paths: generatePathsFromLang(lang),
+    fallback: false,
+  }
+}
+```
+
+See [here](https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation) the official Next.js docs about `getStaticPaths`.
+
+### getServerSideProps
+
+```js
+export async function getServerSideProps({ lang }) {
+  return {
+    props: {
+      data: queryDataFromDB(lang),
+    },
+  }
+}
+```
+
+See [here](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) the official Next.js docs about `getServerSideProps`
+
+### getInitialProps
+
+Recommended: Use **getStaticProps** or **getServerSideProps** instead.
+
+```js
+MyPage.getInitialProps = async ({ lang }) => {
+  return {
+    data: fetchMyDataFromLang(lang),
+  }
+}
+```
+
+See [here](https://nextjs.org/docs/api-reference/data-fetching/getInitialProps#getinitialprops-for-older-versions-of-nextjs) the official Next.js docs about `getInitialProps`
+
+## 11. Demos
 
 ### Static site example
 
