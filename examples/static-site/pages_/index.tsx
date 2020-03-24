@@ -10,7 +10,7 @@ import Header from '../components/header'
 
 // @ts-ignore
 export default function Home(props) {
-  const { t, lang } = useTranslation()
+  const { t } = useTranslation()
   const description = t('home:description')
   const linkName = t('home:more-examples')
 
@@ -27,6 +27,7 @@ export default function Home(props) {
   )
 }
 
-export const getStaticProps = async () => ({
-  props: { getStaticPropsWorks: true },
+// @ts-ignore
+export const getStaticProps = async ({ lang }) => ({
+  props: { getStaticPropsWorks: true, lang },
 })
