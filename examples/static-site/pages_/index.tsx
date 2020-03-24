@@ -28,6 +28,6 @@ export default function Home(props) {
 }
 
 // @ts-ignore
-export const getStaticProps = async ({ lang }) => ({
-  props: { getStaticPropsWorks: true, lang },
-})
+export async function getStaticProps({ lang }) {
+  return { props: { getStaticPropsWorks: true, lang } }
+}
