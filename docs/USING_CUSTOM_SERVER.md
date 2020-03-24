@@ -12,15 +12,15 @@
 
 <p align="center"><a href="https://nextjs.org/docs/advanced-features/custom-server">View source</a></p>
 
-How can I use `next-translate` without the need of a custom server? Take a look at the README.md.
+How can I use `next-translate` without the need of a custom server? Take a look at the [README.md](/README.md).
 
 ## 1. Requirements
 
-Before, you need to already use a custom server following this guide:
+First, you need to use a custom server in your Next.js application. You can follow this guide:
 
 - https://nextjs.org/docs/advanced-features/custom-server
 
-## 2. Install next-translate
+## 2. Install
 
 - `yarn add next-translate`
 
@@ -28,7 +28,7 @@ Before, you need to already use a custom server following this guide:
 
 ## 3. Add the i18n middleware
 
-You should add the `i18nMiddleware` in order to add the language and allow to render the pages behind the `/{lang}` prefix.
+You should add the `i18nMiddleware` to handle all i18n routes.
 
 ```js
 const express = require('express')
@@ -58,7 +58,7 @@ module.exports = app
   .catch(console.error)
 ```
 
-Where the config is in the root path as `i18n.js`:
+And the config is on `/i18n.js`:
 
 ```js
 module.exports = {
@@ -75,11 +75,11 @@ module.exports = {
 }
 ```
 
-It's important to move the configuration in another file because in the next step also you are going to use it.
+It's important to move the configuration to another file because in the next step you are also going to use it.
 
 ## 4. Wrap your \_app.js
 
-You should create your namespaces files inside `/locales`. [See how to do it](/README.md#3-translation-jsons-folder)
+You should create your namespaces files inside `/locales`. [See here how to do it](/README.md#3-translation-jsons-folder)
 
 You should pass the configuration into the `appWithI18n` wrapper of your app. Each page should have its namespaces. Take a look to the [config](/README.md#4-configuration) section for more details.
 
@@ -105,4 +105,48 @@ const { t, lang } = useTranslation()
 const example = t('common:variable-example', { count: 42 })
 // ...
 return <div>{example}</div>
+```
+
+## 5. Get language in the special Next.js functions
+
+Consider to not use a custom server to have fully support of this feature. Read more about it [here](/README.md#10-get-language-in-the-special-nextjs-functions).
+
+### getStaticProps
+
+_❌ Not available with a custom server_
+
+### getStaticPaths
+
+_❌ Not available with a custom server_
+
+### getServerSideProps
+
+In order to get the language, you can use `req.lang`.
+
+```js
+export async function getServerSideProps({ req }) {
+  return {
+    props: {
+      data: getDataFromLang(req.lang),
+    },
+  }
+}
+```
+
+### getInitialProps
+
+In order to get the language, you can use `req.lang` on server side, and `clientSideLang` on client side.
+
+```js
+import clientSideLang from 'next-translate/clientSideLang'
+
+// ...
+
+Page.getInitialProps = async ({ req }) => {
+  const lang = req ? req.lang : clientSideLang()
+
+  return {
+    data: getDataFromLang(lang),
+  }
+}
 ```
