@@ -14,45 +14,60 @@ describe('builder', () => {
 
   describe('files tree', () => {
     test('should build all the necessary files for all languages', () => {
-      const pages_ = execSync('tree examples/static-site/pages_')
-        .toString()
-        .split('\n')
-      expect(pages_[1]).toContain('_app.js')
-      expect(pages_[2]).toContain('index.tsx')
-      expect(pages_[3]).toContain('more-examples')
-      expect(pages_[4]).toContain('dynamic-namespace.js')
-      expect(pages_[5]).toContain('index.js')
-      expect(pages_[7]).toContain('1 directory, 4 files')
+      /* Test currentPagesDir */
+      expect(fs.existsSync('examples/static-site/pages_/_app.js')).toBe(true)
+      expect(fs.existsSync('examples/static-site/pages_/index.tsx')).toBe(true)
+      expect(
+        fs.existsSync(
+          'examples/static-site/pages_/more-examples/dynamic-namespace.js'
+        )
+      ).toBe(true)
+      expect(
+        fs.existsSync('examples/static-site/pages_/more-examples/index.js')
+      ).toBe(true)
 
-      const pages = execSync('tree examples/static-site/pages')
-        .toString()
-        .split('\n')
-      expect(pages[1]).toContain('_app.js')
+      /* Test finalPagesDir */
+      expect(fs.existsSync('examples/static-site/pages/_app.js')).toBe(true)
+      expect(fs.existsSync('examples/static-site/pages/index.js')).toBe(true)
 
-      expect(pages[2]).toContain('ca')
-      expect(pages[3]).toContain('index.js')
-      expect(pages[4]).toContain('more-examples')
-      expect(pages[5]).toContain('dynamic-namespace.js')
-      expect(pages[6]).toContain('index.js')
+      expect(
+        fs.existsSync(
+          'examples/static-site/pages/more-examples/dynamic-namespace.js'
+        )
+      ).toBe(true)
+      expect(
+        fs.existsSync('examples/static-site/pages/more-examples/index.js')
+      ).toBe(true)
 
-      expect(pages[7]).toContain('en')
-      expect(pages[8]).toContain('index.js')
-      expect(pages[9]).toContain('more-examples')
-      expect(pages[10]).toContain('dynamic-namespace.js')
-      expect(pages[11]).toContain('index.js')
+      expect(fs.existsSync('examples/static-site/pages/ca/index.js')).toBe(true)
+      expect(
+        fs.existsSync(
+          'examples/static-site/pages/ca/more-examples/dynamic-namespace.js'
+        )
+      ).toBe(true)
+      expect(
+        fs.existsSync('examples/static-site/pages/ca/more-examples/index.js')
+      ).toBe(true)
 
-      expect(pages[12]).toContain('es')
-      expect(pages[13]).toContain('index.js')
-      expect(pages[14]).toContain('more-examples')
-      expect(pages[15]).toContain('dynamic-namespace.js')
-      expect(pages[16]).toContain('index.js')
+      expect(fs.existsSync('examples/static-site/pages/en/index.js')).toBe(true)
+      expect(
+        fs.existsSync(
+          'examples/static-site/pages/en/more-examples/dynamic-namespace.js'
+        )
+      ).toBe(true)
+      expect(
+        fs.existsSync('examples/static-site/pages/en/more-examples/index.js')
+      ).toBe(true)
 
-      expect(pages[17]).toContain('index.js')
-      expect(pages[18]).toContain('more-examples')
-      expect(pages[19]).toContain('dynamic-namespace.js')
-      expect(pages[20]).toContain('index.js')
-
-      expect(pages[22]).toContain('7 directories, 13 files')
+      expect(fs.existsSync('examples/static-site/pages/es/index.js')).toBe(true)
+      expect(
+        fs.existsSync(
+          'examples/static-site/pages/es/more-examples/dynamic-namespace.js'
+        )
+      ).toBe(true)
+      expect(
+        fs.existsSync('examples/static-site/pages/es/more-examples/index.js')
+      ).toBe(true)
     })
   })
 
