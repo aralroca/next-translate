@@ -23,16 +23,16 @@
     "email": "aral-rg@hotmail.com"
   },
   "scripts": {
-    "build": "yarn clean && NODE_ENV=production babel src -d .",
+    "build": "yarn clean && cross-env NODE_ENV=production babel src -d .",
     "clean": "rm -f *.js && yarn clean:examples",
     "clean:examples": "rm -rf examples/**/.next && rm -rf examples/**/node_modules && rm -rf examples/**/yarn.lock",
     "example:static-site": "yarn build && cd examples/static-site && yarn && yarn dev",
     "example:with-server": "yarn build && cd examples/with-server && yarn && yarn dev",
     "format": "pretty-quick",
     "prepublish": "yarn test && yarn build",
-    "test": "NODE_ENV=test jest",
-    "test:coverage": "NODE_ENV=test jest --coverage",
-    "test:watch": "NODE_ENV=test jest --watch"
+    "test": "cross-env NODE_ENV=test jest",
+    "test:coverage": "cross-env NODE_ENV=test jest --coverage",
+    "test:watch": "cross-env NODE_ENV=test jest --watch"
   },
   "bin": {
     "next-translate": "./cli/builder.js"
@@ -45,6 +45,7 @@
     "babel-jest": "25.1.0",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
     "babel-preset-minify": "0.5.1",
+    "cross-env": "^7.0.2",
     "express": "4.17.1",
     "husky": "4.2.3",
     "jest": "25.1.0",

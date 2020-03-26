@@ -17,9 +17,11 @@ const {
 function readDirR(dir) {
   return fs.statSync(dir).isDirectory()
     ? Array.prototype.concat(
-        ...fs.readdirSync(dir).map((f) => readDirR(path.join(dir, f)))
+        ...fs
+          .readdirSync(dir)
+          .map((f) => readDirR(path.join(dir, f).replace('\\', '/')))
       )
-    : dir
+    : dir.replace('\\', '/')
 }
 
 createPagesDir(allLanguages)
@@ -30,10 +32,11 @@ createPagesDir(allLanguages)
  * /pages/en/ - /pages/es/ ...
  */
 async function createPagesDir(langs = []) {
-  execSync(`rm -rf ${finalPagesDir} && mkdir ${finalPagesDir}`)
+  execSync(`rm -rf ${finalPagesDir}`)
+  fs.mkdirSync(finalPagesDir)
 
   langs.forEach(async (lang) => {
-    execSync(`mkdir ${finalPagesDir}/${lang}`)
+    fs.mkdirSync(`${finalPagesDir}/${lang}`)
   })
 
   if (redirectToDefaultLang) {
@@ -143,7 +146,7 @@ function buildPageLocale({ prefix, pagePath, namespaces, lang, path }) {
   const template = getPageTemplate(prefix, pagePath, lang, namespaces)
   const [filename] = finalPath.split('/').reverse()
   const dirs = finalPath.replace(`/${filename}`, '')
-  execSync(`mkdir -p ${dirs}`)
+  fs.mkdirSync(dirs, { recursive: true })
   fs.writeFileSync(finalPath.replace(/(\.tsx|\.ts)$/, '.js'), template)
 }
 
@@ -157,11 +160,9 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
   // _app.js , _document.js, _error.js, /api/*
   if (isNextInternal(pagePath)) {
     if (pagePath.includes('/api/')) {
-      execSync(`mkdir -p ${finalPagesDir}/api`)
+      fs.mkdirSync(`${finalPagesDir}/api`, { recursive: true })
     }
-    execSync(
-      `cp ${pagePath} ${pagePath.replace(currentPagesDir, finalPagesDir)}`
-    )
+    fs.copyFileSync(pagePath, pagePath.replace(currentPagesDir, finalPagesDir))
     return
   }
 
@@ -192,7 +193,7 @@ function getIndexRedirectTemplate() {
   return `import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import C from './${defaultLanguage}/index'
-  
+
 export default function Index(props) {
   const router = useRouter()
   useEffect(() => { router.replace('/${defaultLanguage}') }, [])
