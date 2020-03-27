@@ -12,6 +12,7 @@ const {
   localesPath = 'locales',
   pages = {},
   redirectToDefaultLang = false,
+  logBuild = true,
 } = require(process.cwd() + '/i18n.json') || {}
 
 function readDirR(dir) {
@@ -19,7 +20,7 @@ function readDirR(dir) {
     ? Array.prototype.concat(
         ...fs
           .readdirSync(dir)
-          .map((f) => readDirR(path.join(dir, f).replace('\\', '/')))
+          .map(f => readDirR(path.join(dir, f).replace('\\', '/')))
       )
     : dir.replace('\\', '/')
 }
@@ -35,7 +36,7 @@ async function createPagesDir(langs = []) {
   execSync(`rm -rf ${finalPagesDir}`)
   fs.mkdirSync(finalPagesDir)
 
-  langs.forEach(async (lang) => {
+  langs.forEach(async lang => {
     fs.mkdirSync(`${finalPagesDir}/${lang}`)
   })
 
@@ -44,7 +45,9 @@ async function createPagesDir(langs = []) {
     fs.writeFileSync(`${finalPagesDir}/index.js`, getIndexRedirectTemplate())
   }
 
-  console.log(`Building pages | from ${currentPagesDir} to ${finalPagesDir}`)
+  if (logBuild) {
+    console.log(`Building pages | from ${currentPagesDir} to ${finalPagesDir}`)
+  }
   readPageNamespaces(langs)
 }
 
@@ -65,11 +68,11 @@ function clearPageExt(page) {
  * STEP 2: Read each page namespaces
  */
 function readPageNamespaces(langs) {
-  readDirR(currentPagesDir).forEach(async (page) => {
+  readDirR(currentPagesDir).forEach(async page => {
     const pageId = clearPageExt(page.replace(currentPagesDir, '')) || '/'
     const namespaces = await getPageNamespaces({ pages }, pageId)
 
-    if (!isNextInternal(page)) {
+    if (!isNextInternal(page) && logBuild) {
       console.log(`🔨 ${pageId}`, namespaces)
     }
 
@@ -167,7 +170,7 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
   }
 
   // For each lang
-  langs.forEach((lang) => {
+  langs.forEach(lang => {
     buildPageLocale({
       lang,
       namespaces,
