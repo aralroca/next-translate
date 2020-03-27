@@ -215,6 +215,7 @@ In order to use each translation in the project, use the _translation id_ compos
 | `localesPath`           | A string with the directory of JSONs locales. It doesn't work with a custom server, instead you should use the `loadLocaleFrom` config.                                                                                                                                                                                                                                                                                                                                                                 | `string`                        | `"locales"`                                                                |
 | `loadLocaleFrom`        | A function to return the dynamic import of each locale. IT ONLY WORKS with a custom server. If you don't use a custom server, you should use the `localesPath` instead. [See an example](#use-translations-in-your-pages)                                                                                                                                                                                                                                                                               | `Function`                      | `null`                                                                     |
 | `pages`                 | An object that defines the namespaces used in each page. Example of object: `{"/": ["home", "example"]}`. To add namespaces to all pages you should use the key `"*"`, ex: `{"*": ["common"]}`. It's also possible to use regex using `rgx:` on front: `{"rgx:/form$": ["form"]}`. In case of using a custom server, you can also use a function instead of an array, to provide some namespaces depending on some rules, ex: `{ "/": ({ req, query }) => query.type === 'example' ? ['example'] : []}` | `Object<Array<string>/Function` | `{}`                                                                       |
+| `logBuild`              | Configure if the build result should be logged to the console                                                                                                                                                                                                                                                                                                                                                                                                                                           | `Boolean`                       | `true`                                                                     |
 
 ## 5. API
 
@@ -345,7 +346,7 @@ export default function ExampleWithDynamicNamespace() {
   return (
     <DynamicNamespaces
       dynamic={(lang, ns) =>
-        import(`../../locales/${lang}/${ns}.json`).then((m) => m.default)
+        import(`../../locales/${lang}/${ns}.json`).then(m => m.default)
       }
       namespaces={['dynamic']}
       fallback="Loading..."
@@ -482,7 +483,7 @@ function PluralExample() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCount((v) => (v === 5 ? 0 : v + 1))
+      setCount(v => (v === 5 ? 0 : v + 1))
     }, 1000)
 
     return () => clearInterval(interval)
@@ -572,7 +573,7 @@ const { allLanguages } = i18nConfig
 function ChangeLanguage() {
   const { t, lang } = useTranslation()
 
-  return allLanguages.map((lng) => {
+  return allLanguages.map(lng => {
     if (lng === lang) return null
 
     // Or you can attach the current pathame at the end
