@@ -16,13 +16,15 @@ const {
 } = require(process.cwd() + '/i18n.json') || {}
 
 function readDirR(dir) {
-  return fs.statSync(dir).isDirectory()
+  const parsedDir = dir.replace(/\\/g, '/')
+
+  return fs.statSync(parsedDir).isDirectory()
     ? Array.prototype.concat(
         ...fs
-          .readdirSync(dir)
-          .map(f => readDirR(path.join(dir, f).replace('\\', '/')))
+          .readdirSync(parsedDir)
+          .map(f => readDirR(path.join(parsedDir, f)))
       )
-    : dir.replace('\\', '/')
+    : parsedDir
 }
 
 createPagesDir(allLanguages)
