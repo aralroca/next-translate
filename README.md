@@ -236,7 +236,7 @@ import useTranslation from 'next-translate/useTranslation'
 
 export default function Description() {
   const { t, lang } = useTranslation()
-  const title = t('title')
+  const title = t('common:title')
   const description = t`common:description` // also works as template string
   const example = t('common:example', { count: 3 }) // and with query params
 
