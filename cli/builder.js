@@ -22,7 +22,7 @@ function readDirR(dir) {
     ? Array.prototype.concat(
         ...fs
           .readdirSync(parsedDir)
-          .map(f => readDirR(path.join(parsedDir, f)))
+          .map((f) => readDirR(path.join(parsedDir, f)))
       )
     : parsedDir
 }
@@ -38,7 +38,7 @@ async function createPagesDir(langs = []) {
   execSync(`rm -rf ${finalPagesDir}`)
   fs.mkdirSync(finalPagesDir)
 
-  langs.forEach(async lang => {
+  langs.forEach(async (lang) => {
     fs.mkdirSync(`${finalPagesDir}/${lang}`)
   })
 
@@ -70,7 +70,7 @@ function clearPageExt(page) {
  * STEP 2: Read each page namespaces
  */
 function readPageNamespaces(langs) {
-  readDirR(currentPagesDir).forEach(async page => {
+  readDirR(currentPagesDir).forEach(async (page) => {
     const pageId = clearPageExt(page.replace(currentPagesDir, '')) || '/'
     const namespaces = await getPageNamespaces({ pages }, pageId)
 
@@ -172,7 +172,7 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
   }
 
   // For each lang
-  langs.forEach(lang => {
+  langs.forEach((lang) => {
     buildPageLocale({
       lang,
       namespaces,
@@ -211,11 +211,15 @@ export * from './${defaultLanguage}/index'
 }
 
 function getCatchAllTemplate() {
-  return `import { useRouter } from 'next/router';
+  return `import Error from 'next/error';
+import { useRouter } from 'next/router';
 
 export default function CatchAll() {
   const router = useRouter()
-  if (Array.isArray(router.query.path) && router.query.path[0] !== '${defaultLanguage}') {
+  if (Array.isArray(router.query.path)) {
+    if (router.query.path[0] === '${defaultLanguage}') {
+      return <Error statusCode="404" />
+    }
     router.replace(\`/${defaultLanguage}/\${router.query.path.join('/')}\`)
   }
   return null
