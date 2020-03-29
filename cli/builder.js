@@ -3,6 +3,7 @@ const fs = require('fs')
 const execSync = require('child_process').execSync
 const path = require('path')
 const getPageNamespaces = require('../_helpers/getPageNamespaces').default
+const rimraf = require('rimraf')
 
 const {
   allLanguages = [],
@@ -35,7 +36,7 @@ createPagesDir(allLanguages)
  * /pages/en/ - /pages/es/ ...
  */
 async function createPagesDir(langs = []) {
-  execSync(`rm -rf ${finalPagesDir}`)
+  rimraf.sync(finalPagesDir)
   fs.mkdirSync(finalPagesDir)
 
   langs.forEach(async (lang) => {

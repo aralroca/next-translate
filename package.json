@@ -79,5 +79,8 @@
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
     }
+  },
+  "dependencies": {
+    "rimraf": "^3.0.2"
   }
 }
