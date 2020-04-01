@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const fs = require('fs')
-const execSync = require('child_process').execSync
 const path = require('path')
 const getPageNamespaces = require('../_helpers/getPageNamespaces').default
 
@@ -14,6 +13,24 @@ const {
   redirectToDefaultLang = false,
   logBuild = true,
 } = require(process.cwd() + '/i18n.json') || {}
+
+/**
+ * Similar to "rm -rf"
+ */
+function rimraf(pathname) {
+  if (!fs.existsSync(pathname)) return
+
+  fs.readdirSync(pathname).forEach((child) => {
+    const childPathname = path.join(pathname, child)
+
+    if (fs.lstatSync(childPathname).isDirectory()) {
+      rimraf(childPathname)
+      return
+    }
+    fs.unlinkSync(childPathname)
+  })
+  fs.rmdirSync(pathname)
+}
 
 function readDirR(dir) {
   const parsedDir = dir.replace(/\\/g, '/')
@@ -35,7 +52,7 @@ createPagesDir(allLanguages)
  * /pages/en/ - /pages/es/ ...
  */
 async function createPagesDir(langs = []) {
-  execSync(`rm -rf ${finalPagesDir}`)
+  rimraf(finalPagesDir)
   fs.mkdirSync(finalPagesDir)
 
   langs.forEach(async (lang) => {
