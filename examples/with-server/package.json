@@ -7,7 +7,7 @@
     "dev": "node server.js"
   },
   "dependencies": {
-    "next": "9.3.2",
+    "next": "9.3.4",
     "next-translate": "link:../../",
     "react": "link:../../node_modules/react",
     "express": "4.17.1",
