@@ -1,5 +1,5 @@
 import React from 'react'
-import Head from 'next/Head'
+import Head from 'next/head'
 import Link from 'next-translate/Link'
 import useTranslation from 'next-translate/useTranslation'
 
