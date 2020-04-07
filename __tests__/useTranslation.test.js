@@ -57,6 +57,22 @@ describe('useTranslation', () => {
       expect(container.textContent).toContain(expected)
     })
 
+    test('should return the key as fallback using wrong the very nested translations', () => {
+      const i18nKey = 'ns:grandfather.parent.this.is.very.nested.example'
+      const expected = 'ns:grandfather.parent.this.is.very.nested.example'
+      const nested = {
+        grandfather: {
+          parent: {
+            child: 'I am the child',
+          },
+        },
+      }
+      const { container } = render(
+        <TestEnglish namespaces={{ ns: nested }} i18nKey={i18nKey} />
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
     test('should return the key as fallback WITH PROVIDER', () => {
       const Inner = () => {
         const { t } = useTranslation()
