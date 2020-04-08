@@ -187,13 +187,11 @@ function buildPageLocale({
   const template = getPageTemplate(prefix, pagePath, lang, namespaces)
   if (pageAlias) {
     const [filename] = finalPath.split('/').reverse()
-    console.log(filename)
     finalPath = finalPath.replace(
       finalPath.replace(path, ''),
       filename == 'index.js' ? `${pageAlias}/index.js` : `${pageAlias}.js`
     )
   }
-  console.log(finalPath, path)
   const [filename] = finalPath.split('/').reverse()
   const dirs = finalPath.replace(`/${filename}`, '')
   fs.mkdirSync(dirs, { recursive: true })
