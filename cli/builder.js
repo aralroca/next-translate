@@ -10,6 +10,7 @@ const {
   finalPagesDir = 'pages',
   localesPath = 'locales',
   pages = {},
+  alias = {},
   redirectToDefaultLang = false,
   logBuild = true,
 } = require(process.cwd() + '/i18n.json') || {}
@@ -89,13 +90,14 @@ function clearPageExt(page) {
 function readPageNamespaces(langs) {
   readDirR(currentPagesDir).forEach(async (page) => {
     const pageId = clearPageExt(page.replace(currentPagesDir, '')) || '/'
+    const pageAlias = alias[pageId] || {}
     const namespaces = await getPageNamespaces({ pages }, pageId)
 
     if (!isNextInternal(page) && logBuild) {
       console.log(`🔨 ${pageId}`, namespaces)
     }
 
-    buildPageInAllLocales(page, namespaces, langs)
+    buildPageInAllLocales(page, namespaces, langs, pageAlias)
   })
 }
 
@@ -140,10 +142,20 @@ ${namespaces
 const namespaces = { ${namespaces
     .map((ns, i) => `'${ns}': ns${i}`)
     .join(', ')} }
+  
+const alias = { ${Object.keys(alias)
+    .map(
+      (a, i) => `'${a}': {
+    ${Object.keys(alias[a])
+      .map((l) => `'${l}': '${alias[a][l]}'`)
+      .join(', ')}
+  }`
+    )
+    .join(', ')} }
 
 export default function Page(p){
   return (
-    <I18nProvider lang="${lang}" namespaces={namespaces} isStaticMode>
+    <I18nProvider lang="${lang}" namespaces={namespaces} alias={alias} isStaticMode>
       <C {...p} />
     </I18nProvider>
   )
@@ -163,16 +175,29 @@ export * from '${prefix}/${clearPageExt(page)}'
 `
 }
 
-function buildPageLocale({ prefix, pagePath, namespaces, lang, path }) {
-  const finalPath = pagePath.replace(currentPagesDir, path)
+function buildPageLocale({
+  prefix,
+  pagePath,
+  namespaces,
+  lang,
+  path,
+  pageAlias,
+}) {
+  let finalPath = pagePath.replace(currentPagesDir, path)
   const template = getPageTemplate(prefix, pagePath, lang, namespaces)
+  if (pageAlias) {
+    finalPath = finalPath.replace(
+      finalPath.replace(path, ''),
+      `${pageAlias}.js`
+    )
+  }
   const [filename] = finalPath.split('/').reverse()
   const dirs = finalPath.replace(`/${filename}`, '')
   fs.mkdirSync(dirs, { recursive: true })
   fs.writeFileSync(finalPath.replace(/(\.tsx|\.ts)$/, '.js'), template)
 }
 
-function buildPageInAllLocales(pagePath, namespaces, langs) {
+function buildPageInAllLocales(pagePath, namespaces, langs, pageAlias) {
   const prefix = pagePath
     .split('/')
     .map(() => '..')
@@ -196,6 +221,7 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
       pagePath,
       path: `${finalPagesDir}/${lang}`,
       prefix,
+      pageAlias: pageAlias[lang],
     })
   })
 
@@ -207,6 +233,7 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
       pagePath,
       path: finalPagesDir,
       prefix: rootPrefix,
+      pageAlias: pageAlias[defaultLanguage],
     })
   }
 }

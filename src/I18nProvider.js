@@ -43,6 +43,7 @@ function interpolation(text, query) {
 
 export default function I18nProvider({
   lang,
+  alias = {},
   namespaces = {},
   children,
   isStaticMode,
@@ -50,7 +51,7 @@ export default function I18nProvider({
   const ns = useContext(NsContext)
   const allNamespaces = { ...ns, ...namespaces }
 
-  setInternals({ lang, isStaticMode })
+  setInternals({ lang, isStaticMode, alias })
 
   function t(key = '', query) {
     const k = Array.isArray(key) ? key[0] : key
@@ -63,7 +64,7 @@ export default function I18nProvider({
   }
 
   return (
-    <I18nContext.Provider value={{ lang, t }}>
+    <I18nContext.Provider value={{ lang, t, alias }}>
       <NsContext.Provider value={allNamespaces}>{children}</NsContext.Provider>
     </I18nContext.Provider>
   )

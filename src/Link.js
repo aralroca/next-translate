@@ -9,8 +9,8 @@ export default function Link({ children, href, as, lang, noLang, ...props }) {
 
   return (
     <NextLink
-      href={noLang ? href : fixHref(href, lng)}
-      as={noLang ? as : fixAs(as, href, lng)}
+      href={noLang ? href : fixHref(href, lng, current.alias)}
+      as={noLang ? as : fixAs(as, href, lng, current.alias)}
       {...props}
     >
       {children}

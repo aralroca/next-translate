@@ -8,7 +8,7 @@ function getLang(ctx, config) {
 
   if (req) return req.query.lang || getDefaultLang(req, config)
 
-  const startsWithLang = config.allLanguages.some(l =>
+  const startsWithLang = config.allLanguages.some((l) =>
     asPath.startsWith(`/${l}`)
   )
 
@@ -21,10 +21,10 @@ function removeTrailingSlash(path = '') {
 
 export default function appWithI18n(AppToTranslate, config = {}) {
   function AppWithTranslations(props) {
-    const { lang, namespaces } = props
+    const { lang, namespaces, alias } = props
 
     return (
-      <I18nProvider lang={lang} namespaces={namespaces}>
+      <I18nProvider lang={lang} namespaces={namespaces} alias={alias}>
         <AppToTranslate {...props} />
       </I18nProvider>
     )
@@ -44,8 +44,9 @@ export default function appWithI18n(AppToTranslate, config = {}) {
     }
     const page = removeTrailingSlash(ctx.pathname)
     const namespaces = await getPageNamespaces(config, page, ctx)
+    const alias = config.alias || {}
     const pageNamespaces = await Promise.all(
-      namespaces.map(ns =>
+      namespaces.map((ns) =>
         typeof config.loadLocaleFrom === 'function'
           ? config.loadLocaleFrom(lang, ns)
           : Promise.resolve([])
@@ -55,6 +56,7 @@ export default function appWithI18n(AppToTranslate, config = {}) {
     return {
       ...appProps,
       lang,
+      alias,
       namespaces: namespaces.reduce((obj, ns, i) => {
         obj[ns] = pageNamespaces[i]
         return obj
