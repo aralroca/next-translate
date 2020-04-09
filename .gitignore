@@ -17,8 +17,8 @@
 /out/
 
 # production
-# /build
-# /dist
+/build
+/dist
 
 # misc
 .DS_Store
@@ -34,7 +34,7 @@ yarn-error.log*
 /examples/static-site/pages
 
 # lib build
-# *.js
-# !src/**/*.js
-# !__tests__/*.js
-# !examples/**/*.js
+*.js
+!src/**/*.js
+!__tests__/*.js
+!examples/**/*.js
