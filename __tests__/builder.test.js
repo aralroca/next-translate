@@ -30,6 +30,7 @@ describe('builder', () => {
       expect(fs.existsSync('examples/static-site/pages/_app.js')).toBe(true)
       expect(fs.existsSync('examples/static-site/pages/index.js')).toBe(true)
 
+      // Default language
       expect(
         fs.existsSync(
           'examples/static-site/pages/more-examples/dynamic-namespace.js'
@@ -39,6 +40,7 @@ describe('builder', () => {
         fs.existsSync('examples/static-site/pages/more-examples/index.js')
       ).toBe(true)
 
+      // Rest of languages
       expect(fs.existsSync('examples/static-site/pages/ca/index.js')).toBe(true)
       expect(
         fs.existsSync(
@@ -47,16 +49,6 @@ describe('builder', () => {
       ).toBe(true)
       expect(
         fs.existsSync('examples/static-site/pages/ca/more-examples/index.js')
-      ).toBe(true)
-
-      expect(fs.existsSync('examples/static-site/pages/en/index.js')).toBe(true)
-      expect(
-        fs.existsSync(
-          'examples/static-site/pages/en/more-examples/dynamic-namespace.js'
-        )
-      ).toBe(true)
-      expect(
-        fs.existsSync('examples/static-site/pages/en/more-examples/index.js')
       ).toBe(true)
 
       expect(fs.existsSync('examples/static-site/pages/es/index.js')).toBe(true)
@@ -68,6 +60,19 @@ describe('builder', () => {
       expect(
         fs.existsSync('examples/static-site/pages/es/more-examples/index.js')
       ).toBe(true)
+
+      // The default language should be not generated when redirectToDefaultLang=false
+      expect(fs.existsSync('examples/static-site/pages/en/index.js')).toBe(
+        false
+      )
+      expect(
+        fs.existsSync(
+          'examples/static-site/pages/en/more-examples/dynamic-namespace.js'
+        )
+      ).toBe(false)
+      expect(
+        fs.existsSync('examples/static-site/pages/en/more-examples/index.js')
+      ).toBe(false)
     })
   })
 
@@ -94,7 +99,6 @@ describe('builder', () => {
       const deflt = fs.readFileSync('examples/static-site/pages/index.js')
       const es = fs.readFileSync('examples/static-site/pages/es/index.js')
       const ca = fs.readFileSync('examples/static-site/pages/ca/index.js')
-      const en = fs.readFileSync('examples/static-site/pages/en/index.js')
 
       expect(deflt.toString()).toContain(
         `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'en' })`
@@ -104,9 +108,6 @@ describe('builder', () => {
       )
       expect(ca.toString()).toContain(
         `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'ca' })`
-      )
-      expect(en.toString()).toContain(
-        `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'en' })`
       )
     })
   })

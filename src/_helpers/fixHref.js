@@ -1,5 +1,7 @@
 import i from './_internals'
 import appendLangPrefix from './appendLangPrefix'
 
-export default (href, lng) =>
-  i.isStaticMode ? appendLangPrefix(href, lng) : href
+export default (href, lng) => {
+  const isDefault = !i.redirectToDefaultLang && i.defaultLanguage === lng
+  return i.isStaticMode && !isDefault ? appendLangPrefix(href, lng) : href
+}
