@@ -3,14 +3,6 @@ import React from 'react'
 import I18nProvider from '../src/I18nProvider'
 import Link from '../src/Link'
 
-function StaticModeLink(props) {
-  return (
-    <I18nProvider lang="en" namespaces={{}} isStaticMode>
-      <Link {...props} />
-    </I18nProvider>
-  )
-}
-
 function CustomServerModeLink(props) {
   return (
     <I18nProvider lang="en" namespaces={{}}>
@@ -19,39 +11,91 @@ function CustomServerModeLink(props) {
   )
 }
 
-StaticModeLink.displayName = 'StaticMode'
-CustomServerModeLink.displayName = 'CustomServerMode'
+function StaticModeLinkWithRedirect(props) {
+  return (
+    <I18nProvider
+      lang="en"
+      namespaces={{}}
+      internals={{
+        isStaticMode: true,
+        redirectToDefaultLang: true,
+        defaultLanguage: 'en',
+      }}
+    >
+      <Link {...props} />
+    </I18nProvider>
+  )
+}
 
-const modes = [StaticModeLink, CustomServerModeLink]
+function StaticModeLinkWithoutRedirect(props) {
+  return (
+    <I18nProvider
+      lang="en"
+      namespaces={{}}
+      internals={{
+        isStaticMode: true,
+        redirectToDefaultLang: false,
+        defaultLanguage: 'en',
+      }}
+    >
+      <Link {...props} />
+    </I18nProvider>
+  )
+}
+
+StaticModeLinkWithRedirect.displayName = 'StaticModeWithRedirect'
+CustomServerModeLink.displayName = 'CustomServerMode'
+StaticModeLinkWithoutRedirect.displayName = 'StaticModeWithoutRedirect'
+
+const modes = [
+  CustomServerModeLink,
+  StaticModeLinkWithRedirect,
+  StaticModeLinkWithoutRedirect,
+]
 
 describe('Link', () => {
   afterEach(cleanup)
 
-  modes.forEach(LinkComponent => {
+  modes.forEach((LinkComponent) => {
     describe(`${LinkComponent.displayName}`, () => {
       test('Should add the current language navigating to homepage', () => {
+        const expected = {
+          StaticModeWithRedirect: '<a href="/en">home</a>',
+          CustomServerMode: '<a href="/en">home</a>',
+          StaticModeWithoutRedirect: '<a href="/">home</a>',
+        }[LinkComponent.displayName]
         const { container } = render(
           <LinkComponent href="/">
             <a>home</a>
           </LinkComponent>
         )
-        expect(container.innerHTML).toBe('<a href="/en">home</a>')
+        expect(container.innerHTML).toBe(expected)
       })
       test('Should add the current language navigating to homepage with "as"', () => {
+        const expected = {
+          StaticModeWithRedirect: '<a href="/en/homepage">home</a>',
+          CustomServerMode: '<a href="/en/homepage">home</a>',
+          StaticModeWithoutRedirect: '<a href="/homepage">home</a>',
+        }[LinkComponent.displayName]
         const { container } = render(
           <LinkComponent href="/" as="/homepage">
             <a>home</a>
           </LinkComponent>
         )
-        expect(container.innerHTML).toBe('<a href="/en/homepage">home</a>')
+        expect(container.innerHTML).toBe(expected)
       })
       test('Should add the current language using nested route ', () => {
+        const expected = {
+          StaticModeWithRedirect: '<a href="/en/some/route">link</a>',
+          CustomServerMode: '<a href="/en/some/route">link</a>',
+          StaticModeWithoutRedirect: '<a href="/some/route">link</a>',
+        }[LinkComponent.displayName]
         const { container } = render(
           <LinkComponent href="/some/route">
             <a>link</a>
           </LinkComponent>
         )
-        expect(container.innerHTML).toBe('<a href="/en/some/route">link</a>')
+        expect(container.innerHTML).toBe(expected)
       })
       test('Should add the defined language navigating to homepage', () => {
         const { container } = render(

@@ -45,12 +45,12 @@ export default function I18nProvider({
   lang,
   namespaces = {},
   children,
-  isStaticMode,
+  internals = {},
 }) {
   const ns = useContext(NsContext)
   const allNamespaces = { ...ns, ...namespaces }
 
-  setInternals({ lang, isStaticMode })
+  setInternals({ ...internals, lang })
 
   function t(key = '', query) {
     const k = Array.isArray(key) ? key[0] : key

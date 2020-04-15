@@ -14,6 +14,12 @@ const {
   logBuild = true,
 } = require(process.cwd() + '/i18n.json') || {}
 
+const internals = JSON.stringify({
+  isStaticMode: true,
+  redirectToDefaultLang,
+  defaultLanguage,
+})
+
 /**
  * Similar to "rm -rf"
  */
@@ -44,18 +50,24 @@ function readDirR(dir) {
     : parsedDir
 }
 
-createPagesDir(allLanguages)
+createPagesDir()
+
+function getLangs() {
+  return allLanguages.filter((lng) =>
+    redirectToDefaultLang ? true : lng !== defaultLanguage
+  )
+}
 
 /**
  * STEP 1: Create /pages/ dir with their langs:
  *
  * /pages/en/ - /pages/es/ ...
  */
-async function createPagesDir(langs = []) {
+async function createPagesDir() {
   rimraf(finalPagesDir)
   fs.mkdirSync(finalPagesDir)
 
-  langs.forEach(async (lang) => {
+  getLangs().forEach(async (lang) => {
     fs.mkdirSync(`${finalPagesDir}/${lang}`)
   })
 
@@ -67,7 +79,7 @@ async function createPagesDir(langs = []) {
   if (logBuild) {
     console.log(`Building pages | from ${currentPagesDir} to ${finalPagesDir}`)
   }
-  readPageNamespaces(langs)
+  readPageNamespaces()
 }
 
 function isNextInternal(pagePath) {
@@ -86,7 +98,7 @@ function clearPageExt(page) {
 /**
  * STEP 2: Read each page namespaces
  */
-function readPageNamespaces(langs) {
+function readPageNamespaces() {
   readDirR(currentPagesDir).forEach(async (page) => {
     const pageId = clearPageExt(page.replace(currentPagesDir, '')) || '/'
     const namespaces = await getPageNamespaces({ pages }, pageId)
@@ -95,7 +107,7 @@ function readPageNamespaces(langs) {
       console.log(`🔨 ${pageId}`, namespaces)
     }
 
-    buildPageInAllLocales(page, namespaces, langs)
+    buildPageInAllLocales(page, namespaces)
   })
 }
 
@@ -143,7 +155,11 @@ const namespaces = { ${namespaces
 
 export default function Page(p){
   return (
-    <I18nProvider lang="${lang}" namespaces={namespaces} isStaticMode>
+    <I18nProvider 
+      lang="${lang}" 
+      namespaces={namespaces}  
+      internals={${internals}}
+    >
       <C {...p} />
     </I18nProvider>
   )
@@ -172,7 +188,7 @@ function buildPageLocale({ prefix, pagePath, namespaces, lang, path }) {
   fs.writeFileSync(finalPath.replace(/(\.tsx|\.ts)$/, '.js'), template)
 }
 
-function buildPageInAllLocales(pagePath, namespaces, langs) {
+function buildPageInAllLocales(pagePath, namespaces) {
   const prefix = pagePath
     .split('/')
     .map(() => '..')
@@ -189,7 +205,7 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
   }
 
   // For each lang
-  langs.forEach((lang) => {
+  getLangs().forEach((lang) => {
     buildPageLocale({
       lang,
       namespaces,
@@ -200,7 +216,7 @@ function buildPageInAllLocales(pagePath, namespaces, langs) {
   })
 
   // For default lang
-  if (langs.includes(defaultLanguage) && !redirectToDefaultLang) {
+  if (allLanguages.includes(defaultLanguage) && !redirectToDefaultLang) {
     buildPageLocale({
       lang: defaultLanguage,
       namespaces,

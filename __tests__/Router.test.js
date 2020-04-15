@@ -16,14 +16,6 @@ function Navigate({ href, as, lang }) {
   return <button onClick={nav}>Navigate</button>
 }
 
-function StaticModeRouter(props) {
-  return (
-    <I18nProvider lang="en" namespaces={{}} isStaticMode>
-      <Navigate {...props} />
-    </I18nProvider>
-  )
-}
-
 function CustomServerModeRouter(props) {
   return (
     <I18nProvider lang="en" namespaces={{}}>
@@ -32,10 +24,47 @@ function CustomServerModeRouter(props) {
   )
 }
 
-StaticModeRouter.displayName = 'StaticMode'
-CustomServerModeRouter.displayName = 'CustomServerMode'
+function StaticModeRouter(props) {
+  return (
+    <I18nProvider
+      lang="en"
+      namespaces={{}}
+      internals={{
+        isStaticMode: true,
+        redirectToDefaultLang: true,
+        defaultLanguage: 'en',
+      }}
+    >
+      <Navigate {...props} />
+    </I18nProvider>
+  )
+}
 
-const modes = [StaticModeRouter, CustomServerModeRouter]
+function StaticModeRouterNoRedirect(props) {
+  return (
+    <I18nProvider
+      lang="en"
+      namespaces={{}}
+      internals={{
+        isStaticMode: true,
+        redirectToDefaultLang: false,
+        defaultLanguage: 'en',
+      }}
+    >
+      <Navigate {...props} />
+    </I18nProvider>
+  )
+}
+
+StaticModeRouter.displayName = 'StaticModeWithRedirect'
+CustomServerModeRouter.displayName = 'CustomServerMode'
+StaticModeRouterNoRedirect.displayName = 'StaticModeWithoutRedirect'
+
+const modes = [
+  CustomServerModeRouter,
+  StaticModeRouter,
+  StaticModeRouterNoRedirect,
+]
 
 function expectNavigation({ href, as }) {
   expect(
@@ -49,23 +78,25 @@ function expectNavigation({ href, as }) {
 describe('Router', () => {
   afterEach(cleanup)
 
-  modes.forEach(RouterComponent => {
-    const isStatic = RouterComponent.displayName === 'StaticMode'
-
+  modes.forEach((RouterComponent) => {
     describe(`${RouterComponent.displayName}`, () => {
       test('Should add the current language navigating to homepage', () => {
-        const expected = isStatic
-          ? { href: '/en', as: undefined }
-          : { href: '/', as: '/en' }
+        const expected = {
+          StaticModeWithRedirect: { href: '/en', as: undefined },
+          CustomServerMode: { href: '/', as: '/en' },
+          StaticModeWithoutRedirect: { href: '/', as: undefined },
+        }[RouterComponent.displayName]
 
         const { container } = render(<RouterComponent href="/" />)
         fireEvent.click(container.firstChild)
         expectNavigation(expected)
       })
       test('Should add the current language navigating to homepage with "as"', () => {
-        const expected = isStatic
-          ? { href: '/en', as: '/en/homepage' }
-          : { href: '/', as: '/en/homepage' }
+        const expected = {
+          StaticModeWithRedirect: { href: '/en', as: '/en/homepage' },
+          CustomServerMode: { href: '/', as: '/en/homepage' },
+          StaticModeWithoutRedirect: { href: '/', as: '/homepage' },
+        }[RouterComponent.displayName]
 
         const { container } = render(
           <RouterComponent href="/" as="/homepage" />
@@ -74,27 +105,33 @@ describe('Router', () => {
         expectNavigation(expected)
       })
       test('Should add the current language using nested route ', () => {
-        const expected = isStatic
-          ? { href: '/en/some/route', as: undefined }
-          : { href: '/some/route', as: '/en/some/route' }
+        const expected = {
+          StaticModeWithRedirect: { href: '/en/some/route', as: undefined },
+          CustomServerMode: { href: '/some/route', as: '/en/some/route' },
+          StaticModeWithoutRedirect: { href: '/some/route', as: undefined },
+        }[RouterComponent.displayName]
 
         const { container } = render(<RouterComponent href="/some/route" />)
         fireEvent.click(container.firstChild)
         expectNavigation(expected)
       })
       test('Should add the defined language navigating to homepage', () => {
-        const expected = isStatic
-          ? { href: '/es', as: undefined }
-          : { href: '/', as: '/es' }
+        const expected = {
+          StaticModeWithRedirect: { href: '/es', as: undefined },
+          CustomServerMode: { href: '/', as: '/es' },
+          StaticModeWithoutRedirect: { href: '/es', as: undefined },
+        }[RouterComponent.displayName]
 
         const { container } = render(<RouterComponent href="/" lang="es" />)
         fireEvent.click(container.firstChild)
         expectNavigation(expected)
       })
       test('Should add the defined language using nested route ', () => {
-        const expected = isStatic
-          ? { href: '/es/some/route', as: undefined }
-          : { href: '/some/route', as: '/es/some/route' }
+        const expected = {
+          StaticModeWithRedirect: { href: '/es/some/route', as: undefined },
+          CustomServerMode: { href: '/some/route', as: '/es/some/route' },
+          StaticModeWithoutRedirect: { href: '/es/some/route', as: undefined },
+        }[RouterComponent.displayName]
 
         const { container } = render(
           <RouterComponent href="/some/route" lang="es" />
@@ -105,13 +142,65 @@ describe('Router', () => {
     })
   })
 
-  test('should work without specifying a language', () => {
+  test('should work without specifying a language | to another language', () => {
     function nav() {
       Router.pushI18n('/some/route')
     }
     function Component() {
       return (
-        <I18nProvider lang="en" namespaces={{}} isStaticMode>
+        <I18nProvider
+          lang="es"
+          namespaces={{}}
+          internals={{ isStaticMode: true }}
+        >
+          <button onClick={nav}>Navigate</button>
+        </I18nProvider>
+      )
+    }
+    const { container } = render(<Component />)
+    fireEvent.click(container.firstChild)
+    expectNavigation({ href: '/es/some/route', as: undefined })
+  })
+
+  test('should work without specifying a language | to default language (no redirect)', () => {
+    function nav() {
+      Router.pushI18n('/some/route')
+    }
+    function Component() {
+      return (
+        <I18nProvider
+          lang="en"
+          namespaces={{}}
+          internals={{
+            isStaticMode: true,
+            redirectToDefaultLang: false,
+            defaultLanguage: 'en',
+          }}
+        >
+          <button onClick={nav}>Navigate</button>
+        </I18nProvider>
+      )
+    }
+    const { container } = render(<Component />)
+    fireEvent.click(container.firstChild)
+    expectNavigation({ href: '/some/route', as: undefined })
+  })
+
+  test('should work without specifying a language | to default language (with redirect)', () => {
+    function nav() {
+      Router.pushI18n('/some/route')
+    }
+    function Component() {
+      return (
+        <I18nProvider
+          lang="en"
+          namespaces={{}}
+          internals={{
+            isStaticMode: true,
+            redirectToDefaultLang: true,
+            defaultLanguage: 'en',
+          }}
+        >
           <button onClick={nav}>Navigate</button>
         </I18nProvider>
       )
