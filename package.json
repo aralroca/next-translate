@@ -28,6 +28,7 @@
     "clean:examples": "rm -rf examples/**/.next && rm -rf examples/**/node_modules && rm -rf examples/**/yarn.lock",
     "example:static-site": "yarn build && cd examples/static-site && yarn && yarn dev",
     "example:with-server": "yarn build && cd examples/with-server && yarn && yarn dev",
+    "example:with-dynamic-routes": "yarn build && cd examples/with-dynamic-routes && yarn && yarn dev",
     "format": "pretty-quick",
     "prepublish": "yarn test && yarn build",
     "test": "cross-env NODE_ENV=test jest",
