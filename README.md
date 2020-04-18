@@ -377,7 +377,7 @@ Remember that `['dynamic']` namespace should **not** be listed on `pages` config
 
 ### I18nProvider
 
-📦**Size**: ~1.4kb
+📦**Size**: ~1.8kb
 
 The `I18nProvider` is a context provider internally used by next-translate to provide the current **lang** and the page **namespaces**. SO MAYBE YOU'LL NEVER NEED THIS.
 
