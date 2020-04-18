@@ -167,7 +167,7 @@ export default function Page(p){
 
 Page = Object.assign(Page, { ...C })
 
-if(C.getInitialProps) {
+if(C && C.getInitialProps) {
   Page.getInitialProps = ctx => C.getInitialProps({ ...ctx, lang: '${lang}'})
 }
 
