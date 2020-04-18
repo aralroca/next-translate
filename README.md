@@ -716,6 +716,8 @@ Pros and cons:
 
 See a full example [here](https://github.com/vinissimus/next-translate/tree/master/examples/with-dynamic-routes)
 
+In future major releases, we may evolve simplifying this and removing the "build step". If you want to help on this, there is an open issue [here](https://github.com/vinissimus/next-translate/issues/127) to discuss.
+
 ### Second alternative
 
 If you don't need Automatic Static Optimization in your project, you can achive the same by using a custom server.

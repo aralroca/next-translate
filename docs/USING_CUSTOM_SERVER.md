@@ -2,17 +2,17 @@
     <img src="../images/logo.svg" width="300" alt="next-translate" />
 </p>
 
-<h1 align="center"> Getting started with a Custom Server </h1>
+<h1 align="center"> Getting started with a Custom Server alternative </h1>
 
 ---
 
-<p align="center">Remember ⚠️:</p>
+<p align="center">Warning ⚠️:</p>
 
-> Before deciding to use a custom server please keep in mind that it should only be used when the integrated router of Next.js can't meet your app requirements. A custom server will remove important performance optimizations, like serverless functions and Automatic Static Optimization.
+> It will remove important performance optimizations, like serverless functions and Automatic Static Optimization.
 
 <p align="center"><a href="https://nextjs.org/docs/advanced-features/custom-server">View source</a></p>
 
-How can I use `next-translate` without the need of a custom server? Take a look at the [README.md](/README.md).
+How can I use `next-translate` with performance optimizations? Take a look at the [README.md](/README.md).
 
 ## 1. Requirements
 
