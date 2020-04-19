@@ -17,7 +17,6 @@
 - [1. About next-translate](#1-about-next-translate)
   - [How is this lib handling the routes?](#how-is-this-lib-handling-the-routes)
 - [2. Getting started](#2-getting-started)
-  - [Requirements](#requirements)
   - [Install](#install)
   - [Use translations in your pages](#use-translations-in-your-pages)
   - [Add pages to .gitignore](#add-pages-to-gitignore)
@@ -115,8 +114,6 @@ const title = t('common:title')
 ```
 
 ## 2. Getting started
-
-### Requirements
 
 This is the recommended way to get started. However, if you don't like the "build step" you can use an [alternative](#12-do-i-need-this-build-step-is-there-an-alternative).
 
