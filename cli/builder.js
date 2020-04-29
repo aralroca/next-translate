@@ -188,6 +188,19 @@ function buildPageLocale({ prefix, pagePath, namespaces, lang, path }) {
   fs.writeFileSync(finalPath.replace(/(\.tsx|\.ts)$/, '.js'), template)
 }
 
+function copyFolderRecursiveSync(source, targetFolder) {
+  const target = path.join(targetFolder, path.basename(source))
+
+  //check if folder needs to be created
+  if (!fs.existsSync(targetFolder)) {
+    fs.mkdirSync(targetFolder)
+    //copy
+    if (!fs.lstatSync(source).isDirectory()) {
+      fs.copyFileSync(source, target)
+    }
+  }
+}
+
 function buildPageInAllLocales(pagePath, namespaces) {
   const prefix = pagePath
     .split('/')
@@ -199,6 +212,10 @@ function buildPageInAllLocales(pagePath, namespaces) {
   if (isNextInternal(pagePath)) {
     if (pagePath.includes('/api/')) {
       fs.mkdirSync(`${finalPagesDir}/api`, { recursive: true })
+      copyFolderRecursiveSync(
+        pagePath,
+        path.dirname(pagePath.replace(currentPagesDir, finalPagesDir))
+      )
     }
     fs.copyFileSync(pagePath, pagePath.replace(currentPagesDir, finalPagesDir))
     return
