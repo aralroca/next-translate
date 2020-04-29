@@ -40,6 +40,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "psanlorenzo",
+      "name": "Pol",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/42739235?v=4",
+      "profile": "https://github.com/psanlorenzo",
+      "contributions": [
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
