@@ -50,6 +50,15 @@
       "contributions": [
         "infra"
       ]
+    },
+    {
+      "login": "ftonato",
+      "name": "Ademílson F. Tonato",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/5417662?v=4",
+      "profile": "https://twitter.com/ftonato",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
