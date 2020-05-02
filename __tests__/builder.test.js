@@ -97,11 +97,15 @@ describe('builder', () => {
 
     test('Should inject lang to getStaticProps', () => {
       const deflt = fs.readFileSync('examples/static-site/pages/index.js')
+      const en = fs.readFileSync('examples/static-site/pages/en/[...path].js')
       const es = fs.readFileSync('examples/static-site/pages/es/index.js')
       const ca = fs.readFileSync('examples/static-site/pages/ca/index.js')
 
       expect(deflt.toString()).toContain(
         `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'en' })`
+      )
+      expect(en.toString()).toContain(
+        `router.replace(\`\${router.query.path.slice(1).join('/')}\`)`
       )
       expect(es.toString()).toContain(
         `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'es' })`

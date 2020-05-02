@@ -92,10 +92,7 @@ Then, when we build the app, this **/pages** structure is going to be automatica
 │   └── nested
 │       └── index.js
 ├── en
-│   ├── about.js
-│   ├── index.js
-│   └── nested
-│       └── index.js
+│   ├── [...path].js
 ├── es
 │   ├── about.js
 │   ├── index.js
@@ -105,6 +102,8 @@ Then, when we build the app, this **/pages** structure is going to be automatica
 └── nested
     └── index.js
 ```
+
+**Note**: `/en/[...path].js` is a redirect from `/en/some-route` to `/some-route`
 
 Each page and its components can consume the translations with the `useTranslation` hook.
 
@@ -208,7 +207,7 @@ In order to use each translation in the project, use the _translation id_ compos
 | `defaultLanguage`       | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string|function`               | `"en"`                                                                     |
 | `allLanguages`          | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Array<string>`                 | `[]`                                                                       |
 | `ignoreRoutes`          | An array with all the routes to ignore in the middleware. This config property only effects using the `i18nMiddleware`, SO MAYBE YOU'LL NEVER NEED THIS.                                                                                                                                                                                                                                                                                                                                                                                                                                               | `Array<string>`                 | `['/_next/', '/static/', '/favicon.ico', '/manifest.json', '/robots.txt']` |
-| `redirectToDefaultLang` | When it's set to `true`, the route `/some-page` redirects to `/en/some-path` (if `en` is the default language). When it's set to `false`, entering to `/some-path` renders the page with the default language but without redirecting.                                                                                                                                                                                                                                                                                                                                                                 | `boolean`                       | `false`                                                                    |
+| `redirectToDefaultLang` | When it's set to `true`, the route `/some-page` redirects to `/en/some-path` (if `en` is the default language). When it's set to `false`, entering to `/some-path` renders the page with the default language and the route `/en/some-path` redirects to `/some-page`.                                                                                                                                                                                                                                                                                                                                 | `boolean`                       | `false`                                                                    |
 | `currentPagesDir`       | A string with the directory where you have the pages code. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `string`                        | `"pages_"`                                                                 |
 | `finalPagesDir`         | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                               | `string`                        | `"pages"`                                                                  |
 | `localesPath`           | A string with the directory of JSONs locales. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `string`                        | `"locales"`                                                                |
@@ -767,6 +766,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

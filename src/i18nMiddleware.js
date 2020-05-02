@@ -14,8 +14,8 @@ export default function i18nMiddleware(config = {}) {
   } = config
 
   return (req, res, next) => {
-    const ignore = ignoreRoutes.some(r => req.url.startsWith(r))
-    const startsWithLang = allLanguages.some(l => req.url.startsWith(`/${l}`))
+    const ignore = ignoreRoutes.some((r) => req.url.startsWith(r))
+    const startsWithLang = allLanguages.some((l) => req.url.startsWith(`/${l}`))
 
     /**
      * Don't translate ignoreRoutes
@@ -43,8 +43,18 @@ export default function i18nMiddleware(config = {}) {
     // Remove lang subpath to allow next.js to render the same page
     req.url = req.url.replace(`/${lang}`, '') || '/'
 
+    // Redirect to root url from default language
+    if (!redirectToDefaultLang) {
+      const defaultLanguage = getDefaultLang(req, config) || 'en'
+
+      if (lang === defaultLanguage) {
+        res.redirect(301, req.url)
+        return
+      }
+    }
+
     // Don't translate ignoreRoutes and redirect without lang
-    const [redirect] = ignoreRoutes.filter(r => req.url.startsWith(r))
+    const [redirect] = ignoreRoutes.filter((r) => req.url.startsWith(r))
     if (redirect) {
       res.redirect(301, redirect)
       return
