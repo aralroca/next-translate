@@ -271,7 +271,7 @@ import { useRouter } from 'next/router';
 
 export default function DefaultLanguageCatchAll() {
   const router = useRouter()
-  if (Array.isArray(router.query.path)) {
+  if (Array.isArray(router.query.path) && typeof window !== 'undefined') {
     router.replace(\`\${router.query.path.slice(1).join('/')}\`)
   }
   return null
@@ -285,7 +285,7 @@ import { useRouter } from 'next/router';
 
 export default function CatchAll() {
   const router = useRouter()
-  if (Array.isArray(router.query.path)) {
+  if (Array.isArray(router.query.path) && typeof window !== 'undefined') {
     if (router.query.path[0] === '${defaultLanguage}') {
       return <Error statusCode="404" />
     }
