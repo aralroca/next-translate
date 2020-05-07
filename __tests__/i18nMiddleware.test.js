@@ -15,7 +15,7 @@ function loadServerWithMiddleware(config, port) {
   return app
     .prepare()
     .then(() =>
-      server.listen(port, err => {
+      server.listen(port, (err) => {
         if (err) throw err
       })
     )
@@ -56,7 +56,7 @@ describe('i18nMiddleware', () => {
     ;[
       ['/_next/chunk.js', 200, null],
       ['/ca/test', 200, 'ca'],
-      ['/en/test', 200, 'en'],
+      ['/en/test', 301, null, '/test'],
       ['/es/test', 200, 'es'],
       ['/favicon.ico', 200, null],
       ['/robots.txt', 200, null],
@@ -68,11 +68,14 @@ describe('i18nMiddleware', () => {
       ['/es/static/images/logo.svg', 301, null, '/static/images/logo.svg'],
       ['/test', 200, defaultLanguage],
     ].forEach(([path, status, lang, redirect]) => {
-      test(`${path} -> ${status}${redirect ? ` to ${redirect}` : ''}`, done => {
+      test(`${path} -> ${status}${
+        redirect ? ` to ${redirect}` : ''
+      }`, (done) => {
         request(server1)
           .get(path)
           .set('Host', 'www.test.com')
-          .expect(status, (err, res) => {
+          .end((err, res) => {
+            expect(res.status).toBe(status)
             if (lang) expect(res.text).toBe(lang)
             done()
           })
@@ -97,11 +100,14 @@ describe('i18nMiddleware', () => {
       ['/test', 301, null, `/${defaultLanguage}/test`],
       [`/${defaultLanguage}/test`, 200, defaultLanguage],
     ].forEach(([path, status, lang, redirect]) => {
-      test(`${path} -> ${status}${redirect ? ` to ${redirect}` : ''}`, done => {
+      test(`${path} -> ${status}${
+        redirect ? ` to ${redirect}` : ''
+      }`, (done) => {
         request(server2)
           .get(path)
           .set('Host', 'www.test.com')
           .expect(status, (err, res) => {
+            expect(res.status).toBe(status)
             if (lang) expect(res.text).toBe(lang)
             done()
           })

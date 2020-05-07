@@ -67,13 +67,18 @@ async function createPagesDir() {
   rimraf(finalPagesDir)
   fs.mkdirSync(finalPagesDir)
 
-  getLangs().forEach(async (lang) => {
+  allLanguages.forEach(async (lang) => {
     fs.mkdirSync(`${finalPagesDir}/${lang}`)
   })
 
   if (redirectToDefaultLang) {
     fs.writeFileSync(`${finalPagesDir}/[...path].js`, getCatchAllTemplate())
     fs.writeFileSync(`${finalPagesDir}/index.js`, getIndexRedirectTemplate())
+  } else {
+    fs.writeFileSync(
+      `${finalPagesDir}/${defaultLanguage}/[...path].js`,
+      getDefaultLanguageIndexRedirectTemplate()
+    )
   }
 
   if (logBuild) {
@@ -257,6 +262,20 @@ export default function Index(props) {
 
 Index = Object.assign(Index, { ...C })
 export * from './${defaultLanguage}/index'
+`
+}
+
+function getDefaultLanguageIndexRedirectTemplate() {
+  return `import Error from 'next/error';
+import { useRouter } from 'next/router';
+
+export default function DefaultLanguageCatchAll() {
+  const router = useRouter()
+  if (Array.isArray(router.query.path)) {
+    router.replace(\`\${router.query.path.slice(1).join('/')}\`)
+  }
+  return null
+}
 `
 }
 
