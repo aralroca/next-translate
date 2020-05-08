@@ -14,7 +14,7 @@ export default function Link({ children, href, as, lang, noLang, ...props }) {
   function onClick(e) {
     const el = document.querySelector('html')
     if (el) el.lang = lng
-    if (child.props.onClick && typeof child.props.onClick === 'function') {
+    if (typeof child.props.onClick === 'function') {
       child.props.onClick(e)
     }
   }
