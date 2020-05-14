@@ -7,9 +7,12 @@ const NsContext = createContext({})
 /**
  * Get value from key (allow nested keys as parent.children)
  */
-function getDicValue(dic, key = '') {
+function getDicValue(dic, key = '', options = { returnObjects: false }) {
   const value = key.split('.').reduce((val, key) => val[key] || {}, dic)
-  return typeof value === 'string' ? value : undefined
+
+  if (typeof value === 'string' || (value instanceof Object && options.returnObjects)) {
+    return value;
+  }
 }
 
 /**
@@ -52,12 +55,12 @@ export default function I18nProvider({
 
   setInternals({ ...internals, lang })
 
-  function t(key = '', query) {
+  function t(key = '', query, options) {
     const k = Array.isArray(key) ? key[0] : key
     const [namespace, i18nKey] = k.split(':')
     const dic = allNamespaces[namespace] || {}
     const keyWithPlural = plural(dic, i18nKey, query)
-    const value = getDicValue(dic, keyWithPlural)
+    const value = getDicValue(dic, keyWithPlural, options)
 
     return interpolation(value, query) || k
   }
