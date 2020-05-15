@@ -1,5 +1,5 @@
-import i from './_internals'
-import appendLangPrefix from './appendLangPrefix'
+import i from './_helpers/_internals'
+import appendLangPrefix from './_helpers/appendLangPrefix'
 
 export default (as, href, lng) => {
   const isDefault = !i.redirectToDefaultLang && i.defaultLanguage === lng
