@@ -1,6 +1,7 @@
 {
   "allLanguages": ["en", "ca", "es"],
   "defaultLanguage": "en",
+  "defaultLangRedirect": "root",
   "pages": {
     "*": ["common"],
     "/": ["home"],

@@ -40,6 +40,7 @@ describe('i18nMiddleware', () => {
       {
         allLanguages,
         defaultLanguage,
+        defaultLangRedirect: 'root',
       },
       3005
     )
@@ -47,7 +48,7 @@ describe('i18nMiddleware', () => {
       {
         allLanguages,
         defaultLanguage: () => defaultLanguage,
-        redirectToDefaultLang: true,
+        defaultLangRedirect: 'lang-path',
       },
       3006
     )

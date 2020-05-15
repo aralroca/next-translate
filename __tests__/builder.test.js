@@ -61,7 +61,7 @@ describe('builder', () => {
         fs.existsSync('examples/static-site/pages/es/more-examples/index.js')
       ).toBe(true)
 
-      // The default language should be not generated when redirectToDefaultLang=false
+      // The default language should be not generated when defaultLangRedirect != 'lang-path'
       expect(fs.existsSync('examples/static-site/pages/en/index.js')).toBe(
         false
       )

@@ -12,14 +12,14 @@ function getDomain(host) {
 
 module.exports = {
   allLanguages: ['en', 'ca', 'es'],
-  defaultLanguage: req => {
+  defaultLanguage: (req) => {
     let host = req ? req.get('Host') : window.location.hostname
     const domain = getDomain(host)
     return defaultLangsFromHost[domain] || defaultLangsFromHost.default
   },
-  redirectToDefaultLang: true,
+  defaultLangRedirect: 'lang-path',
   loadLocaleFrom: (lang, ns) =>
-    import(`./locales/${lang}/${ns}.json`).then(m => m.default),
+    import(`./locales/${lang}/${ns}.json`).then((m) => m.default),
   pages: {
     '*': ['common'],
     '/': ['home'],

@@ -3,21 +3,32 @@ const fs = require('fs')
 const path = require('path')
 const getPageNamespaces = require('../_helpers/getPageNamespaces').default
 
-const {
+let {
   allLanguages = [],
   currentPagesDir = 'pages_',
+  defaultLangRedirect,
   defaultLanguage = 'en',
   finalPagesDir = 'pages',
   localesPath = 'locales',
   pages = {},
-  redirectToDefaultLang = false,
+  redirectToDefaultLang: _deprecated_redirectToDefaultLang,
   logBuild = true,
 } = require(process.cwd() + '/i18n.json') || {}
 
+// @todo 1.0.0 Remove this backwards compatibility.
+if (_deprecated_redirectToDefaultLang !== undefined) {
+  defaultLangRedirect = _deprecated_redirectToDefaultLang
+    ? 'lang-path'
+    : undefined
+  console.warn(
+    'redirectToDefaultLang is deprecated and will be removed in future major versions. Use defaultLangRedirect instead. Docs: https://github.com/vinissimus/next-translate/blob/master/README.md#4-configuration'
+  )
+}
+
 const internals = JSON.stringify({
-  isStaticMode: true,
-  redirectToDefaultLang,
+  defaultLangRedirect,
   defaultLanguage,
+  isStaticMode: true,
 })
 
 /**
@@ -53,8 +64,8 @@ function readDirR(dir) {
 createPagesDir()
 
 function getLangs() {
-  return allLanguages.filter((lng) =>
-    redirectToDefaultLang ? true : lng !== defaultLanguage
+  return allLanguages.filter(
+    (lng) => defaultLangRedirect === 'lang-path' || lng !== defaultLanguage
   )
 }
 
@@ -67,14 +78,17 @@ async function createPagesDir() {
   rimraf(finalPagesDir)
   fs.mkdirSync(finalPagesDir)
 
-  allLanguages.forEach(async (lang) => {
+  getLangs().forEach(async (lang) => {
     fs.mkdirSync(`${finalPagesDir}/${lang}`)
   })
 
-  if (redirectToDefaultLang) {
+  if (defaultLangRedirect === 'lang-path') {
     fs.writeFileSync(`${finalPagesDir}/[...path].js`, getCatchAllTemplate())
     fs.writeFileSync(`${finalPagesDir}/index.js`, getIndexRedirectTemplate())
-  } else {
+  }
+
+  if (defaultLangRedirect === 'root') {
+    fs.mkdirSync(`${finalPagesDir}/${defaultLanguage}`)
     fs.writeFileSync(
       `${finalPagesDir}/${defaultLanguage}/[...path].js`,
       getDefaultLanguageIndexRedirectTemplate()
@@ -238,7 +252,10 @@ function buildPageInAllLocales(pagePath, namespaces) {
   })
 
   // For default lang
-  if (allLanguages.includes(defaultLanguage) && !redirectToDefaultLang) {
+  if (
+    allLanguages.includes(defaultLanguage) &&
+    defaultLangRedirect !== 'lang-path'
+  ) {
     buildPageLocale({
       lang: defaultLanguage,
       namespaces,
