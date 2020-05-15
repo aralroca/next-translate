@@ -1,7 +1,7 @@
 import NextRouter from 'next/router'
 import clientSideLang from './clientSideLang'
-import fixAs from './_helpers/fixAs'
-import fixHref from './_helpers/fixHref'
+import fixAs from './fixAs'
+import fixHref from './fixHref'
 
 const nav = (ev) => (a1, a2, a3 = {}) => {
   const a1IsObj = typeof a1 === 'object'

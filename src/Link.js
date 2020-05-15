@@ -1,8 +1,8 @@
 import React, { Children } from 'react'
 import NextLink from 'next/link'
 import useTranslation from './useTranslation'
-import fixAs from './_helpers/fixAs'
-import fixHref from './_helpers/fixHref'
+import fixAs from './fixAs'
+import fixHref from './fixHref'
 
 export default function Link({ children, href, as, lang, noLang, ...props }) {
   const current = useTranslation()
