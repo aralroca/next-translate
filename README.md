@@ -503,6 +503,32 @@ export function myClientSideHelper() {
 
 It is **not recommended** to use the `clientSideLang` directly on the server-side because it's stored in a global variable and it can cause some concurrency issues.
 
+### fixHref
+
+📦**Size**: ~100b
+
+Useful to get the `href` string with the language (if necessary). It's similar to ![Link](#link) , but only to get the `href` string. It's recommended to use the ![Link](#link) component or ![Router](#router) instead.
+
+```js
+import useTranslation from 'next-translate/useTranslation'
+import fixHref from 'next-translate/fixHref'
+
+// ...
+const defaultLang = 'en'
+
+export function MyComponent() {
+  const { lang } = useTranslation()
+  const href = fixHref('/some/route', lang) // /es/some/route
+  console.log(fixHref('/some/route', defaultLang))
+  // if it's default lang: /some/route or /en/some/route (depends on your config)
+}
+```
+
+**Props**:
+
+- `href`: `<string>` href string
+- `lang`: `<string>` language
+
 ## 6. Plurals
 
 You can define plurals this way:
