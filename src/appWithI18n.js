@@ -6,13 +6,13 @@ import getPageNamespaces from './_helpers/getPageNamespaces'
 function getLang(ctx, config) {
   const { req, asPath = '' } = ctx
 
-  if (req) return req.query.lang || getDefaultLang(req, config)
+  if (req) return req.query.lang || config.defaultLanguage
 
-  const startsWithLang = config.allLanguages.some(l =>
+  const startsWithLang = config.allLanguages.some((l) =>
     asPath.startsWith(`/${l}`)
   )
 
-  return startsWithLang ? asPath.split('/')[1] : getDefaultLang(req, config)
+  return startsWithLang ? asPath.split('/')[1] : config.defaultLanguage
 }
 
 function removeTrailingSlash(path = '') {
@@ -21,17 +21,25 @@ function removeTrailingSlash(path = '') {
 
 export default function appWithI18n(AppToTranslate, config = {}) {
   function AppWithTranslations(props) {
-    const { lang, namespaces } = props
+    const { lang, namespaces, defaultLanguage } = props
+    const { defaultLangRedirect } = config
 
     return (
-      <I18nProvider lang={lang} namespaces={namespaces}>
+      <I18nProvider
+        lang={lang}
+        namespaces={namespaces}
+        internals={{ defaultLangRedirect, defaultLanguage }}
+      >
         <AppToTranslate {...props} />
       </I18nProvider>
     )
   }
 
   AppWithTranslations.getInitialProps = async ({ Component, ctx }) => {
-    const lang = getLang(ctx, config)
+    const defaultLanguage = ctx.req
+      ? getDefaultLang(ctx.req, config)
+      : __NEXT_DATA__.props.defaultLanguage
+    const lang = getLang(ctx, { ...config, defaultLanguage })
     let appProps = { pageProps: {} }
 
     if (AppToTranslate.getInitialProps) {
@@ -45,7 +53,7 @@ export default function appWithI18n(AppToTranslate, config = {}) {
     const page = removeTrailingSlash(ctx.pathname)
     const namespaces = await getPageNamespaces(config, page, ctx)
     const pageNamespaces = await Promise.all(
-      namespaces.map(ns =>
+      namespaces.map((ns) =>
         typeof config.loadLocaleFrom === 'function'
           ? config.loadLocaleFrom(lang, ns)
           : Promise.resolve([])
@@ -55,6 +63,7 @@ export default function appWithI18n(AppToTranslate, config = {}) {
     return {
       ...appProps,
       lang,
+      defaultLanguage,
       namespaces: namespaces.reduce((obj, ns, i) => {
         obj[ns] = pageNamespaces[i]
         return obj
