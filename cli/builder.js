@@ -110,7 +110,7 @@ function isNextInternal(pagePath) {
 }
 
 function clearPageExt(page) {
-  const rgx = /(\/index.jsx)|(\/index.js)|(\/index.tsx)|(\/index.ts)|(\.jsx)|(\.js)|(\.tsx)|(\.ts)/gm
+  const rgx = /(\/index.jsx)|(\/index.js)|(\/index.tsx)|(\/index.ts)||(\/index.mdx)|(\.jsx)|(\.js)|(\.tsx)|(\.ts)|(\.mdx)/gm
 
   return page.replace(rgx, '')
 }
@@ -205,7 +205,7 @@ function buildPageLocale({ prefix, pagePath, namespaces, lang, path }) {
   const [filename] = finalPath.split('/').reverse()
   const dirs = finalPath.replace(`/${filename}`, '')
   fs.mkdirSync(dirs, { recursive: true })
-  fs.writeFileSync(finalPath.replace(/(\.tsx|\.ts)$/, '.js'), template)
+  fs.writeFileSync(finalPath.replace(/(\.tsx|\.ts|\.mdx)$/, '.js'), template)
 }
 
 function copyFolderRecursiveSync(source, targetFolder) {
