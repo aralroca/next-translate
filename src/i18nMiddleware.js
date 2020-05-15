@@ -19,8 +19,9 @@ export default function i18nMiddleware(config = {}) {
     defaultLangRedirect = _deprecated_redirectToDefaultLang
       ? 'lang-path'
       : undefined
-    console.warn(
-      'redirectToDefaultLang is deprecated and will be removed in future major versions. Use defaultLangRedirect instead. Docs: https://github.com/vinissimus/next-translate/blob/master/README.md#4-configuration'
+    console.log(
+      '\x1b[33m%s\x1b[0m',
+      '🚨 redirectToDefaultLang is deprecated and will be removed in future major versions. Use defaultLangRedirect instead. Docs: https://github.com/vinissimus/next-translate/blob/master/README.md#4-configuration'
     )
   }
 

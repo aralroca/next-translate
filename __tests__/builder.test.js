@@ -104,9 +104,7 @@ describe('builder', () => {
       expect(deflt.toString()).toContain(
         `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'en' })`
       )
-      expect(en.toString()).toContain(
-        `router.replace(\`\${router.query.path.slice(1).join('/')}\`)`
-      )
+      expect(en.toString()).toContain(`DefaultLanguageCatchAll`)
       expect(es.toString()).toContain(
         `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'es' })`
       )

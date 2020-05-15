@@ -20,8 +20,9 @@ if (_deprecated_redirectToDefaultLang !== undefined) {
   defaultLangRedirect = _deprecated_redirectToDefaultLang
     ? 'lang-path'
     : undefined
-  console.warn(
-    'redirectToDefaultLang is deprecated and will be removed in future major versions. Use defaultLangRedirect instead. Docs: https://github.com/vinissimus/next-translate/blob/master/README.md#4-configuration'
+  console.log(
+    '\x1b[33m%s\x1b[0m',
+    '🚨 redirectToDefaultLang is deprecated and will be removed in future major versions. Use defaultLangRedirect instead. Docs: https://github.com/vinissimus/next-translate/blob/master/README.md#4-configuration'
   )
 }
 
@@ -283,13 +284,12 @@ export * from './${defaultLanguage}/index'
 }
 
 function getDefaultLanguageIndexRedirectTemplate() {
-  return `import Error from 'next/error';
-import { useRouter } from 'next/router';
+  return `import { useRouter } from 'next/router';
 
 export default function DefaultLanguageCatchAll() {
   const router = useRouter()
   if (Array.isArray(router.query.path) && typeof window !== 'undefined') {
-    router.replace(\`\${router.query.path.slice(1).join('/')}\`)
+    router.replace(\`/\${router.query.path.join('/')}\`)
   }
   return null
 }
