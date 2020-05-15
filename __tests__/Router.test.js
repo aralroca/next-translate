@@ -1,8 +1,17 @@
 import React from 'react'
-import { render, cleanup, fireEvent } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import I18nProvider from '../src/I18nProvider'
-import Router from '../src/Router'
 import NextRouter from 'next/router'
+import Router from '../src/Router'
+import { setInternals } from '../src/_helpers/_internals'
+
+function cleanup() {
+  setInternals({
+    defaultLangRedirect: undefined,
+    defaultLanguage: undefined,
+    isStaticMode: undefined,
+  })
+}
 
 jest.mock('next/router', () => ({
   push: jest.fn(),
@@ -30,9 +39,9 @@ function StaticModeRouter(props) {
       lang="en"
       namespaces={{}}
       internals={{
-        isStaticMode: true,
-        redirectToDefaultLang: true,
+        defaultLangRedirect: 'lang-path',
         defaultLanguage: 'en',
+        isStaticMode: true,
       }}
     >
       <Navigate {...props} />
@@ -46,9 +55,8 @@ function StaticModeRouterNoRedirect(props) {
       lang="en"
       namespaces={{}}
       internals={{
-        isStaticMode: true,
-        redirectToDefaultLang: false,
         defaultLanguage: 'en',
+        isStaticMode: true,
       }}
     >
       <Navigate {...props} />
@@ -56,9 +64,9 @@ function StaticModeRouterNoRedirect(props) {
   )
 }
 
-StaticModeRouter.displayName = 'StaticModeWithRedirect'
+StaticModeRouter.displayName = 'StaticModeRedirect'
 CustomServerModeRouter.displayName = 'CustomServerMode'
-StaticModeRouterNoRedirect.displayName = 'StaticModeWithoutRedirect'
+StaticModeRouterNoRedirect.displayName = 'StaticModeNoRedirect'
 
 const modes = [
   CustomServerModeRouter,
@@ -82,9 +90,9 @@ describe('Router', () => {
     describe(`${RouterComponent.displayName}`, () => {
       test('Should add the current language navigating to homepage', () => {
         const expected = {
-          StaticModeWithRedirect: { href: '/en', as: undefined },
+          StaticModeRedirect: { href: '/en', as: undefined },
           CustomServerMode: { href: '/', as: '/en' },
-          StaticModeWithoutRedirect: { href: '/', as: undefined },
+          StaticModeNoRedirect: { href: '/', as: undefined },
         }[RouterComponent.displayName]
 
         const { container } = render(<RouterComponent href="/" />)
@@ -93,9 +101,9 @@ describe('Router', () => {
       })
       test('Should add the current language navigating to homepage with "as"', () => {
         const expected = {
-          StaticModeWithRedirect: { href: '/en', as: '/en/homepage' },
+          StaticModeRedirect: { href: '/en', as: '/en/homepage' },
           CustomServerMode: { href: '/', as: '/en/homepage' },
-          StaticModeWithoutRedirect: { href: '/', as: '/homepage' },
+          StaticModeNoRedirect: { href: '/', as: '/homepage' },
         }[RouterComponent.displayName]
 
         const { container } = render(
@@ -106,9 +114,9 @@ describe('Router', () => {
       })
       test('Should add the current language using nested route ', () => {
         const expected = {
-          StaticModeWithRedirect: { href: '/en/some/route', as: undefined },
+          StaticModeRedirect: { href: '/en/some/route', as: undefined },
           CustomServerMode: { href: '/some/route', as: '/en/some/route' },
-          StaticModeWithoutRedirect: { href: '/some/route', as: undefined },
+          StaticModeNoRedirect: { href: '/some/route', as: undefined },
         }[RouterComponent.displayName]
 
         const { container } = render(<RouterComponent href="/some/route" />)
@@ -117,9 +125,9 @@ describe('Router', () => {
       })
       test('Should add the defined language navigating to homepage', () => {
         const expected = {
-          StaticModeWithRedirect: { href: '/es', as: undefined },
+          StaticModeRedirect: { href: '/es', as: undefined },
           CustomServerMode: { href: '/', as: '/es' },
-          StaticModeWithoutRedirect: { href: '/es', as: undefined },
+          StaticModeNoRedirect: { href: '/es', as: undefined },
         }[RouterComponent.displayName]
 
         const { container } = render(<RouterComponent href="/" lang="es" />)
@@ -128,9 +136,9 @@ describe('Router', () => {
       })
       test('Should add the defined language using nested route ', () => {
         const expected = {
-          StaticModeWithRedirect: { href: '/es/some/route', as: undefined },
+          StaticModeRedirect: { href: '/es/some/route', as: undefined },
           CustomServerMode: { href: '/some/route', as: '/es/some/route' },
-          StaticModeWithoutRedirect: { href: '/es/some/route', as: undefined },
+          StaticModeNoRedirect: { href: '/es/some/route', as: undefined },
         }[RouterComponent.displayName]
 
         const { container } = render(
@@ -173,7 +181,6 @@ describe('Router', () => {
           namespaces={{}}
           internals={{
             isStaticMode: true,
-            redirectToDefaultLang: false,
             defaultLanguage: 'en',
           }}
         >
@@ -186,7 +193,7 @@ describe('Router', () => {
     expectNavigation({ href: '/some/route', as: undefined })
   })
 
-  test('should work without specifying a language | to default language (with redirect)', () => {
+  test('should work without specifying a language | to default language (with redirect to root)', () => {
     function nav() {
       Router.pushI18n('/some/route')
     }
@@ -197,7 +204,31 @@ describe('Router', () => {
           namespaces={{}}
           internals={{
             isStaticMode: true,
-            redirectToDefaultLang: true,
+            defaultLangRedirect: 'root',
+            defaultLanguage: 'en',
+          }}
+        >
+          <button onClick={nav}>Navigate</button>
+        </I18nProvider>
+      )
+    }
+    const { container } = render(<Component />)
+    fireEvent.click(container.firstChild)
+    expectNavigation({ href: '/some/route', as: undefined })
+  })
+
+  test('should work without specifying a language | to default language (with redirect to lang-path)', () => {
+    function nav() {
+      Router.pushI18n('/some/route')
+    }
+    function Component() {
+      return (
+        <I18nProvider
+          lang="en"
+          namespaces={{}}
+          internals={{
+            isStaticMode: true,
+            defaultLangRedirect: 'lang-path',
             defaultLanguage: 'en',
           }}
         >
