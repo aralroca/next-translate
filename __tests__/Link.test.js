@@ -14,7 +14,14 @@ function cleanup() {
 
 function CustomServerModeLink(props) {
   return (
-    <I18nProvider lang="en" namespaces={{}}>
+    <I18nProvider
+      lang="en"
+      namespaces={{}}
+      internals={{
+        defaultLangRedirect: 'lang-path',
+        defaultLanguage: 'en',
+      }}
+    >
       <Link {...props} />
     </I18nProvider>
   )

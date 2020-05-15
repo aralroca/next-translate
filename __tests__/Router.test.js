@@ -27,7 +27,14 @@ function Navigate({ href, as, lang }) {
 
 function CustomServerModeRouter(props) {
   return (
-    <I18nProvider lang="en" namespaces={{}}>
+    <I18nProvider
+      lang="en"
+      namespaces={{}}
+      internals={{
+        defaultLangRedirect: 'lang-path',
+        defaultLanguage: 'en',
+      }}
+    >
       <Navigate {...props} />
     </I18nProvider>
   )
