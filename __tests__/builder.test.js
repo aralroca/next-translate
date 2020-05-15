@@ -61,7 +61,7 @@ describe('builder', () => {
         fs.existsSync('examples/static-site/pages/es/more-examples/index.js')
       ).toBe(true)
 
-      // The default language should be not generated when redirectToDefaultLang=false
+      // The default language should be not generated when defaultLangRedirect != 'lang-path'
       expect(fs.existsSync('examples/static-site/pages/en/index.js')).toBe(
         false
       )
@@ -104,9 +104,7 @@ describe('builder', () => {
       expect(deflt.toString()).toContain(
         `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'en' })`
       )
-      expect(en.toString()).toContain(
-        `router.replace(\`\${router.query.path.slice(1).join('/')}\`)`
-      )
+      expect(en.toString()).toContain(`DefaultLanguageCatchAll`)
       expect(es.toString()).toContain(
         `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'es' })`
       )

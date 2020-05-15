@@ -40,6 +40,7 @@ describe('i18nMiddleware', () => {
       {
         allLanguages,
         defaultLanguage,
+        defaultLangRedirect: 'root',
       },
       3005
     )
@@ -47,12 +48,12 @@ describe('i18nMiddleware', () => {
       {
         allLanguages,
         defaultLanguage: () => defaultLanguage,
-        redirectToDefaultLang: true,
+        defaultLangRedirect: 'lang-path',
       },
       3006
     )
   })
-  describe('redirectToDefaultLang=false', () => {
+  describe('defaultLangRedirect="root"', () => {
     ;[
       ['/_next/chunk.js', 200, null],
       ['/ca/test', 200, 'ca'],
@@ -83,7 +84,7 @@ describe('i18nMiddleware', () => {
     })
   })
 
-  describe('redirectToDefaultLang=true', () => {
+  describe('defaultLangRedirect="lang-path"', () => {
     ;[
       ['/_next/chunk.js', 200, null],
       ['/ca/test', 200, 'ca'],
