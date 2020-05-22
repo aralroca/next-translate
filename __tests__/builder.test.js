@@ -85,6 +85,15 @@ describe('builder', () => {
     })
   })
 
+  describe('/dashboard.js', () => {
+    test('Should add common + home namespaces', () => {
+      const page = fs.readFileSync('examples/static-site/pages/dashboard.js')
+      expect(page.toString()).toContain(
+        "const namespaces = { 'common': ns0, 'home': ns1 }"
+      )
+    })
+  })
+
   describe('index.js', () => {
     test('Should NOT be the same than the pages_/index.js', () => {
       const pages_ = fs.readFileSync('examples/static-site/pages_/index.tsx')
