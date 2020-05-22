@@ -2,17 +2,16 @@ import React from 'react'
 import I18nProvider from './I18nProvider'
 import getDefaultLang from './_helpers/getDefaultLang'
 import getPageNamespaces from './_helpers/getPageNamespaces'
+import startsWithLang from './_helpers/startsWithLang'
 
 function getLang(ctx, config) {
   const { req, asPath = '' } = ctx
 
   if (req) return req.query.lang || config.defaultLanguage
 
-  const startsWithLang = config.allLanguages.some((l) =>
-    asPath.startsWith(`/${l}`)
-  )
-
-  return startsWithLang ? asPath.split('/')[1] : config.defaultLanguage
+  return startsWithLang(asPath, config.allLanguages)
+    ? asPath.split('/')[1]
+    : config.defaultLanguage
 }
 
 function removeTrailingSlash(path = '') {
@@ -52,13 +51,14 @@ export default function appWithI18n(AppToTranslate, config = {}) {
     }
     const page = removeTrailingSlash(ctx.pathname)
     const namespaces = await getPageNamespaces(config, page, ctx)
-    const pageNamespaces = await Promise.all(
-      namespaces.map((ns) =>
-        typeof config.loadLocaleFrom === 'function'
-          ? config.loadLocaleFrom(lang, ns)
-          : Promise.resolve([])
-      )
-    )
+    const pageNamespaces =
+      (await Promise.all(
+        namespaces.map((ns) =>
+          typeof config.loadLocaleFrom === 'function'
+            ? config.loadLocaleFrom(lang, ns)
+            : Promise.resolve([])
+        )
+      ).catch(() => {})) || []
 
     return {
       ...appProps,

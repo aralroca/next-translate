@@ -1,4 +1,5 @@
 import getDefaultLang from './_helpers/getDefaultLang'
+import startsWithLang from './_helpers/startsWithLang'
 
 export default function i18nMiddleware(config = {}) {
   let {
@@ -27,7 +28,6 @@ export default function i18nMiddleware(config = {}) {
 
   return (req, res, next) => {
     const ignore = ignoreRoutes.some((r) => req.url.startsWith(r))
-    const startsWithLang = allLanguages.some((l) => req.url.startsWith(`/${l}`))
     const defaultLanguage = getDefaultLang(req, config) || 'en'
 
     /**
@@ -39,7 +39,7 @@ export default function i18nMiddleware(config = {}) {
      * When lang is not present on the url
      * Redirect or add lang without redirecting (depending the config)
      */
-    if (!startsWithLang) {
+    if (!startsWithLang(req.url, config.allLanguages)) {
       if (defaultLangRedirect === 'lang-path') {
         res.redirect(301, `/${defaultLanguage}${req.url}`)
         return
