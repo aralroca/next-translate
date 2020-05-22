@@ -5,6 +5,7 @@
   "pages": {
     "*": ["common"],
     "/": ["home"],
-    "/more-examples": ["more-examples"]
+    "/dashboard": ["home"],
+    "rgx:^/more-examples": ["more-examples"]
   }
 }
