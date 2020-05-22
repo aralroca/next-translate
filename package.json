@@ -1,6 +1,6 @@
 {
   "name": "next-translate",
-  "version": "0.16.0-canary.5",
+  "version": "0.16.0-canary.6",
   "description": "Next.js utility to translate pages without the need of a server (static i18n pages generator).",
   "license": "MIT",
   "keywords": [
@@ -50,7 +50,7 @@
     "express": "4.17.1",
     "husky": "4.2.5",
     "jest": "26.0.1",
-    "next": "9.3.6",
+    "next": "9.4.2",
     "prettier": "2.0.5",
     "pretty-quick": "2.0.1",
     "react": "16.13.1",
