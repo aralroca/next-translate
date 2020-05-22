@@ -110,7 +110,7 @@ function isNextInternal(pagePath) {
 }
 
 function clearPageExt(page) {
-  const rgx = /(\/index.jsx)|(\/index.js)|(\/index.tsx)|(\/index.ts)||(\/index.mdx)|(\.jsx)|(\.js)|(\.tsx)|(\.ts)|(\.mdx)/gm
+  const rgx = /(\/index\.jsx)|(\/index\.js)|(\/index\.tsx)|(\/index\.ts)|(\/index\.mdx)|(\.jsx)|(\.js)|(\.tsx)|(\.ts)|(\.mdx)/gm
 
   return page.replace(rgx, '')
 }
