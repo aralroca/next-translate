@@ -61,7 +61,7 @@ describe('builder', () => {
         fs.existsSync('examples/static-site/pages/es/more-examples/index.js')
       ).toBe(true)
 
-      // The default language should be not generated when redirectToDefaultLang=false
+      // The default language should be not generated when defaultLangRedirect != 'lang-path'
       expect(fs.existsSync('examples/static-site/pages/en/index.js')).toBe(
         false
       )
@@ -85,6 +85,15 @@ describe('builder', () => {
     })
   })
 
+  describe('/dashboard.js', () => {
+    test('Should add common + home namespaces', () => {
+      const page = fs.readFileSync('examples/static-site/pages/dashboard.js')
+      expect(page.toString()).toContain(
+        "const namespaces = { 'common': ns0, 'home': ns1 }"
+      )
+    })
+  })
+
   describe('index.js', () => {
     test('Should NOT be the same than the pages_/index.js', () => {
       const pages_ = fs.readFileSync('examples/static-site/pages_/index.tsx')
@@ -104,9 +113,7 @@ describe('builder', () => {
       expect(deflt.toString()).toContain(
         `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'en' })`
       )
-      expect(en.toString()).toContain(
-        `router.replace(\`\${router.query.path.slice(1).join('/')}\`)`
-      )
+      expect(en.toString()).toContain(`DefaultLanguageCatchAll`)
       expect(es.toString()).toContain(
         `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'es' })`
       )

@@ -1,24 +1,24 @@
-import { cleanup, render } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import React from 'react'
 import I18nProvider from '../src/I18nProvider'
 import Link from '../src/Link'
+import { setInternals } from '../src/_helpers/_internals'
+
+function cleanup() {
+  setInternals({
+    defaultLangRedirect: undefined,
+    defaultLanguage: undefined,
+    isStaticMode: undefined,
+  })
+}
 
 function CustomServerModeLink(props) {
   return (
-    <I18nProvider lang="en" namespaces={{}}>
-      <Link {...props} />
-    </I18nProvider>
-  )
-}
-
-function StaticModeLinkWithRedirect(props) {
-  return (
     <I18nProvider
       lang="en"
       namespaces={{}}
       internals={{
-        isStaticMode: true,
-        redirectToDefaultLang: true,
+        defaultLangRedirect: 'lang-path',
         defaultLanguage: 'en',
       }}
     >
@@ -27,14 +27,14 @@ function StaticModeLinkWithRedirect(props) {
   )
 }
 
-function StaticModeLinkWithoutRedirect(props) {
+function StaticModeLinkRedirectLangPath(props) {
   return (
     <I18nProvider
       lang="en"
       namespaces={{}}
       internals={{
         isStaticMode: true,
-        redirectToDefaultLang: false,
+        defaultLangRedirect: 'lang-path',
         defaultLanguage: 'en',
       }}
     >
@@ -43,14 +43,47 @@ function StaticModeLinkWithoutRedirect(props) {
   )
 }
 
-StaticModeLinkWithRedirect.displayName = 'StaticModeWithRedirect'
+function StaticModeLinkRedirectRoot(props) {
+  return (
+    <I18nProvider
+      lang="en"
+      namespaces={{}}
+      internals={{
+        isStaticMode: true,
+        defaultLangRedirect: 'root',
+        defaultLanguage: 'en',
+      }}
+    >
+      <Link {...props} />
+    </I18nProvider>
+  )
+}
+
+function StaticModeLinkNoRedirect(props) {
+  return (
+    <I18nProvider
+      lang="en"
+      namespaces={{}}
+      internals={{
+        isStaticMode: true,
+        defaultLanguage: 'en',
+      }}
+    >
+      <Link {...props} />
+    </I18nProvider>
+  )
+}
+
+StaticModeLinkRedirectLangPath.displayName = 'StaticModeLinkRedirectLangPath'
 CustomServerModeLink.displayName = 'CustomServerMode'
-StaticModeLinkWithoutRedirect.displayName = 'StaticModeWithoutRedirect'
+StaticModeLinkRedirectRoot.displayName = 'StaticModeLinkRedirectRoot'
+StaticModeLinkNoRedirect.displayName = 'StaticModeLinkNoRedirect'
 
 const modes = [
   CustomServerModeLink,
-  StaticModeLinkWithRedirect,
-  StaticModeLinkWithoutRedirect,
+  StaticModeLinkRedirectLangPath,
+  StaticModeLinkRedirectRoot,
+  StaticModeLinkNoRedirect,
 ]
 
 describe('Link', () => {
@@ -60,9 +93,10 @@ describe('Link', () => {
     describe(`${LinkComponent.displayName}`, () => {
       test('Should add the current language navigating to homepage', () => {
         const expected = {
-          StaticModeWithRedirect: '<a href="/en">home</a>',
+          StaticModeLinkRedirectLangPath: '<a href="/en">home</a>',
           CustomServerMode: '<a href="/en">home</a>',
-          StaticModeWithoutRedirect: '<a href="/">home</a>',
+          StaticModeLinkRedirectRoot: '<a href="/">home</a>',
+          StaticModeLinkNoRedirect: '<a href="/">home</a>',
         }[LinkComponent.displayName]
         const { container } = render(
           <LinkComponent href="/">
@@ -73,9 +107,10 @@ describe('Link', () => {
       })
       test('Should add the current language navigating to homepage with "as"', () => {
         const expected = {
-          StaticModeWithRedirect: '<a href="/en/homepage">home</a>',
+          StaticModeLinkRedirectLangPath: '<a href="/en/homepage">home</a>',
           CustomServerMode: '<a href="/en/homepage">home</a>',
-          StaticModeWithoutRedirect: '<a href="/homepage">home</a>',
+          StaticModeLinkRedirectRoot: '<a href="/homepage">home</a>',
+          StaticModeLinkNoRedirect: '<a href="/homepage">home</a>',
         }[LinkComponent.displayName]
         const { container } = render(
           <LinkComponent href="/" as="/homepage">
@@ -86,9 +121,10 @@ describe('Link', () => {
       })
       test('Should add the current language using nested route ', () => {
         const expected = {
-          StaticModeWithRedirect: '<a href="/en/some/route">link</a>',
+          StaticModeLinkRedirectLangPath: '<a href="/en/some/route">link</a>',
           CustomServerMode: '<a href="/en/some/route">link</a>',
-          StaticModeWithoutRedirect: '<a href="/some/route">link</a>',
+          StaticModeLinkRedirectRoot: '<a href="/some/route">link</a>',
+          StaticModeLinkNoRedirect: '<a href="/some/route">link</a>',
         }[LinkComponent.displayName]
         const { container } = render(
           <LinkComponent href="/some/route">

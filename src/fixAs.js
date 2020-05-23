@@ -2,9 +2,10 @@ import i from './_helpers/_internals'
 import appendLangPrefix from './_helpers/appendLangPrefix'
 
 export default (as, href, lng) => {
-  const isDefault = !i.redirectToDefaultLang && i.defaultLanguage === lng
-  if (isDefault && i.isStaticMode) return as
-  return i.isStaticMode
-    ? appendLangPrefix(as, lng)
-    : appendLangPrefix(as || href, lng)
+  const isRoot =
+    i.defaultLangRedirect !== 'lang-path' && i.defaultLanguage === lng
+  const fallback = i.isStaticMode ? undefined : href
+
+  if (isRoot) return as || fallback
+  return appendLangPrefix(as || fallback, lng)
 }

@@ -1,7 +1,8 @@
 import getDefaultLang from './_helpers/getDefaultLang'
+import startsWithLang from './_helpers/startsWithLang'
 
 export default function i18nMiddleware(config = {}) {
-  const {
+  let {
     ignoreRoutes = [
       '/_next/',
       '/static/',
@@ -10,12 +11,24 @@ export default function i18nMiddleware(config = {}) {
       '/robots.txt',
     ],
     allLanguages = [],
-    redirectToDefaultLang = false,
+    defaultLangRedirect,
+    redirectToDefaultLang: _deprecated_redirectToDefaultLang,
   } = config
+
+  // @todo 1.0.0 Remove this backwards compatibility.
+  if (_deprecated_redirectToDefaultLang !== undefined) {
+    defaultLangRedirect = _deprecated_redirectToDefaultLang
+      ? 'lang-path'
+      : undefined
+    console.log(
+      '\x1b[33m%s\x1b[0m',
+      '🚨 redirectToDefaultLang is deprecated and will be removed in future major versions. Use defaultLangRedirect instead. Docs: https://github.com/vinissimus/next-translate/blob/master/README.md#4-configuration'
+    )
+  }
 
   return (req, res, next) => {
     const ignore = ignoreRoutes.some((r) => req.url.startsWith(r))
-    const startsWithLang = allLanguages.some((l) => req.url.startsWith(`/${l}`))
+    const defaultLanguage = getDefaultLang(req, config) || 'en'
 
     /**
      * Don't translate ignoreRoutes
@@ -26,10 +39,8 @@ export default function i18nMiddleware(config = {}) {
      * When lang is not present on the url
      * Redirect or add lang without redirecting (depending the config)
      */
-    if (!startsWithLang) {
-      const defaultLanguage = getDefaultLang(req, config) || 'en'
-
-      if (redirectToDefaultLang) {
+    if (!startsWithLang(req.url, config.allLanguages)) {
+      if (defaultLangRedirect === 'lang-path') {
         res.redirect(301, `/${defaultLanguage}${req.url}`)
         return
       }
@@ -44,13 +55,9 @@ export default function i18nMiddleware(config = {}) {
     req.url = req.url.replace(`/${lang}`, '') || '/'
 
     // Redirect to root url from default language
-    if (!redirectToDefaultLang) {
-      const defaultLanguage = getDefaultLang(req, config) || 'en'
-
-      if (lang === defaultLanguage) {
-        res.redirect(301, req.url)
-        return
-      }
+    if (defaultLangRedirect === 'root' && lang === defaultLanguage) {
+      res.redirect(301, req.url)
+      return
     }
 
     // Don't translate ignoreRoutes and redirect without lang
