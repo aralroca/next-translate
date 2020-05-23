@@ -64,7 +64,7 @@ And the config is on `/i18n.js`:
 module.exports = {
   allLanguages: ['en', 'ca', 'es'],
   defaultLanguage: 'es',
-  redirectToDefaultLang: true,
+  defaultLangRedirect: 'lang-path',
   loadLocaleFrom: (lang, ns) =>
     import(`./locales/${lang}/${ns}.json`).then((m) => m.default),
   pages: {
