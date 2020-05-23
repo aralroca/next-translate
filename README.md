@@ -620,6 +620,29 @@ In order to use it, you should use "." as id separator:
 t`namespace:nested-example.very-nested.nested`
 ```
 
+Also is possible to use as array:
+
+```json
+{
+  "array-example": [
+    { "example": "Example {{count}}" },
+    { "another-example": "Another example {{count}}" }
+  ]
+}
+```
+
+And get all the array translations with the option `returnObjects`:
+
+```js
+t('namespace:array-example', { count: 1 }, { returnObjects: true })
+/*
+[
+  { "example": "Example 1" },
+  { "another-example": "Another example 1" }
+]
+*/
+```
+
 ## 9. How to change the language
 
 In order to change the current language you don't need anything of this library, you can do it directly with the next navigation:
