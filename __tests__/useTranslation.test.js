@@ -338,4 +338,122 @@ describe('useTranslation', () => {
       expect(container.textContent).toContain(expected)
     })
   })
+
+  describe('options', () => {
+    test('should work with returnObjects option and Array locale', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const items = t('ns:template-array', {}, { returnObjects: true })
+        return <>{items.map((i) => `${i.title} `)}</>
+      }
+
+      const expected = 'Title 1 Title 2 Title 3'
+      const templateString = {
+        'template-array': [
+          { title: 'Title 1' },
+          { title: 'Title 2' },
+          { title: 'Title 3' },
+        ],
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work with returnObjects option and Object locale', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const { title, description } = t(
+          'ns:template-object',
+          {},
+          { returnObjects: true }
+        )
+        return <>{`${title} ${description}`}</>
+      }
+
+      const expected = 'Title 1 Description 1'
+      const templateString = {
+        'template-object': {
+          title: 'Title 1',
+          description: 'Description 1',
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+    test('should work with returnObjects option and Object locale with interpolation', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const { title, description } = t(
+          'ns:template-object-interpolation',
+          { count: 2, something: 'of title' },
+          { returnObjects: true }
+        )
+        return <>{`${title} ${description}`}</>
+      }
+
+      const expected = 'Title 2 Description of title'
+      const templateString = {
+        'template-object-interpolation': {
+          title: 'Title {{count}}',
+          description: 'Description {{something}}',
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+    test('should work with returnObjects option and Object locale with interpolation and highly nested object', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const {
+          title,
+          description,
+          template: {
+            parent: { child },
+          },
+        } = t(
+          'ns:template-object-interpolation',
+          { count: 2, something: 'of title', childTitle: '4' },
+          { returnObjects: true }
+        )
+        return <>{`${title} ${description} ${child.title}`}</>
+      }
+
+      const expected = 'Title 2 Description of title Child title 4'
+      const templateString = {
+        'template-object-interpolation': {
+          title: 'Title {{count}}',
+          description: 'Description {{something}}',
+          template: {
+            parent: {
+              child: {
+                title: 'Child title {{childTitle}}',
+              },
+            },
+          },
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+  })
 })
