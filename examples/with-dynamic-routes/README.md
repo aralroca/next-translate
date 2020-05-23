@@ -1,6 +1,6 @@
 # With dynamic routes example
 
-This is an alternative to "build step" way.
+This is an alternative to "build step" way **(it's not full supported by next-translate yet)**.
 
 It's also working with Automatic Static Optimization although it requires more configuration (for the moment).
 
