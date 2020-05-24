@@ -164,7 +164,7 @@ const example = t('common:variable-example', { count: 42 })
 return <div>{example}</div>
 ```
 
-⚠️ **Important**: \_app.js, \_document.js and \_error.js are not going to be wrapped with the translations context, so it's not possible to direclty translate these files. In order to do that, you should take a look at [DynamicNamespaces](#dynamicnamespaces) to load the namespaces dynamically.
+⚠️ **Important**: \_app.js, \_document.js and \_error.js are not going to be wrapped with the translations context, so it's not possible to directly translate these files. In order to do that, you should take a look at [DynamicNamespaces](#dynamicnamespaces) to load the namespaces dynamically.
 
 ### Add /pages to .gitignore
 
@@ -742,7 +742,7 @@ See [here](https://nextjs.org/docs/api-reference/data-fetching/getInitialProps#g
 
 In some cases, when the page is in the current language, you may want to do some exceptions displaying some text in another language.
 
-In this case, you can achive this by using the `I18nProvider`.
+In this case, you can archive this by using the `I18nProvider`.
 
 Learn how to do it [here](#i18nprovider).
 
@@ -752,7 +752,7 @@ The "build step" exists only to simplify work with Automatic Static Optimization
 
 ### First alternative
 
-You can achive the same with dynamic routes.
+You can archive the same with dynamic routes.
 
 Pros and cons:
 
@@ -765,7 +765,7 @@ In future major releases, we may evolve simplifying this and removing the "build
 
 ### Second alternative
 
-If you don't need Automatic Static Optimization in your project, you can achive the same by using a custom server.
+If you don't need Automatic Static Optimization in your project, you can archive the same by using a custom server.
 
 Pros and cons:
 
