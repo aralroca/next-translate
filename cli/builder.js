@@ -105,6 +105,7 @@ async function createPagesDir() {
 function isNextInternal(pagePath) {
   return (
     pagePath.startsWith(`${currentPagesDir}/_`) ||
+    pagePath.startsWith(`${currentPagesDir}/404.`) ||
     pagePath.startsWith(`${currentPagesDir}/api/`)
   )
 }
