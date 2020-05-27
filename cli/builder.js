@@ -297,8 +297,22 @@ export default function DefaultLanguageCatchAll() {
 `
 }
 
+function getErrorImport() {
+  const pages = fs.readdirSync(currentPagesDir)
+
+  if (pages.some((page) => page.startsWith('404.'))) {
+    return "import Error from '../pages/404';"
+  }
+
+  if (pages.some((page) => page.startsWith('_error.'))) {
+    return "import Error from '../pages/_error';"
+  }
+
+  return "import Error from 'next/error';"
+}
+
 function getCatchAllTemplate() {
-  return `import Error from 'next/error';
+  return `${getErrorImport()}
 import { useRouter } from 'next/router';
 
 export default function CatchAll() {
