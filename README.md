@@ -19,7 +19,7 @@
 - [2. Getting started](#2-getting-started)
   - [Install](#install)
   - [Use translations in your pages](#use-translations-in-your-pages)
-  - [Add pages to .gitignore](#add-pages-to-gitignore)
+  - [Add /pages to .gitignore](#add-pages-to-gitignore)
 - [3. Translation JSONs folder](#3-translation-jsons-folder)
 - [4. Configuration](#4-configuration)
 - [5. API](#5-api)
@@ -33,6 +33,7 @@
   - [Link](#link)
   - [Router](#router)
   - [clientSideLang](#clientsidelang)
+  - [fixHref](#fixhref)
 - [6. Plurals](#6-plurals)
 - [7. Use HTML inside the translation](#7-use-html-inside-the-translation)
 - [8. Nested translations](#8-nested-translations)
@@ -42,12 +43,16 @@
   - [getStaticPaths](#getstaticpaths)
   - [getServerSideProps](#getserversideprops)
   - [getInitialProps](#getinitialprops)
-- [11 How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
+- [11. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
 - [12. Do I need this "build step"? Is there an alternative?](#12-do-i-need-this-build-step-is-there-an-alternative)
+  - [First alternative](#first-alternative)
+  - [Second alternative](#second-alternative)
 - [13. Demos](#13-demos)
   - [Using the "build step"](#using-the-build-step)
-  - [Using an alternative to the "build step": dynamic routes](#using-an-alternative-to-the-build-step-dynamic-routes)
-  - [Using an alternative to the "build step": custom server](#using-an-alternative-to-the-build-step-custom-server)
+  - [Alternatives to the "build step"](#alternatives-to-the-build-step)
+    - [dynamic routes](#dynamic-routes)
+    - [custom server](#custom-server)
+- [Contributors ✨](#contributors-)
 
 <p align="center">
     <img src="images/translation-prerendered.gif" alt="Translations in prerendered pages" />
@@ -136,7 +141,7 @@ In your **package.json**:
 
 You should create your namespaces files inside `/locales`. [See how to do it](#3-translation-jsons-folder)
 
-Add a configuration file `i18n.json` in the root of the project. Each page should have its namespaces. Take a look to the [config](#4-configuration) section for more details.
+Add a configuration file `i18n.json` in the root of the project. Each page should have its namespaces. Take a look at it in the [config](#4-configuration) section for more details.
 
 ```json
 {
@@ -742,7 +747,7 @@ See [here](https://nextjs.org/docs/api-reference/data-fetching/getInitialProps#g
 
 In some cases, when the page is in the current language, you may want to do some exceptions displaying some text in another language.
 
-In this case, you can archive this by using the `I18nProvider`.
+In this case, you can achieve this by using the `I18nProvider`.
 
 Learn how to do it [here](#i18nprovider).
 
@@ -752,7 +757,7 @@ The "build step" exists only to simplify work with Automatic Static Optimization
 
 ### First alternative
 
-You can archive the same with dynamic routes.
+You can achieve the same with dynamic routes.
 
 Pros and cons:
 
@@ -765,7 +770,7 @@ In future major releases, we may evolve simplifying this and removing the "build
 
 ### Second alternative
 
-If you don't need Automatic Static Optimization in your project, you can archive the same by using a custom server.
+If you don't need Automatic Static Optimization in your project, you can achieve the same by using a custom server.
 
 Pros and cons:
 
@@ -781,12 +786,16 @@ Learn more: [Docs](docs/USING_CUSTOM_SERVER.md) · [Example](https://github.com/
 - `yarn install`
 - `yarn example:static-site`
 
-### Using an alternative to the build step: dynamic routes
+### Alternatives to the "build step"
+
+There are alternatives to the "build step", namely using "dynamic routes" or a "custom server".
+
+#### dynamic routes
 
 - `yarn install`
 - `yarn example:with-dynamic-routes`
 
-### Using an alternative to the build step: custom server
+#### custom server
 
 - `yarn install`
 - `yarn example:with-server`
@@ -820,6 +829,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
