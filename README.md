@@ -141,7 +141,7 @@ In your **package.json**:
 
 You should create your namespaces files inside `/locales`. [See how to do it](#3-translation-jsons-folder)
 
-Add a configuration file `i18n.json` in the root of the project. Each page should have its namespaces. Take a look to the [config](#4-configuration) section for more details.
+Add a configuration file `i18n.json` in the root of the project. Each page should have its namespaces. Take a look at it in the [config](#4-configuration) section for more details.
 
 ```json
 {
@@ -747,7 +747,7 @@ See [here](https://nextjs.org/docs/api-reference/data-fetching/getInitialProps#g
 
 In some cases, when the page is in the current language, you may want to do some exceptions displaying some text in another language.
 
-In this case, you can archive this by using the `I18nProvider`.
+In this case, you can achieve this by using the `I18nProvider`.
 
 Learn how to do it [here](#i18nprovider).
 
@@ -757,7 +757,7 @@ The "build step" exists only to simplify work with Automatic Static Optimization
 
 ### First alternative
 
-You can archive the same with dynamic routes.
+You can achieve the same with dynamic routes.
 
 Pros and cons:
 
@@ -770,7 +770,7 @@ In future major releases, we may evolve simplifying this and removing the "build
 
 ### Second alternative
 
-If you don't need Automatic Static Optimization in your project, you can archive the same by using a custom server.
+If you don't need Automatic Static Optimization in your project, you can achieve the same by using a custom server.
 
 Pros and cons:
 
@@ -829,6 +829,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
