@@ -49,8 +49,9 @@
   - [Second alternative](#second-alternative)
 - [13. Demos](#13-demos)
   - [Using the "build step"](#using-the-build-step)
-  - [Using an alternative to the build step: dynamic routes](#using-an-alternative-to-the-build-step-dynamic-routes)
-  - [Using an alternative to the build step: custom server](#using-an-alternative-to-the-build-step-custom-server)
+  - [Alternatives to the "build step"](#alternatives-to-the-build-step)
+    - [dynamic routes](#dynamic-routes)
+    - [custom server](#custom-server)
 - [Contributors ✨](#contributors-)
 
 <p align="center">
@@ -785,12 +786,16 @@ Learn more: [Docs](docs/USING_CUSTOM_SERVER.md) · [Example](https://github.com/
 - `yarn install`
 - `yarn example:static-site`
 
-### Using an alternative to the build step: dynamic routes
+### Alternatives to the "build step"
+
+There are alternatives to the "build step", namely using "dynamic routes" or a "custom server".
+
+#### dynamic routes
 
 - `yarn install`
 - `yarn example:with-dynamic-routes`
 
-### Using an alternative to the build step: custom server
+#### custom server
 
 - `yarn install`
 - `yarn example:with-server`
