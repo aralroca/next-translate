@@ -512,7 +512,7 @@ It is **not recommended** to use the `clientSideLang` directly on the server-sid
 
 📦**Size**: ~100b
 
-Useful to get the `href` string with the language (if necessary). It's similar to ![Link](#link) , but only to get the `href` string. It's recommended to use the ![Link](#link) component or ![Router](#router) instead.
+Useful to get the `href` string with the language (if necessary). It's similar to ![Link](#link) , but only to get the `href` string. It's recommended to use the [Link](#link) component or [Router](#router) instead.
 
 ```js
 import useTranslation from 'next-translate/useTranslation'
@@ -650,11 +650,7 @@ t('namespace:array-example', { count: 1 }, { returnObjects: true })
 
 ## 9. How to change the language
 
-In order to change the current language you don't need anything of this library, you can do it directly with the next navigation:
-
-- https://nextjs.org/learn/basics/navigate-between-pages
-
-The only thing to remember is to navigate with the **/lang/** on front.
+In order to change the current language you can use [next-translate/Link](#link) and [next-translate/Router](#router).
 
 An example of a possible `ChangeLanguage` component:
 
