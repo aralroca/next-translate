@@ -537,9 +537,9 @@ export function MyComponent() {
 
 ### documentLang
 
-📦**Size**: ???
+📦**Size**: ~300b
 
-Helper to automatically update the document language on routing.
+Helper to get the page language inside `\_document.js`.
 
 ```js
 import Document, { Html, Head, Main, NextScript } from 'next/document'
