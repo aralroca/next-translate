@@ -34,6 +34,7 @@
   - [Router](#router)
   - [clientSideLang](#clientsidelang)
   - [fixHref](#fixhref)
+  - [documentLang](#documentlang)
 - [6. Plurals](#6-plurals)
 - [7. Use HTML inside the translation](#7-use-html-inside-the-translation)
 - [8. Nested translations](#8-nested-translations)
@@ -533,6 +534,34 @@ export function MyComponent() {
 
 - `href`: `<string>` href string
 - `lang`: `<string>` language
+
+### documentLang
+
+📦**Size**: ~300b
+
+Helper to get the page language inside `\_document.js`.
+
+```js
+import Document, { Html, Head, Main, NextScript } from 'next/document'
+import documentLang from 'next-translate/documentLang'
+
+export default class MyDocument extends Document {
+  render() {
+    return (
+      <Html lang={documentLang(this.props)}>
+        <Head />
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    )
+  }
+}
+```
+
+- **Props**:
+  - `props` - Object - the document properties
 
 ## 6. Plurals
 
