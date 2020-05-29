@@ -19,7 +19,7 @@
 - [2. Getting started](#2-getting-started)
   - [Install](#install)
   - [Use translations in your pages](#use-translations-in-your-pages)
-  - [Add pages to .gitignore](#add-pages-to-gitignore)
+  - [Add /pages to .gitignore](#add-pages-to-gitignore)
 - [3. Translation JSONs folder](#3-translation-jsons-folder)
 - [4. Configuration](#4-configuration)
 - [5. API](#5-api)
@@ -33,6 +33,7 @@
   - [Link](#link)
   - [Router](#router)
   - [clientSideLang](#clientsidelang)
+  - [fixHref](#fixhref)
   - [documentLang](#documentlang)
 - [6. Plurals](#6-plurals)
 - [7. Use HTML inside the translation](#7-use-html-inside-the-translation)
@@ -43,12 +44,16 @@
   - [getStaticPaths](#getstaticpaths)
   - [getServerSideProps](#getserversideprops)
   - [getInitialProps](#getinitialprops)
-- [11 How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
+- [11. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
 - [12. Do I need this "build step"? Is there an alternative?](#12-do-i-need-this-build-step-is-there-an-alternative)
+  - [First alternative](#first-alternative)
+  - [Second alternative](#second-alternative)
 - [13. Demos](#13-demos)
   - [Using the "build step"](#using-the-build-step)
-  - [Using an alternative to the "build step": dynamic routes](#using-an-alternative-to-the-build-step-dynamic-routes)
-  - [Using an alternative to the "build step": custom server](#using-an-alternative-to-the-build-step-custom-server)
+  - [Alternatives to the "build step"](#alternatives-to-the-build-step)
+    - [dynamic routes](#dynamic-routes)
+    - [custom server](#custom-server)
+- [Contributors ✨](#contributors-)
 
 <p align="center">
     <img src="images/translation-prerendered.gif" alt="Translations in prerendered pages" />
@@ -137,7 +142,7 @@ In your **package.json**:
 
 You should create your namespaces files inside `/locales`. [See how to do it](#3-translation-jsons-folder)
 
-Add a configuration file `i18n.json` in the root of the project. Each page should have its namespaces. Take a look to the [config](#4-configuration) section for more details.
+Add a configuration file `i18n.json` in the root of the project. Each page should have its namespaces. Take a look at it in the [config](#4-configuration) section for more details.
 
 ```json
 {
@@ -508,7 +513,7 @@ It is **not recommended** to use the `clientSideLang` directly on the server-sid
 
 📦**Size**: ~100b
 
-Useful to get the `href` string with the language (if necessary). It's similar to ![Link](#link) , but only to get the `href` string. It's recommended to use the ![Link](#link) component or ![Router](#router) instead.
+Useful to get the `href` string with the language (if necessary). It's similar to ![Link](#link) , but only to get the `href` string. It's recommended to use the [Link](#link) component or [Router](#router) instead.
 
 ```js
 import useTranslation from 'next-translate/useTranslation'
@@ -674,11 +679,7 @@ t('namespace:array-example', { count: 1 }, { returnObjects: true })
 
 ## 9. How to change the language
 
-In order to change the current language you don't need anything of this library, you can do it directly with the next navigation:
-
-- https://nextjs.org/learn/basics/navigate-between-pages
-
-The only thing to remember is to navigate with the **/lang/** on front.
+In order to change the current language you can use [next-translate/Link](#link) and [next-translate/Router](#router).
 
 An example of a possible `ChangeLanguage` component:
 
@@ -771,7 +772,7 @@ See [here](https://nextjs.org/docs/api-reference/data-fetching/getInitialProps#g
 
 In some cases, when the page is in the current language, you may want to do some exceptions displaying some text in another language.
 
-In this case, you can archive this by using the `I18nProvider`.
+In this case, you can achieve this by using the `I18nProvider`.
 
 Learn how to do it [here](#i18nprovider).
 
@@ -781,7 +782,7 @@ The "build step" exists only to simplify work with Automatic Static Optimization
 
 ### First alternative
 
-You can archive the same with dynamic routes.
+You can achieve the same with dynamic routes.
 
 Pros and cons:
 
@@ -794,7 +795,7 @@ In future major releases, we may evolve simplifying this and removing the "build
 
 ### Second alternative
 
-If you don't need Automatic Static Optimization in your project, you can archive the same by using a custom server.
+If you don't need Automatic Static Optimization in your project, you can achieve the same by using a custom server.
 
 Pros and cons:
 
@@ -810,12 +811,16 @@ Learn more: [Docs](docs/USING_CUSTOM_SERVER.md) · [Example](https://github.com/
 - `yarn install`
 - `yarn example:static-site`
 
-### Using an alternative to the build step: dynamic routes
+### Alternatives to the "build step"
+
+There are alternatives to the "build step", namely using "dynamic routes" or a "custom server".
+
+#### dynamic routes
 
 - `yarn install`
 - `yarn example:with-dynamic-routes`
 
-### Using an alternative to the build step: custom server
+#### custom server
 
 - `yarn install`
 - `yarn example:with-server`
@@ -844,6 +849,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/bickmaev5"><img src="https://avatars2.githubusercontent.com/u/13235737?v=4" width="100px;" alt=""/><br /><sub><b>bickmaev5</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=bickmaev5" title="Code">💻</a></td>
     <td align="center"><a href="https://p.ier.re"><img src="https://avatars1.githubusercontent.com/u/1866496?v=4" width="100px;" alt=""/><br /><sub><b>Pierre Grimaud</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=pgrimaud" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://roman-minchyn.de"><img src="https://avatars0.githubusercontent.com/u/6419697?v=4" width="100px;" alt=""/><br /><sub><b>Roman Minchyn</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=dnepro" title="Documentation">📖</a></td>
   </tr>
 </table>
 
