@@ -537,7 +537,7 @@ export function MyComponent() {
 
 ### documentLang
 
-📦**Size**: ~300b
+📦**Size**: ~300b (0b in client-side)
 
 Helper to get the page language inside `\_document.js`.
 
