@@ -4,6 +4,7 @@
 /node_modules
 /examples/*/node_modules
 
+out
 /.pnp
 .pnp.js
 
