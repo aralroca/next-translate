@@ -4,6 +4,7 @@
 /node_modules
 /examples/*/node_modules
 
+out
 /.pnp
 .pnp.js
 
@@ -38,3 +39,5 @@ yarn-error.log*
 !src/**/*.js
 !__tests__/*.js
 !examples/**/*.js
+
+.vscode
