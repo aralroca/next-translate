@@ -95,6 +95,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "lone-cloud",
+      "name": "Egor",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/595980?v=4",
+      "profile": "https://www.egorphilippov.me/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
