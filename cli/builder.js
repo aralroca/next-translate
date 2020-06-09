@@ -122,6 +122,9 @@ function clearPageExt(page) {
 function readPageNamespaces() {
   readDirR(currentPagesDir).forEach(async (page) => {
     const pageId = clearPageExt(page.replace(currentPagesDir, '')) || '/'
+
+    if (pageId.match(/\.s?css$/)) return
+
     const namespaces = await getPageNamespaces({ pages }, pageId)
 
     if (!isNextInternal(page) && logBuild) {
