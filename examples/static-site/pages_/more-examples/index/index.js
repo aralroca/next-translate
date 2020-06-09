@@ -2,11 +2,11 @@ import useTranslation from 'next-translate/useTranslation'
 import Trans from 'next-translate/Trans'
 import Link from 'next-translate/Link'
 
-import PluralExample from '../../components/plural-example'
-import Header from '../../components/header'
-import NoFunctionalComponent from '../../components/no-functional-component'
+import PluralExample from '../../../components/plural-example'
+import Header from '../../../components/header'
+import NoFunctionalComponent from '../../../components/no-functional-component'
 
-const Component = props => <p {...props} />
+const Component = (props) => <p {...props} />
 
 export default function MoreExamples() {
   const { t } = useTranslation()

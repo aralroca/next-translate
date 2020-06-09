@@ -15,6 +15,8 @@ let {
   logBuild = true,
 } = require(process.cwd() + '/i18n.json') || {}
 
+const indexFolderRgx = /\/index\/index\....?$/
+
 // @todo 1.0.0 Remove this backwards compatibility.
 if (_deprecated_redirectToDefaultLang !== undefined) {
   defaultLangRedirect = _deprecated_redirectToDefaultLang
@@ -121,7 +123,10 @@ function clearPageExt(page) {
  */
 function readPageNamespaces() {
   readDirR(currentPagesDir).forEach(async (page) => {
-    const pageId = clearPageExt(page.replace(currentPagesDir, '')) || '/'
+    const pageId =
+      clearPageExt(page.replace(currentPagesDir, ''))
+        // Clear index folder case
+        .replace(/\/index$/, '') || '/'
 
     if (pageId.match(/\.s?css$/)) return
 
@@ -208,8 +213,12 @@ function buildPageLocale({ prefix, pagePath, namespaces, lang, path }) {
   const template = getPageTemplate(prefix, pagePath, lang, namespaces)
   const [filename] = finalPath.split('/').reverse()
   const dirs = finalPath.replace(`/${filename}`, '')
+  let finalFile = finalPath
+    .replace(/(\.tsx|\.ts|\.mdx)$/, '.js')
+    .replace(indexFolderRgx, '/index.js')
+
   fs.mkdirSync(dirs, { recursive: true })
-  fs.writeFileSync(finalPath.replace(/(\.tsx|\.ts|\.mdx)$/, '.js'), template)
+  fs.writeFileSync(finalFile, template)
 }
 
 function copyFolderRecursiveSync(source, targetFolder) {
@@ -226,11 +235,19 @@ function copyFolderRecursiveSync(source, targetFolder) {
 }
 
 function buildPageInAllLocales(pagePath, namespaces) {
-  const prefix = pagePath
+  let prefix = pagePath
     .split('/')
     .map(() => '..')
     .join('/')
-  const rootPrefix = prefix.replace('/..', '')
+
+  let rootPrefix = prefix.replace('/..', '')
+
+  // Rest one path if is index folder /index/index.js is going to
+  // be generated directly as /index.js
+  if (pagePath.match(indexFolderRgx)) {
+    rootPrefix = rootPrefix.replace('/..', '')
+    prefix = prefix.replace('/..', '')
+  }
 
   // _app.js , _document.js, _error.js, /api/*
   if (isNextInternal(pagePath)) {
