@@ -23,7 +23,9 @@ describe('builder', () => {
         )
       ).toBe(true)
       expect(
-        fs.existsSync('examples/static-site/pages_/more-examples/index.js')
+        fs.existsSync(
+          'examples/static-site/pages_/more-examples/index/index.js'
+        )
       ).toBe(true)
 
       /* Test finalPagesDir */
@@ -119,6 +121,27 @@ describe('builder', () => {
       )
       expect(ca.toString()).toContain(
         `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'ca' })`
+      )
+    })
+
+    test('Should generate /index/index.js pages correctly', () => {
+      const deflt = fs
+        .readFileSync('examples/static-site/pages/more-examples/index.js')
+        .toString()
+      const withLang = fs
+        .readFileSync('examples/static-site/pages/ca/more-examples/index.js')
+        .toString()
+
+      expect(deflt).toContain(
+        `import C from '../../pages_/more-examples/index'`
+      )
+      expect(deflt).toContain(`import ns0 from '../../locales/en/common.json'`)
+
+      expect(withLang).toContain(
+        `import C from '../../../pages_/more-examples/index'`
+      )
+      expect(withLang).toContain(
+        `import ns0 from '../../../locales/ca/common.json'`
       )
     })
   })
