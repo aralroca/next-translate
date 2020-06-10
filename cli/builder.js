@@ -128,11 +128,9 @@ function readPageNamespaces() {
         // Clear index folder case
         .replace(/\/index$/, '') || '/'
 
-    if (pageId.match(/\.s?css$/)) return
-
     const namespaces = await getPageNamespaces({ pages }, pageId)
 
-    if (!isNextInternal(page) && logBuild) {
+    if (!isNextInternal(page) && logBuild && !pageId.match(/\.s?css$/)) {
       console.log(`🔨 ${pageId}`, namespaces)
     }
 
@@ -249,8 +247,8 @@ function buildPageInAllLocales(pagePath, namespaces) {
     prefix = prefix.replace('/..', '')
   }
 
-  // _app.js , _document.js, _error.js, /api/*
-  if (isNextInternal(pagePath)) {
+  // _app.js , _document.js, _error.js, /api/*, .css, .scss
+  if (isNextInternal(pagePath) || pagePath.match(/\.s?css$/)) {
     if (pagePath.includes('/api/')) {
       fs.mkdirSync(`${finalPagesDir}/api`, { recursive: true })
       copyFolderRecursiveSync(
