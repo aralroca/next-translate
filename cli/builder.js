@@ -293,7 +293,7 @@ import C from './${defaultLanguage}/index'
 
 export default function Index(props) {
   const router = useRouter()
-  useEffect(() => { router.replace('/${defaultLanguage}') }, [])
+  useEffect(() => { router.replace('/${defaultLanguage}'+location.search) }, [])
   return <C {...props} />
 }
 
@@ -339,7 +339,7 @@ export default function CatchAll() {
     if (router.query.path[0] === '${defaultLanguage}') {
       return <Error statusCode="404" />
     }
-    router.replace(\`/${defaultLanguage}/\${router.query.path.join('/')}\`)
+    router.replace(\`/${defaultLanguage}/\${router.query.path.join('/')}\${location.search}\`)
   }
   return null
 }
