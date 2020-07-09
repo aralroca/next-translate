@@ -224,7 +224,7 @@ function copyFolderRecursiveSync(source, targetFolder) {
 
   //check if folder needs to be created
   if (!fs.existsSync(targetFolder)) {
-    fs.mkdirSync(targetFolder)
+    fs.mkdirSync(targetFolder, {recursive: true})
     //copy
     if (!fs.lstatSync(source).isDirectory()) {
       fs.copyFileSync(source, target)
