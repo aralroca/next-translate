@@ -1,4 +1,5 @@
 import React from 'react'
+import App from 'next/app'
 import I18nProvider from './I18nProvider'
 import getDefaultLang from './_helpers/getDefaultLang'
 import getPageNamespaces from './_helpers/getPageNamespaces'
@@ -34,21 +35,20 @@ export default function appWithI18n(AppToTranslate, config = {}) {
     )
   }
 
-  AppWithTranslations.getInitialProps = async ({ Component, ctx }) => {
+  AppWithTranslations.getInitialProps = async (appCtx) => {
+    const { Component, ctx } = appCtx
     const defaultLanguage = ctx.req
       ? getDefaultLang(ctx.req, config)
       : __NEXT_DATA__.props.defaultLanguage
     const lang = getLang(ctx, { ...config, defaultLanguage })
+    const getInitialProps =
+      AppToTranslate.getInitialProps || App.getInitialProps
     let appProps = { pageProps: {} }
 
-    if (AppToTranslate.getInitialProps) {
-      appProps =
-        (await AppToTranslate.getInitialProps({
-          Component,
-          ctx,
-          lang,
-        })) || {}
+    if (getInitialProps) {
+      appProps = (await getInitialProps({ ...appCtx, lang })) || {}
     }
+
     const page = removeTrailingSlash(ctx.pathname)
     const namespaces = await getPageNamespaces(config, page, ctx)
     const pageNamespaces =
