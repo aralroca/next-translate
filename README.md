@@ -698,7 +698,7 @@ function ChangeLanguage() {
   return allLanguages.map((lng) => {
     if (lng === lang) return null
 
-    // Or you can attach the current pathame at the end
+    // Or you can attach the current pathname at the end
     // to keep the same page
     return (
       <Link href="/" lang={lng} key={lng}>
