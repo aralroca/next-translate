@@ -16,6 +16,7 @@ let {
 } = require(process.cwd() + '/i18n.json') || {}
 
 const indexFolderRgx = /\/index\/index\....?$/
+const allPages = readDirR(currentPagesDir)
 
 // @todo 1.0.0 Remove this backwards compatibility.
 if (_deprecated_redirectToDefaultLang !== undefined) {
@@ -122,7 +123,7 @@ function clearPageExt(page) {
  * STEP 2: Read each page namespaces
  */
 function readPageNamespaces() {
-  readDirR(currentPagesDir).forEach(async (page) => {
+  allPages.forEach(async (page) => {
     const pageId =
       clearPageExt(page.replace(currentPagesDir, ''))
         // Clear index folder case
@@ -138,7 +139,7 @@ function readPageNamespaces() {
   })
 }
 
-function hasSpecialMethod(data, name) {
+function hasExportName(data, name) {
   return data.match(
     new RegExp(`export (const|var|let|async function|function) ${name}`)
   )
@@ -148,20 +149,41 @@ function specialMethod(name, lang) {
   return `export const ${name} = ctx => _rest.${name}({ ...ctx, lang: '${lang}' })`
 }
 
-/**
- * STEP 3: Build page in each lang path
- */
-function getPageTemplate(prefix, page, lang, namespaces) {
+function exportAllFromPage(prefix, page, lang) {
   const clearCommentsRgx = /\/\*[\s\S]*?\*\/|\/\/.*/g
   const pageData = fs
     .readFileSync(page)
     .toString('UTF-8')
     .replace(clearCommentsRgx, '')
-  const isGetStaticProps = hasSpecialMethod(pageData, 'getStaticProps')
-  const isGetStaticPaths = hasSpecialMethod(pageData, 'getStaticPaths')
-  const isGetServerSideProps = hasSpecialMethod(pageData, 'getServerSideProps')
+
+  const isHead = hasExportName(pageData, 'Head')
+  const isConfig = hasExportName(pageData, 'config')
+  const isGetStaticProps = hasExportName(pageData, 'getStaticProps')
+  const isGetStaticPaths = hasExportName(pageData, 'getStaticPaths')
+  const isGetServerSideProps = hasExportName(pageData, 'getServerSideProps')
   const hasSomeSpecialMethod =
     isGetStaticProps || isGetStaticPaths || isGetServerSideProps
+
+  const exports = `
+${isGetStaticProps ? specialMethod('getStaticProps', lang) : ''}
+${isGetStaticPaths ? specialMethod('getStaticPaths', lang) : ''}
+${isGetServerSideProps ? specialMethod('getServerSideProps', lang) : ''}
+${isHead ? `export { Head } from '${prefix}/${clearPageExt(page)}'` : ''}
+${isConfig ? `export { config } from '${prefix}/${clearPageExt(page)}'` : ''}
+`
+
+  return { hasSomeSpecialMethod, exports }
+}
+
+/**
+ * STEP 3: Build page in each lang path
+ */
+function getPageTemplate(prefix, page, lang, namespaces) {
+  const { hasSomeSpecialMethod, exports } = exportAllFromPage(
+    prefix,
+    page,
+    lang
+  )
 
   return `// @ts-nocheck
 import I18nProvider from 'next-translate/I18nProvider'
@@ -198,11 +220,7 @@ if(C && C.getInitialProps) {
   Page.getInitialProps = ctx => C.getInitialProps({ ...ctx, lang: '${lang}'})
 }
 
-${isGetStaticProps ? specialMethod('getStaticProps', lang) : ''}
-${isGetStaticPaths ? specialMethod('getStaticPaths', lang) : ''}
-${isGetServerSideProps ? specialMethod('getServerSideProps', lang) : ''}
-
-export * from '${prefix}/${clearPageExt(page)}'
+${exports}
 `
 }
 
@@ -224,7 +242,7 @@ function copyFolderRecursiveSync(source, targetFolder) {
 
   //check if folder needs to be created
   if (!fs.existsSync(targetFolder)) {
-    fs.mkdirSync(targetFolder, {recursive: true})
+    fs.mkdirSync(targetFolder, { recursive: true })
     //copy
     if (!fs.lstatSync(source).isDirectory()) {
       fs.copyFileSync(source, target)
@@ -287,9 +305,18 @@ function buildPageInAllLocales(pagePath, namespaces) {
 }
 
 function getIndexRedirectTemplate() {
+  const page = allPages.find((p) => p.startsWith(`${currentPagesDir}/index`))
+  const { hasSomeSpecialMethod, exports } = exportAllFromPage(
+    `./${defaultLanguage}/`,
+    page,
+    defaultLanguage
+  )
+
   return `import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import C from './${defaultLanguage}/index'
+import C${
+    hasSomeSpecialMethod ? ', * as _rest' : ''
+  }  from './${defaultLanguage}/index'
 
 export default function Index(props) {
   const router = useRouter()
@@ -298,7 +325,7 @@ export default function Index(props) {
 }
 
 Index = Object.assign(Index, { ...C })
-export * from './${defaultLanguage}/index'
+${exports}
 `
 }
 

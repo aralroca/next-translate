@@ -7,7 +7,7 @@
     "dev": "next dev"
   },
   "dependencies": {
-    "next": "9.4.2",
+    "next": "9.5.2",
     "next-translate": "link:../../",
     "react": "link:../../node_modules/react",
     "react-dom": "link:../../node_modules/react-dom"
