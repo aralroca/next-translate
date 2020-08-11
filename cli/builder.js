@@ -55,8 +55,19 @@ function rimraf(pathname) {
 
 function readDirR(dir) {
   const parsedDir = dir.replace(/\\/g, '/')
+  let d
 
-  return fs.statSync(parsedDir).isDirectory()
+  try {
+    d = fs.statSync(parsedDir)
+  } catch (e) {
+    console.log(
+      '\x1b[33m%s\x1b[0m',
+      `Error: '${parsedDir}' directory doesn't exist. Docs: https://github.com/vinissimus/next-translate#how-is-this-lib-handling-the-routes`
+    )
+    process.exit()
+  }
+
+  return d.isDirectory()
     ? Array.prototype.concat(
         ...fs
           .readdirSync(parsedDir)
