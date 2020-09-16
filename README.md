@@ -11,6 +11,11 @@
 [![npm version](https://badge.fury.io/js/next-translate.svg)](https://badge.fury.io/js/next-translate)
 [![PRs Welcome][badge-prwelcome]][prwelcome]
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)][spectrum]
+      <a href="https://github.com/vinissimus/next-translate/actions?query=workflow%3ACI" alt="Tests status">
+        <img src="https://github.com/vinissimus/next-translate/workflows/CI/badge.svg" /></a>
+   <a href="https://twitter.com/intent/follow?screen_name=shields_io">
+        <img src="https://img.shields.io/twitter/follow/aralroca?style=social&logo=twitter"
+            alt="follow on Twitter"></a>
 
 </div>
 
