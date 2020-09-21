@@ -98,7 +98,7 @@ describe('Router', () => {
       test('Should add the current language navigating to homepage', () => {
         const expected = {
           StaticModeRedirect: { href: '/en', as: undefined },
-          CustomServerMode: { href: '/', as: '/en' },
+          CustomServerMode: { href: '/?lang=en', as: '/en' },
           StaticModeNoRedirect: { href: '/', as: undefined },
         }[RouterComponent.displayName]
 
@@ -109,7 +109,7 @@ describe('Router', () => {
       test('Should add the current language navigating to homepage with "as"', () => {
         const expected = {
           StaticModeRedirect: { href: '/en', as: '/en/homepage' },
-          CustomServerMode: { href: '/', as: '/en/homepage' },
+          CustomServerMode: { href: '/?lang=en', as: '/en/homepage' },
           StaticModeNoRedirect: { href: '/', as: '/homepage' },
         }[RouterComponent.displayName]
 
@@ -122,7 +122,10 @@ describe('Router', () => {
       test('Should add the current language using nested route ', () => {
         const expected = {
           StaticModeRedirect: { href: '/en/some/route', as: undefined },
-          CustomServerMode: { href: '/some/route', as: '/en/some/route' },
+          CustomServerMode: {
+            href: '/some/route?lang=en',
+            as: '/en/some/route',
+          },
           StaticModeNoRedirect: { href: '/some/route', as: undefined },
         }[RouterComponent.displayName]
 
@@ -133,7 +136,7 @@ describe('Router', () => {
       test('Should add the defined language navigating to homepage', () => {
         const expected = {
           StaticModeRedirect: { href: '/es', as: undefined },
-          CustomServerMode: { href: '/', as: '/es' },
+          CustomServerMode: { href: '/?lang=es', as: '/es' },
           StaticModeNoRedirect: { href: '/es', as: undefined },
         }[RouterComponent.displayName]
 
@@ -144,7 +147,10 @@ describe('Router', () => {
       test('Should add the defined language using nested route ', () => {
         const expected = {
           StaticModeRedirect: { href: '/es/some/route', as: undefined },
-          CustomServerMode: { href: '/some/route', as: '/es/some/route' },
+          CustomServerMode: {
+            href: '/some/route?lang=es',
+            as: '/es/some/route',
+          },
           StaticModeNoRedirect: { href: '/es/some/route', as: undefined },
         }[RouterComponent.displayName]
 
