@@ -8,5 +8,9 @@ export default (href, lng) => {
 
   if (i.isStaticMode) return url
 
-  return url.includes('?') ? `${url}&lang=${lng}` : `${url}?lang=${lng}`
+  const fix = (u) => (u.includes('?') ? `${u}&lang=${lng}` : `${u}?lang=${lng}`)
+
+  if (url?.pathname) return { ...url, pathname: fix(url.pathname) }
+
+  return fix(url)
 }

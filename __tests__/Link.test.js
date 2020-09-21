@@ -105,6 +105,20 @@ describe('Link', () => {
         )
         expect(container.innerHTML).toBe(expected)
       })
+      test('Should add the current language navigating to homepage | with pathname', () => {
+        const expected = {
+          StaticModeLinkRedirectLangPath: '<a href="/en">home</a>',
+          CustomServerMode: '<a href="/en">home</a>',
+          StaticModeLinkRedirectRoot: '<a href="/">home</a>',
+          StaticModeLinkNoRedirect: '<a href="/">home</a>',
+        }[LinkComponent.displayName]
+        const { container } = render(
+          <LinkComponent href={{ pathname: '/' }}>
+            <a>home</a>
+          </LinkComponent>
+        )
+        expect(container.innerHTML).toBe(expected)
+      })
       test('Should add the current language navigating to homepage with "as"', () => {
         const expected = {
           StaticModeLinkRedirectLangPath: '<a href="/en/homepage">home</a>',
@@ -114,6 +128,20 @@ describe('Link', () => {
         }[LinkComponent.displayName]
         const { container } = render(
           <LinkComponent href="/" as="/homepage">
+            <a>home</a>
+          </LinkComponent>
+        )
+        expect(container.innerHTML).toBe(expected)
+      })
+      test('Should add the current language navigating to homepage with "as" | with pathname', () => {
+        const expected = {
+          StaticModeLinkRedirectLangPath: '<a href="/en/homepage">home</a>',
+          CustomServerMode: '<a href="/en/homepage">home</a>',
+          StaticModeLinkRedirectRoot: '<a href="/homepage">home</a>',
+          StaticModeLinkNoRedirect: '<a href="/homepage">home</a>',
+        }[LinkComponent.displayName]
+        const { container } = render(
+          <LinkComponent href={{ pathname: '/' }} as="/homepage">
             <a>home</a>
           </LinkComponent>
         )
@@ -133,9 +161,31 @@ describe('Link', () => {
         )
         expect(container.innerHTML).toBe(expected)
       })
+      test('Should add the current language using nested route | with pathname', () => {
+        const expected = {
+          StaticModeLinkRedirectLangPath: '<a href="/en/some/route">link</a>',
+          CustomServerMode: '<a href="/en/some/route">link</a>',
+          StaticModeLinkRedirectRoot: '<a href="/some/route">link</a>',
+          StaticModeLinkNoRedirect: '<a href="/some/route">link</a>',
+        }[LinkComponent.displayName]
+        const { container } = render(
+          <LinkComponent href={{ pathname: '/some/route' }}>
+            <a>link</a>
+          </LinkComponent>
+        )
+        expect(container.innerHTML).toBe(expected)
+      })
       test('Should add the defined language navigating to homepage', () => {
         const { container } = render(
           <LinkComponent href="/" lang="es">
+            <a>home</a>
+          </LinkComponent>
+        )
+        expect(container.innerHTML).toBe('<a href="/es">home</a>')
+      })
+      test('Should add the defined language navigating to homepage | with pathname', () => {
+        const { container } = render(
+          <LinkComponent href={{ pathname: '/' }} lang="es">
             <a>home</a>
           </LinkComponent>
         )
@@ -149,9 +199,25 @@ describe('Link', () => {
         )
         expect(container.innerHTML).toBe('<a href="/es/some/route">link</a>')
       })
+      test('Should add the defined language using nested route ', () => {
+        const { container } = render(
+          <LinkComponent href={{ pathname: '/some/route' }} lang="es">
+            <a>link</a>
+          </LinkComponent>
+        )
+        expect(container.innerHTML).toBe('<a href="/es/some/route">link</a>')
+      })
       test('Should not add the current language to the route', () => {
         const { container } = render(
           <LinkComponent noLang href="/some/route" lang="es">
+            <a>link</a>
+          </LinkComponent>
+        )
+        expect(container.innerHTML).toBe('<a href="/some/route">link</a>')
+      })
+      test('Should not add the current language to the route | with pathname', () => {
+        const { container } = render(
+          <LinkComponent noLang href={{ pathname: '/some/route' }} lang="es">
             <a>link</a>
           </LinkComponent>
         )

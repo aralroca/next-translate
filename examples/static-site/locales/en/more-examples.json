@@ -7,6 +7,8 @@
   "example-with-html": "<0>This is an example <1>using HTML</1> inside the translation</0>",
   "no-functional-example": "Translation done from a no-functional component",
   "dynamic-namespaces-link": "See an example of dynamic namespace",
+  "dynamic-route": "Dynamic route",
+  "go-to-home": "Go to the homepage",
   "nested-example": {
     "very-nested": {
       "nested": "Nested example!"

@@ -5,7 +5,7 @@ import Link from 'next-translate/Link'
 import PluralExample from '../../components/plural-example'
 import NoFunctionalComponent from '../../components/no-functional-component'
 
-const Component = props => <p {...props} />
+const Component = (props) => <p {...props} />
 
 export default function MoreExamples() {
   const { t } = useTranslation()
@@ -35,6 +35,19 @@ export default function MoreExamples() {
       <br />
       <Link href={`/more-examples/different-namespaces-by-query?fromDynamic=1`}>
         <a>{t('more-examples:different-namespaces-link-dynamic')}</a>
+      </Link>
+      <br />
+      <Link
+        href={{
+          pathname: '/more-examples/dynamicroute/example',
+          query: { another: 'another param' },
+        }}
+      >
+        <a>{t('more-examples:dynamic-route')}</a>
+      </Link>
+      <br />
+      <Link href="/more-examples/catchall/this/is/an/example">
+        <a>Catchall</a>
       </Link>
     </>
   )
