@@ -145,4 +145,21 @@ describe('builder', () => {
       )
     })
   })
+
+  describe('amp.js', () => {
+    test('Should NOT be the same than the pages_/amp.js', () => {
+      const pages_ = fs.readFileSync('examples/static-site/pages_/amp.tsx')
+      const pages = fs.readFileSync('examples/static-site/pages/amp.js')
+
+      expect(pages_.equals(pages)).toBe(false)
+      expect(pages.toString()).toContain('I18nProvider')
+      expect(pages.toString()).toContain('Page = Object.assign(Page, { ...C })')
+    })
+
+    test('Should contain config export', () => {
+      const deflt = fs.readFileSync('examples/static-site/pages/amp.js')
+
+      expect(deflt.toString()).toContain(`export const config = { amp: true }`)
+    })
+  })
 })
