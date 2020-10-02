@@ -55,7 +55,7 @@
     "pretty-quick": "3.0.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "supertest": "4.0.2"
+    "supertest": "5.0.0"
   },
   "peerDependencies": {
     "next": ">= 9.3.0",
