@@ -29,4 +29,27 @@ describe('fixHref', () => {
       '/homepage/?foo=baz&lang=it'
     )
   })
+  test('arrange query string before hash', () => {
+    setInternals({
+      defaultLanguage: 'en',
+    })
+    expect(fixHref('/#anchor', 'en')).toBe('/?lang=en#anchor')
+    expect(fixHref('/homepage#anchor', 'en')).toBe('/homepage?lang=en#anchor')
+    expect(fixHref('/homepage/#anchor', 'en')).toBe('/homepage/?lang=en#anchor')
+    expect(fixHref('/homepage?foo=baz#anchor', 'en')).toBe(
+      '/homepage?foo=baz&lang=en#anchor'
+    )
+    expect(fixHref('/homepage/?foo=baz#anchor', 'en')).toBe(
+      '/homepage/?foo=baz&lang=en#anchor'
+    )
+    expect(fixHref('/#anchor', 'it')).toBe('/?lang=it#anchor')
+    expect(fixHref('/homepage#anchor', 'it')).toBe('/homepage?lang=it#anchor')
+    expect(fixHref('/homepage/#anchor', 'it')).toBe('/homepage/?lang=it#anchor')
+    expect(fixHref('/homepage?foo=baz#anchor', 'it')).toBe(
+      '/homepage?foo=baz&lang=it#anchor'
+    )
+    expect(fixHref('/homepage/?foo=baz#anchor', 'it')).toBe(
+      '/homepage/?foo=baz&lang=it#anchor'
+    )
+  })
 })
