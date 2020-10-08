@@ -10,9 +10,15 @@ function getLang(ctx, config) {
 
   if (req) return req.query.lang || config.defaultLanguage
 
-  return startsWithLang(asPath, config.allLanguages)
-    ? asPath.split('/')[1]
-    : config.defaultLanguage
+  if (startsWithLang(asPath, config.allLanguages)) {
+    if (asPath.includes('#')) {
+      return asPath.replace(/#[\w-]+/, '').split('/')[1]
+    }
+
+    return asPath.split('/')[1]
+  }
+
+  return config.defaultLanguage
 }
 
 function removeTrailingSlash(path = '') {

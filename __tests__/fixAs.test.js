@@ -20,5 +20,15 @@ describe('fixAs', () => {
     expect(fixAs('/homepage/', '/', 'en')).toBe('/homepage/')
     expect(fixAs('/homepage', '/', 'it')).toBe('/it/homepage')
     expect(fixAs('/homepage/', '/', 'it')).toBe('/it/homepage/')
+    expect(fixAs('/homepage#anchor', '/#anchor', 'en')).toBe('/homepage#anchor')
+    expect(fixAs('/homepage/#anchor', '/#anchor', 'en')).toBe(
+      '/homepage/#anchor'
+    )
+    expect(fixAs('/homepage#anchor', '/#anchor', 'it')).toBe(
+      '/it/homepage#anchor'
+    )
+    expect(fixAs('/homepage/#anchor', '/#anchor', 'it')).toBe(
+      '/it/homepage/#anchor'
+    )
   })
 })

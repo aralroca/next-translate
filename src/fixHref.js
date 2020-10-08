@@ -1,6 +1,10 @@
 import i from './_helpers/_internals'
 import appendLangPrefix from './_helpers/appendLangPrefix'
 
+function includeLang(url, lng) {
+  return url.includes('?') ? `${url}&lang=${lng}` : `${url}?lang=${lng}`
+}
+
 export default (href, lng) => {
   const isRoot =
     i.defaultLangRedirect !== 'lang-path' && i.defaultLanguage === lng
@@ -8,5 +12,10 @@ export default (href, lng) => {
 
   if (i.isStaticMode) return url
 
-  return url.includes('?') ? `${url}&lang=${lng}` : `${url}?lang=${lng}`
+  if (url.includes('#')) {
+    const split = url.split('#')
+    return [includeLang(split[0], lng), split[1]].join('#')
+  }
+
+  return includeLang(url, lng)
 }
