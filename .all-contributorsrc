@@ -131,6 +131,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "hibearpanda",
+      "name": "Andrew Chung",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/11482515?v=4",
+      "profile": "https://andrew-c.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
