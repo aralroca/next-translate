@@ -18,6 +18,9 @@ const TestEnglish = ({ i18nKey, query, namespaces }) => {
 
 describe('useTranslation', () => {
   afterEach(cleanup)
+  beforeAll(() => {
+    console.warn = jest.fn()
+  })
 
   describe('fallbacks', () => {
     test('should return an empty string if t(undefined)', () => {

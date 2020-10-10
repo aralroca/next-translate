@@ -56,11 +56,19 @@ function objectInterpolation(obj, query) {
   return obj
 }
 
+function missingKeyLogger({ namespace, i18nKey }) {
+  if (process.env.NODE_ENV === 'production') return
+  console.warn(
+    `[next-translate] "${namespace}:${i18nKey}" is missing in current namespace configuration. Try adding "${i18nKey}" to the namespace "${namespace}".`
+  )
+}
+
 export default function I18nProvider({
   lang,
   namespaces = {},
   children,
   internals = {},
+  logger = missingKeyLogger,
 }) {
   const ns = useContext(NsContext)
   const allNamespaces = { ...ns, ...namespaces }
@@ -73,6 +81,13 @@ export default function I18nProvider({
     const dic = allNamespaces[namespace] || {}
     const keyWithPlural = plural(dic, i18nKey, query)
     const value = getDicValue(dic, keyWithPlural, options)
+
+    if (typeof value === 'undefined') {
+      logger({
+        namespace,
+        i18nKey,
+      })
+    }
 
     if (value instanceof Object) {
       return objectInterpolation(value, query)
