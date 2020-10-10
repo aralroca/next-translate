@@ -57,6 +57,7 @@ function objectInterpolation(obj, query) {
 }
 
 function missingKeyLogger({ namespace, i18nKey }) {
+  if (process.env.NODE_ENV === 'production') return
   console.warn(
     `[next-translate] "${namespace}:${i18nKey}" is missing in current namespace configuration. Try adding "${i18nKey}" to the namespace "${namespace}".`
   )
