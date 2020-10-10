@@ -10,6 +10,8 @@
   "different-namespaces-link": "Página con distintos namespaces (more-examples)",
   "different-namespaces-link-dynamic": "Página con distintos namespaces (dynamic)",
   "different-namespaces-example": "Soy un ejemplo cargado des del namespace 'more-examples'",
+  "dynamic-route": "Ruta dinamica",
+  "go-to-home": "Ir a la página principal",
   "nested-example": {
     "very-nested": {
       "nested": "¡Ejemplo anidado!"

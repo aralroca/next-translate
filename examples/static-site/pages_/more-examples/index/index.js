@@ -30,6 +30,19 @@ export default function MoreExamples() {
       <Link href="/more-examples/dynamic-namespace">
         <a>{t('more-examples:dynamic-namespaces-link')}</a>
       </Link>
+      <br />
+      <Link
+        href={{
+          pathname: '/more-examples/dynamicroute/example',
+          query: { another: 'another param' },
+        }}
+      >
+        <a>{t('more-examples:dynamic-route')}</a>
+      </Link>
+      <br />
+      <Link href="/more-examples/catchall/this/is/an/example">
+        <a>Catchall</a>
+      </Link>
     </>
   )
 }

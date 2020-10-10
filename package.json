@@ -1,6 +1,6 @@
 {
   "name": "next-translate",
-  "version": "0.17.3-canary.3",
+  "version": "0.17.3-canary.4",
   "description": "Next.js utility to translate pages without the need of a server (static i18n pages generator).",
   "license": "MIT",
   "keywords": [
@@ -39,23 +39,23 @@
     "next-translate": "./cli/builder.js"
   },
   "devDependencies": {
-    "@babel/cli": "7.10.5",
-    "@babel/core": "7.11.1",
-    "@babel/preset-env": "7.11.0",
-    "@testing-library/react": "10.4.8",
-    "babel-jest": "26.3.0",
+    "@babel/cli": "7.11.6",
+    "@babel/core": "7.11.6",
+    "@babel/preset-env": "7.11.5",
+    "@testing-library/react": "11.0.4",
+    "babel-jest": "26.5.2",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
     "babel-preset-minify": "0.5.1",
     "cross-env": "7.0.2",
     "express": "4.17.1",
-    "husky": "4.2.5",
-    "jest": "26.3.0",
-    "next": "9.5.4",
-    "prettier": "2.0.5",
-    "pretty-quick": "2.0.1",
+    "husky": "4.3.0",
+    "jest": "26.5.2",
+    "next": "9.5.5",
+    "prettier": "2.1.2",
+    "pretty-quick": "3.0.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "supertest": "4.0.2"
+    "supertest": "5.0.0"
   },
   "peerDependencies": {
     "next": ">= 9.3.0",

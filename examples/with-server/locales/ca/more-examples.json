@@ -10,6 +10,8 @@
   "different-namespaces-link": "Pàgina amb diferents namespaces (more-examples)",
   "different-namespaces-link-dynamic": "Pàgina amb diferents namespaces (dynamic)",
   "different-namespaces-example": "Sóc un exemple carregat desde el namespace 'more-examples'",
+  "dynamic-route": "Ruta dinàmica",
+  "go-to-home": "Anar a la pàgina principal",
   "nested-example": {
     "very-nested": {
       "nested": "Exemple anidat!"

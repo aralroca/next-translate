@@ -24,6 +24,8 @@ module.exports = {
     '*': ['common'],
     '/': ['home'],
     '/more-examples': ['more-examples'],
+    '/more-examples/catchall/[...all]': ['more-examples'],
+    '/more-examples/dynamicroute/[slug]': ['more-examples'],
     '/more-examples/different-namespaces-by-query': ({ query }) =>
       query.fromDynamic ? ['dynamic'] : ['more-examples'],
   },
