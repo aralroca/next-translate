@@ -281,7 +281,7 @@ function buildPageInAllLocales(pagePath, namespaces) {
   }
 
   // _app.js , _document.js, _error.js, /api/*, .css, .scss
-  if (isNextInternal(pagePath) || pagePath.match(/\.s?css$/)) {
+  if (isNextInternal(pagePath)) {
     if (pagePath.includes('/api/')) {
       fs.mkdirSync(`${finalPagesDir}/api`, { recursive: true })
       copyFolderRecursiveSync(
