@@ -9,16 +9,13 @@ function getElements(parts) {
 
   const [paired, children, unpaired, after] = parts.slice(0, 4)
 
-  return [[parseInt(paired || unpaired), children || "", after]].concat(
+  return [[parseInt(paired || unpaired), children || '', after]].concat(
     getElements(parts.slice(4, parts.length))
   )
 }
 
-function formatElements(
-  value,
-  elements = []
-) {
-  const parts = value.replace(nlRe, "").split(tagRe)
+function formatElements(value, elements = []) {
+  const parts = value.replace(nlRe, '').split(tagRe)
 
   if (parts.length === 1) return value
 
@@ -27,13 +24,13 @@ function formatElements(
   const before = parts.shift()
   if (before) tree.push(before)
 
-  for (const [index, children, after] of getElements(parts)) {
-    const element = elements[index] || <Fragment />
+  getElements(parts).forEach(([index, children, after], realIndex) => {
+    const element = elements[index] || <Fragment />
 
     tree.push(
       cloneElement(
         element,
-        { key: index },
+        { key: realIndex },
 
         // format children for pair tags
         // unpaired tags might have children if it's a component passed as a variable
@@ -42,7 +39,7 @@ function formatElements(
     )
 
     if (after) tree.push(after)
-  }
+  })
 
   return tree
 }
@@ -52,7 +49,7 @@ function formatElements(
  * <0>This is an <1>example</1><0>
  * to -> <h1>This is an <b>example</b><h1>
  */
-export default function Trans({ i18nKey, values, components }){
+export default function Trans({ i18nKey, values, components }) {
   const { t } = useTranslation()
 
   /**
@@ -61,7 +58,7 @@ export default function Trans({ i18nKey, values, components }){
   const result = useMemo(() => {
     const text = t(i18nKey, values)
 
-    if(!components || components.length === 0) return text
+    if (!components || components.length === 0) return text
 
     return formatElements(text, components)
   }, [i18nKey, values, components])
