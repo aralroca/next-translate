@@ -28,13 +28,14 @@ function removeTrailingSlash(path = '') {
 export default function appWithI18n(AppToTranslate, config = {}) {
   function AppWithTranslations(props) {
     const { lang, namespaces, defaultLanguage } = props
-    const { defaultLangRedirect } = config
+    const { defaultLangRedirect, logger } = config
 
     return (
       <I18nProvider
         lang={lang}
         namespaces={namespaces}
         internals={{ defaultLangRedirect, defaultLanguage }}
+        logger={logger}
       >
         <AppToTranslate {...props} />
       </I18nProvider>
