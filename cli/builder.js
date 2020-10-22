@@ -3,6 +3,14 @@ const fs = require('fs')
 const path = require('path')
 const getPageNamespaces = require('../_helpers/getPageNamespaces').default
 
+let configFile = {}
+
+if (fs.existsSync(process.cwd() + '/i18n.js')) {
+  configFile = require(process.cwd() + '/i18n.js')
+} else if (fs.existsSync(process.cwd() + '/i18n.json')) {
+  configFile = require(process.cwd() + '/i18n.json')
+}
+
 let {
   allLanguages = [],
   currentPagesDir = 'pages_',
@@ -11,9 +19,10 @@ let {
   finalPagesDir = 'pages',
   localesPath = 'locales',
   pages = {},
+  logger,
   redirectToDefaultLang: _deprecated_redirectToDefaultLang,
   logBuild = true,
-} = require(process.cwd() + '/i18n.json') || {}
+} = configFile
 
 const indexFolderRgx = /\/index\/index\....?$/
 const allPages = readDirR(currentPagesDir)
@@ -223,6 +232,7 @@ export default function Page(p){
       lang="${lang}" 
       namespaces={namespaces}  
       internals={${internals}}
+      ${typeof logger === 'function' && `logger={${logger.toString()}}`}
     >
       <C {...p} />
     </I18nProvider>
