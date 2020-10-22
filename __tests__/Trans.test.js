@@ -144,6 +144,32 @@ describe('Trans', () => {
       expect(console.warn).toBeCalledWith(expected)
     })
 
+    test('should log correctly if the value includes a ":", for example an URL', () => {
+      console.warn = jest.fn()
+      const i18nKey = 'ns:https://linkinsomelanguage.com'
+      const expected =
+        '[next-translate] "ns:https://linkinsomelanguage.com" is missing in current namespace configuration. Try adding "https://linkinsomelanguage.com" to the namespace "ns".'
+
+      const withSingular = {}
+      render(
+        <TestEnglish namespaces={{ ns: withSingular }} i18nKey={i18nKey} />
+      )
+      expect(console.warn).toBeCalledWith(expected)
+    })
+
+    test('should not log when the translation have ":" inside', () => {
+      console.warn = jest.fn()
+      const i18nKey = 'Some text without namespace'
+      const expected =
+        '[next-translate] The text "Some text without namespace" has no namespace in front of it.'
+
+      const withSingular = {}
+      render(
+        <TestEnglish namespaces={{ ns: withSingular }} i18nKey={i18nKey} />
+      )
+      expect(console.warn).toBeCalledWith(expected)
+    })
+
     test('should log a warn key if a nested key does not exist in the namespace', () => {
       console.warn = jest.fn()
       const i18nKey = 'ns:parent.child'

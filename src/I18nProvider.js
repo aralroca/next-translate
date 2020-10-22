@@ -58,6 +58,14 @@ function objectInterpolation(obj, query) {
 
 function missingKeyLogger({ namespace, i18nKey }) {
   if (process.env.NODE_ENV === 'production') return
+
+  // This means that instead of "ns:value", "value" has been misspelled (without namespace)
+  if (!i18nKey) {
+    console.warn(
+      `[next-translate] The text "${namespace}" has no namespace in front of it.`
+    )
+    return
+  }
   console.warn(
     `[next-translate] "${namespace}:${i18nKey}" is missing in current namespace configuration. Try adding "${i18nKey}" to the namespace "${namespace}".`
   )
@@ -77,7 +85,7 @@ export default function I18nProvider({
 
   function t(key = '', query, options) {
     const k = Array.isArray(key) ? key[0] : key
-    const [namespace, i18nKey] = k.split(':')
+    const [namespace, i18nKey] = k.split(/:(.+)/)
     const dic = allNamespaces[namespace] || {}
     const keyWithPlural = plural(dic, i18nKey, query)
     const value = getDicValue(dic, keyWithPlural, options)
