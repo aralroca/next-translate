@@ -3,8 +3,11 @@ const fs = require('fs')
 
 export default function documentLang({ __NEXT_DATA__ }, config) {
   if (!config) {
-    const configDir = path.join(process.cwd(), 'i18n.json')
-    config = JSON.parse(fs.readFileSync(configDir))
+    const file = fs.existsSync(process.cwd() + '/i18n.js')
+      ? 'i18n.js'
+      : 'i18n.json'
+
+    config = require(path.join(process.cwd(), file))
   }
 
   const { page } = __NEXT_DATA__
