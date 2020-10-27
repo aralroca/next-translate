@@ -20,29 +20,20 @@ let {
   localesPath = 'locales',
   pages = {},
   logger,
-  redirectToDefaultLang: _deprecated_redirectToDefaultLang,
+  redirectToDefaultLang,
   logBuild = true,
 } = configFile
 
 const indexFolderRgx = /\/index\/index\....?$/
 const allPages = readDirR(currentPagesDir)
 
-// @todo 1.0.0 Remove this backwards compatibility.
-if (_deprecated_redirectToDefaultLang !== undefined) {
-  defaultLangRedirect = _deprecated_redirectToDefaultLang
-    ? 'lang-path'
-    : undefined
-  console.log(
-    '\x1b[33m%s\x1b[0m',
-    '🚨 redirectToDefaultLang is deprecated and will be removed in future major versions. Use defaultLangRedirect instead. Docs: https://github.com/vinissimus/next-translate/blob/master/README.md#4-configuration'
-  )
+if (defaultLangRedirect) {
+  console.warn('[next-translate] defaultLangRedirect is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior.')
 }
 
-const internals = JSON.stringify({
-  defaultLangRedirect,
-  defaultLanguage,
-  isStaticMode: true,
-})
+if (redirectToDefaultLang) {
+  console.warn('[next-translate] redirectToDefaultLang is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior.')
+}
 
 /**
  * Similar to "rm -rf"
@@ -78,19 +69,17 @@ function readDirR(dir) {
 
   return d.isDirectory()
     ? Array.prototype.concat(
-        ...fs
-          .readdirSync(parsedDir)
-          .map((f) => readDirR(path.join(parsedDir, f)))
-      )
+      ...fs
+        .readdirSync(parsedDir)
+        .map((f) => readDirR(path.join(parsedDir, f)))
+    )
     : parsedDir
 }
 
 createPagesDir()
 
 function getLangs() {
-  return allLanguages.filter(
-    (lng) => defaultLangRedirect === 'lang-path' || lng !== defaultLanguage
-  )
+  return allLanguages.filter((lng) => lng !== defaultLanguage)
 }
 
 /**
@@ -105,19 +94,6 @@ async function createPagesDir() {
   getLangs().forEach(async (lang) => {
     fs.mkdirSync(`${finalPagesDir}/${lang}`)
   })
-
-  if (defaultLangRedirect === 'lang-path') {
-    fs.writeFileSync(`${finalPagesDir}/[...path].js`, getCatchAllTemplate())
-    fs.writeFileSync(`${finalPagesDir}/index.js`, getIndexRedirectTemplate())
-  }
-
-  if (defaultLangRedirect === 'root') {
-    fs.mkdirSync(`${finalPagesDir}/${defaultLanguage}`)
-    fs.writeFileSync(
-      `${finalPagesDir}/${defaultLanguage}/[...path].js`,
-      getDefaultLanguageIndexRedirectTemplate()
-    )
-  }
 
   if (logBuild) {
     console.log(`Building pages | from ${currentPagesDir} to ${finalPagesDir}`)
@@ -155,7 +131,7 @@ function readPageNamespaces() {
       console.log(`🔨 ${pageId}`, namespaces)
     }
 
-    buildPageInAllLocales(page, namespaces)
+    buildPage(page, namespaces)
   })
 }
 
@@ -165,74 +141,93 @@ function hasExportName(data, name) {
   )
 }
 
-function specialMethod(name, lang) {
-  return `export const ${name} = ctx => _rest.${name}({ ...ctx, lang: '${lang}' })`
+function specialMethod(name, namespaces, prefix, loader = true) {
+  if (name === 'getStaticPaths') {
+    return `export const ${name} = ctx => _rest.${name}(ctx)`
+  }
+
+  if (name === 'getInitialProps') {
+    return `Page.getInitialProps = async ctx => {
+      ${getInternalNamespacesCode(namespaces, prefix)}
+      let res = C.getInitialProps(ctx)
+      if(typeof res.then === 'function') res = await res
+    
+      return { ...res,  _ns, _lang }
+    }`
+  }
+
+  return `export const ${name} = async ctx => {
+    ${getInternalNamespacesCode(namespaces, prefix)}
+    let res = ${loader ? `_rest.${name}(ctx)` : '{}'}
+    if(typeof res.then === 'function') res = await res
+  
+    return { 
+      ...res, 
+      props: {
+        ...(res.props || {}),
+        _ns,
+        _lang,
+      }
+    }
+  }`
 }
 
 function pageConfig(data) {
   return data.match(/export\s(const|var|let)\sconfig(.|\n)*?}\n{0,1}/m)[0]
 }
 
-function exportAllFromPage(prefix, page, lang) {
+function exportAllFromPage(prefix, page, namespaces) {
   const clearCommentsRgx = /\/\*[\s\S]*?\*\/|\/\/.*/g
   const pageData = fs
     .readFileSync(page)
     .toString('UTF-8')
     .replace(clearCommentsRgx, '')
 
+  const isDynamicPage = page.includes('[')
   const isHead = hasExportName(pageData, 'Head')
   const isConfig = hasExportName(pageData, 'config')
+  const isGetInitialProps = pageData.match(/\\WgetInitialProps\\W/g)
   const isGetStaticProps = hasExportName(pageData, 'getStaticProps')
   const isGetStaticPaths = hasExportName(pageData, 'getStaticPaths')
   const isGetServerSideProps = hasExportName(pageData, 'getServerSideProps')
-  const hasSomeSpecialMethod =
+  const hasSomeSpecialExport =
     isGetStaticProps || isGetStaticPaths || isGetServerSideProps
+  const hasLoaderMethod = hasSomeSpecialExport || isGetInitialProps
 
   const exports = `
-${isGetStaticProps ? specialMethod('getStaticProps', lang) : ''}
-${isGetStaticPaths ? specialMethod('getStaticPaths', lang) : ''}
-${isGetServerSideProps ? specialMethod('getServerSideProps', lang) : ''}
+${isGetInitialProps ? specialMethod('getInitialProps', namespaces, prefix) : ''}
+${isGetStaticPaths ? specialMethod('getStaticPaths', namespaces, prefix) : ''}
+${isGetServerSideProps || (!hasLoaderMethod && isDynamicPage) ? specialMethod('getServerSideProps', namespaces, prefix, hasLoaderMethod) : ''}
+${isGetStaticProps || (!hasLoaderMethod && !isDynamicPage) ? specialMethod('getStaticProps', namespaces, prefix, hasLoaderMethod) : ''}
 ${isHead ? `export { Head } from '${prefix}/${clearPageExt(page)}'` : ''}
 ${isConfig ? pageConfig(pageData) : ''}
 `
 
-  return { hasSomeSpecialMethod, exports }
+  return { hasSomeSpecialExport, exports }
 }
 
 /**
- * STEP 3: Build page in each lang path
+ * STEP 3: Get each page template
  */
-function getPageTemplate(prefix, page, lang, namespaces) {
-  const { hasSomeSpecialMethod, exports } = exportAllFromPage(
+function getPageTemplate(prefix, page, namespaces) {
+  const { hasSomeSpecialExport, exports } = exportAllFromPage(
     prefix,
     page,
-    lang
+    namespaces
   )
 
   return `// @ts-nocheck
 import I18nProvider from 'next-translate/I18nProvider'
 import React from 'react'
-import C${
-    hasSomeSpecialMethod ? ', * as _rest' : ''
-  } from '${prefix}/${clearPageExt(page)}'
-${namespaces
-  .map(
-    (ns, i) =>
-      `import ns${i} from '${prefix}/${localesPath}/${lang}/${ns}.json'`
-  )
-  .join('\n')}
+import C${hasSomeSpecialExport ? ', * as _rest' : ''
+    } from '${prefix}/${clearPageExt(page)}'
 
-const namespaces = { ${namespaces
-    .map((ns, i) => `'${ns}': ns${i}`)
-    .join(', ')} }
-
-export default function Page(p){
+export default function Page({ _ns, _lang, ...p }){
   return (
-    <I18nProvider 
-      lang="${lang}" 
-      namespaces={namespaces}  
-      internals={${internals}}
-      ${typeof logger === 'function' && `logger={${logger.toString()}}`}
+    <I18nProvider
+      lang={_lang}
+      namespaces={_ns}  
+      ${typeof logger === 'function' ? `logger={${logger.toString()}}` : ''}
     >
       <C {...p} />
     </I18nProvider>
@@ -240,18 +235,13 @@ export default function Page(p){
 }
 
 Page = Object.assign(Page, { ...C })
-
-if(C && C.getInitialProps) {
-  Page.getInitialProps = ctx => C.getInitialProps({ ...ctx, lang: '${lang}'})
-}
-
 ${exports}
 `
 }
 
-function buildPageLocale({ prefix, pagePath, namespaces, lang, path }) {
+function buildPageWithNamespaces({ prefix, pagePath, namespaces, path }) {
   const finalPath = pagePath.replace(currentPagesDir, path)
-  const template = getPageTemplate(prefix, pagePath, lang, namespaces)
+  const template = getPageTemplate(prefix, pagePath, namespaces)
   const [filename] = finalPath.split('/').reverse()
   const dirs = finalPath.replace(`/${filename}`, '')
   let finalFile = finalPath
@@ -275,22 +265,20 @@ function copyFolderRecursiveSync(source, targetFolder) {
   }
 }
 
-function buildPageInAllLocales(pagePath, namespaces) {
+function buildPage(pagePath, namespaces) {
   let prefix = pagePath
     .split('/')
     .map(() => '..')
     .join('/')
-
-  let rootPrefix = prefix.replace('/..', '')
+    .replace('/..', '')
 
   // Rest one path if is index folder /index/index.js is going to
   // be generated directly as /index.js
   if (pagePath.match(indexFolderRgx)) {
-    rootPrefix = rootPrefix.replace('/..', '')
     prefix = prefix.replace('/..', '')
   }
 
-  // _app.js , _document.js, _error.js, /api/*, .css, .scss
+  // _app.js , _document.js, _error.js, /api/*
   if (isNextInternal(pagePath)) {
     if (pagePath.includes('/api/')) {
       fs.mkdirSync(`${finalPagesDir}/api`, { recursive: true })
@@ -303,97 +291,20 @@ function buildPageInAllLocales(pagePath, namespaces) {
     return
   }
 
-  // For each lang
-  getLangs().forEach((lang) => {
-    buildPageLocale({
-      lang,
-      namespaces,
-      pagePath,
-      path: `${finalPagesDir}/${lang}`,
-      prefix,
-    })
+  // Build pages with namespaces
+  buildPageWithNamespaces({
+    namespaces,
+    pagePath,
+    path: finalPagesDir,
+    prefix,
   })
-
-  // For default lang
-  if (
-    allLanguages.includes(defaultLanguage) &&
-    defaultLangRedirect !== 'lang-path'
-  ) {
-    buildPageLocale({
-      lang: defaultLanguage,
-      namespaces,
-      pagePath,
-      path: finalPagesDir,
-      prefix: rootPrefix,
-    })
-  }
 }
 
-function getIndexRedirectTemplate() {
-  const page = allPages.find((p) => p.startsWith(`${currentPagesDir}/index`))
-  const { hasSomeSpecialMethod, exports } = exportAllFromPage(
-    `./${defaultLanguage}/`,
-    page,
-    defaultLanguage
-  )
-
-  return `import { useEffect } from 'react'
-import { useRouter } from 'next/router'
-import C${
-    hasSomeSpecialMethod ? ', * as _rest' : ''
-  }  from './${defaultLanguage}/index'
-
-export default function Index(props) {
-  const router = useRouter()
-  useEffect(() => { router.replace('/${defaultLanguage}'+location.search) }, [])
-  return <C {...props} />
-}
-
-Index = Object.assign(Index, { ...C })
-${exports}
-`
-}
-
-function getDefaultLanguageIndexRedirectTemplate() {
-  return `import { useRouter } from 'next/router';
-
-export default function DefaultLanguageCatchAll() {
-  const router = useRouter()
-  if (Array.isArray(router.query.path) && typeof window !== 'undefined') {
-    router.replace(\`/\${router.query.path.join('/')}\`)
-  }
-  return null
-}
-`
-}
-
-function getErrorImport() {
-  const pages = fs.readdirSync(currentPagesDir)
-
-  if (pages.some((page) => page.startsWith('404.'))) {
-    return "import Error from '../pages/404';"
-  }
-
-  if (pages.some((page) => page.startsWith('_error.'))) {
-    return "import Error from '../pages/_error';"
-  }
-
-  return "import Error from 'next/error';"
-}
-
-function getCatchAllTemplate() {
-  return `${getErrorImport()}
-import { useRouter } from 'next/router';
-
-export default function CatchAll() {
-  const router = useRouter()
-  if (Array.isArray(router.query.path) && typeof window !== 'undefined') {
-    if (router.query.path[0] === '${defaultLanguage}') {
-      return <Error statusCode="404" />
-    }
-    router.replace(\`/${defaultLanguage}/\${router.query.path.join('/')}\${location.search}\`)
-  }
-  return null
-}
-`
+function getInternalNamespacesCode(namespaces, prefix) {
+  return `const _lang = ctx.locale || ctx.router?.locale || '${defaultLanguage}'
+  ${namespaces.map((ns, i) =>
+    `const ns${i} = await import(\`${prefix}/${localesPath}/\${_lang}/${ns}.json\`).then(m => m.default)`
+  ).join('\n')}
+  const _ns = { ${namespaces.map((ns, i) => `'${ns}': ns${i}`).join(', ')} }
+  `
 }

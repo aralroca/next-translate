@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation'
 import Trans from 'next-translate/Trans'
-import Link from 'next-translate/Link'
+import Link from 'next/link'
 
 import PluralExample from '../../components/plural-example'
 import NoFunctionalComponent from '../../components/no-functional-component'

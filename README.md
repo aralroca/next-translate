@@ -34,12 +34,6 @@
   - [appWithI18n](#appwithi18n)
   - [DynamicNamespaces](#dynamicnamespaces)
   - [I18nProvider](#i18nprovider)
-  - [i18nMiddleware](#i18nmiddleware)
-  - [Link](#link)
-  - [Router](#router)
-  - [clientSideLang](#clientsidelang)
-  - [fixHref](#fixhref)
-  - [documentLang](#documentlang)
 - [6. Plurals](#6-plurals)
 - [7. Use HTML inside the translation](#7-use-html-inside-the-translation)
 - [8. Nested translations](#8-nested-translations)
@@ -216,9 +210,7 @@ In order to use each translation in the project, use the _translation id_ compos
 | Option                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Type                            | Default                                                                         |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------- |
 | `defaultLanguage`     | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string\|function`              | `"en"`                                                                          |
-| `allLanguages`        | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Array<string>`                 | `[]`                                                                            |
-| `ignoreRoutes`        | An array with all the routes to ignore in the middleware. This config property only effects using the `i18nMiddleware`, SO MAYBE YOU'LL NEVER NEED THIS.                                                                                                                                                                                                                                                                                                                                                                                                                                               | `Array<string>`                 | `['/_next/', '/static/', '/favicon.ico', '/manifest.json', '/robots.txt']`      |
-| `defaultLangRedirect` | It accepts `lang-path` and `root` as string. If it's set to `lang-path` redirects the default language routes from `/my-route` to `/en/my-route`. If it's set to `root` redirects the default language routes from `/en/my-route` to `/my-route`. Otherwise, when it's not defined, it's not doing any redirect (default).                                                                                                                                                                                                                                                                             | `string\|undefined`             | undefined                                                                       |
+| `allLanguages`        | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Array<string>`                 | `[]`                                                                                                                                    
 | `currentPagesDir`     | A string with the directory where you have the pages code. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `string`                        | `"pages_"`                                                                      |
 | `finalPagesDir`       | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                               | `string`                        | `"pages"`                                                                       |
 | `localesPath`         | A string with the directory of JSONs locales. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `string`                        | `"locales"`                                                                     |
@@ -425,151 +417,6 @@ export default function Page() {
 }
 ```
 
-### i18nMiddleware
-
-📦**Size**: ~1.4kb
-
-If you are using Automatic Static Optimization, you don't need this. This middleware is an alternative to the "build step".
-
-```js
-const i18nMiddleware = require('next-translate/i18nMiddleware').default
-const i18nConfig = require('./i18n')
-
-// ...
-server.use(i18nMiddleware(i18nConfig))
-```
-
-See more details about the [config](#4-configuration) you can use.
-
-**Props**:
-
-- `dynamic` - Function - Generic dynamic import of all namespaces (mandatory).
-- `namespaces` - Array<string> - List of namespaces to load dynamically (mandatory).
-- `fallback` - Any - Fallback to render meanwhile namespaces are loading (default: `null`)
-
-### Link
-
-📦**Size**: ~11kb (`next/link` size included)
-
-It's a wrapper of `next/link` that adds the current language at the beginning of the path, so you don't have to worry to add the language in every navigation. In order to change the language, you can pass the `lang` as props:
-
-```jsx
-import Link from 'next-translate/Link'
-
-// If the current language is 'en':
-
-// -> Navigate to /en/some-path
-<Link href="/some-path"><a>Navigate</a></Link>
-
- // -> Navigate to /es/route-in-spanish
-<Link href="/route-in-spanish" lang="es"><a>Navigate</a></Link>
-
-// -> Navigate to /some-path
-<Link noLang href="/some-path"><a>Navigate</a></Link>
-```
-
-**Props**: Same props than `next/link` + only one additional prop:
-
-- `lang`: `<String>` prop useful to navigate to a different language than the current one. The default value, if this prop is not provided, is the current language. So you don't need to worry about passing this prop for normal navigation.
-- `noLang`: `<Boolean>` prop to disable appending the current language to the route.
-
-### Router
-
-📦**Size**: ~10kb (`next/router` size included)
-
-It's a wrapper of `next/router` so you can use the normal router of next.js, adding two extra methods:
-
-- **Router.pushI18n**: It is exactly the same as `Router.push`, except that it adds the current language at the beginning of the URL. In order to change the language, you can pass the `lang` into the `options`.
-- **Router.replaceI18n**: It is exactly the same as `Router.replace`, with the difference that it adds the current language at the beginning of the URL. In order to change the language, you can pass the `lang` into the `options`.
-
-```js
-import Router from 'next-translate/Router'
-
-// If the current language is 'en':
-
-// -> Navigate to /en/some-path
-Router.pushI18n('/some-path')
-
-// -> Navigate to /es/route-in-spanish
-Router.pushI18n({ url: '/route-in-spanish', options: { lang: 'es' } })
-// or
-Router.pushI18n('/route-in-spanish', undefined, { lang: 'es' })
-```
-
-### clientSideLang
-
-📦**Size**: ~590b
-
-Useful to get the language outside Components.
-
-```js
-import clientSideLang from 'next-translate/clientSideLang'
-
-// ...
-
-export function myClientSideHelper() {
-  const lang = clientSideLang()
-  // ...
-}
-```
-
-It is **not recommended** to use the `clientSideLang` directly on the server-side because it's stored in a global variable and it can cause some concurrency issues.
-
-### fixHref
-
-📦**Size**: ~100b
-
-Useful to get the `href` string with the language (if necessary). It's similar to ![Link](#link) , but only to get the `href` string. It's recommended to use the [Link](#link) component or [Router](#router) instead.
-
-```js
-import useTranslation from 'next-translate/useTranslation'
-import fixHref from 'next-translate/fixHref'
-
-// ...
-const defaultLang = 'en'
-
-export function MyComponent() {
-  const { lang } = useTranslation()
-  const href = fixHref('/some/route', lang) // /es/some/route
-  console.log(fixHref('/some/route', defaultLang))
-  // if it's default lang: /some/route or /en/some/route (depends on your config)
-}
-```
-
-**Props**:
-
-- `href`: `<string>` href string
-- `lang`: `<string>` language
-
-### documentLang
-
-📦**Size**: ~300b (0b in client-side)
-
-Helper to get the page language inside `\_document.js`.
-
-```js
-import Document, { Html, Head, Main, NextScript } from 'next/document'
-import documentLang from 'next-translate/documentLang'
-
-export default class MyDocument extends Document {
-  render() {
-    return (
-      <Html lang={documentLang(this.props)}>
-        <Head />
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    )
-  }
-}
-```
-
-- **Props**:
-  - `props` - Object - the document properties
-  - `i18nConfig` - Object - i18n config. Is optional. By default is using the config from `/i18n.js` or `/i18n.json` file.
-
 ## 6. Plurals
 
 You can define plurals this way:
@@ -686,13 +533,13 @@ t('namespace:array-example', { count: 1 }, { returnObjects: true })
 
 ## 9. How to change the language
 
-In order to change the current language you can use [next-translate/Link](#link) and [next-translate/Router](#router).
+In order to change the current language you can use the [Next.js navigation](https://nextjs.org/docs/advanced-features/i18n-routing) (Link and Router) passing the `locale` prop.
 
 An example of a possible `ChangeLanguage` component:
 
 ```js
 import React from 'react'
-import Link from 'next-translate/Link'
+import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
 import i18nConfig from '../i18n.json'
 
@@ -707,7 +554,7 @@ function ChangeLanguage() {
     // Or you can attach the current pathname at the end
     // to keep the same page
     return (
-      <Link href="/" lang={lng} key={lng}>
+      <Link href="/" locale={lng} key={lng}>
         {t(`layout:language-name-${lng}`)}
       </Link>
     )

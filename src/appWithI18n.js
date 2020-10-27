@@ -1,40 +1,26 @@
 import React from 'react'
 import App from 'next/app'
 import I18nProvider from './I18nProvider'
-import getDefaultLang from './_helpers/getDefaultLang'
 import getPageNamespaces from './_helpers/getPageNamespaces'
-import startsWithLang from './_helpers/startsWithLang'
-
-function getLang(ctx, config) {
-  const { req, asPath = '' } = ctx
-
-  if (req) return req.query.lang || config.defaultLanguage
-
-  if (startsWithLang(asPath, config.allLanguages)) {
-    if (asPath.includes('#')) {
-      return asPath.replace(/#[\w-]+/, '').split('/')[1]
-    }
-
-    return asPath.split('/')[1]
-  }
-
-  return config.defaultLanguage
-}
 
 function removeTrailingSlash(path = '') {
   return path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path
 }
 
 export default function appWithI18n(AppToTranslate, config = {}) {
+
+  if (config.ignoreRoutes) {
+    console.warn('[next-translate] ignoreRoutes is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior.')
+  }
+
   function AppWithTranslations(props) {
-    const { lang, namespaces, defaultLanguage } = props
-    const { defaultLangRedirect, logger } = config
+    const { lang, namespaces } = props
+    const { logger } = config
 
     return (
       <I18nProvider
         lang={lang}
         namespaces={namespaces}
-        internals={{ defaultLangRedirect, defaultLanguage }}
         logger={logger}
       >
         <AppToTranslate {...props} />
@@ -43,17 +29,14 @@ export default function appWithI18n(AppToTranslate, config = {}) {
   }
 
   AppWithTranslations.getInitialProps = async (appCtx) => {
-    const { Component, ctx } = appCtx
-    const defaultLanguage = ctx.req
-      ? getDefaultLang(ctx.req, config)
-      : __NEXT_DATA__.props.defaultLanguage
-    const lang = getLang(ctx, { ...config, defaultLanguage })
+    const { router, ctx } = appCtx
+    const lang = router.locale
     const getInitialProps =
       AppToTranslate.getInitialProps || App.getInitialProps
     let appProps = { pageProps: {} }
 
     if (getInitialProps) {
-      appProps = (await getInitialProps({ ...appCtx, lang })) || {}
+      appProps = (await getInitialProps(appCtx)) || {}
     }
 
     const page = removeTrailingSlash(ctx.pathname)
@@ -65,12 +48,11 @@ export default function appWithI18n(AppToTranslate, config = {}) {
             ? config.loadLocaleFrom(lang, ns)
             : Promise.resolve([])
         )
-      ).catch(() => {})) || []
+      ).catch(() => { })) || []
 
     return {
       ...appProps,
       lang,
-      defaultLanguage,
       namespaces: namespaces.reduce((obj, ns, i) => {
         obj[ns] = pageNamespaces[i]
         return obj

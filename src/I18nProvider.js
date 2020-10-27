@@ -1,6 +1,5 @@
 import React, { createContext, useContext } from 'react'
 import I18nContext from './_context'
-import { setInternals } from './_helpers/_internals'
 
 const NsContext = createContext({})
 
@@ -75,13 +74,10 @@ export default function I18nProvider({
   lang,
   namespaces = {},
   children,
-  internals = {},
   logger = missingKeyLogger,
 }) {
   const ns = useContext(NsContext)
   const allNamespaces = { ...ns, ...namespaces }
-
-  setInternals({ ...internals, lang })
 
   function t(key = '', query, options) {
     const k = Array.isArray(key) ? key[0] : key

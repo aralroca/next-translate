@@ -13,7 +13,7 @@ describe('builder', () => {
   })
 
   describe('files tree', () => {
-    test('should build all the necessary files for all languages', () => {
+    test('should build all the necessary files', () => {
       /* Test currentPagesDir */
       expect(fs.existsSync('examples/static-site/pages_/_app.js')).toBe(true)
       expect(fs.existsSync('examples/static-site/pages_/index.tsx')).toBe(true)
@@ -32,7 +32,7 @@ describe('builder', () => {
       expect(fs.existsSync('examples/static-site/pages/_app.js')).toBe(true)
       expect(fs.existsSync('examples/static-site/pages/index.js')).toBe(true)
 
-      // Default language
+      // Pages
       expect(
         fs.existsSync(
           'examples/static-site/pages/more-examples/dynamic-namespace.js'
@@ -41,40 +41,6 @@ describe('builder', () => {
       expect(
         fs.existsSync('examples/static-site/pages/more-examples/index.js')
       ).toBe(true)
-
-      // Rest of languages
-      expect(fs.existsSync('examples/static-site/pages/ca/index.js')).toBe(true)
-      expect(
-        fs.existsSync(
-          'examples/static-site/pages/ca/more-examples/dynamic-namespace.js'
-        )
-      ).toBe(true)
-      expect(
-        fs.existsSync('examples/static-site/pages/ca/more-examples/index.js')
-      ).toBe(true)
-
-      expect(fs.existsSync('examples/static-site/pages/es/index.js')).toBe(true)
-      expect(
-        fs.existsSync(
-          'examples/static-site/pages/es/more-examples/dynamic-namespace.js'
-        )
-      ).toBe(true)
-      expect(
-        fs.existsSync('examples/static-site/pages/es/more-examples/index.js')
-      ).toBe(true)
-
-      // The default language should be not generated when defaultLangRedirect != 'lang-path'
-      expect(fs.existsSync('examples/static-site/pages/en/index.js')).toBe(
-        false
-      )
-      expect(
-        fs.existsSync(
-          'examples/static-site/pages/en/more-examples/dynamic-namespace.js'
-        )
-      ).toBe(false)
-      expect(
-        fs.existsSync('examples/static-site/pages/en/more-examples/index.js')
-      ).toBe(false)
     })
   })
 
@@ -91,7 +57,7 @@ describe('builder', () => {
     test('Should add common + home namespaces', () => {
       const page = fs.readFileSync('examples/static-site/pages/dashboard.js')
       expect(page.toString()).toContain(
-        "const namespaces = { 'common': ns0, 'home': ns1 }"
+        "const _ns = { 'common': ns0, 'home': ns1 }"
       )
     })
   })
@@ -106,42 +72,14 @@ describe('builder', () => {
       expect(pages.toString()).toContain('Page = Object.assign(Page, { ...C })')
     })
 
-    test('Should inject lang to getStaticProps', () => {
-      const deflt = fs.readFileSync('examples/static-site/pages/index.js')
-      const en = fs.readFileSync('examples/static-site/pages/en/[...path].js')
-      const es = fs.readFileSync('examples/static-site/pages/es/index.js')
-      const ca = fs.readFileSync('examples/static-site/pages/ca/index.js')
-
-      expect(deflt.toString()).toContain(
-        `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'en' })`
-      )
-      expect(en.toString()).toContain(`DefaultLanguageCatchAll`)
-      expect(es.toString()).toContain(
-        `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'es' })`
-      )
-      expect(ca.toString()).toContain(
-        `export const getStaticProps = ctx => _rest.getStaticProps({ ...ctx, lang: 'ca' })`
-      )
-    })
-
     test('Should generate /index/index.js pages correctly', () => {
-      const deflt = fs
+      const page = fs
         .readFileSync('examples/static-site/pages/more-examples/index.js')
         .toString()
-      const withLang = fs
-        .readFileSync('examples/static-site/pages/ca/more-examples/index.js')
-        .toString()
 
-      expect(deflt).toContain(
-        `import C from '../../pages_/more-examples/index'`
-      )
-      expect(deflt).toContain(`import ns0 from '../../locales/en/common.json'`)
-
-      expect(withLang).toContain(
-        `import C from '../../../pages_/more-examples/index'`
-      )
-      expect(withLang).toContain(
-        `import ns0 from '../../../locales/ca/common.json'`
+      expect(page).toContain(`import C from '../../pages_/more-examples/index'`)
+      expect(page).toContain(
+        'const ns0 = await import(`../../locales/${_lang}/common.json`)'
       )
     })
   })
