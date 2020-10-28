@@ -11,6 +11,11 @@ if (fs.existsSync(process.cwd() + '/i18n.js')) {
   configFile = require(process.cwd() + '/i18n.json')
 }
 
+// The `locales` and `defaultLocale` are not used here at the moment, as it
+// is now managed by Next.js within `next.config.js` file. But for the time
+// being we have to keep it as part of the configuration. When we can finally
+// remove the "build step" (1.0.0), we will make a wrapper of `next.config.js`
+// passing all the same configuration from the file i18n.js / i18n.json.
 let {
   locales = [],
   allLanguages, // @deprecated
@@ -55,51 +60,7 @@ if (defaultLanguage) {
   )
 }
 
-/**
- * Similar to "rm -rf"
- */
-function rimraf(pathname) {
-  if (!fs.existsSync(pathname)) return
-
-  fs.readdirSync(pathname).forEach((child) => {
-    const childPathname = path.join(pathname, child)
-
-    if (fs.lstatSync(childPathname).isDirectory()) {
-      rimraf(childPathname)
-      return
-    }
-    fs.unlinkSync(childPathname)
-  })
-  fs.rmdirSync(pathname)
-}
-
-function readDirR(dir) {
-  const parsedDir = dir.replace(/\\/g, '/')
-  let d
-
-  try {
-    d = fs.statSync(parsedDir)
-  } catch (e) {
-    console.error(
-      `Error: '${parsedDir}' directory doesn't exist. Docs: https://github.com/vinissimus/next-translate#use-translations-in-your-pages`
-    )
-    process.exit()
-  }
-
-  return d.isDirectory()
-    ? Array.prototype.concat(
-        ...fs
-          .readdirSync(parsedDir)
-          .map((f) => readDirR(path.join(parsedDir, f)))
-      )
-    : parsedDir
-}
-
 createPagesDir()
-
-function getLangs() {
-  return locales.filter((lng) => lng !== defaultLocale)
-}
 
 /**
  * STEP 1: Create /pages/ dir with their langs:
@@ -109,10 +70,6 @@ function getLangs() {
 async function createPagesDir() {
   rimraf(finalPagesDir)
   fs.mkdirSync(finalPagesDir)
-
-  getLangs().forEach(async (lang) => {
-    fs.mkdirSync(`${finalPagesDir}/${lang}`)
-  })
 
   if (logBuild) {
     console.log(`Building pages | from ${currentPagesDir} to ${finalPagesDir}`)
@@ -338,4 +295,44 @@ function getInternalNamespacesCode(namespaces, prefix) {
     .join('\n')}
   const _ns = { ${namespaces.map((ns, i) => `'${ns}': ns${i}`).join(', ')} }
   `
+}
+
+/**
+ * Similar to "rm -rf"
+ */
+function rimraf(pathname) {
+  if (!fs.existsSync(pathname)) return
+
+  fs.readdirSync(pathname).forEach((child) => {
+    const childPathname = path.join(pathname, child)
+
+    if (fs.lstatSync(childPathname).isDirectory()) {
+      rimraf(childPathname)
+      return
+    }
+    fs.unlinkSync(childPathname)
+  })
+  fs.rmdirSync(pathname)
+}
+
+function readDirR(dir) {
+  const parsedDir = dir.replace(/\\/g, '/')
+  let d
+
+  try {
+    d = fs.statSync(parsedDir)
+  } catch (e) {
+    console.error(
+      `Error: '${parsedDir}' directory doesn't exist. Docs: https://github.com/vinissimus/next-translate#use-translations-in-your-pages`
+    )
+    process.exit()
+  }
+
+  return d.isDirectory()
+    ? Array.prototype.concat(
+        ...fs
+          .readdirSync(parsedDir)
+          .map((f) => readDirR(path.join(parsedDir, f)))
+      )
+    : parsedDir
 }
