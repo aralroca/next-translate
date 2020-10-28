@@ -279,7 +279,7 @@ In order to use each translation in the project, use the _translation id_ compos
 
 ### useTranslation
 
-📦**Size**: ~614b
+📦**Size**: ~150b
 
 This hook is the recommended way to use translations in your pages / components.
 
@@ -317,7 +317,7 @@ The `t` function:
 
 ### withTranslation
 
-📦**Size**: ~759b
+📦**Size**: ~560b
 
 It's an alternative to `useTranslation` hook, but in a HOC for these components that are no-functional.
 
@@ -343,7 +343,7 @@ export default withTranslation(NoFunctionalComponent)
 
 ### Trans Component
 
-📦**Size**: ~1.5kb
+📦**Size**: ~1.4kb
 
 Sometimes we need to do some translations with HTML inside the text (bolds, links, etc), the `Trans` component is exactly what you need for this. We recommend to use this component only in this case, for other cases we highly recommend the usage of `useTranslation` hook instead.
 
@@ -366,7 +366,7 @@ Example:
 
 ### appWithI18n
 
-📦**Size**: ~4.7kb
+📦**Size**: ~3.7kb
 
 Using the "build step" you'll never need this.
 
@@ -391,7 +391,7 @@ See more details about the [config](#4-configuration) you can use.
 
 ### DynamicNamespaces
 
-📦**Size**: ~4.1kb
+📦**Size**: ~1.5kb
 
 The `DynamicNamespaces` component is useful to load dynamic namespaces, for example, in modals.
 
@@ -433,7 +433,7 @@ Remember that `['dynamic']` namespace should **not** be listed on `pages` config
 
 ### I18nProvider
 
-📦**Size**: ~1.8kb
+📦**Size**: ~3kb
 
 The `I18nProvider` is a context provider internally used by next-translate to provide the current **lang** and the page **namespaces**. SO MAYBE YOU'LL NEVER NEED THIS.
 
