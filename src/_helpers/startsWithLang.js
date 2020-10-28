@@ -1,5 +1,5 @@
-export default function startsWithLang(url, allLanguages) {
-  return allLanguages.some((l) =>
+export default function startsWithLang(url, locales) {
+  return locales.some((l) =>
     new RegExp(`(^\/${l}\/)|(^\/${l}$)|(^\/${l}#.*$)`).test(url)
   )
 }

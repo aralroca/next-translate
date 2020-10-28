@@ -8,9 +8,34 @@ function removeTrailingSlash(path = '') {
 }
 
 export default function appWithI18n(AppToTranslate, config = {}) {
-
   if (config.ignoreRoutes) {
-    console.warn('[next-translate] ignoreRoutes is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior.')
+    console.warn(
+      '🚨 [next-translate] ignoreRoutes is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior.'
+    )
+  }
+
+  if (config.allLanguages) {
+    console.warn(
+      '🚨 [next-translate] "allLanguages" is now renamed to "locales". The support to "allLanguages" will be removed in next releases.'
+    )
+  }
+
+  if (config.defaultLanguage) {
+    console.warn(
+      '🚨 [next-translate] "defaultLanguage" is now renamed to "defaultLocale". The support to "defaultLanguage" will be removed in next releases.'
+    )
+  }
+
+  if (config.defaultLangRedirect) {
+    console.warn(
+      '🚨 [next-translate] defaultLangRedirect is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior.'
+    )
+  }
+
+  if (config.redirectToDefaultLang) {
+    console.warn(
+      '🚨 [next-translate] redirectToDefaultLang is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior.'
+    )
   }
 
   function AppWithTranslations(props) {
@@ -18,11 +43,7 @@ export default function appWithI18n(AppToTranslate, config = {}) {
     const { logger } = config
 
     return (
-      <I18nProvider
-        lang={lang}
-        namespaces={namespaces}
-        logger={logger}
-      >
+      <I18nProvider lang={lang} namespaces={namespaces} logger={logger}>
         <AppToTranslate {...props} />
       </I18nProvider>
     )
@@ -48,7 +69,7 @@ export default function appWithI18n(AppToTranslate, config = {}) {
             ? config.loadLocaleFrom(lang, ns)
             : Promise.resolve([])
         )
-      ).catch(() => { })) || []
+      ).catch(() => {})) || []
 
     return {
       ...appProps,

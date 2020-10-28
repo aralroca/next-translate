@@ -1,6 +1,6 @@
 module.exports = {
-  allLanguages: ['en', 'ca', 'es'],
-  defaultLanguage: 'en',
+  locales: ['en', 'ca', 'es'],
+  defaultLocale: 'en',
   loadLocaleFrom: (lang, ns) =>
     import(`./locales/${lang}/${ns}.json`).then((m) => m.default),
   pages: {

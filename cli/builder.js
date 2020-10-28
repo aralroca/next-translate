@@ -12,15 +12,17 @@ if (fs.existsSync(process.cwd() + '/i18n.js')) {
 }
 
 let {
-  allLanguages = [],
+  locales = [],
+  allLanguages, // @deprecated
+  defaultLanguage, // @deprecated
   currentPagesDir = 'pages_',
-  defaultLangRedirect,
-  defaultLanguage = 'en',
+  defaultLangRedirect, // @deprecated
+  defaultLocale = 'en',
   finalPagesDir = 'pages',
   localesPath = 'locales',
   pages = {},
   logger,
-  redirectToDefaultLang,
+  redirectToDefaultLang, // @deprecated
   logBuild = true,
 } = configFile
 
@@ -28,11 +30,29 @@ const indexFolderRgx = /\/index\/index\....?$/
 const allPages = readDirR(currentPagesDir)
 
 if (defaultLangRedirect) {
-  console.warn('[next-translate] defaultLangRedirect is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior.')
+  console.warn(
+    '🚨 [next-translate] defaultLangRedirect is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior.'
+  )
 }
 
 if (redirectToDefaultLang) {
-  console.warn('[next-translate] redirectToDefaultLang is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior.')
+  console.warn(
+    '🚨 [next-translate] redirectToDefaultLang is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior.'
+  )
+}
+
+if (allLanguages) {
+  locales = allLanguages
+  console.warn(
+    '🚨 [next-translate] "allLanguages" is now renamed to "locales". The support to "allLanguages" will be removed in next releases.'
+  )
+}
+
+if (defaultLanguage) {
+  defaultLocale = defaultLanguage
+  console.warn(
+    '🚨 [next-translate] "defaultLanguage" is now renamed to "defaultLocale". The support to "defaultLanguage" will be removed in next releases.'
+  )
 }
 
 /**
@@ -69,17 +89,17 @@ function readDirR(dir) {
 
   return d.isDirectory()
     ? Array.prototype.concat(
-      ...fs
-        .readdirSync(parsedDir)
-        .map((f) => readDirR(path.join(parsedDir, f)))
-    )
+        ...fs
+          .readdirSync(parsedDir)
+          .map((f) => readDirR(path.join(parsedDir, f)))
+      )
     : parsedDir
 }
 
 createPagesDir()
 
 function getLangs() {
-  return allLanguages.filter((lng) => lng !== defaultLanguage)
+  return locales.filter((lng) => lng !== defaultLocale)
 }
 
 /**
@@ -197,8 +217,16 @@ function exportAllFromPage(prefix, page, namespaces) {
   const exports = `
 ${isGetInitialProps ? specialMethod('getInitialProps', namespaces, prefix) : ''}
 ${isGetStaticPaths ? specialMethod('getStaticPaths', namespaces, prefix) : ''}
-${isGetServerSideProps || (!hasLoaderMethod && isDynamicPage) ? specialMethod('getServerSideProps', namespaces, prefix, hasLoaderMethod) : ''}
-${isGetStaticProps || (!hasLoaderMethod && !isDynamicPage) ? specialMethod('getStaticProps', namespaces, prefix, hasLoaderMethod) : ''}
+${
+  isGetServerSideProps || (!hasLoaderMethod && isDynamicPage)
+    ? specialMethod('getServerSideProps', namespaces, prefix, hasLoaderMethod)
+    : ''
+}
+${
+  isGetStaticProps || (!hasLoaderMethod && !isDynamicPage)
+    ? specialMethod('getStaticProps', namespaces, prefix, hasLoaderMethod)
+    : ''
+}
 ${isHead ? `export { Head } from '${prefix}/${clearPageExt(page)}'` : ''}
 ${isConfig ? pageConfig(pageData) : ''}
 `
@@ -219,8 +247,9 @@ function getPageTemplate(prefix, page, namespaces) {
   return `// @ts-nocheck
 import I18nProvider from 'next-translate/I18nProvider'
 import React from 'react'
-import C${hasSomeSpecialExport ? ', * as _rest' : ''
-    } from '${prefix}/${clearPageExt(page)}'
+import C${
+    hasSomeSpecialExport ? ', * as _rest' : ''
+  } from '${prefix}/${clearPageExt(page)}'
 
 export default function Page({ _ns, _lang, ...p }){
   return (
@@ -301,10 +330,13 @@ function buildPage(pagePath, namespaces) {
 }
 
 function getInternalNamespacesCode(namespaces, prefix) {
-  return `const _lang = ctx.locale || ctx.router?.locale || '${defaultLanguage}'
-  ${namespaces.map((ns, i) =>
-    `const ns${i} = await import(\`${prefix}/${localesPath}/\${_lang}/${ns}.json\`).then(m => m.default)`
-  ).join('\n')}
+  return `const _lang = ctx.locale || ctx.router?.locale || '${defaultLocale}'
+  ${namespaces
+    .map(
+      (ns, i) =>
+        `const ns${i} = await import(\`${prefix}/${localesPath}/\${_lang}/${ns}.json\`).then(m => m.default)`
+    )
+    .join('\n')}
   const _ns = { ${namespaces.map((ns, i) => `'${ns}': ns${i}`).join(', ')} }
   `
 }

@@ -85,11 +85,11 @@ In the configuration, you specify each page that namespaces needs:
 }
 ```
 
-_[Read here](#3-translation-jsons-folder) about how to add the namespaces JSON files._ 
+_[Read here](#3-translation-jsons-folder) about how to add the namespaces JSON files._
 
 Then, during the build step:
 
--  The download of the page namespaces are added on corresponding loader method (`getInitialProps`, `getServerSideProps` or `getStaticProps`). In the case that the page doesn't have any loader method is using the `getStaticProps` by default, except for dynamic pages that is using `getServerSideProps` to avoid to write a `getStaticPaths`.
+- The download of the page namespaces are added on corresponding loader method (`getInitialProps`, `getServerSideProps` or `getStaticProps`). In the case that the page doesn't have any loader method is using the `getStaticProps` by default, except for dynamic pages that is using `getServerSideProps` to avoid to write a `getStaticPaths`.
 - Each page is wrapped with an **i18nProvider** with its namespaces.
 
 This whole process is transparent, so in your pages you can directly consume the `useTranslate` hook to use the namespaces, and you don't need to do anything else, because the 'build step' does it.
@@ -97,7 +97,7 @@ This whole process is transparent, so in your pages you can directly consume the
 <details><summary>Example of page and how is converted</summary>
 <p>
 
-**pages_/example.js**
+**pages\_/example.js**
 
 ```js
 import useTranslation from 'next-translate/useTranslation'
@@ -108,11 +108,7 @@ export default function Examples() {
     count: 42,
   })
 
-  return (
-    <div>
-      {exampleWithVariable}
-    </div>
-  )
+  return <div>{exampleWithVariable}</div>
 }
 ```
 
@@ -144,7 +140,7 @@ export const getStaticProps = async (ctx) => {
   const ns1 = await import(`../../locales/${_lang}/more-examples.json`).then(
     (m) => m.default
   )
-  const _ns = { common: ns0, 'examples': ns1 }
+  const _ns = { common: ns0, examples: ns1 }
 
   let res = {}
   if (typeof res.then === 'function') res = await res
@@ -191,8 +187,8 @@ Add a configuration file `i18n.json` _(or `i18n.js` with `module.exports`)_ in t
 
 ```json
 {
-  "allLanguages": ["en", "ca", "es"],
-  "defaultLanguage": "en",
+  "locales": ["en", "ca", "es"],
+  "defaultLocale": "en",
   "currentPagesDir": "pages_",
   "finalPagesDir": "pages",
   "localesPath": "locales",
@@ -209,13 +205,10 @@ Add a configuration file `i18n.json` _(or `i18n.js` with `module.exports`)_ in t
 From version 10.0.0 of Next.js the i18n routing is in the core, so the following must be added to the `next.config.js` file:
 
 ```js
-const i18n = require('./i18n.json')
+const { locales, defaultLocale } = require('./i18n.json')
 
 module.exports = {
-  i18n: {
-    locales: i18n.allLanguages,
-    defaultLocale: i18n.defaultLanguage,
-  },
+  i18n: { locales, defaultLocale },
 }
 ```
 
@@ -270,17 +263,17 @@ In order to use each translation in the project, use the _translation id_ compos
 
 ## 4. Configuration
 
-| Option                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Type                            | Default                                                                         |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------- |
-| `defaultLanguage`     | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string\|function`              | `"en"`                                                                          |
-| `allLanguages`        | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Array<string>`                 | `[]`                                                                                                                                    
-| `currentPagesDir`     | A string with the directory where you have the pages code. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `string`                        | `"pages_"`                                                                      |
-| `finalPagesDir`       | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                               | `string`                        | `"pages"`                                                                       |
-| `localesPath`         | A string with the directory of JSONs locales. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `string`                        | `"locales"`                                                                     |
-| `loadLocaleFrom`      | As an alternative to `localesPath`, if `i18nMiddleware` is used instead of the "build step". It's an async function that returns the dynamic import of each locale. [See an example](/docs/USING_CUSTOM_SERVER.md#3-add-the-i18n-middleware)                                                                                                                                                                                                                                                                                                                                                           | `Function`                      | `null`                                                                          |
-| `pages`               | An object that defines the namespaces used in each page. Example of object: `{"/": ["home", "example"]}`. To add namespaces to all pages you should use the key `"*"`, ex: `{"*": ["common"]}`. It's also possible to use regex using `rgx:` on front: `{"rgx:/form$": ["form"]}`. In case of using a custom server as an [alternative](#using-an-alternative-of-the-build-step-custom-server) of the "build step", you can also use a function instead of an array, to provide some namespaces depending on some rules, ex: `{ "/": ({ req, query }) => query.type === 'example' ? ['example'] : []}` | `Object<Array<string>/Function` | `{}`                                                                            |
-| `logger`              | Function to log the **missing keys** in development and production. If you are using `i18n.json` as config file you should change it to `i18n.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `function`                      | By default the logger is a function doing a `console.warn` only in development. |  |
-| `logBuild`            | Configure if the build result should be logged to the console                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `Boolean`                       | `true`                                                                          |
+| Option            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Type                            | Default                                                                         |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------- |
+| `defaultLocale`   | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string\|function`              | `"en"`                                                                          |
+| `locales`         | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Array<string>`                 | `[]`                                                                            |
+| `currentPagesDir` | A string with the directory where you have the pages code. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `string`                        | `"pages_"`                                                                      |
+| `finalPagesDir`   | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                               | `string`                        | `"pages"`                                                                       |
+| `localesPath`     | A string with the directory of JSONs locales. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `string`                        | `"locales"`                                                                     |
+| `loadLocaleFrom`  | As an alternative to `localesPath`, if `i18nMiddleware` is used instead of the "build step". It's an async function that returns the dynamic import of each locale. [See an example](/docs/USING_CUSTOM_SERVER.md#3-add-the-i18n-middleware)                                                                                                                                                                                                                                                                                                                                                           | `Function`                      | `null`                                                                          |
+| `pages`           | An object that defines the namespaces used in each page. Example of object: `{"/": ["home", "example"]}`. To add namespaces to all pages you should use the key `"*"`, ex: `{"*": ["common"]}`. It's also possible to use regex using `rgx:` on front: `{"rgx:/form$": ["form"]}`. In case of using a custom server as an [alternative](#using-an-alternative-of-the-build-step-custom-server) of the "build step", you can also use a function instead of an array, to provide some namespaces depending on some rules, ex: `{ "/": ({ req, query }) => query.type === 'example' ? ['example'] : []}` | `Object<Array<string>/Function` | `{}`                                                                            |
+| `logger`          | Function to log the **missing keys** in development and production. If you are using `i18n.json` as config file you should change it to `i18n.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `function`                      | By default the logger is a function doing a `console.warn` only in development. |  |
+| `logBuild`        | Configure if the build result should be logged to the console                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `Boolean`                       | `true`                                                                          |
 
 ## 5. API
 
@@ -606,12 +599,12 @@ import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
 import i18nConfig from '../i18n.json'
 
-const { allLanguages } = i18nConfig
+const { locales } = i18nConfig
 
 function ChangeLanguage() {
   const { t, lang } = useTranslation()
 
-  return allLanguages.map((lng) => {
+  return locales.map((lng) => {
     if (lng === lang) return null
 
     // Or you can attach the current pathname at the end
@@ -648,7 +641,6 @@ Pros and cons:
 
 Learn more: [Docs](docs/USING_CUSTOM_SERVER.md) · [Example](https://github.com/vinissimus/next-translate/tree/master/examples/with-server)
 
-
 ### Second alternative
 
 You can achieve the same that the "build step" by adding some helper to load the namespaces en each page (similar than the "build step" does).
@@ -657,7 +649,6 @@ Pros and cons:
 
 - 🟢 Automatic Static Optimization
 - 🔴 Hard to configure
-
 
 ## 13. Demos
 
@@ -670,7 +661,6 @@ Pros and cons:
 
 - `yarn install`
 - `yarn example:with-server`
-
 
 [badge-prwelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [prwelcome]: http://makeapullrequest.com

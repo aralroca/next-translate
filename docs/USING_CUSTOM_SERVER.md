@@ -24,19 +24,15 @@ First, you need to use a custom server in your Next.js application. You can foll
 
 - `yarn add next-translate`
 
-
 ## 3. You should add the i18n config file to next.config.js
 
 Although `next-translate` has its own configuration, it is required to pass it also to `next.config.js` file so that it can solve the routing well.
 
 ```js
-const i18n = require('./i18n.js')
+const { locales, defaultLocale } = require('./i18n.js')
 
 module.exports = {
-  i18n: {
-    locales: i18n.allLanguages,
-    defaultLocale: i18n.defaultLanguage,
-  },
+  i18n: { locales, defaultLocale },
 }
 ```
 
