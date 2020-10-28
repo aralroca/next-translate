@@ -10,31 +10,31 @@ function removeTrailingSlash(path = '') {
 export default function appWithI18n(AppToTranslate, config = {}) {
   if (config.ignoreRoutes) {
     console.warn(
-      '🚨 [next-translate] ignoreRoutes is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior.'
+      '🚨 [next-translate] ignoreRoutes is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior. https://github.com/vinissimus/next-translate/releases/tag/0.19.0'
     )
   }
 
   if (config.allLanguages) {
     console.warn(
-      '🚨 [next-translate] "allLanguages" is now renamed to "locales". The support to "allLanguages" will be removed in next releases.'
+      '🚨 [next-translate] "allLanguages" is now renamed to "locales". The support to "allLanguages" will be removed in next releases. https://github.com/vinissimus/next-translate/releases/tag/0.19.0'
     )
   }
 
   if (config.defaultLanguage) {
     console.warn(
-      '🚨 [next-translate] "defaultLanguage" is now renamed to "defaultLocale". The support to "defaultLanguage" will be removed in next releases.'
+      '🚨 [next-translate] "defaultLanguage" is now renamed to "defaultLocale". The support to "defaultLanguage" will be removed in next releases. https://github.com/vinissimus/next-translate/releases/tag/0.19.0'
     )
   }
 
   if (config.defaultLangRedirect) {
     console.warn(
-      '🚨 [next-translate] defaultLangRedirect is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior.'
+      '🚨 [next-translate] defaultLangRedirect is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior. https://github.com/vinissimus/next-translate/releases/tag/0.19.0'
     )
   }
 
   if (config.redirectToDefaultLang) {
     console.warn(
-      '🚨 [next-translate] redirectToDefaultLang is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior.'
+      '🚨 [next-translate] redirectToDefaultLang is not longer supported. The i18n routing has moved to the Next.js core, so we have been forced to deprecate this behavior. https://github.com/vinissimus/next-translate/releases/tag/0.19.0'
     )
   }
 

@@ -40,13 +40,14 @@
 - [7. Use HTML inside the translation](#7-use-html-inside-the-translation)
 - [8. Nested translations](#8-nested-translations)
 - [9. How to change the language](#9-how-to-change-the-language)
-- [10. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
-- [11. Do I need this "build step"? Is there an alternative?](#12-do-i-need-this-build-step-is-there-an-alternative)
+- [10. How to use multi-language in a page](#10-how-to-use-multi-language-in-a-page)
+- [11. Do I need this "build step"? Is there an alternative?](#11-do-i-need-this-build-step-is-there-an-alternative)
   - [First alternative](#first-alternative)
   - [Second alternative](#second-alternative)
-- [13. Demos](#13-demos)
-  - [Using the "build step"](#using-the-build-step)
-  - [Using the appWithI18n alternative](#using-the-appwithi18n-alternative)
+- [12. Demos](#12-demos)
+  - [Demo from Next.js](#demo-from-nextjs)
+  - [Basic demo: Using the "build step"](#basic-demo-using-the-build-step)
+  - [Basic demo: Using the appWithI18n alternative](#basic-demo-using-the-appwithi18n-alternative)
 - [Contributors ✨](#contributors-)
 
 <p align="center">
@@ -78,8 +79,9 @@ In the configuration, you specify each page that namespaces needs:
   "pages": {
     "*": ["common"],
     "/": ["home"],
-    "/dashboard": ["home"],
-    "rgx:^/more-examples": ["more-examples"]
+    "/cart": ["cart"],
+    "/content/[slug]": ["content"],
+    "rgx:^/account": ["account"]
   }
   // rest of config here...
 }
@@ -216,6 +218,8 @@ module.exports = {
 
 Then, use the translations in the page and its components:
 
+**pages\_/example.js**
+
 ```jsx
 import useTranslation from 'next-translate/useTranslation'
 // ...
@@ -224,6 +228,8 @@ const example = t('common:variable-example', { count: 42 })
 // ...
 return <div>{example}</div>
 ```
+
+Remember that we must work in the alternative directory `pages_`. The `pages` directory will be generated during the build step.
 
 ⚠️ **Important**: \_app.js, \_document.js and \_error.js are not going to be wrapped with the translations context, so it's not possible to directly translate these files. In order to do that, you should take a look at [DynamicNamespaces](#dynamicnamespaces) to load the namespaces dynamically.
 
@@ -650,17 +656,37 @@ Pros and cons:
 - 🟢 Automatic Static Optimization
 - 🔴 Hard to configure
 
-## 13. Demos
+## 12. Demos
 
-### Using the "build step"
+### Demo from Next.js
 
-- `yarn install`
-- `yarn example:static-site`
+There is a demo of `next-translate` on the Next.js repo:
 
-### Using the appWithI18n alternative
+- https://github.com/vercel/next.js/tree/master/examples/with-next-translate
 
-- `yarn install`
-- `yarn example:with-server`
+To use it:
+
+```bash
+npx create-next-app --example with-next-translate with-next-translate-app
+# or
+yarn create next-app --example with-next-translate with-next-translate-app
+```
+
+### Basic demo: Using the "build step"
+
+This demo is in this repository:
+
+- `git clone git@github.com:vinissimus/next-translate.git`
+- `cd next-translate`
+- `yarn && yarn example:static-site`
+
+### Basic demo: Using the appWithI18n alternative
+
+This demo is in this repository:
+
+- `git clone git@github.com:vinissimus/next-translate.git`
+- `cd next-translate`
+- `yarn && yarn example:with-server`
 
 [badge-prwelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [prwelcome]: http://makeapullrequest.com

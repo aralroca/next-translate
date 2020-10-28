@@ -1,7 +1,7 @@
 import NextRouter from 'next/router'
 
 console.warn(
-  '🚨 [next-translate] next-translate/Router is now deprecated, it will be removed in next releases. Replace next-translate/Router to next/router, now i18n routing is part of the Next.js core. Read more about it here: https://nextjs.org/docs/advanced-features/i18n-routing'
+  '🚨 [next-translate] next-translate/Router is now deprecated, it will be removed in next releases. Replace next-translate/Router to next/router, now i18n routing is part of the Next.js core. Read more about it here: https://github.com/vinissimus/next-translate/releases/tag/0.19.0'
 )
 /**
  * @deprecated

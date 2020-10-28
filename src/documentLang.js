@@ -2,7 +2,7 @@ const path = require('path')
 const fs = require('fs')
 
 console.warn(
-  '🚨 [next-translate] documentLang is no longer needed, it should be remove it in next releases. Now i18n routing is part of the Next.js core. Read more about it here: https://nextjs.org/docs/advanced-features/i18n-routing'
+  '🚨 [next-translate] documentLang is no longer needed, it should be remove it in next releases. Now i18n routing is part of the Next.js core. Read more about it here: https://github.com/vinissimus/next-translate/releases/tag/0.19.0'
 )
 
 /**
