@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-    <b>i18n</b> for Next.js | ○  (Static)  | ●  (SSG) | λ  (Server)
+    <b>i18n</b> for Next.js
 </p>
 
 <div align="center">
@@ -20,7 +20,7 @@
 </div>
 
 - [1. About next-translate](#1-about-next-translate)
-  - [How is this lib handling the routes?](#how-is-this-lib-handling-the-routes)
+  - [How translations are added in each page?](#how-translations-are-added-in-each-page)
 - [2. Getting started](#2-getting-started)
   - [Install](#install)
   - [Use translations in your pages](#use-translations-in-your-pages)
@@ -70,52 +70,101 @@ This library is very tiny and tree shakable.
     <img width="500" src="images/bundle-size.png" alt="Bundle size" />
 </p>
 
-### How is this lib handling the routes?
+### How translations are added in each page?
 
 Instead of working on `/pages` directory to write our pages, we are going to generate this folder before building the app, and each page will have all the necessary translations from the locale.
 
-Imagine that we are working in an alternative `/pages_` to build our pages:
+This "build step" is designed to make it easy to download the necessary translations for each page in an easy way.
 
-**/pages\_**
-
-```bash
-.
-├── about.js
-├── index.js
-└── nested
-    └── index.js
-```
-
-Then, when we build the app, this **/pages** structure is going to be automatically generated:
-
-```bash
-.
-├── about.js
-├── ca
-│   ├── about.js
-│   ├── index.js
-│   └── nested
-│       └── index.js
-├── en
-│   ├── [...path].js
-├── es
-│   ├── about.js
-│   ├── index.js
-│   └── nested
-│       └── index.js
-├── index.js
-└── nested
-    └── index.js
-```
-
-**Note**: `/en/[...path].js` is a redirect from `/en/some-route` to `/some-route`
-
-Each page and its components can consume the translations with the `useTranslation` hook.
+In the configuration, you specify each page that namespaces needs:
 
 ```js
-const { t, lang } = useTranslation()
-const title = t('common:title')
+{
+  "pages": {
+    "*": ["common"],
+    "/": ["home"],
+    "/dashboard": ["home"],
+    "rgx:^/more-examples": ["more-examples"]
+  }
+  // rest of config here...
+}
 ```
+
+Then, during the build step:
+
+-  The download of the page namespaces are added on corresponding loader method (`getInitialProps`, `getServerSideProps` or `getStaticProps`). In the case that the page doesn't have any loader method is using the `getStaticProps` by default, except for dynamic pages that is using `getServerSideProps` to avoid to write a `getStaticPaths`.
+- Each page is wrapped with an **i18nProvider** with its namespaces.
+
+This whole process is transparent, so in your pages you can directly consume the `useTranslate` hook to use the namespaces, and you don't need to do anything else, because the 'build step' does it.
+
+<details><summary>Example of page and how is converted</summary>
+<p>
+
+**pages_/example.js**
+
+```js
+import useTranslation from 'next-translate/useTranslation'
+
+export default function Examples() {
+  const { t } = useTranslation()
+  const exampleWithVariable = t('examples:example-with-variable', {
+    count: 42,
+  })
+
+  return (
+    <div>
+      {exampleWithVariable}
+    </div>
+  )
+}
+```
+
+And after the build step, this is converted to:
+
+**pages/example.js**
+
+```js
+// @ts-nocheck
+import I18nProvider from 'next-translate/I18nProvider'
+import React from 'react'
+import C from '../../pages_/example'
+
+export default function Page({ _ns, _lang, ...p }) {
+  return (
+    <I18nProvider lang={_lang} namespaces={_ns}>
+      <C {...p} />
+    </I18nProvider>
+  )
+}
+
+Page = Object.assign(Page, { ...C })
+
+export const getStaticProps = async (ctx) => {
+  const _lang = ctx.locale || ctx.router?.locale || 'en'
+  const ns0 = await import(`../../locales/${_lang}/common.json`).then(
+    (m) => m.default
+  )
+  const ns1 = await import(`../../locales/${_lang}/more-examples.json`).then(
+    (m) => m.default
+  )
+  const _ns = { common: ns0, 'examples': ns1 }
+
+  let res = {}
+  if (typeof res.then === 'function') res = await res
+
+  return {
+    ...res,
+    props: {
+      ...(res.props || {}),
+      _ns,
+      _lang,
+    },
+  }
+}
+```
+
+</p>
+</details>
 
 ## 2. Getting started
 
