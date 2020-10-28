@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-    <b>i18n</b> for Next.js | ○  (Static)  | ●  (SSG) | λ  (Server)
+    <b>i18n</b> for Next.js >= 10.0.0
 </p>
 
 <div align="center">
@@ -20,9 +20,11 @@
 </div>
 
 - [1. About next-translate](#1-about-next-translate)
-  - [How is this lib handling the routes?](#how-is-this-lib-handling-the-routes)
+  - [How translations are added in each page?](#how-translations-are-added-in-each-page)
 - [2. Getting started](#2-getting-started)
   - [Install](#install)
+  - [Add the i18n.js config file](#add-the-i18njs-config-file)
+  - [Use Next.js i18n routing](#use-nextjs-i18n-routing)
   - [Use translations in your pages](#use-translations-in-your-pages)
   - [Add /pages to .gitignore](#add-pages-to-gitignore)
 - [3. Translation JSONs folder](#3-translation-jsons-folder)
@@ -38,20 +40,13 @@
 - [7. Use HTML inside the translation](#7-use-html-inside-the-translation)
 - [8. Nested translations](#8-nested-translations)
 - [9. How to change the language](#9-how-to-change-the-language)
-- [10. Get language in the special Next.js functions](#10-get-language-in-the-special-nextjs-functions)
-  - [getStaticProps](#getstaticprops)
-  - [getStaticPaths](#getstaticpaths)
-  - [getServerSideProps](#getserversideprops)
-  - [getInitialProps](#getinitialprops)
-- [11. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
-- [12. Do I need this "build step"? Is there an alternative?](#12-do-i-need-this-build-step-is-there-an-alternative)
+- [10. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
+- [11. Do I need this "build step"? Is there an alternative?](#12-do-i-need-this-build-step-is-there-an-alternative)
   - [First alternative](#first-alternative)
   - [Second alternative](#second-alternative)
 - [13. Demos](#13-demos)
   - [Using the "build step"](#using-the-build-step)
-  - [Alternatives to the "build step"](#alternatives-to-the-build-step)
-    - [dynamic routes](#dynamic-routes)
-    - [custom server](#custom-server)
+  - [Using the appWithI18n alternative](#using-the-appwithi18n-alternative)
 - [Contributors ✨](#contributors-)
 
 <p align="center">
@@ -70,52 +65,103 @@ This library is very tiny and tree shakable.
     <img width="500" src="images/bundle-size.png" alt="Bundle size" />
 </p>
 
-### How is this lib handling the routes?
+### How translations are added in each page?
 
 Instead of working on `/pages` directory to write our pages, we are going to generate this folder before building the app, and each page will have all the necessary translations from the locale.
 
-Imagine that we are working in an alternative `/pages_` to build our pages:
+This "build step" is designed to make it easy to download the necessary translations for each page in an easy way.
 
-**/pages\_**
-
-```bash
-.
-├── about.js
-├── index.js
-└── nested
-    └── index.js
-```
-
-Then, when we build the app, this **/pages** structure is going to be automatically generated:
-
-```bash
-.
-├── about.js
-├── ca
-│   ├── about.js
-│   ├── index.js
-│   └── nested
-│       └── index.js
-├── en
-│   ├── [...path].js
-├── es
-│   ├── about.js
-│   ├── index.js
-│   └── nested
-│       └── index.js
-├── index.js
-└── nested
-    └── index.js
-```
-
-**Note**: `/en/[...path].js` is a redirect from `/en/some-route` to `/some-route`
-
-Each page and its components can consume the translations with the `useTranslation` hook.
+In the configuration, you specify each page that namespaces needs:
 
 ```js
-const { t, lang } = useTranslation()
-const title = t('common:title')
+{
+  "pages": {
+    "*": ["common"],
+    "/": ["home"],
+    "/dashboard": ["home"],
+    "rgx:^/more-examples": ["more-examples"]
+  }
+  // rest of config here...
+}
 ```
+
+_[Read here](#3-translation-jsons-folder) about how to add the namespaces JSON files._ 
+
+Then, during the build step:
+
+-  The download of the page namespaces are added on corresponding loader method (`getInitialProps`, `getServerSideProps` or `getStaticProps`). In the case that the page doesn't have any loader method is using the `getStaticProps` by default, except for dynamic pages that is using `getServerSideProps` to avoid to write a `getStaticPaths`.
+- Each page is wrapped with an **i18nProvider** with its namespaces.
+
+This whole process is transparent, so in your pages you can directly consume the `useTranslate` hook to use the namespaces, and you don't need to do anything else, because the 'build step' does it.
+
+<details><summary>Example of page and how is converted</summary>
+<p>
+
+**pages_/example.js**
+
+```js
+import useTranslation from 'next-translate/useTranslation'
+
+export default function Examples() {
+  const { t } = useTranslation()
+  const exampleWithVariable = t('examples:example-with-variable', {
+    count: 42,
+  })
+
+  return (
+    <div>
+      {exampleWithVariable}
+    </div>
+  )
+}
+```
+
+And after the build step, this is converted to:
+
+**pages/example.js**
+
+```js
+// @ts-nocheck
+import I18nProvider from 'next-translate/I18nProvider'
+import React from 'react'
+import C from '../../pages_/example'
+
+export default function Page({ _ns, _lang, ...p }) {
+  return (
+    <I18nProvider lang={_lang} namespaces={_ns}>
+      <C {...p} />
+    </I18nProvider>
+  )
+}
+
+Page = Object.assign(Page, { ...C })
+
+export const getStaticProps = async (ctx) => {
+  const _lang = ctx.locale || ctx.router?.locale || 'en'
+  const ns0 = await import(`../../locales/${_lang}/common.json`).then(
+    (m) => m.default
+  )
+  const ns1 = await import(`../../locales/${_lang}/more-examples.json`).then(
+    (m) => m.default
+  )
+  const _ns = { common: ns0, 'examples': ns1 }
+
+  let res = {}
+  if (typeof res.then === 'function') res = await res
+
+  return {
+    ...res,
+    props: {
+      ...(res.props || {}),
+      _ns,
+      _lang,
+    },
+  }
+}
+```
+
+</p>
+</details>
 
 ## 2. Getting started
 
@@ -125,7 +171,7 @@ This is the recommended way to get started. However, if you don't like the "buil
 
 - `yarn add next-translate`
 
-**Note**: For a Next.js version below than `9.3.0`, use `next-translate@0.9.0` or below
+**Note**: For a Next.js version below than `10.0.0`, use `next-translate@0.18.0` or below
 
 In your **package.json**:
 
@@ -137,7 +183,7 @@ In your **package.json**:
 }
 ```
 
-### Use translations in your pages
+### Add the i18n.js config file
 
 You should create your namespaces files inside `/locales`. [See how to do it](#3-translation-jsons-folder)
 
@@ -157,6 +203,23 @@ Add a configuration file `i18n.json` _(or `i18n.js` with `module.exports`)_ in t
   }
 }
 ```
+
+### Use Next.js i18n routing
+
+From version 10.0.0 of Next.js the i18n routing is in the core, so the following must be added to the `next.config.js` file:
+
+```js
+const i18n = require('./i18n.json')
+
+module.exports = {
+  i18n: {
+    locales: i18n.allLanguages,
+    defaultLocale: i18n.defaultLanguage,
+  },
+}
+```
+
+### Use translations in your pages
 
 Then, use the translations in the page and its components:
 
@@ -562,67 +625,7 @@ function ChangeLanguage() {
 }
 ```
 
-## 10. Get language in the special Next.js functions
-
-If you are using an alternative to the "build step", this section is not applicable.
-In order to use the `lang` in the special Next.js functions, the `lang` property is added to the context.
-
-### getStaticProps
-
-```js
-export async function getStaticProps({ lang }) {
-  return {
-    props: {
-      data: fetchMyDataFromLang(lang),
-    },
-  }
-}
-```
-
-See [here](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) the official Next.js docs about `getStaticProps`.
-
-### getStaticPaths
-
-```js
-export async function getStaticPaths({ lang }) {
-  return {
-    paths: generatePathsFromLang(lang),
-    fallback: false,
-  }
-}
-```
-
-See [here](https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation) the official Next.js docs about `getStaticPaths`.
-
-### getServerSideProps
-
-```js
-export async function getServerSideProps({ lang }) {
-  return {
-    props: {
-      data: queryDataFromDB(lang),
-    },
-  }
-}
-```
-
-See [here](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) the official Next.js docs about `getServerSideProps`
-
-### getInitialProps
-
-Recommended: Use **getStaticProps** or **getServerSideProps** instead.
-
-```js
-MyPage.getInitialProps = async ({ lang }) => {
-  return {
-    data: fetchMyDataFromLang(lang),
-  }
-}
-```
-
-See [here](https://nextjs.org/docs/api-reference/data-fetching/getInitialProps#getinitialprops-for-older-versions-of-nextjs) the official Next.js docs about `getInitialProps`
-
-## 11. How to use multi-language in a page
+## 10. How to use multi-language in a page
 
 In some cases, when the page is in the current language, you may want to do some exceptions displaying some text in another language.
 
@@ -630,26 +633,13 @@ In this case, you can achieve this by using the `I18nProvider`.
 
 Learn how to do it [here](#i18nprovider).
 
-## 12. Do I need this "build step"? Is there an alternative?
+## 11. Do I need this "build step"? Is there an alternative?
 
 The "build step" exists only to simplify work with Automatic Static Optimization, so right now it is the recommended way. However, if you prefer not to do the "build step", there are two alternatives.
 
 ### First alternative
 
-You can achieve the same with dynamic routes.
-
-Pros and cons:
-
-- 🟢 Automatic Static Optimization
-- 🔴 Hard to configure
-
-See a full example [here](https://github.com/vinissimus/next-translate/tree/master/examples/with-dynamic-routes)
-
-In future major releases, we may evolve simplifying this and removing the "build step". If you want to help on this, there is an open issue [here](https://github.com/vinissimus/next-translate/issues/129) to discuss.
-
-### Second alternative
-
-If you don't need Automatic Static Optimization in your project, you can achieve the same by using a custom server.
+If you don't need Automatic Static Optimization in your project, you can achieve the same by using a [appWithI18n](#appwithi18n).
 
 Pros and cons:
 
@@ -658,6 +648,17 @@ Pros and cons:
 
 Learn more: [Docs](docs/USING_CUSTOM_SERVER.md) · [Example](https://github.com/vinissimus/next-translate/tree/master/examples/with-server)
 
+
+### Second alternative
+
+You can achieve the same that the "build step" by adding some helper to load the namespaces en each page (similar than the "build step" does).
+
+Pros and cons:
+
+- 🟢 Automatic Static Optimization
+- 🔴 Hard to configure
+
+
 ## 13. Demos
 
 ### Using the "build step"
@@ -665,19 +666,11 @@ Learn more: [Docs](docs/USING_CUSTOM_SERVER.md) · [Example](https://github.com/
 - `yarn install`
 - `yarn example:static-site`
 
-### Alternatives to the "build step"
-
-There are alternatives to the "build step", namely using "dynamic routes" or a "custom server".
-
-#### dynamic routes
-
-- `yarn install`
-- `yarn example:with-dynamic-routes`
-
-#### custom server
+### Using the appWithI18n alternative
 
 - `yarn install`
 - `yarn example:with-server`
+
 
 [badge-prwelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [prwelcome]: http://makeapullrequest.com
