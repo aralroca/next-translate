@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const fs = require('fs')
 const path = require('path')
+const hasHOC = require('../_helpers/hasHOC').default
 const getPageNamespaces = require('../_helpers/getPageNamespaces').default
 
 let configFile = {}
@@ -125,7 +126,7 @@ function specialMethod(name, namespaces, prefix, loader = true) {
   if (name === 'getInitialProps') {
     return `Page.getInitialProps = async ctx => {
       ${getInternalNamespacesCode(namespaces, prefix)}
-      let res = C.getInitialProps(ctx)
+      let res = ${loader ? 'C.getInitialProps(ctx)' : '{}'}
       if(typeof res.then === 'function') res = await res
     
       return { ...res,  _ns, _lang }
@@ -160,6 +161,7 @@ function exportAllFromPage(prefix, page, namespaces) {
     .replace(clearCommentsRgx, '')
 
   const isDynamicPage = page.includes('[')
+  const isWrappedWithHOC = hasHOC(pageData)
   const isHead = hasExportName(pageData, 'Head')
   const isConfig = hasExportName(pageData, 'config')
   const isGetInitialProps = pageData.match(/\\WgetInitialProps\\W/g)
@@ -171,15 +173,20 @@ function exportAllFromPage(prefix, page, namespaces) {
   const hasLoaderMethod = hasSomeSpecialExport || isGetInitialProps
 
   const exports = `
-${isGetInitialProps ? specialMethod('getInitialProps', namespaces, prefix) : ''}
+${
+  isGetInitialProps || (!hasLoaderMethod && isWrappedWithHOC)
+    ? specialMethod('getInitialProps', namespaces, prefix, hasLoaderMethod)
+    : ''
+}
 ${isGetStaticPaths ? specialMethod('getStaticPaths', namespaces, prefix) : ''}
 ${
-  isGetServerSideProps || (!hasLoaderMethod && isDynamicPage)
+  isGetServerSideProps ||
+  (!hasLoaderMethod && isDynamicPage && !isWrappedWithHOC)
     ? specialMethod('getServerSideProps', namespaces, prefix, hasLoaderMethod)
     : ''
 }
 ${
-  isGetStaticProps || (!hasLoaderMethod && !isDynamicPage)
+  isGetStaticProps || (!hasLoaderMethod && !isDynamicPage && !isWrappedWithHOC)
     ? specialMethod('getStaticProps', namespaces, prefix, hasLoaderMethod)
     : ''
 }
