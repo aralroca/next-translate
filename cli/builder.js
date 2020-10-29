@@ -126,7 +126,7 @@ function specialMethod(name, namespaces, prefix, loader = true) {
   if (name === 'getInitialProps') {
     return `Page.getInitialProps = async ctx => {
       ${getInternalNamespacesCode(namespaces, prefix)}
-      let res = ${loader ? 'C.getInitialProps(ctx)' : '{}'}
+      let res = typeof C.getInitialProps === 'function' ? C.getInitialProps(ctx) : {}
       if(typeof res.then === 'function') res = await res
     
       return { ...res,  _ns, _lang }

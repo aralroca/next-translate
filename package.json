@@ -1,6 +1,6 @@
 {
   "name": "next-translate",
-  "version": "0.19.0-experimental.3",
+  "version": "0.19.0-experimental.4",
   "description": "Next.js utility to translate pages without the need of a server (static i18n pages generator).",
   "license": "MIT",
   "keywords": [
