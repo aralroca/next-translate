@@ -32,6 +32,14 @@ describe('builder', () => {
       expect(fs.existsSync('examples/static-site/pages/_app.js')).toBe(true)
       expect(fs.existsSync('examples/static-site/pages/index.js')).toBe(true)
 
+      // should ignore test files
+      expect(
+        fs.existsSync('examples/static-site/pages_/__tests__/dashboard.spec.js')
+      ).toBe(true)
+      expect(
+        fs.existsSync('examples/static-site/pages/__tests__/dashboard.spec.js')
+      ).toBe(false)
+
       // Pages
       expect(
         fs.existsSync(
