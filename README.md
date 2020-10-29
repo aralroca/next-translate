@@ -91,7 +91,9 @@ _[Read here](#3-translation-jsons-folder) about how to add the namespaces JSON f
 
 Then, during the build step:
 
-- The download of the page namespaces are added on corresponding loader method (`getInitialProps`, `getServerSideProps` or `getStaticProps`). In the case that the page doesn't have any loader method is using the `getStaticProps` by default, except for dynamic pages that is using `getServerSideProps` to avoid to write a `getStaticPaths`.
+- The download of the page namespaces are added on corresponding loader method (`getInitialProps`, `getServerSideProps` or `getStaticProps`). In the case that the page doesn't have any loader method is using the `getStaticProps` by default, except:
+  - For dynamic pages that is using `getServerSideProps` to avoid to write a `getStaticPaths`.
+  - For pages that have a HOC is using `getInitialProps` in order to avoid possible conflicts.
 - Each page is wrapped with an **i18nProvider** with its namespaces.
 
 This whole process is transparent, so in your pages you can directly consume the `useTranslate` hook to use the namespaces, and you don't need to do anything else, because the 'build step' does it.
