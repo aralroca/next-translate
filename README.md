@@ -96,7 +96,7 @@ Then, during the build step:
   - For pages that have a HOC is using `getInitialProps` in order to avoid possible conflicts.
 - Each page is wrapped with an **i18nProvider** with its namespaces.
 
-This whole process is transparent, so in your pages you can directly consume the `useTranslate` hook to use the namespaces, and you don't need to do anything else, because the 'build step' does it.
+This **whole process is transparent**, so in your pages you can directly consume the `useTranslate` hook to use the namespaces, and you don't need to do anything else, because the 'build step' does it.
 
 <details><summary>Example of page and how is converted</summary>
 <p>
