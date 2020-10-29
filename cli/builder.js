@@ -128,6 +128,7 @@ function specialMethod(name, namespaces, prefix, loader = true) {
       ${getInternalNamespacesCode(namespaces, prefix)}
       let res = typeof C.getInitialProps === 'function' ? C.getInitialProps(ctx) : {}
       if(typeof res.then === 'function') res = await res
+      console.warn('[next-translate] In Next 10.0.0 there is an issue related to i18n and getInitialProps. We recommend that you change getInitialProps to getServerSideProps. Issue: https://github.com/vercel/next.js/issues/18396')
     
       return { ...res,  _ns, _lang }
     }`
