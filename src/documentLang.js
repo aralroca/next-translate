@@ -19,7 +19,9 @@ export default function documentLang({ __NEXT_DATA__ }, config) {
 
   const { page } = __NEXT_DATA__
   const [, langQuery] = page.split('/')
-  const lang = config.locales.find((l) => l === langQuery)
+  const lang = (config.locales || config.allLanguages).find(
+    (l) => l === langQuery
+  )
 
-  return lang || config.defaultLocale
+  return lang || config.defaultLocale || config.defaultLanguage
 }
