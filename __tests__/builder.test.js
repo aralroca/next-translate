@@ -63,6 +63,14 @@ describe('builder', () => {
         fs.existsSync('examples/static-site/pages/es/more-examples/index.js')
       ).toBe(true)
 
+      // should ignore test files
+      expect(
+        fs.existsSync('examples/static-site/pages_/__tests__/dashboard.spec.js')
+      ).toBe(true)
+      expect(
+        fs.existsSync('examples/static-site/pages/__tests__/dashboard.spec.js')
+      ).toBe(false)
+
       // The default language should be not generated when defaultLangRedirect != 'lang-path'
       expect(fs.existsSync('examples/static-site/pages/en/index.js')).toBe(
         false

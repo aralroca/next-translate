@@ -25,6 +25,7 @@ let {
 } = configFile
 
 const indexFolderRgx = /\/index\/index\....?$/
+const specFileOrFolderRgx = /(__mocks__|__tests__)|(\.(spec|test)\.(tsx|ts|js|jsx)$)/
 const allPages = readDirR(currentPagesDir)
 
 // @todo 1.0.0 Remove this backwards compatibility.
@@ -282,6 +283,11 @@ function buildPageInAllLocales(pagePath, namespaces) {
     .join('/')
 
   let rootPrefix = prefix.replace('/..', '')
+
+  // ignore tests files
+  if (pagePath.match(specFileOrFolderRgx)) {
+    return
+  }
 
   // Rest one path if is index folder /index/index.js is going to
   // be generated directly as /index.js
