@@ -84,15 +84,17 @@ describe('builder', () => {
     })
   })
 
-  describe('Should use getInitialProps as a default loader if the page has a HOC in order to avoid issues', () => {
-    const page = fs
-      .readFileSync('examples/static-site/pages/example-hoc.js')
-      .toString()
+  describe('example-hoc.js', () => {
+    test('Should use getInitialProps as a default loader if the page has a HOC in order to avoid issues', () => {
+      const page = fs
+        .readFileSync('examples/static-site/pages/example-hoc.js')
+        .toString()
 
-    expect(page).toContain('Page.getInitialProps')
-    expect(page).toContain(
-      'const ns0 = await import(`../locales/${_lang}/common.json`)'
-    )
+      expect(page).toContain('Page.getInitialProps')
+      expect(page).toContain(
+        'const ns0 = await import(`../locales/${_lang}/common.json`)'
+      )
+    })
   })
 
   describe('amp.js', () => {
