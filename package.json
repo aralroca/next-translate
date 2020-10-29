@@ -1,7 +1,7 @@
 {
   "name": "next-translate",
-  "version": "0.18.0",
-  "description": "Next.js utility to translate pages without the need of a server (static i18n pages generator).",
+  "version": "0.19.0",
+  "description": "Next.js utility to translate pages in a easy way.",
   "license": "MIT",
   "keywords": [
     "react",
@@ -50,15 +50,15 @@
     "express": "4.17.1",
     "husky": "4.3.0",
     "jest": "26.6.1",
-    "next": "9.5.5",
+    "next": "10.0.0",
     "prettier": "2.1.2",
     "pretty-quick": "3.1.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "supertest": "5.0.0"
+    "supertest": "6.0.0"
   },
   "peerDependencies": {
-    "next": ">= 9.3.0",
+    "next": ">= 10.0.0",
     "react": ">= 16.8.0"
   },
   "husky": {

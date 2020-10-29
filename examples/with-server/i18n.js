@@ -1,23 +1,6 @@
-const defaultLangsFromHost = {
-  'uk.co': 'en',
-  cat: 'ca',
-  com: 'ca',
-  default: 'es', // localhost
-}
-
-function getDomain(host) {
-  const domain = host.split('.')
-  return domain[domain.length - 1]
-}
-
 module.exports = {
-  allLanguages: ['en', 'ca', 'es'],
-  defaultLanguage: (req) => {
-    let host = req ? req.get('Host') : window.location.hostname
-    const domain = getDomain(host)
-    return defaultLangsFromHost[domain] || defaultLangsFromHost.default
-  },
-  defaultLangRedirect: 'lang-path',
+  locales: ['en', 'ca', 'es'],
+  defaultLocale: 'en',
   loadLocaleFrom: (lang, ns) =>
     import(`./locales/${lang}/${ns}.json`).then((m) => m.default),
   pages: {

@@ -1,7 +1,7 @@
 import React from 'react'
 
 // @ts-ignore
-import Link from 'next-translate/Link'
+import Link from 'next/link'
 
 // @ts-ignore
 import useTranslation from 'next-translate/useTranslation'
@@ -28,6 +28,6 @@ export default function Home(props) {
 }
 
 // @ts-ignore
-export async function getStaticProps({ lang }) {
-  return { props: { getStaticPropsWorks: true, lang } }
+export async function getStaticProps({ locale }) {
+  return { props: { getStaticPropsWorks: true, lang: locale } }
 }
