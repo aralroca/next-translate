@@ -62,39 +62,28 @@ if (defaultLanguage) {
   )
 }
 
-createPagesDir()
+startBuildStep()
 
 /**
- * STEP 1: Create /pages/ dir with their langs:
- *
- * /pages/en/ - /pages/es/ ...
+ * STEP 1:
+ * - Clear "pages" folder
+ * - Log feedback
  */
-async function createPagesDir() {
+async function startBuildStep() {
   rimraf(finalPagesDir)
   fs.mkdirSync(finalPagesDir)
 
   if (logBuild) {
     console.log(`Building pages | from ${currentPagesDir} to ${finalPagesDir}`)
   }
-  readPageNamespaces()
-}
 
-function isNextInternal(pagePath) {
-  return (
-    pagePath.startsWith(`${currentPagesDir}/_`) ||
-    pagePath.startsWith(`${currentPagesDir}/404.`) ||
-    pagePath.startsWith(`${currentPagesDir}/api/`)
-  )
-}
-
-function clearPageExt(page) {
-  const rgx = /(\/index\.jsx)|(\/index\.js)|(\/index\.tsx)|(\/index\.ts)|(\/index\.mdx)|(\.jsx)|(\.js)|(\.tsx)|(\.ts)|(\.mdx)/gm
-
-  return page.replace(rgx, '')
+  readPageNamespaces() // Next step
 }
 
 /**
- * STEP 2: Read each page namespaces
+ * STEP 2:
+ * - Read each page namespaces
+ * - Log namespaces for each page to the console
  */
 function readPageNamespaces() {
   allPages.forEach(async (page) => {
@@ -109,8 +98,118 @@ function readPageNamespaces() {
       console.log(`🔨 ${pageId}`, namespaces)
     }
 
-    buildPage(page, namespaces)
+    checkIfFileIsAPage(page, namespaces) // Next step
   })
+}
+
+/**
+ * STEP 3 (is executed for each file):
+ * - Check if the file is a page to build or another kind of file
+ */
+function checkIfFileIsAPage(pagePath, namespaces) {
+  let prefix = pagePath
+    .split('/')
+    .map(() => '..')
+    .join('/')
+    .replace('/..', '')
+
+  // ignore tests files
+  if (pagePath.match(specFileOrFolderRgx)) {
+    return
+  }
+
+  // Rest one path if is index folder /index/index.js is going to
+  // be generated directly as /index.js
+  if (pagePath.match(indexFolderRgx)) {
+    prefix = prefix.replace('/..', '')
+  }
+
+  // _app.js , _document.js, _error.js, /api/*
+  if (isNextInternal(pagePath)) {
+    if (pagePath.includes('/api/')) {
+      fs.mkdirSync(`${finalPagesDir}/api`, { recursive: true })
+      copyFolderRecursiveSync(
+        pagePath,
+        path.dirname(pagePath.replace(currentPagesDir, finalPagesDir))
+      )
+    }
+    fs.copyFileSync(pagePath, pagePath.replace(currentPagesDir, finalPagesDir))
+    return
+  }
+
+  // Next step
+  buildPage({
+    namespaces,
+    pagePath,
+    path: finalPagesDir,
+    prefix,
+  })
+}
+
+/**
+ * STEP 4 (is executed for each file):
+ * - Get the new template for the page (wrapping I18nProvider + loading namespaces)
+ * - Create file to /pages folder
+ */
+function buildPage({ prefix, pagePath, namespaces, path }) {
+  const finalPath = pagePath.replace(currentPagesDir, path)
+  const template = getPageTemplate(prefix, pagePath, namespaces)
+  const [filename] = finalPath.split('/').reverse()
+  const dirs = finalPath.replace(`/${filename}`, '')
+  let finalFile = finalPath
+    .replace(/(\.tsx|\.ts|\.mdx)$/, '.js')
+    .replace(indexFolderRgx, '/index.js')
+
+  fs.mkdirSync(dirs, { recursive: true })
+  fs.writeFileSync(finalFile, template)
+}
+
+function copyFolderRecursiveSync(source, targetFolder) {
+  const target = path.join(targetFolder, path.basename(source))
+
+  //check if folder needs to be created
+  if (!fs.existsSync(targetFolder)) {
+    fs.mkdirSync(targetFolder, { recursive: true })
+    //copy
+    if (!fs.lstatSync(source).isDirectory()) {
+      fs.copyFileSync(source, target)
+    }
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// HELPERS ///////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+function getPageTemplate(prefix, page, namespaces) {
+  const { hasSomeSpecialExport, exports } = exportAllFromPage(
+    prefix,
+    page,
+    namespaces
+  )
+
+  return `// @ts-nocheck
+import I18nProvider from 'next-translate/I18nProvider'
+import React from 'react'
+import C${
+    hasSomeSpecialExport ? ', * as _rest' : ''
+  } from '${prefix}/${clearPageExt(page)}'
+
+export default function Page({ _ns, _lang, ...p }){
+  return (
+    <I18nProvider
+      lang={_lang}
+      namespaces={_ns}  
+      ${typeof logger === 'function' ? `logger={${logger.toString()}}` : ''}
+    >
+      <C {...p} />
+    </I18nProvider>
+  )
+}
+
+Page = Object.assign(Page, { ...C })
+${exports}
+`
 }
 
 function hasExportName(data, name) {
@@ -199,106 +298,6 @@ ${isConfig ? pageConfig(pageData) : ''}
   return { hasSomeSpecialExport, exports }
 }
 
-/**
- * STEP 3: Get each page template
- */
-function getPageTemplate(prefix, page, namespaces) {
-  const { hasSomeSpecialExport, exports } = exportAllFromPage(
-    prefix,
-    page,
-    namespaces
-  )
-
-  return `// @ts-nocheck
-import I18nProvider from 'next-translate/I18nProvider'
-import React from 'react'
-import C${
-    hasSomeSpecialExport ? ', * as _rest' : ''
-  } from '${prefix}/${clearPageExt(page)}'
-
-export default function Page({ _ns, _lang, ...p }){
-  return (
-    <I18nProvider
-      lang={_lang}
-      namespaces={_ns}  
-      ${typeof logger === 'function' ? `logger={${logger.toString()}}` : ''}
-    >
-      <C {...p} />
-    </I18nProvider>
-  )
-}
-
-Page = Object.assign(Page, { ...C })
-${exports}
-`
-}
-
-function buildPageWithNamespaces({ prefix, pagePath, namespaces, path }) {
-  const finalPath = pagePath.replace(currentPagesDir, path)
-  const template = getPageTemplate(prefix, pagePath, namespaces)
-  const [filename] = finalPath.split('/').reverse()
-  const dirs = finalPath.replace(`/${filename}`, '')
-  let finalFile = finalPath
-    .replace(/(\.tsx|\.ts|\.mdx)$/, '.js')
-    .replace(indexFolderRgx, '/index.js')
-
-  fs.mkdirSync(dirs, { recursive: true })
-  fs.writeFileSync(finalFile, template)
-}
-
-function copyFolderRecursiveSync(source, targetFolder) {
-  const target = path.join(targetFolder, path.basename(source))
-
-  //check if folder needs to be created
-  if (!fs.existsSync(targetFolder)) {
-    fs.mkdirSync(targetFolder, { recursive: true })
-    //copy
-    if (!fs.lstatSync(source).isDirectory()) {
-      fs.copyFileSync(source, target)
-    }
-  }
-}
-
-function buildPage(pagePath, namespaces) {
-  let prefix = pagePath
-    .split('/')
-    .map(() => '..')
-    .join('/')
-    .replace('/..', '')
-
-  // ignore tests files
-  if (pagePath.match(specFileOrFolderRgx)) {
-    return
-  }
-
-  // Rest one path if is index folder /index/index.js is going to
-  // be generated directly as /index.js
-  if (pagePath.match(indexFolderRgx)) {
-    prefix = prefix.replace('/..', '')
-  }
-
-  // _app.js , _document.js, _error.js, /api/*
-  if (isNextInternal(pagePath)) {
-    if (pagePath.includes('/api/')) {
-      fs.mkdirSync(`${finalPagesDir}/api`, { recursive: true })
-      copyFolderRecursiveSync(
-        pagePath,
-        path.dirname(pagePath.replace(currentPagesDir, finalPagesDir))
-      )
-    }
-    fs.copyFileSync(pagePath, pagePath.replace(currentPagesDir, finalPagesDir))
-    return
-  }
-
-  // Build pages with namespaces
-  buildPageWithNamespaces({
-    namespaces,
-    pagePath,
-    path: finalPagesDir,
-    prefix,
-  })
-}
-
 function getInternalNamespacesCode(namespaces, prefix) {
   return `const _lang = ctx.locale || ctx.router?.locale || '${defaultLocale}'
   ${namespaces
@@ -349,4 +348,18 @@ function readDirR(dir) {
           .map((f) => readDirR(path.join(parsedDir, f)))
       )
     : parsedDir
+}
+
+function isNextInternal(pagePath) {
+  return (
+    pagePath.startsWith(`${currentPagesDir}/_`) ||
+    pagePath.startsWith(`${currentPagesDir}/404.`) ||
+    pagePath.startsWith(`${currentPagesDir}/api/`)
+  )
+}
+
+function clearPageExt(page) {
+  const rgx = /(\/index\.jsx)|(\/index\.js)|(\/index\.tsx)|(\/index\.ts)|(\/index\.mdx)|(\.jsx)|(\.js)|(\.tsx)|(\.ts)|(\.mdx)/gm
+
+  return page.replace(rgx, '')
 }
