@@ -46,8 +46,9 @@
   - [Second alternative](#second-alternative)
 - [12. Demos](#12-demos)
   - [Demo from Next.js](#demo-from-nextjs)
-  - [Basic demo: Using the "build step"](#basic-demo-using-the-build-step)
+  - [Basic demo: With the "build step"](#basic-demo-with-the-build-step)
   - [Basic demo: Using the appWithI18n alternative](#basic-demo-using-the-appwithi18n-alternative)
+  - [Basic demo: Without the "build step"](#basic-demo-without-the-build-step)
 - [Contributors ✨](#contributors-)
 
 <p align="center">
@@ -278,7 +279,7 @@ In order to use each translation in the project, use the _translation id_ compos
 | `currentPagesDir` | A string with the directory where you have the pages code. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `string`                        | `"pages_"`                                                                      |
 | `finalPagesDir`   | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                               | `string`                        | `"pages"`                                                                       |
 | `localesPath`     | A string with the directory of JSONs locales. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `string`                        | `"locales"`                                                                     |
-| `loadLocaleFrom`  | As an alternative to `localesPath`, if `i18nMiddleware` is used instead of the "build step". It's an async function that returns the dynamic import of each locale. [See an example](/docs/USING_CUSTOM_SERVER.md#3-add-the-i18n-middleware)                                                                                                                                                                                                                                                                                                                                                           | `Function`                      | `null`                                                                          |
+| `loadLocaleFrom`  | As an alternative to `localesPath`, if `appWithI18n` is used instead of the "build step". It's an async function that returns the dynamic import of each locale.                                                                                                                                                                                                                                                                                                                                                                                                                                       | `Function`                      | `null`                                                                          |
 | `pages`           | An object that defines the namespaces used in each page. Example of object: `{"/": ["home", "example"]}`. To add namespaces to all pages you should use the key `"*"`, ex: `{"*": ["common"]}`. It's also possible to use regex using `rgx:` on front: `{"rgx:/form$": ["form"]}`. In case of using a custom server as an [alternative](#using-an-alternative-of-the-build-step-custom-server) of the "build step", you can also use a function instead of an array, to provide some namespaces depending on some rules, ex: `{ "/": ({ req, query }) => query.type === 'example' ? ['example'] : []}` | `Object<Array<string>/Function` | `{}`                                                                            |
 | `logger`          | Function to log the **missing keys** in development and production. If you are using `i18n.json` as config file you should change it to `i18n.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `function`                      | By default the logger is a function doing a `console.warn` only in development. |  |
 | `logBuild`        | Configure if the build result should be logged to the console                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `Boolean`                       | `true`                                                                          |
@@ -647,7 +648,7 @@ Pros and cons:
 - 🔴 Automatic Static Optimization is not an option
 - 🟢 Easy to configure
 
-Learn more: [Docs](docs/USING_CUSTOM_SERVER.md) · [Example](https://github.com/vinissimus/next-translate/tree/master/examples/with-server)
+Learn more: [Docs](docs/USING_APP_WRAPPER.md) · [Example](https://github.com/vinissimus/next-translate/tree/master/examples/with-appWithI18n)
 
 ### Second alternative
 
@@ -674,13 +675,13 @@ npx create-next-app --example with-next-translate with-next-translate-app
 yarn create next-app --example with-next-translate with-next-translate-app
 ```
 
-### Basic demo: Using the "build step"
+### Basic demo: With the "build step"
 
 This demo is in this repository:
 
 - `git clone git@github.com:vinissimus/next-translate.git`
 - `cd next-translate`
-- `yarn && yarn example:static-site`
+- `yarn && yarn example:with-build-step`
 
 ### Basic demo: Using the appWithI18n alternative
 
@@ -689,6 +690,14 @@ This demo is in this repository:
 - `git clone git@github.com:vinissimus/next-translate.git`
 - `cd next-translate`
 - `yarn && yarn example:with-server`
+
+### Basic demo: Without the "build step"
+
+This demo is in this repository:
+
+- `git clone git@github.com:vinissimus/next-translate.git`
+- `cd next-translate`
+- `yarn && yarn example:without-build-step`
 
 [badge-prwelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [prwelcome]: http://makeapullrequest.com
@@ -728,6 +737,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
