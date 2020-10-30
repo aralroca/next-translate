@@ -352,8 +352,8 @@ function readDirR(dir) {
 
 function isNextInternal(pagePath) {
   return (
-    pagePath.startsWith(`${currentPagesDir}/_`) ||
-    pagePath.startsWith(`${currentPagesDir}/404.`) ||
+    (pagePath.startsWith(`${currentPagesDir}/_`) &&
+      !pagePath.startsWith(`${currentPagesDir}/_error.`)) ||
     pagePath.startsWith(`${currentPagesDir}/api/`)
   )
 }
