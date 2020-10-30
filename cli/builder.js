@@ -26,6 +26,7 @@ let {
   defaultLocale = 'en',
   finalPagesDir = 'pages',
   localesPath = 'locales',
+  package = false,
   pages = {},
   logger,
   redirectToDefaultLang, // @deprecated
@@ -299,9 +300,7 @@ ${isConfig ? pageConfig(pageData) : ''}
 }
 
 function getInternalNamespacesCode(namespaces, prefix) {
-  const path = localesPath.startsWith('package:')
-    ? localesPath.replace('package:', '')
-    : `${prefix}/${localesPath}`
+  const path = package ? localesPath : `${prefix}/${localesPath}`
 
   return `const _lang = ctx.locale || ctx.router?.locale || '${defaultLocale}'
   ${namespaces
