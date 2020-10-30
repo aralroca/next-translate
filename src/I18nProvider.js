@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from 'react'
 import I18nContext from './_context'
+import { useRouter } from 'next/router'
 
 const NsContext = createContext({})
 
@@ -71,11 +72,13 @@ function missingKeyLogger({ namespace, i18nKey }) {
 }
 
 export default function I18nProvider({
-  lang,
+  lang: lng,
   namespaces = {},
   children,
   logger = missingKeyLogger,
 }) {
+  const { locale } = useRouter() || {}
+  const lang = lng || locale
   const ns = useContext(NsContext)
   const allNamespaces = { ...ns, ...namespaces }
 
@@ -86,7 +89,8 @@ export default function I18nProvider({
     const keyWithPlural = plural(dic, i18nKey, query)
     const value = getDicValue(dic, keyWithPlural, options)
 
-    if (typeof value === 'undefined') {
+    // Log only during CSR
+    if (typeof window !== 'undefined' && typeof value === 'undefined') {
       logger({
         namespace,
         i18nKey,
