@@ -32,7 +32,7 @@ yarn-error.log*
 
 # build pages
 /pages
-/examples/static-site/pages
+/examples/with-build-step/pages
 
 # lib build
 *.js
