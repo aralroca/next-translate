@@ -265,7 +265,7 @@ function exportAllFromPage(prefix, page, namespaces) {
   const isWrappedWithHOC = hasHOC(pageData)
   const isHead = hasExportName(pageData, 'Head')
   const isConfig = hasExportName(pageData, 'config')
-  const isGetInitialProps = pageData.match(/\\WgetInitialProps\\W/g)
+  const isGetInitialProps = pageData.match(/\WgetInitialProps\W/g)
   const isGetStaticProps = hasExportName(pageData, 'getStaticProps')
   const isGetStaticPaths = hasExportName(pageData, 'getStaticPaths')
   const isGetServerSideProps = hasExportName(pageData, 'getServerSideProps')
