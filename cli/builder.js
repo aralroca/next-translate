@@ -299,11 +299,15 @@ ${isConfig ? pageConfig(pageData) : ''}
 }
 
 function getInternalNamespacesCode(namespaces, prefix) {
+  const path = localesPath.startsWith('package:')
+    ? localesPath.replace('package:', '')
+    : `${prefix}/${localesPath}`
+
   return `const _lang = ctx.locale || ctx.router?.locale || '${defaultLocale}'
   ${namespaces
     .map(
       (ns, i) =>
-        `const ns${i} = await import(\`${prefix}/${localesPath}/\${_lang}/${ns}.json\`).then(m => m.default)`
+        `const ns${i} = await import(\`${path}/\${_lang}/${ns}.json\`).then(m => m.default)`
     )
     .join('\n')}
   const _ns = { ${namespaces.map((ns, i) => `'${ns}': ns${i}`).join(', ')} }
