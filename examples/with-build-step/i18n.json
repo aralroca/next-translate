@@ -3,6 +3,7 @@
   "defaultLocale": "en",
   "pages": {
     "*": ["common"],
+    "/404": ["error"],
     "/": ["home"],
     "/dashboard": ["home"],
     "rgx:^/more-examples": ["more-examples"]
