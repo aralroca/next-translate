@@ -234,7 +234,7 @@ return <div>{example}</div>
 
 Remember that we must work in the alternative directory `pages_`. The `pages` directory will be generated during the build step.
 
-⚠️ **Important**: \_app.js, \_document.js and \_error.js are not going to be wrapped with the translations context, so it's not possible to directly translate these files. In order to do that, you should take a look at [DynamicNamespaces](#dynamicnamespaces) to load the namespaces dynamically.
+⚠️ **Important**: \_app.js and \_document.js are not going to be wrapped with the translations context, so it's not possible to directly translate these files.
 
 ### Add /pages to .gitignore
 
