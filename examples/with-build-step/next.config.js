@@ -1,8 +1,15 @@
-const { locales, defaultLocale } = require('./i18n.json')
+const nextTranslate = require('next-translate')
 
-module.exports = {
+module.exports = nextTranslate({
   i18n: {
-    locales,
-    defaultLocale,
+    locales: ['en', 'ca', 'es'],
+    defaultLocale: 'en',
+    pages: {
+      '*': ['common'],
+      '/404': ['error'],
+      '/': ['home'],
+      '/dashboard': ['home'],
+      'rgx:^/more-examples': ['more-examples'],
+    },
   },
-}
+})

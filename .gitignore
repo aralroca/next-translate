@@ -37,7 +37,9 @@ yarn-error.log*
 # lib build
 *.js
 !src/**/*.js
+!loader/**/*.js
 !__tests__/*.js
 !examples/**/*.js
+!index.js
 
 .vscode
