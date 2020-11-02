@@ -1,5 +1,4 @@
 const fs = require('fs')
-const hasGetInitialPropsOnAppJs = require('./_loader/hasGetInitialPropsOnAppJs')()
 
 /**
  * @todo 1.0.0
@@ -44,6 +43,10 @@ function nextTranslate(nextConfig = {}) {
     logger,
     ...restI18n
   } = require(process.cwd() + file)
+
+  const hasGetInitialPropsOnAppJs = require('./_loader/hasGetInitialPropsOnAppJs')(
+    arePagesInsideSrc
+  )
 
   return {
     ...nextConfig,

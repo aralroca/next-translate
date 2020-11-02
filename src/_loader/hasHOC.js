@@ -1,12 +1,7 @@
 import hasExportName from './hasExportName'
 
-/**
- * @description This is a helper is to check if the page is wrapped with a HOC or not. It is
- *  assumed that "data" param is the code in string, where the comments have been previously
- *  cleaned.
- *
- * @param {string} data
- */
+const clearCommentsRgx = /\/\*[\s\S]*?\*\/|\/\/.*/g
+
 export default function hasHOC(rawData) {
   const hocRgx = new RegExp('[^\\(|\\| )]+\\([A-Z][^\\(|\\| )]*\\)')
   const hasWithTranslationHOC = new RegExp(
@@ -22,14 +17,16 @@ export default function hasHOC(rawData) {
     return false
   }
 
-  // Remove withTranslation hoc, in this case we can ensure that is not using
-  // a getInitialProps on the Page.
-  // Ex: "export default withTranslation(somevariable)" -> export default somevariable
   const [, withTranslationName] = rawData.match(hasWithTranslationHOC) || []
-  const data = rawData.replace(
-    new RegExp(`${withTranslationName}\\(.*\\)`),
-    (d) => d.replace(new RegExp(`(${withTranslationName}|\\(|\\))`, 'g'), '')
-  )
+  const data = rawData
+    // Remove withTranslation hoc, in this case we can ensure that is not using
+    // a getInitialProps on the Page.
+    // Ex: "export default withTranslation(somevariable)" -> export default somevariable
+    .replace(new RegExp(`${withTranslationName}\\(.*\\)`), (d) =>
+      d.replace(new RegExp(`(${withTranslationName}|\\(|\\))`, 'g'), '')
+    )
+    // Clear all comments
+    .replace(clearCommentsRgx, '')
 
   const exportedNormally = new RegExp(
     `export default (\\(.*\\) *=>|function)`
