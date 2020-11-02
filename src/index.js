@@ -39,9 +39,9 @@ function nextTranslate(nextConfig = {}) {
   const {
     locales,
     defaultLocale,
-    loader,
+    loader = true,
     pages,
-    logger = true,
+    logger,
     ...restI18n
   } = require(process.cwd() + file)
 

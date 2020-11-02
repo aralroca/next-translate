@@ -7,27 +7,28 @@ console.warn(`
 
 You don't need this extra step anymore!
 
-Now you must add the configuration in next.config.js.
 
-Example:
+Instead of having this in your package.json:
+
+---------
+{
+  "scripts": {
+    "dev": "next-translate && next dev",
+    "build": "next-translate && next build",
+  }
+}
+
+----------
+
+Now you must add the nextTranslate plugin inside next.config.js.
 
 ---------
 
 const nextTranslate = require('next-translate')
 
-module.exports = nextTranslate({
-  i18n: {
-    locales: ['en', 'ca', 'es'],
-    defaultLocale: 'en',
-    pages: {
-      '*': ['common'],
-      '/404': ['error'],
-      '/': ['home'],
-      '/dashboard': ['home'],
-      'rgx:^/more-examples': ['more-examples'],
-    }
-  }
-})
+//...
+
+module.exports = nextTranslate(nextConfig)
 
 ---------
 

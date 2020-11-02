@@ -8,7 +8,7 @@ function _appTransformation(code, { i18nFile, arePagesInsideSrc }) {
     import __appWithI18n from 'next-translate/appWithI18n'
     ${code.replace('export default', 'const __Page_Next_Translate__ =')}
     export default __appWithI18n(__Page_Next_Translate__, {
-      loadLocaleFrom: (l, n) => import('${defaultLoadLocaleFrom}').then(m => m.default),
+      loadLocaleFrom: (l, n) => import(\`${defaultLoadLocaleFrom}\`).then(m => m.default),
       ...__i18nConfig
     });
   `
