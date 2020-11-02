@@ -150,6 +150,24 @@ describe('hasHOC', () => {
       `)
       ).toBe(false)
     })
+    test('with -> with renamed withTranslation', () => {
+      expect(
+        hasHOC(`
+        import useTranslation from 'next-translate/useTranslation'
+        import justI18nHoc from 'next-translate/withTranslation'
+
+        const withHOC = (C) => (p) => <C {...p} />
+
+        // Just for tests
+        function PageWithHOC() {
+          const { t } = useTranslation()
+          return <div>{t\`common:title\`}</div>
+        }
+
+        export default justI18nHoc(PageWithHOC)
+      `)
+      ).toBe(false)
+    })
     test('with -> it has getStaticProps', () => {
       expect(
         hasHOC(`
