@@ -3,7 +3,7 @@ const specFileOrFolderRgx = /(__mocks__|__tests__)|(\.(spec|test)\.(tsx|ts|js|js
 function isPageToIgnore(page) {
   return (
     page.startsWith('/api/') ||
-    (page.startsWith('/_') && !page.startsWith('/_error.')) ||
+    page.startsWith('/_document.') ||
     specFileOrFolderRgx.test(page)
   )
 }

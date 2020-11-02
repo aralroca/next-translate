@@ -19,15 +19,14 @@ export default function appWithI18n(AppToTranslate, config = {}) {
 
     return (
       <I18nProvider
-        lang={props.__lang}
-        namespaces={props.__namespaces}
+        lang={props.__lang || props.pageProps.__lang}
+        namespaces={props.__namespaces || props.pageProps.__namespaces}
         logger={logger}
       >
         <AppToTranslate {...props} />
       </I18nProvider>
     )
   }
-
   if (config.skipInitialProps) return AppWithTranslations
 
   AppWithTranslations.getInitialProps = async (appCtx) => {

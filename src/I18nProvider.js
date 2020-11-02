@@ -1,6 +1,7 @@
 import React, { createContext, useContext } from 'react'
-import I18nContext from './_context'
 import { useRouter } from 'next/router'
+import I18nContext from './_context'
+import useTranslation from './useTranslation'
 
 const NsContext = createContext({})
 
@@ -77,8 +78,9 @@ export default function I18nProvider({
   children,
   logger = missingKeyLogger,
 }) {
-  const { locale } = useRouter() || {}
-  const lang = lng || locale
+  const { lang: parentLang } = useTranslation()
+  const { locale, defaultLocale } = useRouter() || {}
+  const lang = lng || parentLang || locale || defaultLocale
   const ns = useContext(NsContext)
   const allNamespaces = { ...ns, ...namespaces }
 

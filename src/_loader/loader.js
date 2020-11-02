@@ -20,6 +20,12 @@ export default function loader(code) {
     return pathNoExt === '/_app' ? _appTransformation(code, config) : code
   }
 
+  // In case the _app does not have getInitialProps, we can add only the
+  // I18nProvider to ensure that translations work inside _app.js
+  if (pathNoExt === '/_app') {
+    return _appTransformation(code, { ...config, skipInitialProps: true })
+  }
+
   // There are some files that although they are inside pages, are not pages:
   // _app, _document, /api... In that case, let's skip any transformation :)
   if (isPageToIgnore(path)) return code
