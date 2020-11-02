@@ -30,10 +30,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# build pages
-/pages
-/examples/with-build-step/pages
-
 # lib build
 *.js
 !src/**/*.js
