@@ -44,7 +44,7 @@ function nextTranslate(nextConfig = {}) {
     ...restI18n
   } = require(process.cwd() + file)
 
-  const hasGetInitialPropsOnAppJs = require('./_loader/hasGetInitialPropsOnAppJs')(
+  const hasGetInitialPropsOnAppJs = require('./_utils/hasGetInitialPropsOnAppJs')(
     arePagesInsideSrc
   )
 
@@ -71,7 +71,7 @@ function nextTranslate(nextConfig = {}) {
         if (!r?.test?.test('/test.js')) return r
 
         const loader = {
-          loader: 'next-translate/_loader/loader',
+          loader: 'next-translate/_utils/loader',
           options: {
             extensionsRgx: r.test,
             hasGetInitialPropsOnAppJs,

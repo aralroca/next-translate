@@ -1,13 +1,22 @@
-import _appTransformation from './_appTransformation'
+import appTransformation from './appTransformation'
 import isPageToIgnore from './isPageToIgnore'
 import pageTransformation from './pageTransformation'
+import { defaultAppJs } from './constants'
+
+const defaultAppPath = process.cwd() + '/node_modules/next/dist/pages/_app'
+const pagePath = process.cwd() + '/pages/'
 
 export default function loader(code) {
-  if (!this.resourcePath.startsWith(process.cwd() + '/pages/')) return code
+  // In case that there aren't /_app.js we want to overwrite the default _app
+  // to provide the I18Provider on top
+  if (this.resourcePath.startsWith(defaultAppPath)) return defaultAppJs
+
+  // Skip rest of files that are not inside /pages
+  if (!this.resourcePath.startsWith(pagePath)) return code
 
   const { hasGetInitialPropsOnAppJs, extensionsRgx, ...config } = this.query
-  const path = this.resourcePath.replace(process.cwd() + '/pages/', '/', '')
-  const pathNoExt = path.replace(extensionsRgx, '')
+  const page = this.resourcePath.replace(pagePath, '/', '')
+  const pageNoExt = page.replace(extensionsRgx, '')
 
   // In case there is a getInitialProps in _app it means that we can
   // reuse the existing getInitialProps on the top to load the namespaces.
@@ -17,18 +26,18 @@ export default function loader(code) {
   //
   // This way, the only modified file has to be the _app.js.
   if (hasGetInitialPropsOnAppJs) {
-    return pathNoExt === '/_app' ? _appTransformation(code, config) : code
+    return pageNoExt === '/_app' ? appTransformation(code, config) : code
   }
 
   // In case the _app does not have getInitialProps, we can add only the
   // I18nProvider to ensure that translations work inside _app.js
-  if (pathNoExt === '/_app') {
-    return _appTransformation(code, { ...config, skipInitialProps: true })
+  if (pageNoExt === '/_app') {
+    return appTransformation(code, { ...config, skipInitialProps: true })
   }
 
   // There are some files that although they are inside pages, are not pages:
   // _app, _document, /api... In that case, let's skip any transformation :)
-  if (isPageToIgnore(path)) return code
+  if (isPageToIgnore(page)) return code
 
   // This is where the most complicated part is, since to support automatic page
   // optimization what we do is use:
@@ -42,5 +51,5 @@ export default function loader(code) {
   //   withTranslation HoC).
   //   This is in order to avoid issues because the getInitialProps is the only
   //   one that can be overwritten on a HoC.
-  return pageTransformation(code, { path, pathNoExt, ...config })
+  return pageTransformation(code, { page, pageNoExt, ...config })
 }

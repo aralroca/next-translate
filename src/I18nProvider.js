@@ -80,7 +80,7 @@ export default function I18nProvider({
 }) {
   const { lang: parentLang } = useTranslation()
   const { locale, defaultLocale } = useRouter() || {}
-  const lang = lng || parentLang || locale || defaultLocale
+  const lang = lng || parentLang || locale || defaultLocale || ''
   const ns = useContext(NsContext)
   const allNamespaces = { ...ns, ...namespaces }
 

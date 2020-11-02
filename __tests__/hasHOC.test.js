@@ -1,4 +1,4 @@
-import hasHOC from '../src/_loader/hasHOC'
+import hasHOC from '../src/_utils/hasHOC'
 
 describe('hasHOC', () => {
   describe('HOC -> should return true', () => {

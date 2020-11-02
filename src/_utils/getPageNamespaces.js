@@ -11,7 +11,7 @@ function flat(a) {
  */
 export default async function getPageNamespaces({ pages = {} }, page, ctx) {
   const rgx = 'rgx:'
-  const getNs = async ns => (typeof ns === 'function' ? ns(ctx) : ns || [])
+  const getNs = async (ns) => (typeof ns === 'function' ? ns(ctx) : ns || [])
 
   // Namespaces promises using regex
   const rgxs = Object.keys(pages).reduce((arr, p) => {

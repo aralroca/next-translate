@@ -1,4 +1,4 @@
-function _appTransformation(
+function appTransformation(
   code,
   { i18nFile, arePagesInsideSrc, skipInitialProps = false }
 ) {
@@ -19,4 +19,4 @@ function _appTransformation(
   `
 }
 
-export default _appTransformation
+export default appTransformation

@@ -4,9 +4,7 @@ const hasHOC = require('./hasHOC').default
 function hasGetInitialPropsOnAppJs(arePagesInsideSrc) {
   const pagesPath =
     process.cwd() + (arePagesInsideSrc ? '/src/pages' : '/pages')
-  const app = fs
-    .readdirSync(pagesPath)
-    .filter((page) => page.startsWith('_app.'))
+  const app = fs.readdirSync(pagesPath).find((page) => page.startsWith('_app.'))
 
   if (!app) return false
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import App from 'next/app'
 import I18nProvider from './I18nProvider'
-import getPageNamespaces from './_helpers/getPageNamespaces'
+import getPageNamespaces from './_utils/getPageNamespaces'
 
 function removeTrailingSlash(path = '') {
   return path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path
@@ -19,8 +19,8 @@ export default function appWithI18n(AppToTranslate, config = {}) {
 
     return (
       <I18nProvider
-        lang={props.__lang || props.pageProps.__lang}
-        namespaces={props.__namespaces || props.pageProps.__namespaces}
+        lang={props.pageProps.__lang || props.__lang}
+        namespaces={props.pageProps.__namespaces || props.__namespaces}
         logger={logger}
       >
         <AppToTranslate {...props} />
