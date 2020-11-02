@@ -40,6 +40,5 @@ yarn-error.log*
 !loader/**/*.js
 !__tests__/*.js
 !examples/**/*.js
-!index.js
 
 .vscode
