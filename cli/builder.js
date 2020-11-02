@@ -3,6 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const hasHOC = require('../_helpers/hasHOC').default
 const getPageNamespaces = require('../_helpers/getPageNamespaces').default
+const hasExportName = require('../_helpers/hasExportName').default
 
 let configFile = {}
 
@@ -211,17 +212,6 @@ export default function Page({ _ns, _lang, ...p }){
 Page = Object.assign(Page, { ...C })
 ${exports}
 `
-}
-
-function hasExportName(data, name) {
-  return (
-    data.match(
-      new RegExp(`export (const|var|let|async function|function) ${name}`)
-    ) ||
-    data.match(
-      new RegExp(`export\\s*\\{[^}]*(?<!\\w)${name}(?!\\w)[^}]*\\}`, 'm')
-    )
-  )
 }
 
 function specialMethod(name, namespaces, prefix, loader = true) {
