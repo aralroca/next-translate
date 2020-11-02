@@ -177,7 +177,7 @@ describe('hasHOC', () => {
           return <div>Hello world</div>
         }
 
-        export const getStaticProps() {
+        export function getStaticProps() {
           return {
             props: {}
           }
@@ -197,7 +197,7 @@ describe('hasHOC', () => {
           return <div>Hello world</div>
         }
 
-        const getStaticProps() {
+        function getStaticProps() {
           return {
             props: {}
           }
