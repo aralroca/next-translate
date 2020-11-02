@@ -8,7 +8,6 @@ const fs = require('fs')
  *   console.warn indicating how to migrate
  * - Add warning using appWithI18n or loadNamespaces together with the loader
  * - Support TypeScript
- * - Remove all deprecations from 0.19
  * - Deprecate "localesPath" in order to use "loadLocaleFrom"
  * - Do dynamic prop from DynamicNamespace transparent
  * - Add config prop to enable/disable the loader (loader=false)

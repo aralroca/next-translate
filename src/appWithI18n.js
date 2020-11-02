@@ -27,6 +27,7 @@ export default function appWithI18n(AppToTranslate, config = {}) {
       </I18nProvider>
     )
   }
+
   if (config.skipInitialProps) return AppWithTranslations
 
   AppWithTranslations.getInitialProps = async (appCtx) => {
