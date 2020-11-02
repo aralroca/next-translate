@@ -1,4 +1,4 @@
-import appTransformation from './appTransformation'
+import templateWithHoc from './templateWithHoc'
 import isPageToIgnore from './isPageToIgnore'
 import pageTransformation from './pageTransformation'
 import { defaultAppJs } from './constants'
@@ -26,13 +26,13 @@ export default function loader(code) {
   //
   // This way, the only modified file has to be the _app.js.
   if (hasGetInitialPropsOnAppJs) {
-    return pageNoExt === '/_app' ? appTransformation(code, config) : code
+    return pageNoExt === '/_app' ? templateWithHoc(code, config) : code
   }
 
   // In case the _app does not have getInitialProps, we can add only the
   // I18nProvider to ensure that translations work inside _app.js
   if (pageNoExt === '/_app') {
-    return appTransformation(code, { ...config, skipInitialProps: true })
+    return templateWithHoc(code, { ...config, skipInitialProps: true })
   }
 
   // There are some files that although they are inside pages, are not pages:
