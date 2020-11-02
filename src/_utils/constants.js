@@ -1,3 +1,5 @@
+export const clearCommentsRgx = /\/\*[\s\S]*?\*\/|\/\/.*/g
+
 export const defaultAppJs = `
   import React from 'react'
   import I18nProvider from 'next-translate/I18nProvider'

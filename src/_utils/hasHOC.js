@@ -1,6 +1,5 @@
+import { clearCommentsRgx } from './constants'
 import hasExportName from './hasExportName'
-
-const clearCommentsRgx = /\/\*[\s\S]*?\*\/|\/\/.*/g
 
 export default function hasHOC(rawData) {
   const hocRgx = new RegExp('[^\\(|\\| )]+\\([A-Z][^\\(|\\| )]*\\)')

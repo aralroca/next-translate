@@ -10,7 +10,7 @@ function hasGetInitialPropsOnAppJs(arePagesInsideSrc) {
 
   const code = fs.readFileSync(`${pagesPath}/${app}`).toString('UTF-8')
 
-  return /\WgetInitialProps\W/g.test(code) || hasHOC(code)
+  return !!code.match(/\WgetInitialProps\W/g) || hasHOC(code)
 }
 
 module.exports = hasGetInitialPropsOnAppJs
