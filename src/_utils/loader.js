@@ -1,18 +1,20 @@
-import templateWithHoc from './templateWithHoc'
+import hasExportName from './hasExportName'
+import hasHOC from './hasHOC'
 import isPageToIgnore from './isPageToIgnore'
-import pageTransformation from './pageTransformation'
-import { defaultAppJs } from './constants'
+import templateWithLoader from './templateWithLoader'
+import templateWithHoc from './templateWithHoc'
+import { clearCommentsRgx, defaultAppJs } from './constants'
 
 const defaultAppPath = process.cwd() + '/node_modules/next/dist/pages/_app'
 const pagePath = process.cwd() + '/pages/'
 
-export default function loader(code) {
+export default function loader(rawCode) {
   // In case that there aren't /_app.js we want to overwrite the default _app
   // to provide the I18Provider on top
   if (this.resourcePath.startsWith(defaultAppPath)) return defaultAppJs
 
   // Skip rest of files that are not inside /pages
-  if (!this.resourcePath.startsWith(pagePath)) return code
+  if (!this.resourcePath.startsWith(pagePath)) return rawCode
 
   const { hasGetInitialPropsOnAppJs, extensionsRgx, ...config } = this.query
   const page = this.resourcePath.replace(pagePath, '/', '')
@@ -26,18 +28,18 @@ export default function loader(code) {
   //
   // This way, the only modified file has to be the _app.js.
   if (hasGetInitialPropsOnAppJs) {
-    return pageNoExt === '/_app' ? templateWithHoc(code, config) : code
+    return pageNoExt === '/_app' ? templateWithHoc(rawCode, config) : rawCode
   }
 
   // In case the _app does not have getInitialProps, we can add only the
   // I18nProvider to ensure that translations work inside _app.js
   if (pageNoExt === '/_app') {
-    return templateWithHoc(code, { ...config, skipInitialProps: true })
+    return templateWithHoc(rawCode, { ...config, skipInitialProps: true })
   }
 
   // There are some files that although they are inside pages, are not pages:
   // _app, _document, /api... In that case, let's skip any transformation :)
-  if (isPageToIgnore(page)) return code
+  if (isPageToIgnore(page)) return rawCode
 
   // This is where the most complicated part is, since to support automatic page
   // optimization what we do is use:
@@ -51,5 +53,39 @@ export default function loader(code) {
   //   withTranslation HoC).
   //   This is in order to avoid issues because the getInitialProps is the only
   //   one that can be overwritten on a HoC.
-  return pageTransformation(code, { page, pageNoExt, ...config })
+  // Use getInitialProps to load the namespaces
+  const code = rawCode.replace(clearCommentsRgx, '')
+  const dotsNumber = page.split('/').length - 1
+  const dots = Array.from({ length: dotsNumber })
+    .map(() => '..')
+    .join('/')
+  const prefix = config.arePagesInsideSrc ? '../' + dots : dots
+  const isWrapperWithExternalHOC = hasHOC(code)
+  const isDynamicPage = page.includes('[')
+  const isGetInitialProps = !!code.match(/\WgetInitialProps\W/g)
+  const isGetServerSideProps = hasExportName(code, 'getServerSideProps')
+  const isGetStaticPaths = hasExportName(code, 'getStaticPaths')
+  const isGetStaticProps = hasExportName(code, 'getStaticProps')
+  const hasLoader =
+    isGetStaticProps ||
+    isGetStaticPaths ||
+    isGetServerSideProps ||
+    isGetInitialProps
+
+  if (isGetInitialProps || (!hasLoader && isWrapperWithExternalHOC)) {
+    return templateWithHoc(rawCode, { ...config, prefix })
+  }
+
+  const loader =
+    isGetServerSideProps ||
+    (!hasLoader && isDynamicPage && !isWrapperWithExternalHOC)
+      ? 'getServerSideProps'
+      : 'getStaticProps'
+
+  return templateWithLoader(rawCode, {
+    page,
+    prefix,
+    loader,
+    ...config,
+  })
 }
