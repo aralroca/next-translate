@@ -8,7 +8,7 @@ export interface TranslationQuery {
 export interface Translate {
   (
     i18nKey: string,
-    query: TranslationQuery,
+    query?: TranslationQuery,
     options?: { returnObjects?: boolean }
   ): unknown
 }
