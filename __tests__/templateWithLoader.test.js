@@ -2,6 +2,8 @@ import templateWithLoader from '../src/_utils/templateWithLoader'
 
 const clean = (t) => t.replace(/( |\n|\t|\u00A0)/g, '')
 
+// @todo test typescript
+// @todo test group exports
 const tests = [
   {
     describe: 'exporting getStaticProps is a function',
@@ -82,6 +84,49 @@ const tests = [
         }
 
         export async function getStaticProps(ctx) {
+           const __lang = ctx.locale
+
+           const defaultLoader = (l, n) => import(\`../locales/\${l}/\${n}.json\`).then(m => m.default)
+           const loader = __i18nConfig.loadLocaleFrom || defaultLoader
+           const namespaces = await getPageNamespaces(__i18nConfig, '/', ctx)
+           const pns = await Promise.all(namespaces.map(ns => loader(__lang, ns)))
+           const __namespaces = namespaces.reduce((obj, ns, i) => { obj[ns] = pns[i]; return obj }, {})
+
+           return { 
+              props: {
+                __namespaces,
+                __lang,
+              }
+            }
+        }
+    `,
+      },
+    ],
+  },
+  {
+    describe: 'without loader (getServerSideProps as default)',
+    code: `
+      export default function Page() {
+        return <div>Hello world</div>
+      }
+  `,
+    cases: [
+      {
+        i18nFile: '/i18n.json',
+        page: '/index',
+        typescript: false,
+        loader: 'getServerSideProps',
+        hasLoader: false,
+        prefix: '..',
+        expected: `
+        import __i18nConfig from '../i18n.json'
+        import getPageNamespaces from 'next-translate/_utils/getPageNamespaces'
+
+        export default function Page() {
+          return <div>Hello world</div>
+        }
+
+        export async function getServerSideProps(ctx) {
            const __lang = ctx.locale
 
            const defaultLoader = (l, n) => import(\`../locales/\${l}/\${n}.json\`).then(m => m.default)

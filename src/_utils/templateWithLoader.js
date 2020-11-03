@@ -22,9 +22,9 @@ function templateWithLoader(
     
     ###__CURRENT_CODE_HERE__###
 
-    export async function getStaticProps(ctx) {
+    export async function ${loader}(ctx) {
         const __lang = ctx.locale
-        ${hasLoader ? 'let res = _getStaticProps(ctx)' : ''}
+        ${hasLoader ? `let res = _${loader}(ctx)` : ''}
         ${hasLoader ? `if(typeof res.then === 'function') res = await res` : ''}
         const defaultLoader = (l, n) => import(\`${defaultLoadLocaleFrom}\`).then(m => m.default)
         const loader = __i18nConfig.loadLocaleFrom || defaultLoader

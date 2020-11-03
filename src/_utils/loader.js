@@ -83,6 +83,8 @@ export default function loader(rawCode) {
       ? 'getServerSideProps'
       : 'getStaticProps'
 
+  console.log({ hasLoader, isDynamicPage, isWrapperWithExternalHOC })
+
   return templateWithLoader(rawCode, {
     page: pageNoExt,
     typescript,
