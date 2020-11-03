@@ -60,6 +60,7 @@ export default function loader(rawCode) {
     .map(() => '..')
     .join('/')
   const prefix = config.arePagesInsideSrc ? '../' + dots : dots
+  const typescript = page.endsWith('.ts') || page.endsWith('.tsx')
   const isWrapperWithExternalHOC = hasHOC(code)
   const isDynamicPage = page.includes('[')
   const isGetInitialProps = !!code.match(/\WgetInitialProps\W/g)
@@ -73,7 +74,7 @@ export default function loader(rawCode) {
     isGetInitialProps
 
   if (isGetInitialProps || (!hasLoader && isWrapperWithExternalHOC)) {
-    return templateWithHoc(rawCode, { ...config, prefix })
+    return templateWithHoc(rawCode, { ...config, prefix, typescript })
   }
 
   const loader =
@@ -83,9 +84,11 @@ export default function loader(rawCode) {
       : 'getStaticProps'
 
   return templateWithLoader(rawCode, {
-    page,
+    page: pageNoExt,
+    typescript,
     prefix,
     loader,
+    hasLoader,
     ...config,
   })
 }
