@@ -1,3 +1,5 @@
+import { clearCommentsRgx } from './constants'
+
 function templateWithHoc(
   code,
   {
@@ -8,16 +10,29 @@ function templateWithHoc(
     pageName = '__Page_Next_Translate__',
   }
 ) {
+  const codeWithoutComments = code.replace(clearCommentsRgx, '')
+
+  // Skip any transformation if for some reason they forgot to write the
+  // "export default" on the page
+  if (!codeWithoutComments.includes('export default')) return code
+
   const configPath = `${prefix}${i18nFile}`
   const defaultLoadLocaleFrom = `${prefix}/locales/\${l}/\${n}.json`
 
-  let modifiedCode = code.replace('export default', `const ${pageName} =`)
+  // Replacing all the possible "export default" (if there are comments
+  // can be possible to have more than one)
+  let modifiedCode = code.replace(/export +default/g, `const ${pageName} =`)
+
+  // It is necessary to change the name of the page that uses getInitialProps
+  // to ours, this way we avoid issues.
   const [, , componentName] =
-    code.match(/export +default +(function|class) +([A-Z]\w*)/) || []
+    codeWithoutComments.match(
+      /export +default +(function|class) +([A-Z]\w*)/
+    ) || []
 
   if (componentName) {
     modifiedCode = modifiedCode.replace(
-      `${componentName}.getInitialProps`,
+      new RegExp(`\\W${componentName}\\.getInitialProps`, 'g'),
       `${pageName}.getInitialProps`
     )
   }

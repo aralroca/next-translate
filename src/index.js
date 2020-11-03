@@ -15,6 +15,7 @@ const fs = require('fs')
  * - Should work with .ts files, without compiling errors
  * - Check that work fine with other Next plugins
  * - Update docs + examples
+ * - Support logBuild
  * - Check that is not transforming anything on /api folder and tests files
  * - Check that works fine with markdown in jsx
  * - Update GIFs from READMEs
