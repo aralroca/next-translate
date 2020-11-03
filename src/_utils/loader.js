@@ -19,6 +19,11 @@ export default function loader(rawCode) {
   const { hasGetInitialPropsOnAppJs, extensionsRgx, ...config } = this.query
   const page = this.resourcePath.replace(pagePath, '/', '')
   const pageNoExt = page.replace(extensionsRgx, '')
+  const code = rawCode.replace(clearCommentsRgx, '')
+
+  // Skip any transformation if for some reason they forgot to write the
+  // "export default" on the page
+  if (!code.includes('export default')) return rawCode
 
   // In case there is a getInitialProps in _app it means that we can
   // reuse the existing getInitialProps on the top to load the namespaces.
@@ -54,7 +59,6 @@ export default function loader(rawCode) {
   //   This is in order to avoid issues because the getInitialProps is the only
   //   one that can be overwritten on a HoC.
   // Use getInitialProps to load the namespaces
-  const code = rawCode.replace(clearCommentsRgx, '')
   const dotsNumber = page.split('/').length - 1
   const dots = Array.from({ length: dotsNumber })
     .map(() => '..')
@@ -82,8 +86,6 @@ export default function loader(rawCode) {
     (!hasLoader && isDynamicPage && !isWrapperWithExternalHOC)
       ? 'getServerSideProps'
       : 'getStaticProps'
-
-  console.log({ hasLoader, isDynamicPage, isWrapperWithExternalHOC })
 
   return templateWithLoader(rawCode, {
     page: pageNoExt,

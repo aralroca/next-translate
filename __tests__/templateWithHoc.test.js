@@ -486,31 +486,6 @@ const tests = [
       },
     ],
   },
-  {
-    describe: 'page with one commented "export default" skip transformation',
-    code: `
-    const Page = () => <div>Hello world</div>
-
-    Page.getInitialProps = () => ({})
-
-    // export default Page
-  `,
-    cases: [
-      {
-        i18nFile: '/i18n.js',
-        arePagesInsideSrc: false,
-        skipInitialProps: false,
-        prefix: undefined,
-        expected: `
-      const Page = () => <div>Hello world</div>
-
-      Page.getInitialProps = () => ({})
-
-      // export default Page
-    `,
-      },
-    ],
-  },
 ]
 
 describe('templateWithHoc', () => {

@@ -11,11 +11,6 @@ function templateWithHoc(
   }
 ) {
   const codeWithoutComments = code.replace(clearCommentsRgx, '')
-
-  // Skip any transformation if for some reason they forgot to write the
-  // "export default" on the page
-  if (!codeWithoutComments.includes('export default')) return code
-
   const configPath = `${prefix}${i18nFile}`
   const defaultLoadLocaleFrom = `${prefix}/locales/\${l}/\${n}.json`
 
