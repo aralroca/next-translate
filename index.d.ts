@@ -8,9 +8,14 @@ export interface TranslationQuery {
 export interface Translate {
   (
     i18nKey: string,
-    query?: TranslationQuery,
-    options?: { returnObjects?: boolean }
-  ): unknown
+    query?: TranslationQuery | null,
+    options?: { returnObjects: false }
+  ): string
+  <R = unknown>(
+    i18nKey: string,
+    query: TranslationQuery | null | undefined,
+    options: { returnObjects: true }
+  ): R
 }
 
 export interface I18n {
