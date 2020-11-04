@@ -1,67 +1,35 @@
 import templateWithLoader from '../src/_utils/templateWithLoader'
+import prettier from 'prettier'
 
-const clean = (t) => t.replace(/( |\n|\t|\u00A0)/g, '')
+const clean = (t) =>
+  prettier.format(t.replace(process.cwd(), ''), { parser: 'typescript' })
 
-// @todo test typescript
-// @todo test group exports
 const tests = [
   {
-    describe: 'exporting getStaticProps is a function',
+    describe: 'exporting as a function - with loader',
     code: `
       export default function Page() {
         return <div>Hello world</div>
+      }
+
+      export function getStaticPaths() {
+        return {}
       }
 
       export function getStaticProps(){
-        return { {props: {}} }
+        return { props: {} }
       }
   `,
     cases: [
       {
-        i18nFile: '/i18n.js',
         page: '/index',
-        typescript: false,
         loader: 'getStaticProps',
         hasLoader: true,
-        prefix: '..',
-        expected: `
-        import __i18nConfig from '../i18n.js'
-        import getPageNamespaces from 'next-translate/_utils/getPageNamespaces'
-
-        export default function Page() {
-          return <div>Hello world</div>
-        }
-  
-        const _getStaticProps = function getStaticProps(){
-          return { {props: {}} }
-        }
-
-        export async function getStaticProps(ctx) {
-           const __lang = ctx.locale
-           let res = _getStaticProps(ctx)
-           if(typeof res.then === 'function') res = await res
-
-           const defaultLoader = (l, n) => import(\`../locales/\${l}/\${n}.json\`).then(m => m.default)
-           const loader = __i18nConfig.loadLocaleFrom || defaultLoader
-           const namespaces = await getPageNamespaces(__i18nConfig, '/', ctx)
-           const pns = await Promise.all(namespaces.map(ns => loader(__lang, ns)))
-           const __namespaces = namespaces.reduce((obj, ns, i) => { obj[ns] = pns[i]; return obj }, {})
-
-           return { 
-              ...res, 
-              props: {
-                ...(res.props || {}),
-                __namespaces,
-                __lang,
-              }
-            }
-        }
-    `,
       },
     ],
   },
   {
-    describe: 'without loader (getStaticProps as default)',
+    describe: 'exporting as a function - without loader',
     code: `
       export default function Page() {
         return <div>Hello world</div>
@@ -69,80 +37,230 @@ const tests = [
   `,
     cases: [
       {
-        i18nFile: '/i18n.json',
         page: '/index',
-        typescript: false,
         loader: 'getStaticProps',
         hasLoader: false,
-        prefix: '..',
-        expected: `
-        import __i18nConfig from '../i18n.json'
-        import getPageNamespaces from 'next-translate/_utils/getPageNamespaces'
-
-        export default function Page() {
-          return <div>Hello world</div>
-        }
-
-        export async function getStaticProps(ctx) {
-           const __lang = ctx.locale
-
-           const defaultLoader = (l, n) => import(\`../locales/\${l}/\${n}.json\`).then(m => m.default)
-           const loader = __i18nConfig.loadLocaleFrom || defaultLoader
-           const namespaces = await getPageNamespaces(__i18nConfig, '/', ctx)
-           const pns = await Promise.all(namespaces.map(ns => loader(__lang, ns)))
-           const __namespaces = namespaces.reduce((obj, ns, i) => { obj[ns] = pns[i]; return obj }, {})
-
-           return { 
-              props: {
-                __namespaces,
-                __lang,
-              }
-            }
-        }
-    `,
+      },
+      {
+        page: '/blog/[post]/[...catchall]',
+        loader: 'getServerSideProps',
+        hasLoader: false,
       },
     ],
   },
   {
-    describe: 'without loader (getServerSideProps as default)',
+    describe: 'exporting as a arrow function - without loader',
+    code: `export default () => <div>Hello world</div>`,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: false,
+      },
+      {
+        page: '/blog/[post]/[...catchall]',
+        loader: 'getServerSideProps',
+        hasLoader: false,
+      },
+    ],
+  },
+  {
+    describe: 'exporting as a function in diferent line - with loader',
     code: `
-      export default function Page() {
+      function Page() {
         return <div>Hello world</div>
+      }
+
+      function getServerSideProps() {
+        return { props: {} }
+      }
+
+      export { getServerSideProps }
+      export default Page
+  `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getServerSideProps',
+        hasLoader: true,
+      },
+    ],
+  },
+  {
+    describe: 'exporting as a function in diferent line - without loader',
+    code: `
+      function Page() {
+        return <div>Hello world</div>
+      }
+
+      export default Page
+  `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: false,
+      },
+      {
+        page: '/blog/[post]/[...catchall]',
+        loader: 'getServerSideProps',
+        hasLoader: false,
+      },
+    ],
+  },
+  {
+    describe: 'exporting as a class - with loader',
+    code: `
+      import React from 'react'
+
+      export default class Page extends React.Component {
+        render() {
+          return <div>Hello world</div>
+        }
+      }
+
+      export function getStaticProps(){
+        return { props: {} }
       }
   `,
     cases: [
       {
-        i18nFile: '/i18n.json',
         page: '/index',
-        typescript: false,
-        loader: 'getServerSideProps',
-        hasLoader: false,
-        prefix: '..',
-        expected: `
-        import __i18nConfig from '../i18n.json'
-        import getPageNamespaces from 'next-translate/_utils/getPageNamespaces'
+        loader: 'getStaticProps',
+        hasLoader: true,
+      },
+    ],
+  },
+  {
+    describe: 'exporting as a class in a diferent line - without loader',
+    code: `
+      import React from 'react'
 
-        export default function Page() {
+      class Page extends React.Component {
+        render() {
           return <div>Hello world</div>
         }
+      }
 
-        export async function getServerSideProps(ctx) {
-           const __lang = ctx.locale
+      const myPage = Page
 
-           const defaultLoader = (l, n) => import(\`../locales/\${l}/\${n}.json\`).then(m => m.default)
-           const loader = __i18nConfig.loadLocaleFrom || defaultLoader
-           const namespaces = await getPageNamespaces(__i18nConfig, '/', ctx)
-           const pns = await Promise.all(namespaces.map(ns => loader(__lang, ns)))
-           const __namespaces = namespaces.reduce((obj, ns, i) => { obj[ns] = pns[i]; return obj }, {})
+      export default myPage
+  `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: false,
+      },
+      {
+        page: '/blog/[post]/[...catchall]',
+        loader: 'getServerSideProps',
+        hasLoader: false,
+      },
+    ],
+  },
+  {
+    describe: 'loader as a arrow function',
+    code: `
+      export default function Page() {
+        return <div>Hello world</div>
+      }
 
-           return { 
-              props: {
-                __namespaces,
-                __lang,
-              }
-            }
-        }
-    `,
+      const getStaticProps = () => { props: {} }
+      export { getStaticProps }
+  `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: true,
+      },
+    ],
+  },
+  {
+    describe: 'loader imported to another place',
+    code: `
+      import getStaticProps from 'somewhere/getStaticProps'
+      import getStaticPaths from 'somewhere/getStaticPaths'
+
+      const config = {}
+
+      export default function Page() {
+        return <div>Hello world</div>
+      }
+
+      export { config, getStaticProps, getStaticPaths }
+  `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: true,
+      },
+    ],
+  },
+  {
+    describe: 'loader with named import to another place',
+    code: `
+      import { getStaticProps } from 'somewhere/getStaticProps'
+      import { getStaticPaths } from 'somewhere/getStaticPaths'
+
+      const config = {}
+
+      export default function Page() {
+        return <div>Hello world</div>
+      }
+
+      export { config, getStaticProps, getStaticPaths }
+  `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: true,
+      },
+    ],
+  },
+  {
+    describe: 'loader with one named import to another place',
+    code: `
+      import { getStaticPaths, getStaticProps, config } from 'somewhere/getStaticProps'
+
+      export default function Page() {
+        const test = 'getStaticProps'
+        console.log('This should log getStaticProps without any modification')
+        return <div>Hello getStaticProps</div>
+      }
+
+      export { config, getStaticProps, getStaticPaths }
+  `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: true,
+      },
+    ],
+  },
+  {
+    describe: 'loader with named import to another place + rename',
+    code: `
+      import { getStaticPropsA as getStaticProps } from 'somewhere/getStaticProps'
+      import { getStaticProps as getStaticPaths } from 'somewhere/getStaticPaths'
+
+      const config = {}
+
+      export default function Page() {
+        return <div>Hello world</div>
+      }
+
+      export { config, getStaticProps, getStaticPaths }
+  `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: true,
       },
     ],
   },
@@ -155,9 +273,7 @@ describe('templateWithLoader', () => {
         const fn = debug ? test.only : test
         const testname = Object.entries(options).map(([k, v]) => `${k}: ${v}`)
         fn(testname.join(' | '), () => {
-          expect(clean(templateWithLoader(d.code, options))).toEqual(
-            clean(expected)
-          )
+          expect(clean(templateWithLoader(d.code, options))).toMatchSnapshot()
         })
       })
     })

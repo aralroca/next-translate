@@ -33,13 +33,13 @@ export default function loader(rawCode) {
   //
   // This way, the only modified file has to be the _app.js.
   if (hasGetInitialPropsOnAppJs) {
-    return pageNoExt === '/_app' ? templateWithHoc(rawCode, config) : rawCode
+    return pageNoExt === '/_app' ? templateWithHoc(rawCode) : rawCode
   }
 
   // In case the _app does not have getInitialProps, we can add only the
   // I18nProvider to ensure that translations work inside _app.js
   if (pageNoExt === '/_app') {
-    return templateWithHoc(rawCode, { ...config, skipInitialProps: true })
+    return templateWithHoc(rawCode, { skipInitialProps: true })
   }
 
   // There are some files that although they are inside pages, are not pages:
@@ -78,7 +78,7 @@ export default function loader(rawCode) {
     isGetInitialProps
 
   if (isGetInitialProps || (!hasLoader && isWrapperWithExternalHOC)) {
-    return templateWithHoc(rawCode, { ...config, prefix, typescript })
+    return templateWithHoc(rawCode, { prefix, typescript })
   }
 
   const loader =
@@ -90,9 +90,7 @@ export default function loader(rawCode) {
   return templateWithLoader(rawCode, {
     page: pageNoExt,
     typescript,
-    prefix,
     loader,
     hasLoader,
-    ...config,
   })
 }

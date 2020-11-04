@@ -1,18 +1,10 @@
 import { clearCommentsRgx } from './constants'
 
-function templateWithHoc(
+export default function templateWithHoc(
   code,
-  {
-    i18nFile,
-    arePagesInsideSrc,
-    skipInitialProps = false,
-    prefix = arePagesInsideSrc ? '../..' : '..',
-    pageName = '__Page_Next_Translate__',
-  }
+  { skipInitialProps = false, pageName = '__Page_Next_Translate__' }
 ) {
   const codeWithoutComments = code.replace(clearCommentsRgx, '')
-  const configPath = `${prefix}${i18nFile}`
-  const defaultLoadLocaleFrom = `${prefix}/locales/\${l}/\${n}.json`
 
   // Replacing all the possible "export default" (if there are comments
   // can be possible to have more than one)
@@ -33,16 +25,13 @@ function templateWithHoc(
   }
 
   return `
-    import __i18nConfig from '${configPath}'
+    import __i18nConfig from '${process.cwd() + '/i18n'}'
     import __appWithI18n from 'next-translate/appWithI18n'
     ${modifiedCode}
     export default __appWithI18n(__Page_Next_Translate__, {
-      loadLocaleFrom: (l, n) => import(\`${defaultLoadLocaleFrom}\`).then(m => m.default),
       ...__i18nConfig,
       isLoader: true,
       skipInitialProps: ${skipInitialProps},
     });
   `
 }
-
-export default templateWithHoc

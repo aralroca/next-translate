@@ -75,8 +75,6 @@ function nextTranslate(nextConfig = {}) {
           options: {
             extensionsRgx: r.test,
             hasGetInitialPropsOnAppJs,
-            i18nFile: file,
-            arePagesInsideSrc,
           },
         }
 

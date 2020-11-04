@@ -1,11 +1,7 @@
 import React from 'react'
 import App from 'next/app'
 import I18nProvider from './I18nProvider'
-import getPageNamespaces from './_utils/getPageNamespaces'
-
-function removeTrailingSlash(path = '') {
-  return path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path
-}
+import loadNamespaces from './loadNamespaces'
 
 export default function appWithI18n(AppToTranslate, config = {}) {
   if (!config.isLoader && config.loader !== false) {
@@ -31,35 +27,19 @@ export default function appWithI18n(AppToTranslate, config = {}) {
   if (config.skipInitialProps) return AppWithTranslations
 
   AppWithTranslations.getInitialProps = async (appCtx) => {
-    const { router = {} } = appCtx
     const ctx = appCtx.ctx || appCtx || {}
-    const lang = router.locale || config.defaultLocale || ''
+    let appProps = { pageProps: {} }
+
     const getInitialProps =
       AppToTranslate.getInitialProps || App.getInitialProps
-    let appProps = { pageProps: {} }
 
     if (getInitialProps) {
       appProps = (await getInitialProps(appCtx)) || {}
     }
 
-    const page = removeTrailingSlash(ctx.pathname)
-    const namespaces = await getPageNamespaces(config, page, ctx)
-    const pageNamespaces =
-      (await Promise.all(
-        namespaces.map((ns) =>
-          typeof config.loadLocaleFrom === 'function'
-            ? config.loadLocaleFrom(lang, ns)
-            : Promise.resolve([])
-        )
-      ).catch(() => {})) || []
-
     return {
       ...appProps,
-      __lang: lang,
-      __namespaces: namespaces.reduce((obj, ns, i) => {
-        obj[ns] = pageNamespaces[i]
-        return obj
-      }, {}),
+      ...(await loadNamespaces({ ...ctx, ...config })),
     }
   }
 

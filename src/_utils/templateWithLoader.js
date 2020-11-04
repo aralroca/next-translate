@@ -1,14 +1,10 @@
 import { getNormalExportRegex } from './hasExportName'
 
-function templateWithLoader(
+export default function templateWithLoader(
   rawCode,
-  { i18nFile, page, typescript, prefix, loader, hasLoader } = {}
+  { page, typescript, loader, hasLoader } = {}
 ) {
-  const configPath = `${prefix}${i18nFile}`
-  const defaultLoadLocaleFrom = `${prefix}/locales/\${l}/\${n}.json`
   let modifiedCode = rawCode
-
-  const pathname = page.replace(/\/index$/, '') || '/'
 
   if (hasLoader) {
     modifiedCode = modifiedCode.replace(getNormalExportRegex(loader), (v) =>
@@ -17,26 +13,25 @@ function templateWithLoader(
   }
 
   let template = `
-    import __i18nConfig from '${configPath}'
-    import getPageNamespaces from 'next-translate/_utils/getPageNamespaces'
-    
+    import __i18nConfig from '${process.cwd() + '/i18n'}'
+    import __loadNamespaces from 'next-translate/loadNamespaces'
     ###__CURRENT_CODE_HERE__###
-
     export async function ${loader}(ctx) {
-        const __lang = ctx.locale
         ${hasLoader ? `let res = _${loader}(ctx)` : ''}
         ${hasLoader ? `if(typeof res.then === 'function') res = await res` : ''}
-        const defaultLoader = (l, n) => import(\`${defaultLoadLocaleFrom}\`).then(m => m.default)
-        const loader = __i18nConfig.loadLocaleFrom || defaultLoader
-        const namespaces = await getPageNamespaces(__i18nConfig, '${pathname}', ctx)
-        const pns = await Promise.all(namespaces.map(ns => loader(__lang, ns)))
-        const __namespaces = namespaces.reduce((obj, ns, i) => { obj[ns] = pns[i]; return obj }, {})
         return {
           ${hasLoader ? '...res,' : ''}
           props: {
             ${hasLoader ? '...(res.props || {}),' : ''}
-            __namespaces,
-            __lang,
+            ...(await __loadNamespaces({
+              ...ctx,
+              pathname: '${page}',
+              ...__i18nConfig,
+              defaultLoader: (l, n) => import(\`${
+                process.cwd() + '/locales/${l}/${n}'
+              }\`)
+                .then(m => m.default)
+            }))
           }
         }
     }
@@ -44,7 +39,5 @@ function templateWithLoader(
 
   if (typescript) template = template.replace(/\n/g, '\n// @ts-ignore\n')
 
-  return template.replace('###__CURRENT_CODE_HERE__###', modifiedCode)
+  return template.replace('###__CURRENT_CODE_HERE__###', `\n${modifiedCode}\n`)
 }
-
-export default templateWithLoader
