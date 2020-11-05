@@ -295,6 +295,25 @@ const tests = [
       },
     ],
   },
+  {
+    describe: 'should remove exports of existings loaders with "as"',
+    code: `export { test as    getStaticProps }
+    export {
+      test as getStaticProps,
+      anotherThing
+    }
+    
+    export {something,getStaticPropsA as getStaticProps}
+    export {something,AgetStaticProps as getStaticProps}
+    export {something,AgetStaticProps as getStaticProps, getStaticPropsB}`,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: true,
+      },
+    ],
+  },
 ]
 
 describe('templateWithLoader', () => {

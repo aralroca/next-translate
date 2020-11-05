@@ -570,3 +570,35 @@ export async function getStaticProps(ctx) {
 }
 "
 `;
+
+exports[`templateWithLoader should remove exports of existings loaders with "as" page: /index | loader: getStaticProps | hasLoader: true 1`] = `
+"import __i18nConfig from \\"/i18n\\";
+import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+
+export { anotherThing };
+
+export { something };
+export { something };
+export { something, getStaticPropsB };
+
+export async function getStaticProps(ctx) {
+  let res = _getStaticProps(ctx);
+  if (typeof res.then === \\"function\\") res = await res;
+  return {
+    ...res,
+    props: {
+      ...(res.props || {}),
+      ...(await __loadNamespaces({
+        ...ctx,
+        pathname: \\"/index\\",
+        ...__i18nConfig,
+        defaultLoader: (l, n) =>
+          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
+      })),
+    },
+  };
+}
+"
+`;

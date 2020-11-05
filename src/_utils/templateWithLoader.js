@@ -2,6 +2,7 @@ export default function templateWithLoader(
   rawCode,
   { page, typescript, loader, hasLoader } = {}
 ) {
+  const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
   const configFile = process.cwd() + '/i18n'
   const locales = process.cwd() + '/locales/${l}/${n}'
   let modifiedCode = rawCode
@@ -37,11 +38,22 @@ export default function templateWithLoader(
       .replace(/export +\{ *(getStaticProps|getServerSideProps)( |,)*\}/, '')
       // Replacing:
       //    export { something, getStaticProps, somethingelse }
-      // To
+      // To:
       //    export { something, somethingelse }
-      .replace(new RegExp(`export { +.*${loader}\\W`), (v) =>
-        v.replace(new RegExp(`${loader},?`), '')
-      )
+      // And:
+      //    export { getStaticPropsFake, somethingelse, b as getStaticProps }
+      // To:
+      //    export { getStaticPropsFake, somethingelse }
+      .replace(new RegExp(`^ *export {(.|\n)*${loader}(.|\n)*}`, 'gm'), (v) => {
+        return v
+          .replace(new RegExp(`(\\w+ +as +)?${loader}\\W`, 'gm'), (v) =>
+            v.endsWith(loader) ? '' : v[v.length - 1]
+          )
+          .replace(/,( |\n)*,/gm, ',')
+          .replace(/{( |\n)*,/gm, '{')
+          .replace(/{,( \n)*}/gm, '}')
+          .replace(/^ *export +{( |\n)*}\W*$/gm, '')
+      })
       // Replacing:
       //    import { something, getStaticProps, somethingelse } from './getStaticProps'
       // To:
@@ -57,7 +69,7 @@ export default function templateWithLoader(
   let template = `
     import __i18nConfig from '${configFile}'
     import __loadNamespaces from 'next-translate/loadNamespaces'
-    ###__CURRENT_CODE_HERE__###
+    ${tokenToReplace}
     export async function ${loader}(ctx) {
         ${hasLoader ? `let res = _${loader}(ctx)` : ''}
         ${hasLoader ? `if(typeof res.then === 'function') res = await res` : ''}
@@ -79,5 +91,5 @@ export default function templateWithLoader(
 
   if (typescript) template = template.replace(/\n/g, '\n// @ts-ignore\n')
 
-  return template.replace('###__CURRENT_CODE_HERE__###', `\n${modifiedCode}\n`)
+  return template.replace(tokenToReplace, `\n${modifiedCode}\n`)
 }
