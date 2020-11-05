@@ -20,6 +20,7 @@ export default function loader(rawCode) {
   const page = this.resourcePath.replace(pagePath, '/', '')
   const pageNoExt = page.replace(extensionsRgx, '')
   const code = rawCode.replace(clearCommentsRgx, '')
+  const typescript = page.endsWith('.ts') || page.endsWith('.tsx')
 
   // Skip any transformation if for some reason they forgot to write the
   // "export default" on the page
@@ -33,13 +34,15 @@ export default function loader(rawCode) {
   //
   // This way, the only modified file has to be the _app.js.
   if (hasGetInitialPropsOnAppJs) {
-    return pageNoExt === '/_app' ? templateWithHoc(rawCode) : rawCode
+    return pageNoExt === '/_app'
+      ? templateWithHoc(rawCode, { typescript })
+      : rawCode
   }
 
   // In case the _app does not have getInitialProps, we can add only the
   // I18nProvider to ensure that translations work inside _app.js
   if (pageNoExt === '/_app') {
-    return templateWithHoc(rawCode, { skipInitialProps: true })
+    return templateWithHoc(rawCode, { skipInitialProps: true, typescript })
   }
 
   // There are some files that although they are inside pages, are not pages:
@@ -64,7 +67,6 @@ export default function loader(rawCode) {
     .map(() => '..')
     .join('/')
   const prefix = config.arePagesInsideSrc ? '../' + dots : dots
-  const typescript = page.endsWith('.ts') || page.endsWith('.tsx')
   const isWrapperWithExternalHOC = hasHOC(code)
   const isDynamicPage = page.includes('[')
   const isGetInitialProps = !!code.match(/\WgetInitialProps\W/g)

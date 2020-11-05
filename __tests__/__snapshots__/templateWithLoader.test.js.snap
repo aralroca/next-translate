@@ -14,9 +14,7 @@ export async function getServerSideProps(ctx) {
         pathname: \\"/blog/[post]/[...catchall]\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -38,9 +36,7 @@ export async function getStaticProps(ctx) {
         pathname: \\"/index\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -76,9 +72,7 @@ export async function getStaticProps(ctx) {
         pathname: \\"/index\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -110,9 +104,7 @@ export async function getServerSideProps(ctx) {
         pathname: \\"/blog/[post]/[...catchall]\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -144,9 +136,7 @@ export async function getStaticProps(ctx) {
         pathname: \\"/index\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -182,9 +172,7 @@ export async function getStaticProps(ctx) {
         pathname: \\"/index\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -208,9 +196,7 @@ export async function getServerSideProps(ctx) {
         pathname: \\"/blog/[post]/[...catchall]\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -234,9 +220,7 @@ export async function getStaticProps(ctx) {
         pathname: \\"/index\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -270,9 +254,7 @@ export async function getServerSideProps(ctx) {
         pathname: \\"/index\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -298,9 +280,7 @@ export async function getServerSideProps(ctx) {
         pathname: \\"/blog/[post]/[...catchall]\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -326,9 +306,7 @@ export async function getStaticProps(ctx) {
         pathname: \\"/index\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -358,9 +336,7 @@ export async function getStaticProps(ctx) {
         pathname: \\"/index\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -395,9 +371,7 @@ export async function getStaticProps(ctx) {
         pathname: \\"/index\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -432,9 +406,7 @@ export async function getStaticProps(ctx) {
         pathname: \\"/index\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -469,9 +441,7 @@ export async function getStaticProps(ctx) {
         pathname: \\"/index\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -509,9 +479,7 @@ export async function getStaticProps(ctx) {
         pathname: \\"/index\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -561,9 +529,7 @@ export async function getStaticProps(ctx) {
         pathname: \\"/index\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };
@@ -593,9 +559,7 @@ export async function getStaticProps(ctx) {
         pathname: \\"/index\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
-          import(\`/Users/aroca/i18n-next-static/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
+          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
       })),
     },
   };

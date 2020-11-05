@@ -27,7 +27,7 @@ export default function appWithI18n(AppToTranslate, config = {}) {
   if (config.skipInitialProps) return AppWithTranslations
 
   AppWithTranslations.getInitialProps = async (appCtx) => {
-    const ctx = appCtx.ctx || appCtx || {}
+    const ctx = { ...(appCtx.ctx || {}), ...(appCtx || {}) }
     let appProps = { pageProps: {} }
 
     const getInitialProps =

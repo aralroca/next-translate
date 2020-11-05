@@ -2,9 +2,15 @@ import { clearCommentsRgx } from './constants'
 
 export default function templateWithHoc(
   code,
-  { skipInitialProps = false, pageName = '__Page_Next_Translate__' }
+  {
+    skipInitialProps = false,
+    typescript,
+    pageName = '__Page_Next_Translate__',
+  } = {}
 ) {
+  const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
   const codeWithoutComments = code.replace(clearCommentsRgx, '')
+  const locales = process.cwd() + '/locales/${l}/${n}'
 
   // Replacing all the possible "export default" (if there are comments
   // can be possible to have more than one)
@@ -24,14 +30,20 @@ export default function templateWithHoc(
     )
   }
 
-  return `
+  let template = `
     import __i18nConfig from '${process.cwd() + '/i18n'}'
     import __appWithI18n from 'next-translate/appWithI18n'
-    ${modifiedCode}
+    ${tokenToReplace}
     export default __appWithI18n(__Page_Next_Translate__, {
       ...__i18nConfig,
       isLoader: true,
       skipInitialProps: ${skipInitialProps},
+      defaultLoader: (l, n) => import(\`${locales}\`)
+        .then(m => m.default)
     });
   `
+
+  if (typescript) template = template.replace(/\n/g, '\n// @ts-ignore\n')
+
+  return template.replace(tokenToReplace, `\n${modifiedCode}\n`)
 }

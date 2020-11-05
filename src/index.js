@@ -3,7 +3,6 @@ const fs = require('fs')
 /**
  * @todo 1.0.0
  * - Add loadNamespaces helper to these people don't want to use the loader
- * - Add tests for every step of the loader
  * - Add warnings things like old builder, for the builder we need to put a
  *   console.warn indicating how to migrate
  * - Add warning using appWithI18n or loadNamespaces together with the loader

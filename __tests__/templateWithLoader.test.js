@@ -1,8 +1,10 @@
 import templateWithLoader from '../src/_utils/templateWithLoader'
 import prettier from 'prettier'
 
-const clean = (t) =>
-  prettier.format(t.replace(process.cwd(), ''), { parser: 'typescript' })
+const clean = (t) => {
+  const cwd = new RegExp(process.cwd().replace(/\//gm, '\\/'), 'gm')
+  return prettier.format(t.replace(cwd, ''), { parser: 'typescript' })
+}
 
 const tests = [
   {
