@@ -166,7 +166,7 @@ const tests = [
         return <div>Hello world</div>
       }
 
-      const getStaticProps = () => { props: {} }
+      const getStaticProps = () => ({ props: {} })
       export { getStaticProps }
   `,
     cases: [
@@ -256,6 +256,37 @@ const tests = [
 
       export { config, getStaticProps, getStaticPaths }
   `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: true,
+      },
+    ],
+  },
+  {
+    describe: 'should add the "as" on the import only when is necessary',
+    code: `import { getStaticProps } from "somewhere/getStaticProps";
+    import {getStaticProps} from "somewhere/getStaticProps";
+    
+    import { getStaticPropsA, getStaticProps, getStaticPropsB } from "somewhere/getStaticProps";
+    import { getStaticProps as getStaticPaths } from 'somewhere/getStaticPaths'
+    import { fake_getStaticProps } from 'somewhere/getStaticPaths'
+    
+    import { 
+      getStaticPropsA, 
+      getStaticProps, 
+      getStaticPropsB
+    } from "somewhere/getStaticProps";
+    
+    import {
+      getStaticPropsA, 
+      getStaticProps, 
+      getStaticPropsB
+    } from "somewhere/getStaticProps";
+    let getStaticProps = false
+    // Comment to import getStaticProps
+    const a = 'import { getStaticProps }'`,
     cases: [
       {
         page: '/index',
