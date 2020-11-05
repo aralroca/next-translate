@@ -11,7 +11,7 @@ export interface Translate {
     query?: TranslationQuery | null,
     options?: { returnObjects: false }
   ): string
-  <R = unknown>(
+  <R = string>(
     i18nKey: string,
     query: TranslationQuery | null | undefined,
     options: { returnObjects: true }
