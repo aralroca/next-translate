@@ -166,7 +166,7 @@ export const getStaticProps = async (ctx) => {
 
 ## 2. Getting started
 
-This is the recommended way to get started. However, if you don't like the "build step" you can use an [alternative](#12-do-i-need-this-build-step-is-there-an-alternative).
+This is the recommended way to get started. However, if you don't like the "build step" you can use an [alternative](#11-do-i-need-this-build-step-is-there-an-alternative).
 
 ### Install
 
