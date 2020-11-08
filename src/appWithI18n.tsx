@@ -1,16 +1,25 @@
 import React from 'react'
+import type { NextPage } from 'next'
 import App from 'next/app'
 import I18nProvider from './I18nProvider'
 import loadNamespaces from './loadNamespaces'
+import { LoaderConfig } from '.'
 
-export default function appWithI18n(AppToTranslate, config = {}) {
+type Props = {
+  [key: string]: any
+}
+
+export default function appWithI18n(
+  AppToTranslate: NextPage,
+  config: LoaderConfig = {}
+) {
   if (!config.isLoader && config.loader !== false) {
     console.warn(
       '🚨 [next-translate] You can remove the "appWithI18n" HoC on the _app.js, unless you set "loader: false" in your i18n config file.'
     )
   }
 
-  function AppWithTranslations(props) {
+  function AppWithTranslations(props: Props) {
     const { logger } = config
 
     return (
@@ -26,9 +35,9 @@ export default function appWithI18n(AppToTranslate, config = {}) {
 
   if (config.skipInitialProps) return AppWithTranslations
 
-  AppWithTranslations.getInitialProps = async (appCtx) => {
+  AppWithTranslations.getInitialProps = async (appCtx: any) => {
     const ctx = { ...(appCtx.ctx || {}), ...(appCtx || {}) }
-    let appProps = { pageProps: {} }
+    let appProps: object = { pageProps: {} }
 
     const getInitialProps =
       AppToTranslate.getInitialProps || App.getInitialProps

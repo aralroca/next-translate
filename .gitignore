@@ -5,11 +5,6 @@
 /examples/*/node_modules
 
 out
-/.pnp
-.pnp.js
-
-# testing
-/coverage
 
 # next.js
 /.next/
@@ -17,24 +12,20 @@ out
 
 /out/
 
-# production
-/build
-/dist
-
-# misc
-.DS_Store
-.env*
-
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
 # lib build
-*.js
-!src/**/*.js
-!loader/**/*.js
-!__tests__/*.js
+*
+!.github
+!docs
+!*.json
+!*.js
 !examples/**/*.js
+!src/**/*.js
+!__tests__/*.js
+
 
 .vscode

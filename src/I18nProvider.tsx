@@ -2,18 +2,28 @@ import React, { createContext, useContext } from 'react'
 import { useRouter } from 'next/router'
 import I18nContext from './_context'
 import useTranslation from './useTranslation'
+import { I18n, I18nProviderProps, LoggerProps, TranslationQuery } from '.'
 
 const NsContext = createContext({})
 
 /**
  * Get value from key (allow nested keys as parent.children)
  */
-function getDicValue(dic, key = '', options = { returnObjects: false }) {
-  const value = key.split('.').reduce((val, key) => val[key] || {}, dic)
+function getDicValue(
+  dic: Object,
+  key: string = '',
+  options = { returnObjects: false }
+): string | undefined | unknown {
+  const value: string | unknown = key
+    .split('.')
+    .reduce(
+      (val: Object, key: string) => val[key as keyof typeof val] || {},
+      dic
+    )
 
   if (
     typeof value === 'string' ||
-    (value instanceof Object && options.returnObjects)
+    ((value as unknown) instanceof Object && options.returnObjects)
   ) {
     return value
   }
@@ -22,7 +32,11 @@ function getDicValue(dic, key = '', options = { returnObjects: false }) {
 /**
  * Control plural keys depending the {{count}} variable
  */
-function plural(dic, key, query) {
+function plural(
+  dic: Object,
+  key: string,
+  query?: TranslationQuery | null
+): string {
   if (!query || typeof query.count !== 'number') return key
 
   const numKey = `${key}_${query.count}`
@@ -38,7 +52,7 @@ function plural(dic, key, query) {
 /**
  * Replace {{variables}} to query values
  */
-function interpolation(text, query) {
+function interpolation(text?: string, query?: TranslationQuery | null): string {
   if (!text || !query) return text || ''
 
   return Object.keys(query).reduce((all, varKey) => {
@@ -48,16 +62,23 @@ function interpolation(text, query) {
   }, text)
 }
 
-function objectInterpolation(obj, query) {
+function objectInterpolation(
+  obj: Record<string, string | unknown>,
+  query?: TranslationQuery | null
+): Object {
   if (!query || Object.keys(query).length === 0) return obj
+
   Object.keys(obj).forEach((key) => {
-    if (obj[key] instanceof Object) objectInterpolation(obj[key], query)
-    if (typeof obj[key] === 'string') obj[key] = interpolation(obj[key], query)
+    if (obj[key] instanceof Object)
+      objectInterpolation(obj[key] as Record<string, string | unknown>, query)
+    if (typeof obj[key] === 'string')
+      obj[key] = interpolation(obj[key] as string, query)
   })
+
   return obj
 }
 
-function missingKeyLogger({ namespace, i18nKey }) {
+function missingKeyLogger({ namespace, i18nKey }: LoggerProps): void {
   if (process.env.NODE_ENV === 'production') return
 
   // This means that instead of "ns:value", "value" has been misspelled (without namespace)
@@ -77,14 +98,18 @@ export default function I18nProvider({
   namespaces = {},
   children,
   logger = missingKeyLogger,
-}) {
+}: I18nProviderProps) {
   const { lang: parentLang } = useTranslation()
   const { locale, defaultLocale } = useRouter() || {}
   const lang = lng || parentLang || locale || defaultLocale || ''
   const ns = useContext(NsContext)
-  const allNamespaces = { ...ns, ...namespaces }
+  const allNamespaces = { ...ns, ...namespaces } as Record<string, Object>
 
-  function t(key = '', query, options) {
+  function t(
+    key: string = '',
+    query: TranslationQuery | null | undefined,
+    options?: { returnObjects: boolean }
+  ) {
     const k = Array.isArray(key) ? key[0] : key
     const [namespace, i18nKey] = k.split(/:(.+)/)
     const dic = allNamespaces[namespace] || {}
@@ -100,14 +125,14 @@ export default function I18nProvider({
     }
 
     if (value instanceof Object) {
-      return objectInterpolation(value, query)
+      return objectInterpolation(value as Record<string, unknown>, query)
     }
 
-    return interpolation(value, query) || k
+    return interpolation(value as string, query) || k
   }
 
   return (
-    <I18nContext.Provider value={{ lang, t }}>
+    <I18nContext.Provider value={{ lang, t } as I18n}>
       <NsContext.Provider value={allNamespaces}>{children}</NsContext.Provider>
     </I18nContext.Provider>
   )

@@ -1,4 +1,4 @@
-import templateWithHoc from '../src/_utils/templateWithHoc'
+import templateWithHoc from '../src/plugin/templateWithHoc'
 import prettier from 'prettier'
 
 const clean = (t) => {

@@ -1,4 +1,4 @@
-import templateWithLoader from '../src/_utils/templateWithLoader'
+import templateWithLoader from '../src/plugin/templateWithLoader'
 import prettier from 'prettier'
 
 const clean = (t) => {

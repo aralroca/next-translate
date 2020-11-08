@@ -1,20 +1,36 @@
-import { cloneElement, useMemo, Fragment } from 'react'
+import React, {
+  cloneElement,
+  useMemo,
+  Fragment,
+  ReactElement,
+  ReactNode,
+} from 'react'
+import { TransProps } from '.'
 import useTranslation from './useTranslation'
 
 const tagRe = /<(\d+)>(.*?)<\/\1>|<(\d+)\/>/
 const nlRe = /(?:\r\n|\r|\n)/g
 
-function getElements(parts) {
+function getElements(
+  parts: Array<string | undefined>
+): Array<number | string | undefined>[] {
   if (!parts.length) return []
 
   const [paired, children, unpaired, after] = parts.slice(0, 4)
 
-  return [[parseInt(paired || unpaired), children || '', after]].concat(
-    getElements(parts.slice(4, parts.length))
-  )
+  return [
+    [
+      parseInt((paired || unpaired) as string),
+      children || ('' as string),
+      after,
+    ],
+  ].concat(getElements(parts.slice(4, parts.length)))
 }
 
-function formatElements(value, elements = []) {
+function formatElements(
+  value: string,
+  elements: ReactElement[] = []
+): string | ReactNode[] {
   const parts = value.replace(nlRe, '').split(tagRe)
 
   if (parts.length === 1) return value
@@ -24,8 +40,8 @@ function formatElements(value, elements = []) {
   const before = parts.shift()
   if (before) tree.push(before)
 
-  getElements(parts).forEach(([index, children, after], realIndex) => {
-    const element = elements[index] || <Fragment />
+  getElements(parts).forEach(([index, children, after], realIndex: number) => {
+    const element = elements[index as number] || <Fragment />
 
     tree.push(
       cloneElement(
@@ -34,7 +50,9 @@ function formatElements(value, elements = []) {
 
         // format children for pair tags
         // unpaired tags might have children if it's a component passed as a variable
-        children ? formatElements(children, elements) : element.props.children
+        children
+          ? formatElements(children as string, elements)
+          : element.props.children
       )
     )
 
@@ -49,7 +67,11 @@ function formatElements(value, elements = []) {
  * <0>This is an <1>example</1><0>
  * to -> <h1>This is an <b>example</b><h1>
  */
-export default function Trans({ i18nKey, values, components }) {
+export default function Trans({
+  i18nKey,
+  values,
+  components,
+}: TransProps): string | ReactNode[] {
   const { t } = useTranslation()
 
   /**

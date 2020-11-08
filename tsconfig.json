@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "removeComments": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./lib/esm"
+  },
+  "include": ["./src"]
+}

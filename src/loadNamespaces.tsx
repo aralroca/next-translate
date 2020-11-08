@@ -1,7 +1,8 @@
-import getPageNamespaces from './_utils/getPageNamespaces'
+import { LoaderConfig } from '.'
+import getPageNamespaces from './getPageNamespaces'
 
-export default async function loadNamespaces(config = {}) {
-  const __lang =
+export default async function loadNamespaces(config: LoaderConfig = {}) {
+  const __lang: string =
     config.locale || config.router?.locale || config.defaultLocale || ''
 
   if (!config.pathname) {
@@ -29,7 +30,7 @@ export default async function loadNamespaces(config = {}) {
     __namespaces: namespaces.reduce((obj, ns, i) => {
       obj[ns] = pageNamespaces[i]
       return obj
-    }, {}),
+    }, {} as Record<string, object>),
   }
 }
 

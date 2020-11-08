@@ -22,9 +22,24 @@
     "name": "Aral Roca Gòmez",
     "email": "contact@aralroca.com"
   },
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
+  "files": [
+    "lib",
+    "plugin",
+    "appWithI18n",
+    "DynamicNamespaces",
+    "I18nProvider",
+    "loadNamespaces",
+    "Trans",
+    "withTranslation",
+    "useTranslation"
+  ],
   "scripts": {
-    "build": "yarn clean && cross-env NODE_ENV=production babel src -d .",
-    "clean": "rm -f *.js && yarn clean:examples",
+    "build": "yarn clean && cross-env NODE_ENV=production && yarn tsc",
+    "clean": "yarn clean:build && yarn clean:examples",
+    "clean:build": "rm -rf lib plugin appWith* Dynamic* I18n* index _context loadNa* Trans useT* withT* getP*",
     "clean:examples": "rm -rf examples/**/.next && rm -rf examples/**/node_modules && rm -rf examples/**/yarn.lock",
     "example": "yarn example:with-build-step",
     "example:with-appWithI18n": "yarn build && cd examples/with-appWithI18n && yarn && yarn dev",
@@ -34,7 +49,8 @@
     "prepublish": "yarn test && yarn build",
     "test": "cross-env NODE_ENV=test jest",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage",
-    "test:watch": "cross-env NODE_ENV=test jest --watch"
+    "test:watch": "cross-env NODE_ENV=test jest --watch",
+    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && node build-packages.js"
   },
   "bin": {
     "next-translate": "./cli/builder.js"
@@ -43,22 +59,25 @@
     "@babel/cli": "7.12.1",
     "@babel/core": "7.12.3",
     "@babel/preset-env": "7.12.1",
-    "@testing-library/react": "11.1.0",
-    "@types/node": "^14.14.6",
-    "@types/react": "^16.9.55",
-    "babel-jest": "26.6.2",
+    "@testing-library/react": "11.1.1",
+    "@types/node": "14.14.6",
+    "@types/react-dom": "16.9.9",
+    "@types/react": "16.9.56",
+    "@types/webpack": "4.41.24",
+    "babel-jest": "26.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
     "babel-preset-minify": "0.5.1",
     "cross-env": "7.0.2",
     "express": "4.17.1",
     "husky": "4.3.0",
-    "jest": "26.6.2",
-    "next": "10.0.0",
+    "jest": "26.6.3",
+    "next": "10.0.1",
     "prettier": "2.1.2",
     "pretty-quick": "3.1.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "supertest": "6.0.0"
+    "supertest": "6.0.1",
+    "typescript": "4.0.5"
   },
   "peerDependencies": {
     "next": ">= 10.0.0",
