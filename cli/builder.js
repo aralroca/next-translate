@@ -301,7 +301,7 @@ function getInternalNamespacesCode(namespaces, prefix) {
   ${namespaces
     .map(
       (ns, i) =>
-        `const ns${i} = await import(\`${path}/\${_lang}/${ns}.json\`).then(m => m.default)`
+        `const ns${i} = await import(\`${path}/\${_lang}/${ns}\`).then(m => m.default)`
     )
     .join('\n')}
   const _ns = { ${namespaces.map((ns, i) => `'${ns}': ns${i}`).join(', ')} }
