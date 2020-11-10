@@ -101,7 +101,7 @@ describe('builder', () => {
 
       expect(page).toContain(`import C from '../../pages_/more-examples/index'`)
       expect(page).toContain(
-        'const ns0 = await import(`../../locales/${_lang}/common.json`)'
+        'const ns0 = await import(`../../locales/${_lang}/common`)'
       )
     })
   })
@@ -114,7 +114,7 @@ describe('builder', () => {
 
       expect(page).toContain('Page.getInitialProps')
       expect(page).toContain(
-        'const ns0 = await import(`../locales/${_lang}/common.json`)'
+        'const ns0 = await import(`../locales/${_lang}/common`)'
       )
     })
   })
