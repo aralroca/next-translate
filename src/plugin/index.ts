@@ -1,5 +1,3 @@
-const fs = require('fs')
-
 /**
  * @todo 1.0.0
  * - Add loadNamespaces helper to these people don't want to use the loader
@@ -22,6 +20,7 @@ const fs = require('fs')
  * - Wrote a default way to load locales when loadLocaleFrom is not provided
  */
 function nextTranslate(nextConfig = {}) {
+  const fs = require('fs')
   const arePagesInsideSrc = fs.existsSync(process.cwd() + '/src/pages')
   let file = '/i18n.js'
 
@@ -30,7 +29,7 @@ function nextTranslate(nextConfig = {}) {
     console.error(
       '🚨 [next-translate] You should provide the next-translate config inside i18n.js / i18n.json root file.'
     )
-    return config
+    return nextConfig
   }
 
   const i18n = nextConfig.i18n || {}

@@ -1,4 +1,4 @@
-// import plugin from './plugin'
+import plugin from './plugin'
 import { ReactElement, ReactNode } from 'react'
 
 export interface TranslationQuery {
@@ -74,4 +74,4 @@ export interface DynamicNamespacesProps {
   children?: React.ReactNode
 }
 
-// export default plugin
+module.exports = plugin

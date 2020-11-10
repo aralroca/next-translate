@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "strict": true,
+    "strict": false,
     "module": "es6",
     "target": "es5",
     "jsx": "react",
