@@ -29,6 +29,7 @@
     "example": "yarn example:with-build-step",
     "example:with-appWithI18n": "yarn build && cd examples/with-appWithI18n && yarn && yarn dev",
     "example:with-build-step": "yarn build && cd examples/with-build-step && yarn && yarn dev",
+    "example:with-build-step-nested-locales": "yarn build && cd examples/with-build-step-nested-locales && yarn && yarn dev",
     "example:without-build-step": "yarn build && cd examples/without-build-step && yarn && yarn dev",
     "format": "pretty-quick",
     "prepublish": "yarn test && yarn build",

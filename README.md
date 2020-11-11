@@ -27,6 +27,7 @@
   - [Use Next.js i18n routing](#use-nextjs-i18n-routing)
   - [Use translations in your pages](#use-translations-in-your-pages)
   - [Add /pages to .gitignore](#add-pages-to-gitignore)
+  - [Add /localesBuld to .gitignore](#add-localesbuild-to-gitignore)
 - [3. Translation JSONs folder](#3-translation-jsons-folder)
 - [4. Configuration](#4-configuration)
 - [5. API](#5-api)
@@ -240,6 +241,10 @@ Remember that we must work in the alternative directory `pages_`. The `pages` di
 
 `/pages` directory is going to be generated every time based on `/pages_`, so it's not necessary to track it in git.
 
+### Add /localesBuild to .gitignore
+
+`/localesBuild` directory is going to be generated every time based on `/locales`, so it's not necessary to track it in git.
+
 ## 3. Translation JSONs folder
 
 The **/locales** directory should be like this:
@@ -274,11 +279,12 @@ In order to use each translation in the project, use the _translation id_ compos
 
 | Option            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Type                            | Default                                                                         |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------- |
-| `defaultLocale`   | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string`              | `"en"`                                                                          |
+| `defaultLocale`   | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string`                        | `"en"`                                                                          |
 | `locales`         | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Array<string>`                 | `[]`                                                                            |
 | `currentPagesDir` | A string with the directory where you have the pages code. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `string`                        | `"pages_"`                                                                      |
 | `finalPagesDir`   | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                               | `string`                        | `"pages"`                                                                       |
-| `localesPath`     | A string with the directory of JSONs locales. . This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `string`                        | `"locales"`                                                                     |
+| `localesPath`     | A string with the directory of JSONs locales. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `string`                        | `"locales"`                                                                     |
+| `finalLocalesDir` | A string with the directory that is going to be used to build the locales. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `string`                        | `"locales"`                                                                     |
 | `package`         | Indicate that the **localesPath** is a package or yarn workspace.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | `boolean`                       | `false`                                                                         |
 | `loadLocaleFrom`  | As an alternative to `localesPath`, if `appWithI18n` is used instead of the "build step". It's an async function that returns the dynamic import of each locale.                                                                                                                                                                                                                                                                                                                                                                                                                                       | `Function`                      | `null`                                                                          |
 | `pages`           | An object that defines the namespaces used in each page. Example of object: `{"/": ["home", "example"]}`. To add namespaces to all pages you should use the key `"*"`, ex: `{"*": ["common"]}`. It's also possible to use regex using `rgx:` on front: `{"rgx:/form$": ["form"]}`. In case of using a custom server as an [alternative](#11-do-i-need-this-build-step-is-there-an-alternative) of the "build step", you can also use a function instead of an array, to provide some namespaces depending on some rules, ex: `{ "/": ({ req, query }) => query.type === 'example' ? ['example'] : []}` | `Object<Array<string>/Function` | `{}`                                                                            |
@@ -597,6 +603,74 @@ t('namespace:array-example', { count: 1 }, { returnObjects: true })
 */
 ```
 
+### Nested locales file structure
+
+If build step is used nesting locale files into folders are available. `/locales` forder in this case might look like:
+
+**/locales**
+
+```bash
+.
+├── ca
+│   ├── common.json
+│   ├── home.json
+│   └── component
+│       ├── index.json
+│       ├── textEditor.json
+│       └── singup.json
+├── en
+│   ├── common.json
+│   ├── home.json
+│   └── component
+│       ├── index.json
+│       ├── textEditor.json
+│       └── singup.json
+└── es
+    ├── common.json
+    ├── home.json
+    └── component
+        ├── index.json
+        ├── textEditor.json
+        └── singup.json
+```
+
+When built all nested files merge into single file with nested objects which follow the file system structure.
+
+**/localesBuild**
+
+```bash
+.
+├── ca
+│   ├── common.json
+│   ├── home.json
+│   └── component.json
+├── en
+│   ├── common.json
+│   ├── home.json
+│   └── component.json
+└── es
+    ├── common.json
+    ├── home.json
+    └── component.json
+```
+
+Contents of `/index.json` go to core object for current nesting level. If file and folder with same name presented on the same nesting level their contents will be merged as well. As a result build `/localesBuild/en/component.json` file will look like:
+
+**/localesBuild/en/component.json**
+
+```json
+{
+  // contents of /component/index.json
+
+  "textEditor": {
+    // contents of /component/textEditor.json
+  },
+  "singup": {
+    // contents of /component/singup.json
+  }
+}
+```
+
 ## 9. How to change the language
 
 In order to change the current language you can use the [Next.js navigation](https://nextjs.org/docs/advanced-features/i18n-routing) (Link and Router) passing the `locale` prop.
@@ -739,6 +813,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

@@ -27,6 +27,7 @@ let {
   defaultLocale = 'en',
   finalPagesDir = 'pages',
   localesPath = 'locales',
+  finalLocalesDir = 'localesBuild',
   package = false,
   pages = {},
   logger,
@@ -68,10 +69,106 @@ startBuildStep()
 
 /**
  * STEP 1:
- * - Clear "pages" folder
+ * - Clear "locales" folder
  * - Log feedback
  */
 async function startBuildStep() {
+  rimraf(finalLocalesDir)
+  fs.mkdirSync(finalLocalesDir)
+
+  if (logBuild) {
+    console.log(`Building locales | from ${localesPath} to ${finalLocalesDir}`)
+  }
+
+  getLocalesPaths() // Next step
+}
+
+/**
+ * STEP 2:
+ * - Read paths for avaliable locale files
+ */
+function getLocalesPaths() {
+  const allLocales = readDirR(localesPath).reduce((result, jsonFile) => {
+    if (jsonFile.split('.').pop() !== 'json') {
+      return result
+    }
+
+    let pathParts = jsonFile.split('/')
+    pathParts.shift() // removes locales core dir name
+
+    if (!locales.includes(pathParts[0])) {
+      // filter unsupported languages
+      return result
+    }
+
+    result.push(pathParts)
+    return result
+  }, [])
+
+  // build tree for sub dirs
+  let result = []
+  let level = { result }
+  allLocales.forEach((filePath) => {
+    filePath.reduce((r, name) => {
+      if (!r[name]) {
+        r[name] = { result: [] }
+        r.result.push({ name, children: r[name].result })
+      }
+
+      return r[name]
+    }, level)
+  })
+
+  mergeLocales(result) // Next step
+}
+
+/**
+ * STEP 3:
+ * - Merge nested locales into one core json file with neseted objects
+ * - Log path for each new locale to the console
+ */
+function mergeLocales(localesTree) {
+  localesTree.forEach((lang) => {
+    fs.mkdirSync(path.join(finalLocalesDir, lang.name))
+
+    lang.children.forEach((localeSubNode) => {
+      const localeFileName = localeSubNode.name.split('.')[0]
+      let jsonContents = getLocaleFileContents(
+        localeSubNode,
+        path.join(localesPath, lang.name)
+      )
+      if (jsonContents !== undefined) {
+        const jsonPath = path.join(
+          finalLocalesDir,
+          lang.name,
+          localeFileName + '.json'
+        )
+
+        if (fs.existsSync(jsonPath)) {
+          const existingJSON = JSON.parse(
+            fs.readFileSync(jsonPath).toString('UTF-8')
+          )
+          jsonContents = mergeObjects(existingJSON, jsonContents)
+        }
+
+        fs.writeFileSync(jsonPath, JSON.stringify(jsonContents))
+
+        if (logBuild) {
+          console.log('🔨 ', jsonPath)
+        }
+      }
+    })
+  })
+
+  startBuildPages() // Next step
+}
+
+/**
+ * STEP 4:
+ * - Clear "pages" folder
+ * - Log feedback
+ */
+function startBuildPages() {
   rimraf(finalPagesDir)
   fs.mkdirSync(finalPagesDir)
 
@@ -83,7 +180,7 @@ async function startBuildStep() {
 }
 
 /**
- * STEP 2:
+ * STEP 5:
  * - Read each page namespaces
  * - Log namespaces for each page to the console
  */
@@ -105,7 +202,7 @@ function readPageNamespaces() {
 }
 
 /**
- * STEP 3 (is executed for each file):
+ * STEP 6 (is executed for each file):
  * - Check if the file is a page to build or another kind of file
  */
 function checkIfFileIsAPage(pagePath, namespaces) {
@@ -149,7 +246,7 @@ function checkIfFileIsAPage(pagePath, namespaces) {
 }
 
 /**
- * STEP 4 (is executed for each file):
+ * STEP 7 (is executed for each file):
  * - Get the new template for the page (wrapping I18nProvider + loading namespaces)
  * - Create file to /pages folder
  */
@@ -182,6 +279,34 @@ function copyFolderRecursiveSync(source, targetFolder) {
 ///////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// HELPERS ///////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+function getLocaleFileContents(fileTree, pathToNode) {
+  if (fileTree.name.split('.').pop() === 'json') {
+    try {
+      return JSON.parse(
+        fs.readFileSync(path.join(pathToNode, fileTree.name)).toString('UTF-8')
+      )
+    } catch (e) {
+      return {}
+    }
+  }
+
+  return fileTree.children.reduce((result, localeNode) => {
+    const contents = getLocaleFileContents(
+      localeNode,
+      path.join(pathToNode, fileTree.name)
+    )
+    const nodeNameNoExt = localeNode.name.split('.')[0]
+
+    if (nodeNameNoExt === fileTree.name || nodeNameNoExt === 'index') {
+      result = mergeObjects(result, contents)
+    } else {
+      result[localeNode.name.split('.')[0]] = contents
+    }
+
+    return result
+  }, {})
+}
 
 function getPageTemplate(prefix, page, namespaces) {
   const { hasSomeSpecialExport, exports } = exportAllFromPage(
@@ -295,7 +420,7 @@ ${isConfig ? pageConfig(pageData) : ''}
 }
 
 function getInternalNamespacesCode(namespaces, prefix) {
-  const path = package ? localesPath : `${prefix}/${localesPath}`
+  const path = package ? finalLocalesDir : `${prefix}/${finalLocalesDir}`
 
   return `const _lang = ctx.locale || ctx.router?.locale || '${defaultLocale}'
   ${namespaces
@@ -360,4 +485,17 @@ function clearPageExt(page) {
   const rgx = /(\/index\.jsx)|(\/index\.js)|(\/index\.tsx)|(\/index\.ts)|(\/index\.mdx)|(\.jsx)|(\.js)|(\.tsx)|(\.ts)|(\.mdx)/gm
 
   return page.replace(rgx, '')
+}
+
+function mergeObjects(...list) {
+  return list.reduce((a, b) => {
+    if (!(a instanceof Object) || !(b instanceof Object)) {
+      return b !== undefined ? b : a
+    }
+
+    const keys = Object.keys(a).concat(Object.keys(b))
+    return keys
+      .map((key) => ({ [key]: mergeObjects(a[key], b[key]) }))
+      .reduce((x, y) => ({ ...x, ...y }))
+  })
 }

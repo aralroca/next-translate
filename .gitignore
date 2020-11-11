@@ -33,6 +33,11 @@ yarn-error.log*
 # build pages
 /pages
 /examples/with-build-step/pages
+/examples/with-build-step/pages
+
+# build locales
+/examples/with-build-step/localesBuild
+/examples/with-build-step-nested-locales/localesBuild
 
 # lib build
 *.js
