@@ -54,10 +54,10 @@ function nextTranslate(nextConfig = {}) {
       locales,
       defaultLocale,
     },
-    webpack(conf, ...rest) {
+    webpack(conf, options) {
       const config =
         typeof nextConfig.webpack === 'function'
-          ? nextConfig.webpack(conf, ...rest)
+          ? nextConfig.webpack(conf, options)
           : conf
 
       // we give the opportunity for people to use next-translate without altering
@@ -78,7 +78,7 @@ function nextTranslate(nextConfig = {}) {
 
         // Remember: they are executed in reverse order. Babel should be later.
         // https://webpack.js.org/contribute/writing-a-loader/#complex-usage
-        let use = [loader]
+        let use = []
         if (Array.isArray(r.use)) use = [...r.use, loader]
         else if (typeof r.use === 'object') use = [r.use, loader]
         else if (r !== null && r.use === null) use = [{ ...r }, loader]
