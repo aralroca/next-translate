@@ -277,6 +277,11 @@ ${
 }
 ${isGetStaticPaths ? specialMethod('getStaticPaths', namespaces, prefix) : ''}
 ${
+  isGetStaticPaths && !isGetStaticProps
+    ? specialMethod('getStaticProps', namespaces, prefix)
+    : ''
+}
+${
   isGetServerSideProps ||
   (!hasLoaderMethod && isDynamicPage && !isWrappedWithHOC)
     ? specialMethod('getServerSideProps', namespaces, prefix, hasLoaderMethod)
