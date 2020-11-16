@@ -16,7 +16,7 @@ export default function loader(rawCode) {
   // Skip rest of files that are not inside /pages
   if (!this.resourcePath.startsWith(pagePath)) return rawCode
 
-  const { hasGetInitialPropsOnAppJs, extensionsRgx, ...config } = this.query
+  const { hasGetInitialPropsOnAppJs, extensionsRgx } = this.query
   const page = this.resourcePath.replace(pagePath, '/', '')
   const pageNoExt = page.replace(extensionsRgx, '')
   const code = rawCode.replace(clearCommentsRgx, '')
@@ -62,11 +62,6 @@ export default function loader(rawCode) {
   //   This is in order to avoid issues because the getInitialProps is the only
   //   one that can be overwritten on a HoC.
   // Use getInitialProps to load the namespaces
-  const dotsNumber = page.split('/').length - 1
-  const dots = Array.from({ length: dotsNumber })
-    .map(() => '..')
-    .join('/')
-  const prefix = config.arePagesInsideSrc ? '../' + dots : dots
   const isWrapperWithExternalHOC = hasHOC(code)
   const isDynamicPage = page.includes('[')
   const isGetInitialProps = !!code.match(/\WgetInitialProps\W/g)
@@ -80,7 +75,7 @@ export default function loader(rawCode) {
     isGetInitialProps
 
   if (isGetInitialProps || (!hasLoader && isWrapperWithExternalHOC)) {
-    return templateWithHoc(rawCode, { prefix, typescript })
+    return templateWithHoc(rawCode, { typescript })
   }
 
   const loader =

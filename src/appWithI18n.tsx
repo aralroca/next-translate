@@ -48,7 +48,11 @@ export default function appWithI18n(
 
     return {
       ...appProps,
-      ...(await loadNamespaces({ ...ctx, ...config })),
+      ...(await loadNamespaces({
+        ...ctx,
+        ...config,
+        loaderName: 'getInitialProps',
+      })),
     }
   }
 

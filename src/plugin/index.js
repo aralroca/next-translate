@@ -1,6 +1,5 @@
 /**
  * @todo 1.0.0
- * - Add loadNamespaces helper to these people don't want to use the loader
  * - Add warnings things like old builder, for the builder we need to put a
  *   console.warn indicating how to migrate
  * - Add warning using appWithI18n or loadNamespaces together with the loader
@@ -12,7 +11,6 @@
  * - Should work with .ts files, without compiling errors
  * - Check that work fine with other Next plugins
  * - Update docs + examples (in TypeScript + better pages)
- * - Support logBuild
  * - Check that is not transforming anything on /api folder and tests files
  * - Check that works fine with markdown in jsx
  * - Update GIFs from READMEs

@@ -1,0 +1,13 @@
+{
+  "env": {
+    "test": {
+      "plugins": [["transform-es2015-modules-commonjs"]],
+      "presets": [
+        "@babel/preset-typescript",
+        ["next/babel", { "preset-env": { "modules": "commonjs" } }]
+      ]
+    }
+  },
+  "ignore": ["node_modules"],
+  "comments": false
+}

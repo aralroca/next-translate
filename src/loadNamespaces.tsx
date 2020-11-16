@@ -12,9 +12,9 @@ export default async function loadNamespaces(config: LoaderConfig = {}) {
     return { __lang }
   }
 
-  const pathname =
+  const page =
     removeTrailingSlash(config.pathname.replace(/\/index$/, '')) || '/'
-  const namespaces = await getPageNamespaces(config, pathname, config)
+  const namespaces = await getPageNamespaces(config, page, config)
   const defaultLoader = config.defaultLoader || (() => Promise.resolve({}))
   const pageNamespaces =
     (await Promise.all(
@@ -24,6 +24,21 @@ export default async function loadNamespaces(config: LoaderConfig = {}) {
           : defaultLoader(__lang, ns)
       )
     ).catch(() => {})) || []
+
+  if (config.logBuild !== false && typeof window === 'undefined') {
+    const color = (c) => `\x1b[36m${c}\x1b[0m`
+    console.log(
+      color('next-translate'),
+      `- compiled page:`,
+      color(page),
+      '- locale:',
+      color(__lang),
+      '- namespaces:',
+      color(namespaces.join(', ')),
+      '- used loader:',
+      color(config.loaderName || '-')
+    )
+  }
 
   return {
     __lang,

@@ -50,6 +50,7 @@ export interface LoaderConfig extends I18nConfig {
   router?: { locale: string }
   pathname?: string
   skipInitialProps?: boolean
+  loaderName?: string
   isLoader?: boolean
   defaultLoader?: (language: string, namespace: string) => Promise<object>
 }
