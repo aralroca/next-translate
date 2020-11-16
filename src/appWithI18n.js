@@ -39,7 +39,11 @@ export default function appWithI18n(AppToTranslate, config = {}) {
 
     return {
       ...appProps,
-      ...(await loadNamespaces({ ...ctx, ...config })),
+      ...(await loadNamespaces({
+        ...ctx,
+        ...config,
+        loaderName: 'getInitialProps',
+      })),
     }
   }
 

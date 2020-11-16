@@ -12,6 +12,7 @@ export async function getServerSideProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/blog/[post]/[...catchall]\\",
+        loaderName: \\"getServerSideProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -34,6 +35,7 @@ export async function getStaticProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -70,6 +72,7 @@ export async function getStaticProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -102,6 +105,7 @@ export async function getServerSideProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/blog/[post]/[...catchall]\\",
+        loaderName: \\"getServerSideProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -134,6 +138,7 @@ export async function getStaticProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -170,6 +175,7 @@ export async function getStaticProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -194,6 +200,7 @@ export async function getServerSideProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/blog/[post]/[...catchall]\\",
+        loaderName: \\"getServerSideProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -218,6 +225,7 @@ export async function getStaticProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -252,6 +260,7 @@ export async function getServerSideProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/index\\",
+        loaderName: \\"getServerSideProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -278,6 +287,7 @@ export async function getServerSideProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/blog/[post]/[...catchall]\\",
+        loaderName: \\"getServerSideProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -304,6 +314,7 @@ export async function getStaticProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -334,6 +345,7 @@ export async function getStaticProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -369,6 +381,7 @@ export async function getStaticProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -404,6 +417,7 @@ export async function getStaticProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -439,6 +453,7 @@ export async function getStaticProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -477,6 +492,7 @@ export async function getStaticProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -527,6 +543,7 @@ export async function getStaticProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
@@ -557,6 +574,7 @@ export async function getStaticProps(ctx) {
       ...(await __loadNamespaces({
         ...ctx,
         pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         defaultLoader: (l, n) =>
           import(\`/locales/\${l}/\${n}\`).then((m) => m.default),

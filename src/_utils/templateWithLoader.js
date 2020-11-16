@@ -80,6 +80,7 @@ export default function templateWithLoader(
             ...(await __loadNamespaces({
               ...ctx,
               pathname: '${page}',
+              loaderName: '${loader}',
               ...__i18nConfig,
               defaultLoader: (l, n) => import(\`${locales}\`)
                 .then(m => m.default)
