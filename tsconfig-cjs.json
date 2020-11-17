@@ -3,7 +3,6 @@
   "compilerOptions": {
     "module": "CommonJS",
     "outDir": "./lib/cjs",
-    "declaration": false,
-    "esModuleInterop": true
+    "declaration": false
   }
 }
