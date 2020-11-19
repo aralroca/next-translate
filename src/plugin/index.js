@@ -1,10 +1,7 @@
 /**
  * @todo 1.0.0
- * - Add warnings things like old builder, for the builder we need to put a
- *   console.warn indicating how to migrate
  * - Add warning using appWithI18n or loadNamespaces together with the loader
  * - Support TypeScript
- * - Deprecate "localesPath" in order to use "loadLocaleFrom"
  * - Do dynamic prop from DynamicNamespace transparent
  * - Add config prop to enable/disable the loader (loader=false)
  * - Should work with Webpack 5
@@ -39,6 +36,33 @@ function nextTranslate(nextConfig = {}) {
     logger,
     ...restI18n
   } = require(process.cwd() + file)
+
+  // @todo Remove all these warnings on 1.1.0
+  const migrationLink =
+    'https://github.com/vinissimus/next-translate/releases/tag/1.0.0'
+  if (restI18n.currentPagesDir) {
+    console.warn(
+      `🚨 [next-translate] "currentPagesDir" is no longer necessary, you can just remove it. Learn more on ${migrationLink}`
+    )
+  }
+
+  if (restI18n.finalPagesDir) {
+    console.warn(
+      `🚨 [next-translate] "finalPagesDir" is no longer necessary, you can just remove it. Learn more on ${migrationLink}`
+    )
+  }
+
+  if (restI18n.localesPath) {
+    console.warn(
+      `🚨 [next-translate] "localesPath" is no longer supported, you should replace it to "loadLocaleFrom". Learn more on ${migrationLink}`
+    )
+  }
+
+  if (restI18n.package !== undefined) {
+    console.warn(
+      `🚨 [next-translate] "package" is no longer supported, you should replace it to "loadLocaleFrom". Learn more on ${migrationLink}`
+    )
+  }
 
   const hasGetInitialPropsOnAppJs = require('./hasGetInitialPropsOnAppJs')(
     arePagesInsideSrc
