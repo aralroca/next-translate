@@ -1,9 +1,6 @@
 /**
  * @todo 1.0.0
- * - Add warning using appWithI18n or loadNamespaces together with the loader
  * - Support TypeScript
- * - Do dynamic prop from DynamicNamespace transparent
- * - Add config prop to enable/disable the loader (loader=false)
  * - Should work with Webpack 5
  * - Should work with .ts files, without compiling errors
  * - Check that work fine with other Next plugins

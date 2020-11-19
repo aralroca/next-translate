@@ -98,6 +98,7 @@ export default function I18nProvider({
   namespaces = {},
   children,
   logger = missingKeyLogger,
+  loadLocaleFrom = () => Promise.resolve({}),
 }: I18nProviderProps) {
   const { lang: parentLang } = useTranslation()
   const { locale, defaultLocale } = useRouter() || {}
@@ -132,7 +133,7 @@ export default function I18nProvider({
   }
 
   return (
-    <I18nContext.Provider value={{ lang, t } as I18n}>
+    <I18nContext.Provider value={{ lang, t, loadLocaleFrom } as I18n}>
       <NsContext.Provider value={allNamespaces}>{children}</NsContext.Provider>
     </I18nContext.Provider>
   )

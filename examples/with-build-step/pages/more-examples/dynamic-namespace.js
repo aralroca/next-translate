@@ -4,13 +4,7 @@ import DynamicNamespaces from 'next-translate/DynamicNamespaces'
 
 export default function ExampleWithDynamicNamespace() {
   return (
-    <DynamicNamespaces
-      dynamic={(lang, ns) =>
-        import(`../../locales/${lang}/${ns}.json`).then((m) => m.default)
-      }
-      namespaces={['dynamic']}
-      fallback="Loading..."
-    >
+    <DynamicNamespaces namespaces={['dynamic']} fallback="Loading...">
       {/* ALSO IS POSSIBLE TO USE NAMESPACES FROM THE PAGE */}
       <h1>
         <Trans i18nKey="common:title" />

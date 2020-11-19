@@ -18,6 +18,10 @@ export interface I18n {
   t(i18nKey: string | string[]): string
 
   lang: string
+  loadLocaleFrom?: (
+    language: string,
+    namespace: string
+  ) => Promise<I18nDictionary>
 }
 
 export interface I18nProviderProps {
@@ -25,6 +29,10 @@ export interface I18nProviderProps {
   namespaces?: Record<string, I18nDictionary>
   children?: ReactNode
   logger?: I18nLogger
+  loadLocaleFrom?: (
+    language: string,
+    namespace: string
+  ) => Promise<I18nDictionary>
 }
 
 export interface TransProps {
@@ -38,7 +46,10 @@ export type PageValue = string[] | ((context: object) => string[])
 export interface I18nConfig {
   defaultLocale?: string
   locales?: string[]
-  loadLocaleFrom?: (language: string, namespace: string) => Promise<object>
+  loadLocaleFrom?: (
+    language: string,
+    namespace: string
+  ) => Promise<I18nDictionary>
   pages?: Record<string, PageValue>
   logger?: I18nLogger
   loader?: boolean
@@ -52,7 +63,10 @@ export interface LoaderConfig extends I18nConfig {
   skipInitialProps?: boolean
   loaderName?: string
   isLoader?: boolean
-  defaultLoader?: (language: string, namespace: string) => Promise<object>
+  defaultLoader?: (
+    language: string,
+    namespace: string
+  ) => Promise<I18nDictionary>
 }
 
 export interface LoggerProps {

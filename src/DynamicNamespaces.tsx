@@ -9,15 +9,16 @@ export default function DynamicNamespaces({
   fallback,
   children,
 }: DynamicNamespacesProps): ReactNode {
-  const { lang } = useTranslation()
+  const { lang, loadLocaleFrom } = useTranslation()
   const [loaded, setLoaded] = useState(false)
   const [pageNs, setPageNs] = useState<I18nDictionary[]>([])
+  const loadLocale = dynamic || loadLocaleFrom
 
   async function loadNamespaces() {
-    if (typeof dynamic !== 'function') return
+    if (typeof loadLocale !== 'function') return
 
     const pageNamespaces = await Promise.all(
-      namespaces.map(ns => dynamic(lang, ns))
+      namespaces.map((ns) => loadLocale(lang, ns))
     )
     setPageNs(pageNamespaces)
     setLoaded(true)

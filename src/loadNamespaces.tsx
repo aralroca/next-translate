@@ -12,6 +12,12 @@ export default async function loadNamespaces(config: LoaderConfig = {}) {
     return { __lang }
   }
 
+  if (!config.loaderName && config.loader !== false) {
+    console.warn(
+      '🚨 [next-translate] You can remove the "loadNamespaces" helper, unless you set "loader: false" in your i18n config file.'
+    )
+  }
+
   const page =
     removeTrailingSlash(config.pathname.replace(/\/index$/, '')) || '/'
   const namespaces = await getPageNamespaces(config, page, config)
