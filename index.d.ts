@@ -9,7 +9,7 @@ export interface Translate {
   (
     i18nKey: string,
     query?: TranslationQuery | null,
-    options?: { returnObjects: false; fallback: string | string[] }
+    options?: { returnObjects: false, fallback: string | string[] }
   ): string
   <R = string>(
     i18nKey: string,
