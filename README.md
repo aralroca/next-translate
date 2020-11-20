@@ -325,10 +325,9 @@ The `t` function:
 - **Input**:
   - **i18nKey**: string (namespace:key)
   - **query**: Object _(optional)_ (example: { name: 'Leonard' })
-  - **options**: Object _(optional)_ {
-    **fallback**: string | string[] - fallback if i18nKey doesn't exist. [See more](#9-fallbacks).
-    **returnObjects**: boolean - Get part of the JSON with all the translations. [See more](#8-nested-translations).
-    }
+  - **options**: Object _(optional)_
+    - **fallback**: string | string[] - fallback if i18nKey doesn't exist. [See more](#9-fallbacks).
+    - **returnObjects**: boolean - Get part of the JSON with all the translations. [See more](#8-nested-translations).
 - **Output**: string
 
 ### withTranslation
