@@ -14,7 +14,7 @@ export interface Translate {
   <R = string>(
     i18nKey: string,
     query: TranslationQuery | null | undefined,
-    options: { returnObjects: true; fallback: string | string[] }
+    options: { returnObjects: true, fallback: string | string[] }
   ): R
 }
 
