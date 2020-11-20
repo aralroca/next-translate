@@ -72,7 +72,7 @@ export default function Trans({
   values,
   components,
   fallback,
-}: TransProps): string | ReactNode[] {
+}: TransProps): any {
   const { t } = useTranslation()
 
   /**
