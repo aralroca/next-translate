@@ -89,12 +89,26 @@ export default function I18nProvider({
     const keyWithPlural = plural(dic, i18nKey, query)
     const value = getDicValue(dic, keyWithPlural, options)
 
+    const empty =
+      typeof value === 'undefined' ||
+      (typeof value === 'object' && !Object.keys(value).length)
+
+    const fallbacks =
+      typeof options?.fallback === 'string'
+        ? [options.fallback]
+        : options?.fallback || []
+
     // Log only during CSR
-    if (typeof window !== 'undefined' && typeof value === 'undefined') {
-      logger({
-        namespace,
-        i18nKey,
-      })
+    if (typeof window !== 'undefined' && empty) {
+      logger({ namespace, i18nKey })
+    }
+
+    // Fallbacks
+    if (empty && Array.isArray(fallbacks) && fallbacks.length) {
+      const [firstFallback, ...restFallbacks] = fallbacks
+      if (typeof firstFallback === 'string') {
+        return t(firstFallback, query, { ...options, fallback: restFallbacks })
+      }
     }
 
     if (value instanceof Object) {

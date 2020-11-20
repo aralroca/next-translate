@@ -39,12 +39,13 @@
 - [6. Plurals](#6-plurals)
 - [7. Use HTML inside the translation](#7-use-html-inside-the-translation)
 - [8. Nested translations](#8-nested-translations)
-- [9. How to change the language](#9-how-to-change-the-language)
-- [10. How to use multi-language in a page](#10-how-to-use-multi-language-in-a-page)
-- [11. Do I need this "build step"? Is there an alternative?](#11-do-i-need-this-build-step-is-there-an-alternative)
+- [9. Fallbacks](#9-fallbacks)
+- [10. How to change the language](#10-how-to-change-the-language)
+- [11. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
+- [12. Do I need this "build step"? Is there an alternative?](#12-do-i-need-this-build-step-is-there-an-alternative)
   - [First alternative](#first-alternative)
   - [Second alternative](#second-alternative)
-- [12. Demos](#12-demos)
+- [13. Demos](#13-demos)
   - [Demo from Next.js](#demo-from-nextjs)
   - [Basic demo: With the "build step"](#basic-demo-with-the-build-step)
   - [Basic demo: Using the appWithI18n alternative](#basic-demo-using-the-appwithi18n-alternative)
@@ -274,7 +275,7 @@ In order to use each translation in the project, use the _translation id_ compos
 
 | Option            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Type                            | Default                                                                         |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------- |
-| `defaultLocale`   | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string`              | `"en"`                                                                          |
+| `defaultLocale`   | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string`                        | `"en"`                                                                          |
 | `locales`         | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Array<string>`                 | `[]`                                                                            |
 | `currentPagesDir` | A string with the directory where you have the pages code. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `string`                        | `"pages_"`                                                                      |
 | `finalPagesDir`   | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                               | `string`                        | `"pages"`                                                                       |
@@ -597,7 +598,46 @@ t('namespace:array-example', { count: 1 }, { returnObjects: true })
 */
 ```
 
-## 9. How to change the language
+### 9. Fallbacks
+
+If no translation exists you can define fallbacks (`string|Array<string>`) to search for other translations:
+
+```js
+const { t } = useTranslation()
+const textOrFallback = t(
+  'ns:text',
+  { count: 1 },
+  {
+    fallback: 'ns:fallback',
+  }
+)
+```
+
+List of fallbacks:
+
+```js
+const { t } = useTranslation()
+const textOrFallback = t(
+  'ns:text',
+  { count: 42 },
+  {
+    fallback: ['ns:fallback1', 'ns:fallbac2'],
+  }
+)
+```
+
+In Trans Component:
+
+```jsx
+<Trans
+  i18nKey="ns:example"
+  components={[<Component />, <b className="red" />]}
+  values={{ count: 42 }}
+  fallback={['ns:fallback1', 'ns:fallback2']} // or string with just 1 fallback
+/>
+```
+
+## 10. How to change the language
 
 In order to change the current language you can use the [Next.js navigation](https://nextjs.org/docs/advanced-features/i18n-routing) (Link and Router) passing the `locale` prop.
 
@@ -628,7 +668,7 @@ function ChangeLanguage() {
 }
 ```
 
-## 10. How to use multi-language in a page
+## 11. How to use multi-language in a page
 
 In some cases, when the page is in the current language, you may want to do some exceptions displaying some text in another language.
 
@@ -636,7 +676,7 @@ In this case, you can achieve this by using the `I18nProvider`.
 
 Learn how to do it [here](#i18nprovider).
 
-## 11. Do I need this "build step"? Is there an alternative?
+## 12. Do I need this "build step"? Is there an alternative?
 
 The "build step" exists only to simplify work with Automatic Static Optimization, so right now it is the recommended way. However, if you prefer not to do the "build step", there are two alternatives.
 
@@ -660,7 +700,7 @@ Pros and cons:
 - 🟢 Automatic Static Optimization
 - 🔴 Hard to configure
 
-## 12. Demos
+## 13. Demos
 
 ### Demo from Next.js
 
@@ -739,6 +779,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
