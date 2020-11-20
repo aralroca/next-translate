@@ -9,12 +9,12 @@ export interface Translate {
   (
     i18nKey: string,
     query?: TranslationQuery | null,
-    options?: { returnObjects: false }
+    options?: { returnObjects: false; fallback: string | string[] }
   ): string
   <R = string>(
     i18nKey: string,
     query: TranslationQuery | null | undefined,
-    options: { returnObjects: true }
+    options: { returnObjects: true; fallback: string | string[] }
   ): R
 }
 
