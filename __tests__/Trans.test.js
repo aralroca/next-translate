@@ -130,6 +130,65 @@ describe('Trans', () => {
     })
   })
 
+  describe('components prop as a object', () => {
+    test('should work with component as a object', () => {
+      const i18nKey = 'common:test-html'
+      const expectedHTML = 'test <b>components as a object</b>.'
+      const common = {
+        'test-html': 'test <example>components as a object</example>.',
+      }
+
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ common }}
+          i18nKey={i18nKey}
+          components={{ example: <b /> }}
+        />
+      )
+      expect(container.innerHTML).toContain(expectedHTML)
+    })
+
+    test('should work with component as a object of React Components', () => {
+      const i18nKey = 'common:test-html'
+      const expectedHTML = 'test <b class="test">components as a object</b>.'
+      const common = {
+        'test-html': 'test <example>components as a object</example>.',
+      }
+
+      const Component = ({ children }) => <b className="test">{children}</b>
+
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ common }}
+          i18nKey={i18nKey}
+          components={{ example: <Component /> }}
+        />
+      )
+      expect(container.innerHTML).toContain(expectedHTML)
+    })
+
+    test('should work with component as a object without replacing the HTMLElement if the key is incorrectly', () => {
+      const i18nKey = 'common:test-html'
+      const expectedHTML =
+        'test <b class="test">components as <u>a</u> object</b>.'
+      const common = {
+        'test-html':
+          'test <example>components <thisIsIncorrect>as <u>a</u> object</thisIsIncorrect></example>.',
+      }
+
+      const Component = ({ children }) => <b className="test">{children}</b>
+
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ common }}
+          i18nKey={i18nKey}
+          components={{ example: <Component />, u: <u /> }}
+        />
+      )
+      expect(container.innerHTML).toContain(expectedHTML)
+    })
+  })
+
   describe('logger', () => {
     test('should log a warn key if a key does not exist in the namespace', () => {
       console.warn = jest.fn()

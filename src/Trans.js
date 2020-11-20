@@ -1,7 +1,7 @@
 import { cloneElement, useMemo, Fragment } from 'react'
 import useTranslation from './useTranslation'
 
-const tagRe = /<(\d+)>(.*?)<\/\1>|<(\d+)\/>/
+const tagRe = /<(\w+)>(.*?)<\/\1>|<(\w+)\/>/
 const nlRe = /(?:\r\n|\r|\n)/g
 
 function getElements(parts) {
@@ -9,7 +9,7 @@ function getElements(parts) {
 
   const [paired, children, unpaired, after] = parts.slice(0, 4)
 
-  return [[parseInt(paired || unpaired), children || '', after]].concat(
+  return [[paired || unpaired, children || '', after]].concat(
     getElements(parts.slice(4, parts.length))
   )
 }
@@ -24,8 +24,8 @@ function formatElements(value, elements = []) {
   const before = parts.shift()
   if (before) tree.push(before)
 
-  getElements(parts).forEach(([index, children, after], realIndex) => {
-    const element = elements[index] || <Fragment />
+  getElements(parts).forEach(([key, children, after], realIndex) => {
+    const element = elements[key] || <Fragment />
 
     tree.push(
       cloneElement(
