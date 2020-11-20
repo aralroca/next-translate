@@ -9,7 +9,7 @@ export interface I18n {
   t(
     i18nKey: string | string[],
     query: TranslationQuery | null | undefined,
-    options: { returnObjects: boolean }
+    options: { returnObjects?: boolean; fallback?: string | string[] }
   ): string | object
   t(
     i18nKey: string | string[],
@@ -39,6 +39,7 @@ export interface TransProps {
   i18nKey: string
   components?: ReactElement[]
   values?: TranslationQuery
+  fallback?: string | string[]
 }
 
 export type PageValue = string[] | ((context: object) => string[])

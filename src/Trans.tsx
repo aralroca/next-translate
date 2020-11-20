@@ -71,6 +71,7 @@ export default function Trans({
   i18nKey,
   values,
   components,
+  fallback,
 }: TransProps): string | ReactNode[] {
   const { t } = useTranslation()
 
@@ -78,12 +79,12 @@ export default function Trans({
    * Memorize the transformation
    */
   const result = useMemo(() => {
-    const text = t(i18nKey, values)
+    const text = t(i18nKey, values, { fallback })
 
     if (!components || components.length === 0) return text
 
-    return formatElements(text, components)
-  }, [i18nKey, values, components])
+    return formatElements(text as string, components)
+  }, [i18nKey, values, components]) as string
 
   return result
 }

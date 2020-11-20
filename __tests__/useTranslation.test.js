@@ -458,5 +458,127 @@ describe('useTranslation', () => {
       )
       expect(container.textContent).toContain(expected)
     })
+
+    test('should work fallback as string', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const description = t('ns:description2', {}, { fallback: 'ns:title' })
+        return <>{description}</>
+      }
+
+      const expected = 'Title 1'
+      const ns = {
+        title: 'Title 1',
+        description: 'Description 1',
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work fallback as array of strings', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const description = t(
+          'ns:description2',
+          {},
+          { fallback: ['ns:noexistent', 'ns:title'] }
+        )
+        return <>{description}</>
+      }
+
+      const expected = 'Title 1'
+      const ns = {
+        title: 'Title 1',
+        description: 'Description 1',
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should ignore fallback if is not an array of string or string | array of objects', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const description = t(
+          'ns:description2',
+          {},
+          { fallback: [{}, 'ns:title'] }
+        )
+        return <>{description}</>
+      }
+
+      const expected = 'ns:description2'
+      const ns = {
+        title: 'Title 1',
+        description: 'Description 1',
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should ignore fallback if is not an array of string or string | object', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const description = t('ns:description2', {}, { fallback: {} })
+        return <>{description}</>
+      }
+
+      const expected = 'ns:description2'
+      const ns = {
+        title: 'Title 1',
+        description: 'Description 1',
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work fallback with returnObjects option and Object locale with interpolation', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const { title, description } = t(
+          'ns:noexistent',
+          { count: 2, something: 'of title' },
+          {
+            returnObjects: true,
+            fallback: ['ns:blabla', 'ns:template-object-interpolation'],
+          }
+        )
+        return <>{`${title} ${description}`}</>
+      }
+
+      const expected = 'Title 2 Description of title'
+      const templateString = {
+        'template-object-interpolation': {
+          title: 'Title {{count}}',
+          description: 'Description {{something}}',
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
   })
 })
