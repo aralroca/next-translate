@@ -49,14 +49,14 @@ function formatElements(value, elements = []) {
  * <0>This is an <1>example</1><0>
  * to -> <h1>This is an <b>example</b><h1>
  */
-export default function Trans({ i18nKey, values, components }) {
+export default function Trans({ i18nKey, values, components, fallback }) {
   const { t } = useTranslation()
 
   /**
    * Memorize the transformation
    */
   const result = useMemo(() => {
-    const text = t(i18nKey, values)
+    const text = t(i18nKey, values, { fallback })
 
     if (!components || components.length === 0) return text
 
