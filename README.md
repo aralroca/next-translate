@@ -294,7 +294,7 @@ In order to use each translation in the project, use the _translation id_ compos
 
 This hook is the recommended way to use translations in your pages / components.
 
-- **Input**: void
+- **Input**: string - defaultNamespace (optional)
 - **Output**: Object { t: Function, lang: string }
 
 Example:
@@ -304,10 +304,11 @@ import React from 'react'
 import useTranslation from 'next-translate/useTranslation'
 
 export default function Description() {
-  const { t, lang } = useTranslation()
-  const title = t('common:title')
-  const description = t`common:description` // also works as template string
-  const example = t('common:example', { count: 3 }) // and with query params
+  const { t, lang } = useTranslation('ns1') // default namespace (optional)
+  const title = t('title')
+  const titleFromOtherNamespace = t('ns2:title')
+  const description = t`description` // also works as template string
+  const example = t('ns2:example', { count: 3 }) // and with query params
 
   return (
     <>
