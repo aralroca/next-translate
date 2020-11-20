@@ -1,4 +1,5 @@
 import { useContext } from 'react'
+import { I18n } from '.'
 import I18nContext from './_context'
 
 export default function useTranslation(defaultNs?: string) {
@@ -13,5 +14,5 @@ export default function useTranslation(defaultNs?: string) {
     return ctx.t(k, query, options)
   }
 
-  return { ...ctx, t }
+  return { ...ctx, t } as I18n
 }
