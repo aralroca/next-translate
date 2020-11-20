@@ -135,6 +135,56 @@ describe('useTranslation', () => {
       expect(container.textContent).toBe(expected)
     })
 
+    test('should work with a defined default namespace | t as template string', () => {
+      const Inner = () => {
+        const { t } = useTranslation('a')
+        return (
+          <>
+            {t`test`} {t`b:test`}
+          </>
+        )
+      }
+
+      const ns = {
+        a: { test: 'Test from A' },
+        b: { test: 'Test from B' },
+      }
+
+      const expected = 'Test from A Test from B'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={ns}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should work with a defined default namespace | t as function', () => {
+      const Inner = () => {
+        const { t } = useTranslation('a')
+        return (
+          <>
+            {t('test')} {t('b:test')}
+          </>
+        )
+      }
+
+      const ns = {
+        a: { test: 'Test from A' },
+        b: { test: 'Test from B' },
+      }
+
+      const expected = 'Test from A Test from B'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={ns}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
     test('should return the key as fallback using a template string WITHOUT PROVIDER', () => {
       const Inner = () => {
         const { t } = useTranslation()
