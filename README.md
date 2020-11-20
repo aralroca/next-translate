@@ -41,11 +41,12 @@
 - [8. Nested translations](#8-nested-translations)
 - [9. Fallbacks](#9-fallbacks)
 - [10. How to change the language](#10-how-to-change-the-language)
-- [11. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
-- [12. Do I need this "build step"? Is there an alternative?](#12-do-i-need-this-build-step-is-there-an-alternative)
+- [11. How to save the user-defined language](#11-how-to-save-the-user-defined-language)
+- [12. How to use multi-language in a page](#12-how-to-use-multi-language-in-a-page)
+- [13. Do I need this "build step"? Is there an alternative?](#13-do-i-need-this-build-step-is-there-an-alternative)
   - [First alternative](#first-alternative)
   - [Second alternative](#second-alternative)
-- [13. Demos](#13-demos)
+- [14. Demos](#14-demos)
   - [Demo from Next.js](#demo-from-nextjs)
   - [Basic demo: With the "build step"](#basic-demo-with-the-build-step)
   - [Basic demo: Using the appWithI18n alternative](#basic-demo-using-the-appwithi18n-alternative)
@@ -688,7 +689,11 @@ function ChangeLanguage() {
 }
 ```
 
-## 11. How to use multi-language in a page
+## 11. How to save the user-defined language
+
+You can set a cookie named `NEXT_LOCALE` with the user-defined language as value, this way a locale can be forced.
+
+## 12. How to use multi-language in a page
 
 In some cases, when the page is in the current language, you may want to do some exceptions displaying some text in another language.
 
@@ -696,7 +701,7 @@ In this case, you can achieve this by using the `I18nProvider`.
 
 Learn how to do it [here](#i18nprovider).
 
-## 12. Do I need this "build step"? Is there an alternative?
+## 13. Do I need this "build step"? Is there an alternative?
 
 The "build step" exists only to simplify work with Automatic Static Optimization, so right now it is the recommended way. However, if you prefer not to do the "build step", there are two alternatives.
 
@@ -720,7 +725,7 @@ Pros and cons:
 - 🟢 Automatic Static Optimization
 - 🔴 Hard to configure
 
-## 13. Demos
+## 14. Demos
 
 ### Demo from Next.js
 
