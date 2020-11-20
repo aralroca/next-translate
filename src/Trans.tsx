@@ -8,22 +8,18 @@ import React, {
 import { TransProps } from '.'
 import useTranslation from './useTranslation'
 
-const tagRe = /<(\d+)>(.*?)<\/\1>|<(\d+)\/>/
+const tagRe = /<(\w+)>(.*?)<\/\1>|<(\w+)\/>/
 const nlRe = /(?:\r\n|\r|\n)/g
 
 function getElements(
   parts: Array<string | undefined>
-): Array<number | string | undefined>[] {
+): Array<string | undefined>[] {
   if (!parts.length) return []
 
   const [paired, children, unpaired, after] = parts.slice(0, 4)
 
   return [
-    [
-      parseInt((paired || unpaired) as string),
-      children || ('' as string),
-      after,
-    ],
+    [(paired || unpaired) as string, children || ('' as string), after],
   ].concat(getElements(parts.slice(4, parts.length)))
 }
 
@@ -40,8 +36,8 @@ function formatElements(
   const before = parts.shift()
   if (before) tree.push(before)
 
-  getElements(parts).forEach(([index, children, after], realIndex: number) => {
-    const element = elements[index as number] || <Fragment />
+  getElements(parts).forEach(([key, children, after], realIndex: number) => {
+    const element = elements[key as string] || <Fragment />
 
     tree.push(
       cloneElement(
