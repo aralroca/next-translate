@@ -1,6 +1,6 @@
 {
   "name": "next-translate",
-  "version": "1.0.0-experimental.11",
+  "version": "1.0.0-experimental.12",
   "description": "Next.js utility to translate pages in a easy way.",
   "license": "MIT",
   "keywords": [
@@ -61,11 +61,11 @@
     "@babel/core": "7.12.3",
     "@babel/preset-env": "7.12.1",
     "@babel/preset-typescript": "7.12.1",
-    "@testing-library/react": "11.1.1",
-    "@types/node": "14.14.6",
-    "@types/react": "16.9.56",
+    "@testing-library/react": "11.2.1",
+    "@types/node": "14.14.9",
+    "@types/react": "16.14.0",
     "@types/react-dom": "16.9.9",
-    "@types/webpack": "4.41.24",
+    "@types/webpack": "4.41.25",
     "babel-jest": "26.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
     "babel-preset-minify": "0.5.1",
@@ -73,13 +73,13 @@
     "express": "4.17.1",
     "husky": "4.3.0",
     "jest": "26.6.3",
-    "next": "10.0.1",
-    "prettier": "2.1.2",
+    "next": "10.0.2",
+    "prettier": "2.2.0",
     "pretty-quick": "3.1.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "supertest": "6.0.1",
-    "typescript": "4.0.5"
+    "typescript": "4.1.2"
   },
   "peerDependencies": {
     "next": ">= 10.0.0",
