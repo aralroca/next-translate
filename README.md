@@ -274,7 +274,7 @@ In order to use each translation in the project, use the _translation id_ compos
 ## 4. Configuration
 
 | Option            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Type                            | Default                                                                         |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------- |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------- | --- |
 | `defaultLocale`   | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string`                        | `"en"`                                                                          |
 | `locales`         | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Array<string>`                 | `[]`                                                                            |
 | `currentPagesDir` | A string with the directory where you have the pages code. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `string`                        | `"pages_"`                                                                      |
@@ -283,7 +283,7 @@ In order to use each translation in the project, use the _translation id_ compos
 | `package`         | Indicate that the **localesPath** is a package or yarn workspace.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | `boolean`                       | `false`                                                                         |
 | `loadLocaleFrom`  | As an alternative to `localesPath`, if `appWithI18n` is used instead of the "build step". It's an async function that returns the dynamic import of each locale.                                                                                                                                                                                                                                                                                                                                                                                                                                       | `Function`                      | `null`                                                                          |
 | `pages`           | An object that defines the namespaces used in each page. Example of object: `{"/": ["home", "example"]}`. To add namespaces to all pages you should use the key `"*"`, ex: `{"*": ["common"]}`. It's also possible to use regex using `rgx:` on front: `{"rgx:/form$": ["form"]}`. In case of using a custom server as an [alternative](#11-do-i-need-this-build-step-is-there-an-alternative) of the "build step", you can also use a function instead of an array, to provide some namespaces depending on some rules, ex: `{ "/": ({ req, query }) => query.type === 'example' ? ['example'] : []}` | `Object<Array<string>/Function` | `{}`                                                                            |
-| `logger`          | Function to log the **missing keys** in development and production. If you are using `i18n.json` as config file you should change it to `i18n.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `function`                      | By default the logger is a function doing a `console.warn` only in development. |  |
+| `logger`          | Function to log the **missing keys** in development and production. If you are using `i18n.json` as config file you should change it to `i18n.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `function`                      | By default the logger is a function doing a `console.warn` only in development. |     |
 | `logBuild`        | Configure if the build result should be logged to the console                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `Boolean`                       | `true`                                                                          |
 
 ## 5. API
@@ -323,8 +323,12 @@ export default function Description() {
 The `t` function:
 
 - **Input**:
-  - i18nKey: string (namespace:key)
-  - query: Object (example: { name: 'Leonard' })
+  - **i18nKey**: string (namespace:key)
+  - **query**: Object _(optional)_ (example: { name: 'Leonard' })
+  - **options**: Object _(optional)_ {
+    **fallback**: string | string[] - fallback if i18nKey doesn't exist. [See more](#9-fallbacks).
+    **returnObjects**: boolean - Get part of the JSON with all the translations. [See more](#8-nested-translations).
+    }
 - **Output**: string
 
 ### withTranslation
@@ -371,10 +375,26 @@ Example:
 />
 ```
 
+Or using `components` prop as a object:
+
+```jsx
+// The defined dictionary enter is like:
+// "example": "<component>The number is <b>{{count}}</b></component>",
+<Trans
+  i18nKey="common:example"
+  components={{
+    component: <Component />,
+    b: <b className="red" />,
+  }}
+  values={{ count: 42 }}
+/>
+```
+
 - **Props**:
   - `i18nKey` - string - key of i18n entry (namespace:key)
-  - `components` - Array<Node> - Each index corresponds to the defined tag `<0>`/`<1>`.
+  - `components` - Array<Node> | Object<Node> - In case of Array each index corresponds to the defined tag `<0>`/`<1>`. In case of object each key corresponds to the defined tag `<example>`.
   - `values` - Object - query params
+  - `fallback` - string | string[] - Optional. Fallback i18nKey if the i18nKey doesn't match.
 
 ### appWithI18n
 
