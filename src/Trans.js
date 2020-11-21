@@ -1,7 +1,7 @@
 import { cloneElement, useMemo, Fragment } from 'react'
 import useTranslation from './useTranslation'
 
-const tagRe = /<(\d+)>(.*?)<\/\1>|<(\d+)\/>/
+const tagRe = /<(\w+)>(.*?)<\/\1>|<(\w+)\/>/
 const nlRe = /(?:\r\n|\r|\n)/g
 
 function getElements(parts) {
@@ -9,7 +9,7 @@ function getElements(parts) {
 
   const [paired, children, unpaired, after] = parts.slice(0, 4)
 
-  return [[parseInt(paired || unpaired), children || '', after]].concat(
+  return [[paired || unpaired, children || '', after]].concat(
     getElements(parts.slice(4, parts.length))
   )
 }
@@ -24,8 +24,8 @@ function formatElements(value, elements = []) {
   const before = parts.shift()
   if (before) tree.push(before)
 
-  getElements(parts).forEach(([index, children, after], realIndex) => {
-    const element = elements[index] || <Fragment />
+  getElements(parts).forEach(([key, children, after], realIndex) => {
+    const element = elements[key] || <Fragment />
 
     tree.push(
       cloneElement(
@@ -49,14 +49,14 @@ function formatElements(value, elements = []) {
  * <0>This is an <1>example</1><0>
  * to -> <h1>This is an <b>example</b><h1>
  */
-export default function Trans({ i18nKey, values, components }) {
+export default function Trans({ i18nKey, values, components, fallback }) {
   const { t } = useTranslation()
 
   /**
    * Memorize the transformation
    */
   const result = useMemo(() => {
-    const text = t(i18nKey, values)
+    const text = t(i18nKey, values, { fallback })
 
     if (!components || components.length === 0) return text
 

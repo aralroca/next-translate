@@ -9,12 +9,12 @@ export interface Translate {
   (
     i18nKey: string,
     query?: TranslationQuery | null,
-    options?: { returnObjects: false }
+    options?: { returnObjects: false; fallback: string | string[] }
   ): string
   <R = string>(
     i18nKey: string,
     query: TranslationQuery | null | undefined,
-    options: { returnObjects: true }
+    options: { returnObjects: true; fallback: string | string[] }
   ): R
 }
 
@@ -49,7 +49,7 @@ export interface I18nConfig {
 
 export interface TransProps {
   i18nKey: string
-  components?: React.ReactNodeArray
+  components?: React.ReactNodeArray | Object<React.ReactNode>
   values?: Record<string, unknown>
 }
 

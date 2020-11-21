@@ -39,12 +39,14 @@
 - [6. Plurals](#6-plurals)
 - [7. Use HTML inside the translation](#7-use-html-inside-the-translation)
 - [8. Nested translations](#8-nested-translations)
-- [9. How to change the language](#9-how-to-change-the-language)
-- [10. How to use multi-language in a page](#10-how-to-use-multi-language-in-a-page)
-- [11. Do I need this "build step"? Is there an alternative?](#11-do-i-need-this-build-step-is-there-an-alternative)
+- [9. Fallbacks](#9-fallbacks)
+- [10. How to change the language](#10-how-to-change-the-language)
+- [11. How to save the user-defined language](#11-how-to-save-the-user-defined-language)
+- [12. How to use multi-language in a page](#12-how-to-use-multi-language-in-a-page)
+- [13. Do I need this "build step"? Is there an alternative?](#13-do-i-need-this-build-step-is-there-an-alternative)
   - [First alternative](#first-alternative)
   - [Second alternative](#second-alternative)
-- [12. Demos](#12-demos)
+- [14. Demos](#14-demos)
   - [Demo from Next.js](#demo-from-nextjs)
   - [Basic demo: With the "build step"](#basic-demo-with-the-build-step)
   - [Basic demo: Using the appWithI18n alternative](#basic-demo-using-the-appwithi18n-alternative)
@@ -273,8 +275,8 @@ In order to use each translation in the project, use the _translation id_ compos
 ## 4. Configuration
 
 | Option            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Type                            | Default                                                                         |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------- |
-| `defaultLocale`   | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string`              | `"en"`                                                                          |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------- | --- |
+| `defaultLocale`   | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string`                        | `"en"`                                                                          |
 | `locales`         | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Array<string>`                 | `[]`                                                                            |
 | `currentPagesDir` | A string with the directory where you have the pages code. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `string`                        | `"pages_"`                                                                      |
 | `finalPagesDir`   | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                               | `string`                        | `"pages"`                                                                       |
@@ -282,7 +284,7 @@ In order to use each translation in the project, use the _translation id_ compos
 | `package`         | Indicate that the **localesPath** is a package or yarn workspace.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | `boolean`                       | `false`                                                                         |
 | `loadLocaleFrom`  | As an alternative to `localesPath`, if `appWithI18n` is used instead of the "build step". It's an async function that returns the dynamic import of each locale.                                                                                                                                                                                                                                                                                                                                                                                                                                       | `Function`                      | `null`                                                                          |
 | `pages`           | An object that defines the namespaces used in each page. Example of object: `{"/": ["home", "example"]}`. To add namespaces to all pages you should use the key `"*"`, ex: `{"*": ["common"]}`. It's also possible to use regex using `rgx:` on front: `{"rgx:/form$": ["form"]}`. In case of using a custom server as an [alternative](#11-do-i-need-this-build-step-is-there-an-alternative) of the "build step", you can also use a function instead of an array, to provide some namespaces depending on some rules, ex: `{ "/": ({ req, query }) => query.type === 'example' ? ['example'] : []}` | `Object<Array<string>/Function` | `{}`                                                                            |
-| `logger`          | Function to log the **missing keys** in development and production. If you are using `i18n.json` as config file you should change it to `i18n.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `function`                      | By default the logger is a function doing a `console.warn` only in development. |  |
+| `logger`          | Function to log the **missing keys** in development and production. If you are using `i18n.json` as config file you should change it to `i18n.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `function`                      | By default the logger is a function doing a `console.warn` only in development. |     |
 | `logBuild`        | Configure if the build result should be logged to the console                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `Boolean`                       | `true`                                                                          |
 
 ## 5. API
@@ -293,7 +295,7 @@ In order to use each translation in the project, use the _translation id_ compos
 
 This hook is the recommended way to use translations in your pages / components.
 
-- **Input**: void
+- **Input**: string - defaultNamespace (optional)
 - **Output**: Object { t: Function, lang: string }
 
 Example:
@@ -303,10 +305,11 @@ import React from 'react'
 import useTranslation from 'next-translate/useTranslation'
 
 export default function Description() {
-  const { t, lang } = useTranslation()
-  const title = t('common:title')
-  const description = t`common:description` // also works as template string
-  const example = t('common:example', { count: 3 }) // and with query params
+  const { t, lang } = useTranslation('ns1') // default namespace (optional)
+  const title = t('title')
+  const titleFromOtherNamespace = t('ns2:title')
+  const description = t`description` // also works as template string
+  const example = t('ns2:example', { count: 3 }) // and with query params
 
   return (
     <>
@@ -321,8 +324,11 @@ export default function Description() {
 The `t` function:
 
 - **Input**:
-  - i18nKey: string (namespace:key)
-  - query: Object (example: { name: 'Leonard' })
+  - **i18nKey**: string (namespace:key)
+  - **query**: Object _(optional)_ (example: { name: 'Leonard' })
+  - **options**: Object _(optional)_
+    - **fallback**: string | string[] - fallback if i18nKey doesn't exist. [See more](#9-fallbacks).
+    - **returnObjects**: boolean - Get part of the JSON with all the translations. [See more](#8-nested-translations).
 - **Output**: string
 
 ### withTranslation
@@ -369,10 +375,26 @@ Example:
 />
 ```
 
+Or using `components` prop as a object:
+
+```jsx
+// The defined dictionary enter is like:
+// "example": "<component>The number is <b>{{count}}</b></component>",
+<Trans
+  i18nKey="common:example"
+  components={{
+    component: <Component />,
+    b: <b className="red" />,
+  }}
+  values={{ count: 42 }}
+/>
+```
+
 - **Props**:
   - `i18nKey` - string - key of i18n entry (namespace:key)
-  - `components` - Array<Node> - Each index corresponds to the defined tag `<0>`/`<1>`.
+  - `components` - Array<Node> | Object<Node> - In case of Array each index corresponds to the defined tag `<0>`/`<1>`. In case of object each key corresponds to the defined tag `<example>`.
   - `values` - Object - query params
+  - `fallback` - string | string[] - Optional. Fallback i18nKey if the i18nKey doesn't match.
 
 ### appWithI18n
 
@@ -597,7 +619,46 @@ t('namespace:array-example', { count: 1 }, { returnObjects: true })
 */
 ```
 
-## 9. How to change the language
+### 9. Fallbacks
+
+If no translation exists you can define fallbacks (`string|Array<string>`) to search for other translations:
+
+```js
+const { t } = useTranslation()
+const textOrFallback = t(
+  'ns:text',
+  { count: 1 },
+  {
+    fallback: 'ns:fallback',
+  }
+)
+```
+
+List of fallbacks:
+
+```js
+const { t } = useTranslation()
+const textOrFallback = t(
+  'ns:text',
+  { count: 42 },
+  {
+    fallback: ['ns:fallback1', 'ns:fallbac2'],
+  }
+)
+```
+
+In Trans Component:
+
+```jsx
+<Trans
+  i18nKey="ns:example"
+  components={[<Component />, <b className="red" />]}
+  values={{ count: 42 }}
+  fallback={['ns:fallback1', 'ns:fallback2']} // or string with just 1 fallback
+/>
+```
+
+## 10. How to change the language
 
 In order to change the current language you can use the [Next.js navigation](https://nextjs.org/docs/advanced-features/i18n-routing) (Link and Router) passing the `locale` prop.
 
@@ -628,7 +689,11 @@ function ChangeLanguage() {
 }
 ```
 
-## 10. How to use multi-language in a page
+## 11. How to save the user-defined language
+
+You can set a cookie named `NEXT_LOCALE` with the user-defined language as value, this way a locale can be forced.
+
+## 12. How to use multi-language in a page
 
 In some cases, when the page is in the current language, you may want to do some exceptions displaying some text in another language.
 
@@ -636,7 +701,7 @@ In this case, you can achieve this by using the `I18nProvider`.
 
 Learn how to do it [here](#i18nprovider).
 
-## 11. Do I need this "build step"? Is there an alternative?
+## 13. Do I need this "build step"? Is there an alternative?
 
 The "build step" exists only to simplify work with Automatic Static Optimization, so right now it is the recommended way. However, if you prefer not to do the "build step", there are two alternatives.
 
@@ -660,7 +725,7 @@ Pros and cons:
 - 🟢 Automatic Static Optimization
 - 🔴 Hard to configure
 
-## 12. Demos
+## 14. Demos
 
 ### Demo from Next.js
 
@@ -739,6 +804,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

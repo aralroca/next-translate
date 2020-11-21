@@ -1,6 +1,6 @@
 {
   "name": "next-translate",
-  "version": "0.19.6-canary.1",
+  "version": "0.20.0",
   "description": "Next.js utility to translate pages in a easy way.",
   "license": "MIT",
   "keywords": [

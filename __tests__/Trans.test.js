@@ -130,6 +130,65 @@ describe('Trans', () => {
     })
   })
 
+  describe('components prop as a object', () => {
+    test('should work with component as a object', () => {
+      const i18nKey = 'common:test-html'
+      const expectedHTML = 'test <b>components as a object</b>.'
+      const common = {
+        'test-html': 'test <example>components as a object</example>.',
+      }
+
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ common }}
+          i18nKey={i18nKey}
+          components={{ example: <b /> }}
+        />
+      )
+      expect(container.innerHTML).toContain(expectedHTML)
+    })
+
+    test('should work with component as a object of React Components', () => {
+      const i18nKey = 'common:test-html'
+      const expectedHTML = 'test <b class="test">components as a object</b>.'
+      const common = {
+        'test-html': 'test <example>components as a object</example>.',
+      }
+
+      const Component = ({ children }) => <b className="test">{children}</b>
+
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ common }}
+          i18nKey={i18nKey}
+          components={{ example: <Component /> }}
+        />
+      )
+      expect(container.innerHTML).toContain(expectedHTML)
+    })
+
+    test('should work with component as a object without replacing the HTMLElement if the key is incorrectly', () => {
+      const i18nKey = 'common:test-html'
+      const expectedHTML =
+        'test <b class="test">components as <u>a</u> object</b>.'
+      const common = {
+        'test-html':
+          'test <example>components <thisIsIncorrect>as <u>a</u> object</thisIsIncorrect></example>.',
+      }
+
+      const Component = ({ children }) => <b className="test">{children}</b>
+
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ common }}
+          i18nKey={i18nKey}
+          components={{ example: <Component />, u: <u /> }}
+        />
+      )
+      expect(container.innerHTML).toContain(expectedHTML)
+    })
+  })
+
   describe('logger', () => {
     test('should log a warn key if a key does not exist in the namespace', () => {
       console.warn = jest.fn()
@@ -142,6 +201,48 @@ describe('Trans', () => {
         <TestEnglish namespaces={{ ns: withSingular }} i18nKey={i18nKey} />
       )
       expect(console.warn).toBeCalledWith(expected)
+    })
+
+    test('should log a warn key if it has a fallback', () => {
+      console.warn = jest.fn()
+      const i18nKey = 'ns:number'
+      const expected =
+        '[next-translate] "ns:number" is missing in current namespace configuration. Try adding "number" to the namespace "ns".'
+
+      const withSingular = { fllbck: 'Im a fallback' }
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ ns: withSingular }}
+          i18nKey={i18nKey}
+          fallback={['ns:fllbck']}
+        />
+      )
+      expect(console.warn).toBeCalledWith(expected)
+      expect(container.innerHTML).toContain('Im a fallback')
+    })
+
+    test('should log a warn key multiple times if all fallbacks are also missing', () => {
+      console.warn = jest.fn()
+      const i18nKey = 'ns:number'
+      const expected =
+        '[next-translate] "ns:number" is missing in current namespace configuration. Try adding "number" to the namespace "ns".'
+
+      const withSingular = { fallback4: 'Im a fallback number 4' }
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ ns: withSingular }}
+          i18nKey={i18nKey}
+          fallback={[
+            'ns:fallback1',
+            'ns:fallback2',
+            'ns:fallback3',
+            'ns:fallback4',
+          ]}
+        />
+      )
+      expect(console.warn).toBeCalledWith(expected)
+      expect(console.warn.mock.calls.length).toBe(4)
+      expect(container.innerHTML).toContain('Im a fallback number 4')
     })
 
     test('should log correctly if the value includes a ":", for example an URL', () => {
