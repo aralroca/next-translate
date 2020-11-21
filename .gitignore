@@ -30,6 +30,7 @@ yarn-error.log*
 !src
 !__tests__
 !.babelrc
+!.prettierignore
 
 
 .vscode

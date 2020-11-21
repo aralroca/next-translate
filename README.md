@@ -41,11 +41,19 @@
 - [8. Nested translations](#8-nested-translations)
 - [9. Fallbacks](#9-fallbacks)
 - [10. How to change the language](#10-how-to-change-the-language)
+  <<<<<<< HEAD
 - [11. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
 - [12. Do I need this "build step"? Is there an alternative?](#12-do-i-need-this-build-step-is-there-an-alternative)
   - [First alternative](#first-alternative)
   - [Second alternative](#second-alternative)
-- [13. Demos](#13-demos)
+- # [13. Demos](#13-demos)
+- [11. How to save the user-defined language](#11-how-to-save-the-user-defined-language)
+- [12. How to use multi-language in a page](#12-how-to-use-multi-language-in-a-page)
+- [13. Do I need this "build step"? Is there an alternative?](#13-do-i-need-this-build-step-is-there-an-alternative)
+  - [First alternative](#first-alternative)
+  - [Second alternative](#second-alternative)
+- [14. Demos](#14-demos)
+  > > > > > > > c9fe6db1a93debc278144518dbc130d7c38e1048
   - [Demo from Next.js](#demo-from-nextjs)
   - [Basic demo: With the "build step"](#basic-demo-with-the-build-step)
   - [Basic demo: Using the appWithI18n alternative](#basic-demo-using-the-appwithi18n-alternative)
@@ -274,7 +282,7 @@ In order to use each translation in the project, use the _translation id_ compos
 ## 4. Configuration
 
 | Option            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Type                            | Default                                                                         |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------- | --- |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------- |
 | `defaultLocale`   | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string`                        | `"en"`                                                                          |
 | `locales`         | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Array<string>`                 | `[]`                                                                            |
 | `currentPagesDir` | A string with the directory where you have the pages code. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `string`                        | `"pages_"`                                                                      |
@@ -688,7 +696,19 @@ function ChangeLanguage() {
 }
 ```
 
+<<<<<<< HEAD
+
 ## 11. How to use multi-language in a page
+
+=======
+
+## 11. How to save the user-defined language
+
+You can set a cookie named `NEXT_LOCALE` with the user-defined language as value, this way a locale can be forced.
+
+## 12. How to use multi-language in a page
+
+> > > > > > > c9fe6db1a93debc278144518dbc130d7c38e1048
 
 In some cases, when the page is in the current language, you may want to do some exceptions displaying some text in another language.
 
@@ -696,7 +716,15 @@ In this case, you can achieve this by using the `I18nProvider`.
 
 Learn how to do it [here](#i18nprovider).
 
+<<<<<<< HEAD
+
 ## 12. Do I need this "build step"? Is there an alternative?
+
+=======
+
+## 13. Do I need this "build step"? Is there an alternative?
+
+> > > > > > > c9fe6db1a93debc278144518dbc130d7c38e1048
 
 The "build step" exists only to simplify work with Automatic Static Optimization, so right now it is the recommended way. However, if you prefer not to do the "build step", there are two alternatives.
 
@@ -720,7 +748,15 @@ Pros and cons:
 - 🟢 Automatic Static Optimization
 - 🔴 Hard to configure
 
+<<<<<<< HEAD
+
 ## 13. Demos
+
+=======
+
+## 14. Demos
+
+> > > > > > > c9fe6db1a93debc278144518dbc130d7c38e1048
 
 ### Demo from Next.js
 
