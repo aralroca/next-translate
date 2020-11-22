@@ -1,4 +1,4 @@
-import { clearCommentsRgx } from './constants'
+import { clearCommentsRgx, defaultLoader } from './constants'
 
 export default function templateWithHoc(
   code,
@@ -10,7 +10,6 @@ export default function templateWithHoc(
 ) {
   const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
   const codeWithoutComments = code.replace(clearCommentsRgx, '')
-  const locales = process.cwd() + '/locales/${l}/${n}'
 
   // Replacing all the possible "export default" (if there are comments
   // can be possible to have more than one)
@@ -38,8 +37,7 @@ export default function templateWithHoc(
       ...__i18nConfig,
       isLoader: true,
       skipInitialProps: ${skipInitialProps},
-      defaultLoader: (l, n) => import(\`${locales}\`)
-        .then(m => m.default)
+      defaultLoader: ${defaultLoader}
     });
   `
 

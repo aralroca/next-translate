@@ -1,10 +1,11 @@
+import { defaultLoader } from './constants'
+
 export default function templateWithLoader(
   rawCode,
   { page, typescript, loader, hasLoader } = {}
 ) {
   const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
   const configFile = process.cwd() + '/i18n'
-  const locales = process.cwd() + '/locales/${l}/${n}'
   let modifiedCode = rawCode
 
   if (hasLoader) {
@@ -82,8 +83,7 @@ export default function templateWithLoader(
               pathname: '${page}',
               loaderName: '${loader}',
               ...__i18nConfig,
-              defaultLoader: (l, n) => import(\`${locales}\`)
-                .then(m => m.default)
+              defaultLoader: ${defaultLoader}
             }))
           }
         }
