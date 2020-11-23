@@ -1,13 +1,15 @@
+const test = /\.(tsx|ts|js|mjs|jsx)$/
+
 /**
  * @todo 1.0.0
  * - Support TypeScript
  * - Should work with Webpack 5
  * - Should work with .ts files, without compiling errors
- * - Check that work fine with other Next plugins
  * - Update docs + examples (in TypeScript + better pages)
  * - Check that is not transforming anything on /api folder and tests files
- * - Check that works fine with markdown in jsx
  * - Update GIFs from READMEs
+ * - Docs about "loader" property
+ * - Docs about DynamicNamespaces with optional "dynamic" property
  * - Test that work on /pages and /src/pages
  * - Wrote a default way to load locales when loadLocaleFrom is not provided
  */
@@ -84,25 +86,15 @@ function nextTranslate(nextConfig = {}) {
       // page to load the namespaces.
       if (!loader) return config
 
-      config.module.rules = config.module.rules.map((r) => {
-        if (!r?.test?.test('/test.js')) return r
-
-        const loader = {
+      config.module.rules.push({
+        test,
+        use: {
           loader: 'next-translate/plugin/loader',
           options: {
-            extensionsRgx: r.test,
+            extensionsRgx: test,
             hasGetInitialPropsOnAppJs,
           },
-        }
-
-        // Remember: they are executed in reverse order. Babel should be later.
-        // https://webpack.js.org/contribute/writing-a-loader/#complex-usage
-        let use = []
-        if (Array.isArray(r.use)) use = [...r.use, loader]
-        else if (typeof r.use === 'object') use = [r.use, loader]
-        else if (r !== null && r.use === null) use = [{ ...r }, loader]
-
-        return { ...r, use }
+        },
       })
 
       return config
