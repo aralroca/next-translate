@@ -1,6 +1,5 @@
 import React from 'react'
 import type { NextPage } from 'next'
-import App from 'next/app'
 import I18nProvider from './I18nProvider'
 import loadNamespaces from './loadNamespaces'
 import { LoaderConfig } from '.'
@@ -40,11 +39,8 @@ export default function appWithI18n(
     const ctx = { ...(appCtx.ctx || {}), ...(appCtx || {}) }
     let appProps: object = { pageProps: {} }
 
-    const getInitialProps =
-      AppToTranslate.getInitialProps || App.getInitialProps
-
-    if (getInitialProps) {
-      appProps = (await getInitialProps(appCtx)) || {}
+    if (AppToTranslate.getInitialProps) {
+      appProps = (await AppToTranslate.getInitialProps(appCtx)) || {}
     }
 
     return {

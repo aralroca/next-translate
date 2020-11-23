@@ -1,8 +1,8 @@
 import hasExportName from './hasExportName'
 import hasHOC from './hasHOC'
 import isPageToIgnore from './isPageToIgnore'
-import templateWithLoader from './templateWithLoader'
 import templateWithHoc from './templateWithHoc'
+import templateWithLoader from './templateWithLoader'
 import { clearCommentsRgx, defaultAppJs } from './constants'
 
 const defaultAppPath = process.cwd() + '/node_modules/next/dist/pages/_app'

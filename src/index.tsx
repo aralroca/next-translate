@@ -1,5 +1,5 @@
-import plugin from './plugin'
 import { ReactElement, ReactNode } from 'react'
+import nextTranslate from './plugin'
 
 export interface TranslationQuery {
   [name: string]: string | number
@@ -90,4 +90,4 @@ export interface DynamicNamespacesProps {
   children?: React.ReactNode
 }
 
-module.exports = plugin
+module.exports = nextTranslate

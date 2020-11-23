@@ -1,4 +1,4 @@
-const test = /\.(tsx|ts|js|mjs|jsx)$/
+import hasHOC from './hasHOC'
 
 /**
  * @todo 1.0.0
@@ -13,8 +13,9 @@ const test = /\.(tsx|ts|js|mjs|jsx)$/
  * - Wrote a default way to load locales when loadLocaleFrom is not provided
  * - Fix bug: https://github.com/aralroca/next-translate-error-reproduction
  */
-function nextTranslate(nextConfig = {}) {
+export default function nextTranslate(nextConfig: any = {}) {
   const fs = require('fs')
+  const test = /\.(tsx|ts|js|mjs|jsx)$/
   const arePagesInsideSrc = fs.existsSync(process.cwd() + '/src/pages')
   let file = '/i18n.js'
 
@@ -63,9 +64,17 @@ function nextTranslate(nextConfig = {}) {
     )
   }
 
-  const hasGetInitialPropsOnAppJs = require('./hasGetInitialPropsOnAppJs')(
-    arePagesInsideSrc
-  )
+  // Check if exist a getInitialProps on _app.js
+  let hasGetInitialPropsOnAppJs = false
+  const pagesPath =
+    process.cwd() + (arePagesInsideSrc ? '/src/pages' : '/pages')
+  const app = fs.readdirSync(pagesPath).find((page) => page.startsWith('_app.'))
+
+  if (app) {
+    const code = fs.readFileSync(`${pagesPath}/${app}`).toString('UTF-8')
+    hasGetInitialPropsOnAppJs =
+      !!code.match(/\WgetInitialProps\W/g) || hasHOC(code)
+  }
 
   return {
     ...nextConfig,
@@ -101,5 +110,3 @@ function nextTranslate(nextConfig = {}) {
     },
   }
 }
-
-module.exports = nextTranslate
