@@ -2,16 +2,16 @@ const test = /\.(tsx|ts|js|mjs|jsx)$/
 
 /**
  * @todo 1.0.0
- * - Support TypeScript
- * - Should work with Webpack 5
- * - Should work with .ts files, without compiling errors
- * - Update docs + examples (in TypeScript + better pages)
- * - Check that is not transforming anything on /api folder and tests files
+ * - Support with Webpack 5
+ * - Update docs + examples:
+ *   - Basic example (with the minimum)
+ *   - Complex example (TypeScript, Webpack 5, Preact, MDX, with _app.js, src/pages...)
+ *   - Without loader (with the minimum)
  * - Update GIFs from READMEs
  * - Docs about "loader" property
  * - Docs about DynamicNamespaces with optional "dynamic" property
- * - Test that work on /pages and /src/pages
  * - Wrote a default way to load locales when loadLocaleFrom is not provided
+ * - Fix bug: https://github.com/aralroca/next-translate-error-reproduction
  */
 function nextTranslate(nextConfig = {}) {
   const fs = require('fs')
