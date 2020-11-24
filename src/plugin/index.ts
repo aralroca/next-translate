@@ -2,16 +2,11 @@ import hasHOC from './hasHOC'
 
 /**
  * @todo 1.0.0
- * - Support with Webpack 5
  * - Update docs + examples:
  *   - Basic example (with the minimum)
  *   - Complex example (TypeScript, Webpack 5, Preact, MDX, with _app.js, src/pages...)
  *   - Without loader (with the minimum)
  * - Update GIFs from READMEs
- * - Docs about "loader" property
- * - Docs about DynamicNamespaces with optional "dynamic" property
- * - Wrote a default way to load locales when loadLocaleFrom is not provided
- * - Fix bug: https://github.com/aralroca/next-translate-error-reproduction
  */
 export default function nextTranslate(nextConfig: any = {}) {
   const fs = require('fs')

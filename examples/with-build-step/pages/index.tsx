@@ -3,8 +3,8 @@ import React from 'react'
 // @ts-ignore
 import Link from 'next/link'
 
-// @ts-ignore
 import useTranslation from 'next-translate/useTranslation'
+
 // @ts-ignore
 import Header from '../components/header'
 
