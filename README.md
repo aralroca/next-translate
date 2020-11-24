@@ -255,7 +255,7 @@ The `t` function:
 
 ### withTranslation
 
-📦**Size**: ~560b
+**Size**: ~560b 📦
 
 It's an alternative to `useTranslation` hook, but in a HOC for these components that are no-functional. _(Not recommended, it's better to use the `useTranslation` hook.)_.
 
