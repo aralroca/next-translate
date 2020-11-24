@@ -3,7 +3,10 @@
 </p>
 
 <p align="center">
-    <b>i18n</b> for Next.js >= 10.0.0
+    Easy <b>i18n</b> for Next.js +10
+</p>
+<p align="center">
+    <b>Next plugin</b> + <b>i18n API</b>
 </p>
 
 <div align="center">
@@ -210,7 +213,7 @@ In the configuration file you can use both the configuration that we specified h
 
 ### useTranslation
 
-📦**Size**: ~150b
+**Size**: ~150b 📦
 
 This hook is the recommended way to use translations in your pages / components.
 
@@ -278,7 +281,7 @@ export default withTranslation(NoFunctionalComponent)
 
 ### Trans Component
 
-📦**Size**: ~1.4kb
+**Size**: ~1.4kb 📦
 
 Sometimes we need to do some translations with HTML inside the text (bolds, links, etc), the `Trans` component is exactly what you need for this. We recommend to use this component only in this case, for other cases we highly recommend the usage of `useTranslation` hook instead.
 
@@ -317,7 +320,7 @@ Or using `components` prop as a object:
 
 ### DynamicNamespaces
 
-📦**Size**: ~1.5kb
+**Size**: ~1.5kb 📦
 
 The `DynamicNamespaces` component is useful to load dynamic namespaces, for example, in modals.
 
@@ -358,7 +361,7 @@ Remember that `['dynamic']` namespace should **not** be listed on `pages` config
 
 ### I18nProvider
 
-📦**Size**: ~3kb
+**Size**: ~3kb 📦
 
 The `I18nProvider` is a context provider internally used by next-translate to provide the current **lang** and the page **namespaces**. **SO MAYBE YOU'LL NEVER NEED THIS**.
 
@@ -400,7 +403,7 @@ export default function Page() {
 
 ### appWithI18n
 
-📦**Size**: ~3.7kb
+**Size**: ~3.7kb 📦
 
 The `appWithI18n` is internally used by next-translate. **SO MAYBE YOU'LL NEVER NEED THIS**. However, we expose it in the API in case you disable the webpack [loader](#3-configuration) option and decide to load the namespaces manually.
 
@@ -431,7 +434,7 @@ If `skipInitialProps=true`, then you should also use the [loadNamespaces](#loadn
 
 ### loadNamespaces
 
-📦  **Size**: ~1.9kb
+**Size**: ~1.9kb 📦
 
 The `loadNamespaces` is internally used by next-translate. **SO MAYBE YOU'LL NEVER NEED THIS**. However, we expose it in the API in case you disable the webpack [loader](#3-configuration) option and decide to load the namespaces manually.
 
