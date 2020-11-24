@@ -87,7 +87,7 @@ In the configuration file, you specify each page that namespaces needs:
 }
 ```
 
-_[Read here](#3-translation-jsons-folder) about how to add the namespaces JSON files._
+_[Read here](#create-your-namespaces-files) about how to add the namespaces JSON files._
 
 Next-translate ensures that each page only has its namespaces with the current language. So if we have 100 locales, only 1 will be loaded.
 
