@@ -2,7 +2,11 @@
 
 This migration guide describes how to upgrade existing projects using `next-translate@0.x` to `next-translate@1.0.0`.
 
-1. Update `next-translate` to `^1.0.0`. If you're using a recent version of `npm` you can run this command:
+1. Update `next-translate` to `^1.0.0` using your preferred package manager.
+
+```bash
+yarn add next-translate@^1.0.0
+```
 
 ```bash
 npm install next-translate@^1.0.0
