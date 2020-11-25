@@ -73,13 +73,7 @@ mv pages_ pages
 
 ```diff
 {
--  "plural-example": "This is singular because the value is {{count}}",
--  "plural-example_0": "Is zero because the value is {{count}}",
--  "plural-example_2": "Is two because the value is {{count}}",
--  "plural-example_plural": "Is in plural because the value is {{count}}"
-+  "plural-example_one": "This is singular because the value is {{count}}",
-+  "plural-example_zero": "Is zero because the value is {{count}}",
-+  "plural-example_two": "Is two because the value is {{count}}",
-+  "plural-example_many": "Is in plural because the value is {{count}}"
+-  "lorem-ipsum_plural": "The value is {{count}}"
++  "lorem-ipsum_other": "The value is {{count}}"
 }
 ```
