@@ -463,41 +463,41 @@ To work well, it is necessary that your `_app.js` will be wrapped with the [appW
 
 ## 5. Plurals
 
-You can define plurals this way:
+We support 6 plural forms (taken from [CLDR Plurals](http://cldr.unicode.org/index/cldr-spec/plural-rules) page) by adding to the key this suffix:
+
+- `_zero`
+- `_one` (singular)
+- `_two` (dual)
+- `_few` (paucal)
+- `_many` (also used for fractions if they have a separate class)
+- `_other` (required—general plural form—also used if the language only has a single form)
+
+_See more info about plurals [here](https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html#sl)_.
+
+Only the last one, **`_other`**, is required because it’s the only common plural form used in all locales.
+
+All other plural forms depends on locale. For example English has only two: `_one` and `_other` (1 cat vs. 2 cats). Some languages have more, like Russian and Arabic.
+
+In addition, we also support **an exact match** by specifying the number (`_0`, `_999`) and this works for all locales. Here is an example:
+
+<small>Code:</small>
+
+```js
+// **Note**: Only works if the name of the variable is {{count}}.
+t('cart-message', { count })
+```
+
+<small>Namespace:</small>
 
 ```json
 {
-  "plural-example": "This is singular because the value is {{count}}",
-  "plural-example_0": "Is zero because the value is {{count}}",
-  "plural-example_2": "Is two because the value is {{count}}",
-  "plural-example_other": "Is in plural because the value is {{count}}"
+  "cart-message_0": "The cart is empty",
+  "cart-message_one": "The cart has only {{count}} product",
+  "cart-message_other": "The cart has {{count}} products",
+  "cart-message_999": "The cart is full, you can't buy more products",
 }
 ```
 
-Example:
-
-```jsx
-function PluralExample() {
-  const [count, setCount] = useState(0)
-  const { t } = useTranslation()
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCount((v) => (v === 5 ? 0 : v + 1))
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [])
-
-  return <p>{t('namespace:plural-example', { count })}</p>
-}
-```
-
-Result:
-
-![plural](images/plural.gif 'Plural example')
-
-**Note**: Only works if the name of the variable is {{count}}.
 
 ## 6. Use HTML inside the translation
 
