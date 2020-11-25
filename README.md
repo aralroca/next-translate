@@ -58,9 +58,9 @@
 
 ## 1. About next-translate
 
-Next-translate has two parts: Next.js plugin + i18n API.
-
 The main goal of this library is to keep the translations as simple as possible in a Next.js environment.
+
+Next-translate has two parts: Next.js plugin + i18n API.
 
 This library is very tiny and tree shakable.
 
@@ -193,6 +193,8 @@ export default function ExamplePage() {
   return <div>{example}</div> // <div>Using a variable 42</div>
 }
 ```
+
+You can consume the translations directly on your pages, you don't have to worry about loading the namespaces files manually on each page. The [next-translate plugin](#add-next-translate-plugin) loads only the namespaces that the page needs and only with the current language.
 
 ## 3. Configuration
 
