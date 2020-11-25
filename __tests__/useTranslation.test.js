@@ -227,7 +227,7 @@ describe('useTranslation', () => {
         grandfather: {
           parent: {
             child: 'Singular {{count}}',
-            child_other: 'Plural! {{count}}',
+            child_plural: 'Plural! {{count}}',
           },
         },
       }
@@ -270,7 +270,7 @@ describe('useTranslation', () => {
       const withSingular = {
         withsingular: 'The number is NOT ZERO',
         withsingular_0: 'The number is ZERO!',
-        withsingular_other: 'Oops!',
+        withsingular_plural: 'Oops!',
       }
       const { container } = render(
         <TestEnglish
@@ -288,7 +288,7 @@ describe('useTranslation', () => {
       const withSingular = {
         withsingular: 'The number is NOT ONE',
         withsingular_1: 'The number is ONE!',
-        withsingular_other: 'Oops!',
+        withsingular_plural: 'Oops!',
       }
       const { container } = render(
         <TestEnglish
@@ -306,7 +306,7 @@ describe('useTranslation', () => {
       const with_1 = {
         withsingular: 'The number is NOT ONE',
         withsingular_1: 'The number is ONE!',
-        withsingular_other: 'Oops!',
+        withsingular_plural: 'Oops!',
       }
       const { container } = render(
         <TestEnglish
@@ -324,7 +324,7 @@ describe('useTranslation', () => {
       const with_0 = {
         withsingular: 'The number is NOT ZERO',
         withsingular_0: 'The number is ZERO!',
-        withsingular_other: 'Oops!',
+        withsingular_plural: 'Oops!',
       }
       const { container } = render(
         <TestEnglish
@@ -342,7 +342,7 @@ describe('useTranslation', () => {
       const withPlural = {
         withplural: 'Singular',
         withplural_1: 'The number is ONE!',
-        withplural_other: 'Number is bigger than one!',
+        withplural_plural: 'Number is bigger than one!',
       }
       const { container } = render(
         <TestEnglish
@@ -360,7 +360,7 @@ describe('useTranslation', () => {
       const withPlural = {
         withplural: 'Singular',
         withplural_2: 'The number is TWO!',
-        withplural_other: 'Number is bigger than one!',
+        withplural_plural: 'Number is bigger than one!',
       }
       const { container } = render(
         <TestEnglish
