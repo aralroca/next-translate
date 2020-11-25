@@ -22,6 +22,14 @@ const TestEnglish = ({ i18nKey, query, namespaces }) => {
   )
 }
 
+const TestRussian = ({ i18nKey, query, namespaces }) => {
+  return (
+    <I18nProvider lang="ru" namespaces={namespaces}>
+      <Inner i18nKey={i18nKey} query={query} />
+    </I18nProvider>
+  )
+}
+
 describe('withTranslation', () => {
   afterEach(cleanup)
 
@@ -32,7 +40,7 @@ describe('withTranslation', () => {
       const withSingular = {
         withsingular: 'The number is NOT ZERO',
         withsingular_0: 'The number is ZERO!',
-        withsingular_plural: 'Oops!',
+        withsingular_other: 'Oops!',
       }
       const { container } = render(
         <TestEnglish
@@ -44,13 +52,98 @@ describe('withTranslation', () => {
       expect(container.textContent).toContain(expected)
     })
 
+    test('should work with russian', () => {
+      const i18nKey = 'ns:withrussian'
+      const withRussian = {
+        withrussian: 'The cart has only {{count}} product',
+        withrussian_0: 'The cart is empty',
+        withrussian_one: 'The cart number ends with one',
+        withrussian_few: 'The card number is a number like 42',
+        withrussian_many: 'The card number is a number like 100',
+        withrussian_999: "The cart is full, you can't buy more products",
+        withrussian_other: 'The cart has {{count}} products',
+      }
+      const r1 = render(
+        <TestRussian
+          namespaces={{ ns: withRussian }}
+          i18nKey={i18nKey}
+          query={{ count: 21 }}
+        />
+      )
+      expect(r1.container.textContent).toContain(
+        'The cart number ends with one'
+      )
+
+      const r2 = render(
+        <TestRussian
+          namespaces={{ ns: withRussian }}
+          i18nKey={i18nKey}
+          query={{ count: 42 }}
+        />
+      )
+      expect(r2.container.textContent).toContain(
+        'The card number is a number like 42'
+      )
+
+      const r3 = render(
+        <TestRussian
+          namespaces={{ ns: withRussian }}
+          i18nKey={i18nKey}
+          query={{ count: 100 }}
+        />
+      )
+      expect(r3.container.textContent).toContain(
+        'The card number is a number like 100'
+      )
+
+      const r4 = render(
+        <TestRussian
+          namespaces={{ ns: withRussian }}
+          i18nKey={i18nKey}
+          query={{ count: 999 }}
+        />
+      )
+      expect(r4.container.textContent).toContain(
+        "The cart is full, you can't buy more products"
+      )
+
+      const r5 = render(
+        <TestRussian
+          namespaces={{ ns: withRussian }}
+          i18nKey={i18nKey}
+          query={{ count: 1 }}
+        />
+      )
+      expect(r5.container.textContent).toContain('The cart has only 1 product')
+
+      const r6 = render(
+        <TestRussian
+          namespaces={{ ns: withRussian }}
+          i18nKey={i18nKey}
+          query={{ count: 0 }}
+        />
+      )
+      expect(r6.container.textContent).toContain('The cart is empty')
+
+      const r7 = render(
+        <TestRussian
+          namespaces={{ ns: withRussian }}
+          i18nKey={i18nKey}
+          query={{ count: Infinity }}
+        />
+      )
+      expect(r7.container.textContent).toContain(
+        'The cart has Infinity products'
+      )
+    })
+
     test('should work with singular | count=0', () => {
       const i18nKey = 'ns:withsingular'
       const expected = 'The number is NOT ONE'
       const withSingular = {
         withsingular: 'The number is NOT ONE',
         withsingular_1: 'The number is ONE!',
-        withsingular_plural: 'Oops!',
+        withsingular_other: 'Oops!',
       }
       const { container } = render(
         <TestEnglish
@@ -68,7 +161,7 @@ describe('withTranslation', () => {
       const with_1 = {
         withsingular: 'The number is NOT ONE',
         withsingular_1: 'The number is ONE!',
-        withsingular_plural: 'Oops!',
+        withsingular_other: 'Oops!',
       }
       const { container } = render(
         <TestEnglish
@@ -86,7 +179,7 @@ describe('withTranslation', () => {
       const with_0 = {
         withsingular: 'The number is NOT ZERO',
         withsingular_0: 'The number is ZERO!',
-        withsingular_plural: 'Oops!',
+        withsingular_other: 'Oops!',
       }
       const { container } = render(
         <TestEnglish
@@ -104,7 +197,7 @@ describe('withTranslation', () => {
       const withPlural = {
         withplural: 'Singular',
         withplural_1: 'The number is ONE!',
-        withplural_plural: 'Number is bigger than one!',
+        withplural_other: 'Number is bigger than one!',
       }
       const { container } = render(
         <TestEnglish
@@ -122,7 +215,7 @@ describe('withTranslation', () => {
       const withPlural = {
         withplural: 'Singular',
         withplural_2: 'The number is TWO!',
-        withplural_plural: 'Number is bigger than one!',
+        withplural_other: 'Number is bigger than one!',
       }
       const { container } = render(
         <TestEnglish
