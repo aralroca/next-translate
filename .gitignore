@@ -21,6 +21,7 @@ yarn-error.log*
 *
 !.github
 !docs
+!docs/*
 !*.json
 !*.js
 !*.ts
