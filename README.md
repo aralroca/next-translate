@@ -491,10 +491,10 @@ t('cart-message', { count })
 
 ```json
 {
-  "cart-message_0": "The cart is empty",
-  "cart-message_one": "The cart has only {{count}} product",
-  "cart-message_other": "The cart has {{count}} products",
-  "cart-message_999": "The cart is full, you can't buy more products",
+  "cart-message_0": "The cart is empty", // when count === 0
+  "cart-message_one": "The cart has only {{count}} product", // singular
+  "cart-message_other": "The cart has {{count}} products", // plural
+  "cart-message_999": "The cart is full", // when count === 999
 }
 ```
 
