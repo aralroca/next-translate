@@ -802,12 +802,12 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://andrew-c.com"><img src="https://avatars2.githubusercontent.com/u/11482515?v=4" width="100px;" alt=""/><br /><sub><b>Andrew Chung</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=hibearpanda" title="Code">💻</a></td>
     <td align="center"><a href="http://cuthanh.com"><img src="https://avatars0.githubusercontent.com/u/9281080?v=4" width="100px;" alt=""/><br /><sub><b>Thanh Minh</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=thanhlmm" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/croutonn"><img src="https://avatars1.githubusercontent.com/u/68943932?v=4" width="100px;" alt=""/><br /><sub><b>crouton</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=croutonn" title="Code">💻</a></td>
+    <td align="center"><a href="http://patrickmuff.ch"><img src="https://avatars3.githubusercontent.com/u/3121902?v=4" width="100px;" alt=""/><br /><sub><b>Patrick</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=dislick" title="Documentation">📖</a></td>
   </tr>
 </table>
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
