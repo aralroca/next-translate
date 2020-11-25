@@ -489,7 +489,7 @@ t('cart-message', { count })
 
 <small>Namespace:</small>
 
-```json
+```js
 {
   "cart-message_0": "The cart is empty", // when count === 0
   "cart-message_one": "The cart has only {{count}} product", // singular
