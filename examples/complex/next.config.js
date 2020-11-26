@@ -1,4 +1,6 @@
 const nextTranslate = require('next-translate')
-const withPreact = require('next-plugin-preact')
+const withMDX = require('@next/mdx')()
 
-module.exports = nextTranslate(withPreact())
+console.log('Webpack version', require('webpack').version)
+
+module.exports = nextTranslate(withMDX())

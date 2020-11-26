@@ -8,6 +8,7 @@
   "no-functional-example": "Traducció feta des d'un component no funcional",
   "dynamic-namespaces-link": "Veure un exemple de càrrega dinàmica",
   "dynamic-route": "Ruta dinàmica",
+  "mdx-example": "Això és un exemple amb MDX",
   "go-to-home": "Anar a la pàgina principal",
   "nested-example": {
     "very-nested": {

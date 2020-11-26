@@ -1,18 +1,22 @@
 {
   "name": "next-translate",
   "version": "1.0.0-experimental.18",
-  "description": "Next.js utility to translate pages in a easy way.",
+  "description": "Tiny and powerful i18n tools (Next plugin + API) to translate your Next.js pages.",
   "license": "MIT",
   "keywords": [
     "react",
+    "preact",
     "i18n",
     "nextjs",
     "next.js",
     "next",
+    "plugin",
+    "translate",
     "translation",
-    "localization",
+    "internationalization",
     "locale",
-    "static"
+    "locales",
+    "globalization"
   ],
   "repository": {
     "type": "git",

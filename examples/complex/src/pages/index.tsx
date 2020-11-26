@@ -4,9 +4,9 @@ import useTranslation from 'next-translate/useTranslation'
 import Header from '../components/header'
 
 export default function Home() {
-  const { t } = useTranslation()
-  const description = t('home:description')
-  const linkName = t('home:more-examples')
+  const { t } = useTranslation('home')
+  const description = t('description')
+  const linkName = t('more-examples')
 
   return (
     <>

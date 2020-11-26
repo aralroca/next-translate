@@ -8,6 +8,7 @@
   "no-functional-example": "Traducción hecha desde un componente no funcional",
   "dynamic-namespaces-link": "Ver un ejemplo de carga dinámica",
   "dynamic-route": "Ruta dinamica",
+  "mdx-example": "Este es un ejemplo con MDX",
   "go-to-home": "Ir a la página principal",
   "nested-example": {
     "very-nested": {
