@@ -21,15 +21,16 @@ function getDicValue(dic, key = '', options = { returnObjects: false }) {
 /**
  * Control plural keys depending the {{count}} variable
  */
-function plural(dic, key, query) {
+function plural(pluralRules, dic, key, query) {
   if (!query || typeof query.count !== 'number') return key
 
   const numKey = `${key}_${query.count}`
   if (getDicValue(dic, numKey) !== undefined) return numKey
 
-  const pluralKey = `${key}_plural`
-  if (query.count > 1 && getDicValue(dic, pluralKey) !== undefined)
+  const pluralKey = `${key}_${pluralRules.select(query.count)}`
+  if (query.count > 1 && getDicValue(dic, pluralKey) !== undefined) {
     return pluralKey
+  }
 
   return key
 }
@@ -81,12 +82,13 @@ export default function I18nProvider({
   const lang = lng || locale
   const ns = useContext(NsContext)
   const allNamespaces = { ...ns, ...namespaces }
+  const pluralRules = new Intl.PluralRules(lang)
 
   function t(key = '', query, options) {
     const k = Array.isArray(key) ? key[0] : key
     const [namespace, i18nKey] = k.split(/:(.+)/)
     const dic = allNamespaces[namespace] || {}
-    const keyWithPlural = plural(dic, i18nKey, query)
+    const keyWithPlural = plural(pluralRules, dic, i18nKey, query)
     const value = getDicValue(dic, keyWithPlural, options)
 
     const empty =
