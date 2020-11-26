@@ -6,18 +6,18 @@ import templateWithLoader from './templateWithLoader'
 import { clearCommentsRgx, defaultAppJs } from './constants'
 
 const defaultAppPath = process.cwd() + '/node_modules/next/dist/pages/_app'
-const pagePath = process.cwd() + '/pages/'
 
 export default function loader(rawCode) {
+  const { hasGetInitialPropsOnAppJs, extensionsRgx, pagesPath } = this.query
+
   // In case that there aren't /_app.js we want to overwrite the default _app
   // to provide the I18Provider on top
   if (this.resourcePath.startsWith(defaultAppPath)) return defaultAppJs
 
   // Skip rest of files that are not inside /pages
-  if (!this.resourcePath.startsWith(pagePath)) return rawCode
+  if (!this.resourcePath.startsWith(pagesPath)) return rawCode
 
-  const { hasGetInitialPropsOnAppJs, extensionsRgx } = this.query
-  const page = this.resourcePath.replace(pagePath, '/', '')
+  const page = this.resourcePath.replace(pagesPath, '/', '')
   const pageNoExt = page.replace(extensionsRgx, '')
   const code = rawCode.replace(clearCommentsRgx, '')
   const typescript = page.endsWith('.ts') || page.endsWith('.tsx')

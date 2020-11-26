@@ -7,6 +7,7 @@ import hasHOC from './hasHOC'
  *   - Complex example (TypeScript, Webpack 5, Preact, MDX, with _app.js, src/pages...)
  *   - Without loader (with the minimum)
  * - Update GIFs from READMEs
+ * - Test webpack loader in windows
  */
 export default function nextTranslate(nextConfig: any = {}) {
   const fs = require('fs')
@@ -97,6 +98,7 @@ export default function nextTranslate(nextConfig: any = {}) {
           options: {
             extensionsRgx: test,
             hasGetInitialPropsOnAppJs,
+            pagesPath: pagesPath + '/',
           },
         },
       })
