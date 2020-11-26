@@ -1,11 +1,12 @@
 import useTranslation from 'next-translate/useTranslation'
 import Trans from 'next-translate/Trans'
 import Link from 'next/link'
+import loadNamespaces from 'next-translate/loadNamespaces'
 
 import PluralExample from '../../components/plural-example'
 import Header from '../../components/header'
 import NoFunctionalComponent from '../../components/no-functional-component'
-import { loadNamespaces } from '../_app'
+import i18nConfig from '../../i18n'
 
 const Component = (props) => <p {...props} />
 
@@ -48,10 +49,12 @@ export default function MoreExamples() {
   )
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps(ctx) {
   return {
-    props: {
-      _ns: await loadNamespaces(['common', 'more-examples'], locale),
-    },
+    props: await loadNamespaces({
+      ...i18nConfig,
+      ...ctx,
+      pathname: '/more-examples',
+    }),
   }
 }

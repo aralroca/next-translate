@@ -21,7 +21,7 @@ export default function MoreExamples() {
       <h2>{exampleWithVariable}</h2>
       <PluralExample />
       <Trans
-        i18nKey="example-with-html"
+        i18nKey="more-examples:example-with-html"
         components={[<Component />, <b style={{ color: 'red' }} />]}
       />
       <NoFunctionalComponent />

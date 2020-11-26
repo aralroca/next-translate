@@ -82,18 +82,14 @@ export default function loader(rawCode) {
   const isGetStaticPaths = hasExportName(code, 'getStaticPaths')
   const isGetStaticProps = hasExportName(code, 'getStaticProps')
   const hasLoader =
-    isGetStaticProps ||
-    isGetStaticPaths ||
-    isGetServerSideProps ||
-    isGetInitialProps
+    isGetStaticProps || isGetServerSideProps || isGetInitialProps
 
   if (isGetInitialProps || (!hasLoader && isWrapperWithExternalHOC)) {
     return templateWithHoc(rawCode, { typescript, hasLoadLocaleFrom })
   }
 
   const loader =
-    isGetServerSideProps ||
-    (!hasLoader && isDynamicPage && !isWrapperWithExternalHOC)
+    isGetServerSideProps || (!hasLoader && isDynamicPage && !isGetStaticPaths)
       ? 'getServerSideProps'
       : 'getStaticProps'
 

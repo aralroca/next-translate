@@ -1,25 +1,25 @@
 import React from 'react'
-import I18nProvider from 'next-translate/I18nProvider'
-import { useRouter } from 'next/router'
+import appWithI18n from 'next-translate/appWithI18n'
+import i18nConfig from '../i18n'
 
-import '../styles.css'
-
-export async function loadNamespaces(namespaces, lang) {
-  let res = {}
-  for (let ns of namespaces) {
-    res[ns] = await import(`../locales/${lang}/${ns}.json`).then(
-      (m) => m.default
-    )
-  }
-  return res
+function MyApp({ Component, pageProps }) {
+  return <Component {...pageProps} />
 }
 
-export default function MyApp({ Component, pageProps }) {
-  const router = useRouter()
-
-  return (
-    <I18nProvider lang={router.locale} namespaces={pageProps._ns}>
-      <Component {...pageProps} />
-    </I18nProvider>
-  )
-}
+export default appWithI18n(MyApp, {
+  ...i18nConfig,
+  //
+  // If you remove the "skipInitialProps", then all the namespaces
+  // will be downloaded in the getInitialProps of the app.js and you
+  // won't need to have any helper loadNamespaces on each page.
+  //
+  // skipInitialProps=false (default):
+  // 🟢 Easy to configure
+  // 🔴 All your pages are behind a server. No automatic page optimization.
+  //
+  // skipInitialProps=true:
+  // 🔴 Hard to configure
+  // 🟢 Better performance with automatic page optimization.
+  //
+  skipInitialProps: true,
+})

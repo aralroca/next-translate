@@ -1,14 +1,14 @@
 import React from 'react'
 import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
-
+import loadNamespaces from 'next-translate/loadNamespaces'
+import i18nConfig from '../i18n'
 import Header from '../components/header'
-import { loadNamespaces } from './_app'
 
 export default function Home() {
-  const { t } = useTranslation()
-  const description = t('home:description')
-  const linkName = t('home:more-examples')
+  const { t } = useTranslation('home')
+  const description = t('description')
+  const linkName = t('more-examples')
 
   return (
     <>
@@ -21,10 +21,12 @@ export default function Home() {
   )
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps(ctx) {
   return {
-    props: {
-      _ns: await loadNamespaces(['common', 'home'], locale),
-    },
+    props: await loadNamespaces({
+      ...i18nConfig,
+      ...ctx,
+      pathname: '/',
+    }),
   }
 }

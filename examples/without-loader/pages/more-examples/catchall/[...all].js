@@ -1,10 +1,9 @@
 import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
+import loadNamespaces from 'next-translate/loadNamespaces'
 import { useRouter } from 'next/router'
+import i18nConfig from '../../../i18n'
 
-import loadNamespaces from '../../_app'
-
-// There is an issue: https://github.com/vercel/next.js/issues/9022#issuecomment-719599369
 export default function All() {
   const { query } = useRouter()
   const { t, lang } = useTranslation()
@@ -20,10 +19,36 @@ export default function All() {
   )
 }
 
-export async function getServerSideProps({ locale }) {
+export function getStaticPaths({ locales }) {
   return {
-    props: {
-      _ns: await loadNamespaces(['common', 'more-examples'], locale),
-    },
+    paths: [
+      ...locales.map((locale) => ({
+        locale,
+        params: { all: ['this'] },
+      })),
+      ...locales.map((locale) => ({
+        locale,
+        params: { all: ['this', 'is'] },
+      })),
+      ...locales.map((locale) => ({
+        locale,
+        params: { all: ['this', 'is', 'an'] },
+      })),
+      ...locales.map((locale) => ({
+        locale,
+        params: { all: ['this', 'is', 'an', 'example'] },
+      })),
+    ],
+    fallback: true,
+  }
+}
+
+export async function getStaticProps(ctx) {
+  return {
+    props: await loadNamespaces({
+      ...i18nConfig,
+      ...ctx,
+      pathname: '/more-examples/catchall/[..all]',
+    }),
   }
 }

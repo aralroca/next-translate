@@ -20,3 +20,13 @@ export default function DynamicRoute() {
     </>
   )
 }
+
+export function getStaticPaths({ locales }: any) {
+  return {
+    paths: locales.map((locale: string) => ({
+      locale,
+      params: { slug: 'example' },
+    })),
+    fallback: true,
+  }
+}
