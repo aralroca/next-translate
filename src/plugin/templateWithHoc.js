@@ -1,4 +1,4 @@
-import { clearCommentsRgx, defaultLoader } from './constants'
+import { clearCommentsRgx, overwriteLoadLocales } from './utils'
 
 export default function templateWithHoc(
   code,
@@ -6,6 +6,7 @@ export default function templateWithHoc(
     skipInitialProps = false,
     typescript,
     pageName = '__Page_Next_Translate__',
+    hasLoadLocaleFrom = false,
   } = {}
 ) {
   const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
@@ -37,7 +38,7 @@ export default function templateWithHoc(
       ...__i18nConfig,
       isLoader: true,
       skipInitialProps: ${skipInitialProps},
-      defaultLoader: ${defaultLoader}
+      ${overwriteLoadLocales(hasLoadLocaleFrom)}
     });
   `
 

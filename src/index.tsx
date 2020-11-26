@@ -7,15 +7,15 @@ export interface TranslationQuery {
 
 export interface I18n {
   t(
-    i18nKey: string | string[],
+    i18nKey: string | TemplateStringsArray,
     query: TranslationQuery | null | undefined,
     options: { returnObjects?: boolean; fallback?: string | string[] }
   ): string | object
   t(
-    i18nKey: string | string[],
+    i18nKey: string | TemplateStringsArray,
     query: TranslationQuery | null | undefined
   ): string
-  t(i18nKey: string | string[]): string
+  t(i18nKey: string | TemplateStringsArray): string
 
   lang: string
   loadLocaleFrom?: (
@@ -64,10 +64,6 @@ export interface LoaderConfig extends I18nConfig {
   skipInitialProps?: boolean
   loaderName?: string
   isLoader?: boolean
-  defaultLoader?: (
-    language: string,
-    namespace: string
-  ) => Promise<I18nDictionary>
 }
 
 export interface LoggerProps {

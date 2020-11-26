@@ -1,0 +1,24 @@
+{
+  "name": "-",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build"
+  },
+  "dependencies": {
+    "next": "10.0.3",
+    "next-plugin-preact": "3.0.3",
+    "next-translate": "link:../../",
+    "preact": "10.5.7",
+    "preact-render-to-string": "5.1.12",
+    "react": "npm:@preact/compat",
+    "react-dom": "npm:@preact/compat"
+  },
+  "devDependencies": {
+    "@types/node": "14.14.10",
+    "@types/react": "17.0.0",
+    "typescript": "4.1.2"
+  }
+}

@@ -1,8 +1,8 @@
-import { defaultLoader } from './constants'
+import { overwriteLoadLocales } from './utils'
 
 export default function templateWithLoader(
   rawCode,
-  { page, typescript, loader, hasLoader } = {}
+  { page, typescript, loader, hasLoader, hasLoadLocaleFrom = false } = {}
 ) {
   const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
   const configFile = process.cwd() + '/i18n'
@@ -83,7 +83,7 @@ export default function templateWithLoader(
               pathname: '${page}',
               loaderName: '${loader}',
               ...__i18nConfig,
-              defaultLoader: ${defaultLoader}
+              ${overwriteLoadLocales(hasLoadLocaleFrom)}
             }))
           }
         }

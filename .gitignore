@@ -1,23 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/examples/*/node_modules
-
-out
-
-# next.js
-/.next/
-/examples/*/.next/
-
-/out/
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# lib build
 *
 !.github
 !docs
@@ -28,10 +8,26 @@ yarn-error.log*
 !*.tsx
 !src/plugin
 !examples
+!examples/**/*
 !src
 !__tests__
 !.babelrc
 !.prettierignore
 
+# dependencies
+/node_modules
+/examples/*/node_modules
+/examples/*/yarn.lock
 
+# next.js internal files
+out
+/.next/
+/examples/*/.next/
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# vscode
 .vscode

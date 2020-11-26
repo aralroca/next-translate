@@ -1,18 +1,27 @@
-import hasExportName from './hasExportName'
-import hasHOC from './hasHOC'
-import isPageToIgnore from './isPageToIgnore'
 import templateWithHoc from './templateWithHoc'
 import templateWithLoader from './templateWithLoader'
-import { clearCommentsRgx, defaultAppJs } from './constants'
+import {
+  clearCommentsRgx,
+  getDefaultAppJs,
+  hasExportName,
+  isPageToIgnore,
+  hasHOC,
+} from './utils'
 
 const defaultAppPath = process.cwd() + '/node_modules/next/dist/pages/_app'
 
 export default function loader(rawCode) {
-  const { hasGetInitialPropsOnAppJs, extensionsRgx, pagesPath } = this.query
+  const {
+    hasGetInitialPropsOnAppJs,
+    extensionsRgx,
+    pagesPath,
+    hasLoadLocaleFrom,
+  } = this.query
 
   // In case that there aren't /_app.js we want to overwrite the default _app
   // to provide the I18Provider on top
-  if (this.resourcePath.startsWith(defaultAppPath)) return defaultAppJs
+  if (this.resourcePath.startsWith(defaultAppPath))
+    return getDefaultAppJs(hasLoadLocaleFrom)
 
   // Skip rest of files that are not inside /pages
   if (!this.resourcePath.startsWith(pagesPath)) return rawCode
@@ -35,14 +44,18 @@ export default function loader(rawCode) {
   // This way, the only modified file has to be the _app.js.
   if (hasGetInitialPropsOnAppJs) {
     return pageNoExt === '/_app'
-      ? templateWithHoc(rawCode, { typescript })
+      ? templateWithHoc(rawCode, { typescript, hasLoadLocaleFrom })
       : rawCode
   }
 
   // In case the _app does not have getInitialProps, we can add only the
   // I18nProvider to ensure that translations work inside _app.js
   if (pageNoExt === '/_app') {
-    return templateWithHoc(rawCode, { skipInitialProps: true, typescript })
+    return templateWithHoc(rawCode, {
+      skipInitialProps: true,
+      typescript,
+      hasLoadLocaleFrom,
+    })
   }
 
   // There are some files that although they are inside pages, are not pages:
@@ -75,7 +88,7 @@ export default function loader(rawCode) {
     isGetInitialProps
 
   if (isGetInitialProps || (!hasLoader && isWrapperWithExternalHOC)) {
-    return templateWithHoc(rawCode, { typescript })
+    return templateWithHoc(rawCode, { typescript, hasLoadLocaleFrom })
   }
 
   const loader =
@@ -89,5 +102,6 @@ export default function loader(rawCode) {
     typescript,
     loader,
     hasLoader,
+    hasLoadLocaleFrom,
   })
 }

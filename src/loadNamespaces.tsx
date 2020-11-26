@@ -21,7 +21,7 @@ export default async function loadNamespaces(config: LoaderConfig = {}) {
   const page =
     removeTrailingSlash(config.pathname.replace(/\/index$/, '')) || '/'
   const namespaces = await getPageNamespaces(config, page, config)
-  const defaultLoader = config.defaultLoader || (() => Promise.resolve({}))
+  const defaultLoader = (l, n) => Promise.resolve({})
   const pageNamespaces =
     (await Promise.all(
       namespaces.map((ns) =>

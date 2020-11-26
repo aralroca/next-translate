@@ -14,7 +14,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -33,7 +33,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -52,7 +52,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -71,7 +71,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -98,7 +98,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -125,7 +125,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -159,7 +159,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -193,7 +193,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -216,7 +216,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -239,7 +239,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -264,7 +264,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -289,7 +289,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -313,7 +313,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -337,7 +337,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -360,7 +360,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -383,7 +383,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -402,7 +402,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
@@ -421,7 +421,7 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  defaultLoader: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;

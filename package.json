@@ -1,6 +1,6 @@
 {
   "name": "next-translate",
-  "version": "1.0.0-experimental.17",
+  "version": "1.0.0-experimental.18",
   "description": "Next.js utility to translate pages in a easy way.",
   "license": "MIT",
   "keywords": [
@@ -42,10 +42,10 @@
     "clean": "yarn clean:build && yarn clean:examples",
     "clean:build": "rm -rf lib plugin appWith* Dynamic* I18n* index _context loadNa* Trans useT* withT* getP*",
     "clean:examples": "rm -rf examples/**/.next && rm -rf examples/**/node_modules && rm -rf examples/**/yarn.lock",
-    "example": "yarn example:with-build-step",
-    "example:with-appWithI18n": "yarn build && cd examples/with-appWithI18n && yarn && yarn dev",
-    "example:with-build-step": "yarn build && cd examples/with-build-step && yarn && yarn dev",
-    "example:without-build-step": "yarn build && cd examples/without-build-step && yarn && yarn dev",
+    "example": "yarn example:complex",
+    "example:basic": "yarn build && cd examples/basic && yarn && yarn dev",
+    "example:complex": "yarn build && cd examples/complex && yarn && yarn dev",
+    "example:without-loader": "yarn build && cd examples/without-loader && yarn && yarn dev",
     "format": "pretty-quick",
     "prepublish": "yarn test && yarn build",
     "test": "cross-env NODE_ENV=test jest",
