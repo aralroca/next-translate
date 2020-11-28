@@ -12,7 +12,7 @@ function clean(t) {
     // Remove absolute import to work tests everywhere
     .replace(cwd, '')
     // Replace windows format
-    .replace('`\\locales\\${l}\\${n}`', '/locales/${l}/${n}')
+    .replace('`\\locales\\${l}\\${n}`', '`/locales/${l}/${n}`')
   return prettier.format(code, { parser: 'typescript' })
 }
 
