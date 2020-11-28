@@ -1,11 +1,12 @@
 import { overwriteLoadLocales } from './utils'
+import path from 'path'
 
 export default function templateWithLoader(
   rawCode,
   { page, typescript, loader, hasLoader, hasLoadLocaleFrom = false } = {}
 ) {
   const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
-  const configFile = process.cwd() + '/i18n'
+  const configFile = path.join(process.cwd(), 'i18n')
   let modifiedCode = rawCode
 
   if (hasLoader) {

@@ -1,15 +1,16 @@
+import path from 'path'
+
 const specFileOrFolderRgx = /(__mocks__|__tests__)|(\.(spec|test)\.(tsx|ts|js|jsx)$)/
 
 export const clearCommentsRgx = /\/\*[\s\S]*?\*\/|\/\/.*/g
 
 export const defaultLoader =
   '(l, n) => import(`' +
-  process.cwd() +
-  '/locales/${l}/${n}`).then(m => m.default)'
+  path.join(process.cwd(), 'locales/${l}/${n}`).then(m => m.default)')
 
 export function getDefaultAppJs(hasLoadLocaleFrom) {
   return `
-  import i18nConfig from '${process.cwd() + '/i18n'}'
+  import i18nConfig from '${path.join(process.cwd(), 'i18n')}'
   import appWithI18n from 'next-translate/appWithI18n'
 
   function MyApp({ Component, pageProps }) {
