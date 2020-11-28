@@ -2,11 +2,12 @@ import templateWithLoader from '../src/plugin/templateWithLoader'
 import prettier from 'prettier'
 import path from 'path'
 
-const clean = (t) => {
-  const cwd = new RegExp(
-    path.resolve(process.cwd()).replace(/\//gm, '\\/'),
-    'gm'
-  )
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+function clean(t) {
+  const cwd = new RegExp(escapeRegExp(path.resolve(process.cwd())), 'gm')
   return prettier.format(t.replace(cwd, ''), { parser: 'typescript' })
 }
 
