@@ -13,6 +13,7 @@ function clean(t) {
     .replace(cwd, '')
     // Replace windows format
     .replace('`\\locales\\${l}\\${n}`', '`/locales/${l}/${n}`')
+    .replace("__i18nConfig from 'i18n'", "__i18nConfig from '/i18n'")
   return prettier.format(code, { parser: 'typescript' })
 }
 
