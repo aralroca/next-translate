@@ -2,7 +2,13 @@ import { overwriteLoadLocales } from './utils'
 
 export default function templateWithLoader(
   rawCode,
-  { page, typescript, loader, hasLoader, hasLoadLocaleFrom = false } = {}
+  {
+    page = '',
+    typescript = false,
+    loader = 'getStaticProps',
+    hasLoader = false,
+    hasLoadLocaleFrom = false,
+  } = {}
 ) {
   const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
   let modifiedCode = rawCode

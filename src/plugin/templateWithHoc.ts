@@ -4,7 +4,7 @@ export default function templateWithHoc(
   code,
   {
     skipInitialProps = false,
-    typescript,
+    typescript = false,
     pageName = '__Page_Next_Translate__',
     hasLoadLocaleFrom = false,
   } = {}

@@ -9,7 +9,6 @@
     "esModuleInterop": true,
     "declaration": true,
     "lib": ["esnext", "dom"],
-    "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./lib/esm"
   },

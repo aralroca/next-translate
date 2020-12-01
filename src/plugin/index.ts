@@ -2,9 +2,7 @@ import { hasHOC } from './utils'
 
 /**
  * @todo 1.0.0
- * - Update GIFs from READMEs
  * - Convert to TypeScript the plugin files
- * - Add in the migration guide the case from comming to custom server
  */
 export default function nextTranslate(nextConfig: any = {}) {
   const fs = require('fs')
