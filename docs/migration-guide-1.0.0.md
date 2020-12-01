@@ -1,6 +1,12 @@
 # Migration Guide `0.x` to `1.0.0`
 
-This migration guide describes how to upgrade existing projects using `next-translate@0.x` to `next-translate@1.0.0`.
+This migration guide describes how to upgrade existing projects using `next-translate@0.x` to `next-translate@1.0.0`. See [here](https://github.com/vinissimus/next-translate/releases/tag/1.0.0) the releases notes about 1.0.
+
+**If you are using a version prior to `0.19`, you should first [follow these steps](https://github.com/vinissimus/next-translate/releases/tag/0.19.0) to migrate to `0.19` because it has some breaking changes.**
+
+This guide is useful both if you used the **"build step"** and if you used a **`getInitialProps` on top of `_app.js`** with the `appWithI18n`, since both have been unified under the webpack loader.
+
+## Steps to follow
 
 1. Update `next-translate` to `^1.0.0` using your preferred package manager.
 
@@ -51,7 +57,7 @@ module.exports = {
 }
 ```
 
-4. Remove the extra build step in `package.json`:
+4. Remove the extra build step in `package.json` _(in the case you were using the build step)_:
 
 ```diff
 "scripts": {
@@ -63,7 +69,7 @@ module.exports = {
 }
 ```
 
-5. Remove `/pages` from `.gitignore`:
+5. Remove `/pages` from `.gitignore` _(in the case you were using the build step)_:
 
 ```diff
 # local env files
@@ -76,14 +82,32 @@ module.exports = {
 -/pages
 ```
 
-6. Rename directory `pages_` to `pages`:
+6. Rename directory `pages_` to `pages` _(in the case you were using the build step)_:
 
 ```bash
 rm -rf pages
 mv pages_ pages
 ```
 
-7. Replace `_plural` suffixes to `_other`. We are now supporting 6 plural forms, more info [in the README](https://github.com/vinissimus/next-translate/blob/1.0.0/README.md#5-plurals).
+7. Remove the `appWithI18n` wrapper on `_app.js` _(if instead of the "build step" you were using the appWithI18n)_:
+
+```diff
+import React from 'react'
+import type { AppProps } from 'next/app'
+-import appWithI18n from 'next-translate/appWithI18n'
+-import i18nConfig from '../i18n'
+
+import '../styles.css'
+
+function MyApp({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
+}
+
+-export default appWithI18n(MyApp, i18nConfig)
++export default MyApp
+```
+
+8. Replace `_plural` suffixes to `_other`. We are now supporting 6 plural forms, more info [in the README](https://github.com/vinissimus/next-translate/blob/1.0.0/README.md#5-plurals).
 
 ```diff
 {
