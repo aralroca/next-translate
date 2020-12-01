@@ -1,12 +1,10 @@
 import { overwriteLoadLocales } from './utils'
-import path from 'path'
 
 export default function templateWithLoader(
   rawCode,
   { page, typescript, loader, hasLoader, hasLoadLocaleFrom = false } = {}
 ) {
   const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
-  const configFile = path.join(process.cwd(), 'i18n')
   let modifiedCode = rawCode
 
   if (hasLoader) {
@@ -69,7 +67,7 @@ export default function templateWithLoader(
   }
 
   let template = `
-    import __i18nConfig from '${configFile}'
+    import __i18nConfig from '@next-translate-root/i18n'
     import __loadNamespaces from 'next-translate/loadNamespaces'
     ${tokenToReplace}
     export async function ${loader}(ctx) {

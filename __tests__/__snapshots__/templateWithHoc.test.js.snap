@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`templateWithHoc exporting a arrow function with Hoc skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 import someHoc from \\"whatever\\";
@@ -14,13 +14,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc exporting a arrow function with Hoc skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 import someHoc from \\"whatever\\";
@@ -33,13 +34,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc exporting a arrow function with getInitialProps skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 const Page = () => <div>Hello world</div>;
@@ -52,13 +54,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc exporting a arrow function with getInitialProps skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 const Page = () => <div>Hello world</div>;
@@ -71,13 +74,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc exporting a class with a getInitialProps static | exporting apart skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 import React from \\"react\\";
@@ -98,13 +102,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc exporting a class with a getInitialProps static | exporting apart skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 import React from \\"react\\";
@@ -125,13 +130,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc exporting a class with a getInitialProps static outside + one commented before skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 import React from \\"react\\";
@@ -159,13 +165,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc exporting a class with a getInitialProps static outside + one commented before skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 import React from \\"react\\";
@@ -193,13 +200,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc exporting a class with a getInitialProps static outside skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 import React from \\"react\\";
@@ -216,13 +224,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc exporting a class with a getInitialProps static outside skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 import React from \\"react\\";
@@ -239,13 +248,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc exporting a class with a getInitialProps static skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 import React from \\"react\\";
@@ -264,13 +274,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc exporting a class with a getInitialProps static skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 import React from \\"react\\";
@@ -289,13 +300,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc exporting a variable and with an existing HoC skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 import withWrapper from \\"somewhere\\";
@@ -313,13 +325,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc exporting a variable and with an existing HoC skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 import withWrapper from \\"somewhere\\";
@@ -337,13 +350,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc page with multiple commented "export default" + the correct one should do it right skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 const Page = () => <div>Hello world</div>;
@@ -360,13 +374,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc page with multiple commented "export default" + the correct one should do it right skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 const Page = () => <div>Hello world</div>;
@@ -383,13 +398,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc page without "export default" should skip any transformation skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 const Page = () => <div>Hello world</div>;
@@ -402,13 +418,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;
 
 exports[`templateWithHoc page without "export default" should skip any transformation skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __appWithI18n from \\"next-translate/appWithI18n\\";
 
 const Page = () => <div>Hello world</div>;
@@ -421,7 +438,8 @@ export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
-  loadLocaleFrom: (l, n) => import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+  loadLocaleFrom: (l, n) =>
+    import(\`@next-translate-root/locales/\${l}/\${n}\`).then((m) => m.default),
 });
 "
 `;

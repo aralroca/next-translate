@@ -62,12 +62,12 @@ export default function nextTranslate(nextConfig: any = {}) {
   let hasGetInitialPropsOnAppJs = false
   const pagesPath = path.join(
     process.cwd(),
-    arePagesInsideSrc ? 'src/pages' : 'pages'
+    arePagesInsideSrc ? '/src/pages' : '/pages'
   )
   const app = fs.readdirSync(pagesPath).find((page) => page.startsWith('_app.'))
 
   if (app) {
-    const code = fs.readFileSync(`${pagesPath}/${app}`).toString('UTF-8')
+    const code = fs.readFileSync(path.join(pagesPath, app)).toString('UTF-8')
     hasGetInitialPropsOnAppJs =
       !!code.match(/\WgetInitialProps\W/g) || hasHOC(code)
   }
@@ -86,6 +86,11 @@ export default function nextTranslate(nextConfig: any = {}) {
           ? nextConfig.webpack(conf, options)
           : conf
 
+      config.resolve.alias = {
+        ...(config.resolve.alias || {}),
+        '@next-translate-root': path.resolve(process.cwd()),
+      }
+
       // we give the opportunity for people to use next-translate without altering
       // any document, allowing them to manually add the necessary helpers on each
       // page to load the namespaces.
@@ -98,7 +103,7 @@ export default function nextTranslate(nextConfig: any = {}) {
           options: {
             extensionsRgx: test,
             hasGetInitialPropsOnAppJs,
-            pagesPath: pagesPath + '/',
+            pagesPath: path.join(pagesPath, '/'),
             hasLoadLocaleFrom: typeof restI18n.loadLocaleFrom === 'function',
           },
         },

@@ -1,19 +1,7 @@
 import templateWithLoader from '../src/plugin/templateWithLoader'
 import prettier from 'prettier'
-import path from 'path'
 
-function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
-function clean(t) {
-  const cwd = new RegExp(escapeRegExp(path.resolve(process.cwd())), 'gm')
-  const code = t
-    // Remove absolute import to work tests everywhere
-    .replace(cwd, '')
-    // Replace windows format
-    .replace('`\\locales\\${l}\\${n}`', '`/locales/${l}/${n}`')
-    .replace("__i18nConfig from 'i18n'", "__i18nConfig from '/i18n'")
+function clean(code) {
   return prettier.format(code, { parser: 'typescript' })
 }
 

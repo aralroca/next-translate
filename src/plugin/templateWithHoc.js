@@ -1,4 +1,3 @@
-import path from 'path'
 import { clearCommentsRgx, overwriteLoadLocales } from './utils'
 
 export default function templateWithHoc(
@@ -32,7 +31,7 @@ export default function templateWithHoc(
   }
 
   let template = `
-    import __i18nConfig from '${path.join(process.cwd(), 'i18n')}'
+    import __i18nConfig from '@next-translate-root/i18n'
     import __appWithI18n from 'next-translate/appWithI18n'
     ${tokenToReplace}
     export default __appWithI18n(__Page_Next_Translate__, {

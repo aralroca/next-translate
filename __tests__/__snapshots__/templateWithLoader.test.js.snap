@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`templateWithLoader exporting as a arrow function - without loader page: /blog/[post]/[...catchall] | loader: getServerSideProps | hasLoader: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 export default () => <div>Hello world</div>;
@@ -15,7 +15,9 @@ export async function getServerSideProps(ctx) {
         loaderName: \\"getServerSideProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -24,7 +26,7 @@ export async function getServerSideProps(ctx) {
 `;
 
 exports[`templateWithLoader exporting as a arrow function - without loader page: /index | loader: getStaticProps | hasLoader: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 export default () => <div>Hello world</div>;
@@ -38,7 +40,9 @@ export async function getStaticProps(ctx) {
         loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -47,7 +51,7 @@ export async function getStaticProps(ctx) {
 `;
 
 exports[`templateWithLoader exporting as a class - with loader page: /index | loader: getStaticProps | hasLoader: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 import React from \\"react\\";
@@ -75,7 +79,9 @@ export async function getStaticProps(ctx) {
         loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -84,7 +90,7 @@ export async function getStaticProps(ctx) {
 `;
 
 exports[`templateWithLoader exporting as a class in a diferent line - without loader page: /blog/[post]/[...catchall] | loader: getServerSideProps | hasLoader: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 import React from \\"react\\";
@@ -108,7 +114,9 @@ export async function getServerSideProps(ctx) {
         loaderName: \\"getServerSideProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -117,7 +125,7 @@ export async function getServerSideProps(ctx) {
 `;
 
 exports[`templateWithLoader exporting as a class in a diferent line - without loader page: /index | loader: getStaticProps | hasLoader: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 import React from \\"react\\";
@@ -141,7 +149,9 @@ export async function getStaticProps(ctx) {
         loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -150,7 +160,7 @@ export async function getStaticProps(ctx) {
 `;
 
 exports[`templateWithLoader exporting as a function - with loader page: /index | loader: getStaticProps | hasLoader: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 export default function Page() {
@@ -178,7 +188,9 @@ export async function getStaticProps(ctx) {
         loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -187,7 +199,7 @@ export async function getStaticProps(ctx) {
 `;
 
 exports[`templateWithLoader exporting as a function - without loader page: /blog/[post]/[...catchall] | loader: getServerSideProps | hasLoader: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 export default function Page() {
@@ -203,7 +215,9 @@ export async function getServerSideProps(ctx) {
         loaderName: \\"getServerSideProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -212,7 +226,7 @@ export async function getServerSideProps(ctx) {
 `;
 
 exports[`templateWithLoader exporting as a function - without loader page: /index | loader: getStaticProps | hasLoader: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 export default function Page() {
@@ -228,7 +242,9 @@ export async function getStaticProps(ctx) {
         loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -237,7 +253,7 @@ export async function getStaticProps(ctx) {
 `;
 
 exports[`templateWithLoader exporting as a function in diferent line - with loader page: /index | loader: getServerSideProps | hasLoader: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 function Page() {
@@ -263,7 +279,9 @@ export async function getServerSideProps(ctx) {
         loaderName: \\"getServerSideProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -272,7 +290,7 @@ export async function getServerSideProps(ctx) {
 `;
 
 exports[`templateWithLoader exporting as a function in diferent line - without loader page: /blog/[post]/[...catchall] | loader: getServerSideProps | hasLoader: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 function Page() {
@@ -290,7 +308,9 @@ export async function getServerSideProps(ctx) {
         loaderName: \\"getServerSideProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -299,7 +319,7 @@ export async function getServerSideProps(ctx) {
 `;
 
 exports[`templateWithLoader exporting as a function in diferent line - without loader page: /index | loader: getStaticProps | hasLoader: false 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 function Page() {
@@ -317,7 +337,9 @@ export async function getStaticProps(ctx) {
         loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -326,7 +348,7 @@ export async function getStaticProps(ctx) {
 `;
 
 exports[`templateWithLoader loader as a arrow function page: /index | loader: getStaticProps | hasLoader: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 export default function Page() {
@@ -348,7 +370,9 @@ export async function getStaticProps(ctx) {
         loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -357,7 +381,7 @@ export async function getStaticProps(ctx) {
 `;
 
 exports[`templateWithLoader loader imported to another place page: /index | loader: getStaticProps | hasLoader: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 import _getStaticProps from \\"somewhere/getStaticProps\\";
@@ -384,7 +408,9 @@ export async function getStaticProps(ctx) {
         loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -393,7 +419,7 @@ export async function getStaticProps(ctx) {
 `;
 
 exports[`templateWithLoader loader with named import to another place + rename page: /index | loader: getStaticProps | hasLoader: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 import { getStaticPropsA as _getStaticProps } from \\"somewhere/getStaticProps\\";
@@ -420,7 +446,9 @@ export async function getStaticProps(ctx) {
         loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -429,7 +457,7 @@ export async function getStaticProps(ctx) {
 `;
 
 exports[`templateWithLoader loader with named import to another place page: /index | loader: getStaticProps | hasLoader: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 import { getStaticProps as _getStaticProps } from \\"somewhere/getStaticProps\\";
@@ -456,7 +484,9 @@ export async function getStaticProps(ctx) {
         loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -465,7 +495,7 @@ export async function getStaticProps(ctx) {
 `;
 
 exports[`templateWithLoader loader with one named import to another place page: /index | loader: getStaticProps | hasLoader: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 import {
@@ -495,7 +525,9 @@ export async function getStaticProps(ctx) {
         loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -504,7 +536,7 @@ export async function getStaticProps(ctx) {
 `;
 
 exports[`templateWithLoader should add the "as" on the import only when is necessary page: /index | loader: getStaticProps | hasLoader: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 import { getStaticProps as _getStaticProps } from \\"somewhere/getStaticProps\\";
@@ -546,7 +578,9 @@ export async function getStaticProps(ctx) {
         loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
@@ -555,7 +589,7 @@ export async function getStaticProps(ctx) {
 `;
 
 exports[`templateWithLoader should remove exports of existings loaders with "as" page: /index | loader: getStaticProps | hasLoader: true 1`] = `
-"import __i18nConfig from \\"/i18n\\";
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
 export { anotherThing };
@@ -577,7 +611,9 @@ export async function getStaticProps(ctx) {
         loaderName: \\"getStaticProps\\",
         ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
-          import(\`/locales/\${l}/\${n}\`).then((m) => m.default),
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
       })),
     },
   };
