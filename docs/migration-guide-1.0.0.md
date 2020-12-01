@@ -1,6 +1,10 @@
 # Migration Guide `0.x` to `1.0.0`
 
-This migration guide describes how to upgrade existing projects using `next-translate@0.x` to `next-translate@1.0.0`. See [here](https://github.com/vinissimus/next-translate/releases/tag/1.0.0) the releases notes about 1.0.
+This migration guide describes how to upgrade existing projects using `next-translate@0.x` to `next-translate@1.0.0`.
+
+- [Release notes about 1.0](https://github.com/vinissimus/next-translate/releases/tag/1.0.0)
+- [Demo video with 1.0](https://www.youtube.com/watch?v=QnCIjjYLCfc)
+- [Examples with 1.0](https://github.com/vinissimus/next-translate/tree/1.0.0/examples)
 
 **If you are using a version prior to `0.19`, you should first [follow these steps](https://github.com/vinissimus/next-translate/releases/tag/0.19.0) to migrate to `0.19` because it has some breaking changes.**
 
