@@ -1,9 +1,5 @@
 import { hasHOC } from './utils'
 
-/**
- * @todo 1.0.0
- * - Convert to TypeScript the plugin files
- */
 export default function nextTranslate(nextConfig: any = {}) {
   const fs = require('fs')
   const path = require('path')
