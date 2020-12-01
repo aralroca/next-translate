@@ -159,6 +159,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "dislick",
+      "name": "Patrick",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/3121902?v=4",
+      "profile": "http://patrickmuff.ch",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
