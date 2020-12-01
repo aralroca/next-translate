@@ -3,7 +3,10 @@
 </p>
 
 <p align="center">
-    <b>i18n</b> for Next.js >= 10.0.0
+    Easy <b>i18n</b> for Next.js +10
+</p>
+<p align="center">
+    <b>Next plugin</b> + <b>i18n API</b>
 </p>
 
 <div align="center">
@@ -20,33 +23,29 @@
 </div>
 
 - [1. About next-translate](#1-about-next-translate)
-  - [How translations are added in each page?](#how-translations-are-added-in-each-page)
+  - [How are translations loaded?](#how-are-translations-loaded)
 - [2. Getting started](#2-getting-started)
   - [Install](#install)
-  - [Add the i18n.js config file](#add-the-i18njs-config-file)
-  - [Use Next.js i18n routing](#use-nextjs-i18n-routing)
+  - [Add next-translate plugin](#add-next-translate-plugin)
+  - [Add i18n.js config file](#add-i18njs-config-file)
+  - [Create your namespaces files](#create-your-namespaces-files)
   - [Use translations in your pages](#use-translations-in-your-pages)
-  - [Add /pages to .gitignore](#add-pages-to-gitignore)
-- [3. Translation JSONs folder](#3-translation-jsons-folder)
-- [4. Configuration](#4-configuration)
-- [5. API](#5-api)
+- [3. Configuration](#3-configuration)
+- [4. API](#4-api)
   - [useTranslation](#usetranslation)
   - [withTranslation](#withtranslation)
   - [Trans Component](#trans-component)
-  - [appWithI18n](#appwithi18n)
   - [DynamicNamespaces](#dynamicnamespaces)
   - [I18nProvider](#i18nprovider)
-- [6. Plurals](#6-plurals)
-- [7. Use HTML inside the translation](#7-use-html-inside-the-translation)
-- [8. Nested translations](#8-nested-translations)
-- [9. Fallbacks](#9-fallbacks)
-- [10. How to change the language](#10-how-to-change-the-language)
-- [11. How to save the user-defined language](#11-how-to-save-the-user-defined-language)
-- [12. How to use multi-language in a page](#12-how-to-use-multi-language-in-a-page)
-- [13. Do I need this "build step"? Is there an alternative?](#13-do-i-need-this-build-step-is-there-an-alternative)
-  - [First alternative](#first-alternative)
-  - [Second alternative](#second-alternative)
-- [14. Demos](#14-demos)
+  - [appWithI18n](#appwithi18n)
+- [5. Plurals](#5-plurals)
+- [6. Use HTML inside the translation](#6-use-html-inside-the-translation)
+- [7. Nested translations](#7-nested-translations)
+- [8. Fallbacks](#8-fallbacks)
+- [9. How to change the language](#9-how-to-change-the-language)
+- [10. How to save the user-defined language](#10-how-to-save-the-user-defined-language)
+- [11. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
+- [12. Demos](#12-demos)
   - [Demo from Next.js](#demo-from-nextjs)
   - [Basic demo: With the "build step"](#basic-demo-with-the-build-step)
   - [Basic demo: Using the appWithI18n alternative](#basic-demo-using-the-appwithi18n-alternative)
@@ -59,9 +58,9 @@
 
 ## 1. About next-translate
 
-Next-translate is a tool to translate Next.js pages.
-
 The main goal of this library is to keep the translations as simple as possible in a Next.js environment.
+
+Next-translate has two parts: Next.js plugin + i18n API.
 
 This library is very tiny and tree shakable.
 
@@ -69,13 +68,11 @@ This library is very tiny and tree shakable.
     <img width="500" src="images/bundle-size.png" alt="Bundle size" />
 </p>
 
-### How translations are added in each page?
+### How are translations loaded?
 
-Instead of working on `/pages` directory to write our pages, we are going to generate this folder before building the app, and each page will have all the necessary translations from the locale.
+In the configuration file, you specify each page that namespaces needs:
 
-This "build step" is designed to make it easy to download the necessary translations for each page in an easy way.
-
-In the configuration, you specify each page that namespaces needs:
+**i18n.json**
 
 ```js
 {
@@ -90,115 +87,44 @@ In the configuration, you specify each page that namespaces needs:
 }
 ```
 
-_[Read here](#3-translation-jsons-folder) about how to add the namespaces JSON files._
+_[Read here](#create-your-namespaces-files) about how to add the namespaces JSON files._
 
-Then, during the build step:
+Next-translate ensures that each page only has its namespaces with the current language. So if we have 100 locales, only 1 will be loaded.
 
-- The download of the page namespaces are added on corresponding loader method (`getInitialProps`, `getServerSideProps` or `getStaticProps`). In the case that the page doesn't have any loader method is using the `getStaticProps` by default, except:
-  - For dynamic pages that is using `getServerSideProps` to avoid to write a `getStaticPaths`.
-  - For pages that have a HOC is using `getInitialProps` in order to avoid possible conflicts.
-- Each page is wrapped with an **i18nProvider** with its namespaces.
+In order to do this we use a **webpack loader** that loads the necessary translation files inside the Next.js methods (**getStaticProps**, **getServerSideProps** or **getInitialProps**). If you have one of these methods already on your page, the webpack loader will use your own method, but the defaults it will use are:
 
-This **whole process is transparent**, so in your pages you can directly consume the `useTranslate` hook to use the namespaces, and you don't need to do anything else, because the 'build step' does it.
+- **`getStaticProps`**. This is the **default method used on most pages**, unless it is a page specified in the next two points. This is for performance, so the calculations are done in build time instead of request time.
+- **`getServerSideProps`**. This is the **default method for dynamic pages** like `[slug].js` or `[...catchall].js`. This is because for these pages it is necessary to define the `getStaticPaths` and there is no knowledge of how the slugs should be for each locale. Likewise, how is it by default, only that you write the getStaticPaths then it will already use the getStaticProps to load the translations.
+- **`getInitialProps`**. This is the **default method for these pages that use a HoC**. This is in order to avoid conflicts because HoC could overwrite a `getInitialProps`.
 
-<details><summary>Example of page and how is converted</summary>
-<p>
+This **whole process is transparent**, so in your pages you can directly consume the `useTranslate` hook to use the namespaces, and you don't need to do anything else.
 
-**pages\_/example.js**
-
-```js
-import useTranslation from 'next-translate/useTranslation'
-
-export default function Examples() {
-  const { t } = useTranslation()
-  const exampleWithVariable = t('examples:example-with-variable', {
-    count: 42,
-  })
-
-  return <div>{exampleWithVariable}</div>
-}
-```
-
-And after the build step, this is converted to:
-
-**pages/example.js**
-
-```js
-// @ts-nocheck
-import I18nProvider from 'next-translate/I18nProvider'
-import React from 'react'
-import C from '../../pages_/example'
-
-export default function Page({ _ns, _lang, ...p }) {
-  return (
-    <I18nProvider lang={_lang} namespaces={_ns}>
-      <C {...p} />
-    </I18nProvider>
-  )
-}
-
-Page = Object.assign(Page, { ...C })
-
-export const getStaticProps = async (ctx) => {
-  const _lang = ctx.locale || ctx.router?.locale || 'en'
-  const ns0 = await import(`../../locales/${_lang}/common.json`).then(
-    (m) => m.default
-  )
-  const ns1 = await import(`../../locales/${_lang}/more-examples.json`).then(
-    (m) => m.default
-  )
-  const _ns = { common: ns0, examples: ns1 }
-
-  let res = {}
-  if (typeof res.then === 'function') res = await res
-
-  return {
-    ...res,
-    props: {
-      ...(res.props || {}),
-      _ns,
-      _lang,
-    },
-  }
-}
-```
-
-</p>
-</details>
+If for some reason you use a `getInitialProps` in your `_app.js` file, then the translations will only be loaded into your `getInitialProps` from `_app.js`. We recommend that for optimization reasons you don't use this approach unless it is absolutely necessary.
 
 ## 2. Getting started
-
-This is the recommended way to get started. However, if you don't like the "build step" you can use an [alternative](#11-do-i-need-this-build-step-is-there-an-alternative).
 
 ### Install
 
 - `yarn add next-translate`
 
-**Note**: For a Next.js version below than `10.0.0`, use `next-translate@0.18.0` or below
+### Add next-translate plugin
 
-In your **package.json**:
+In your **next.config.js** file:
 
-```json
-"scripts": {
-  "dev": "next-translate && next dev",
-  "build": "next-translate && next build",
-  "start": "next start"
-}
+```js
+const nextTranslate = require('next-translate')
+
+module.exports = nextTranslate()
 ```
 
-### Add the i18n.js config file
+### Add i18n.js config file
 
-You should create your namespaces files inside `/locales`. [See how to do it](#3-translation-jsons-folder)
-
-Add a configuration file `i18n.json` _(or `i18n.js` with `module.exports`)_ in the root of the project. Each page should have its namespaces. Take a look at it in the [config](#4-configuration) section for more details.
+Add a configuration file `i18n.json` _(or `i18n.js` with `module.exports`)_ in the root of the project. Each page should have its namespaces. Take a look at it in the [config](#3-configuration) section for more details.
 
 ```json
 {
   "locales": ["en", "ca", "es"],
   "defaultLocale": "en",
-  "currentPagesDir": "pages_",
-  "finalPagesDir": "pages",
-  "localesPath": "locales",
   "pages": {
     "*": ["common"],
     "/": ["home", "example"],
@@ -206,45 +132,12 @@ Add a configuration file `i18n.json` _(or `i18n.js` with `module.exports`)_ in t
   }
 }
 ```
+In the configuration file you can use both the configuration that we [specified here](#3-configuration) and the own [features about internationalization of Next.js 10](https://nextjs.org/docs/advanced-features/i18n-routing).
 
-### Use Next.js i18n routing
 
-From version 10.0.0 of Next.js the i18n routing is in the core, so the following must be added to the `next.config.js` file:
+### Create your namespaces files
 
-```js
-const { locales, defaultLocale } = require('./i18n.json')
-
-module.exports = {
-  i18n: { locales, defaultLocale },
-}
-```
-
-### Use translations in your pages
-
-Then, use the translations in the page and its components:
-
-**pages\_/example.js**
-
-```jsx
-import useTranslation from 'next-translate/useTranslation'
-// ...
-const { t, lang } = useTranslation()
-const example = t('common:variable-example', { count: 42 })
-// ...
-return <div>{example}</div>
-```
-
-Remember that we must work in the alternative directory `pages_`. The `pages` directory will be generated during the build step.
-
-⚠️ **Important**: \_app.js and \_document.js are not going to be wrapped with the translations context, so it's not possible to directly translate these files.
-
-### Add /pages to .gitignore
-
-`/pages` directory is going to be generated every time based on `/pages_`, so it's not necessary to track it in git.
-
-## 3. Translation JSONs folder
-
-The **/locales** directory should be like this:
+By default the namespaces are specified on the **/locales** root directory in this way:
 
 **/locales**
 
@@ -261,7 +154,7 @@ The **/locales** directory should be like this:
     └── home.json
 ```
 
-Each filename matches the namespace, while each file content should be similar to this:
+Each filename matches the namespace specified on the `pages` config property, while each file content should be similar to this:
 
 ```json
 {
@@ -270,30 +163,58 @@ Each filename matches the namespace, while each file content should be similar t
 }
 ```
 
-In order to use each translation in the project, use the _translation id_ composed by `namespace:key`(ex: `common:variable-example`).
+However, you can use another destination to save your namespaces files using [loadLocaleFrom](#3-configuration) configuration property:
 
-## 4. Configuration
+**i18n.js**
+
+```js
+{
+  // ...rest of config
+  "loadLocaleFrom": (lang, ns) =>
+    // You can use a dynamic import, fetch, whatever. You should
+    // return a Promise with the JSON file.
+    import(`./myTranslationsFiles/${lang}/${ns}.json`).then((m) => m.default),
+}
+```
+
+### Use translations in your pages
+
+Then, use the translations in the page and its components:
+
+**pages/example.js**
+
+```jsx
+import useTranslation from 'next-translate/useTranslation'
+
+export default function ExamplePage() {
+  const { t, lang } = useTranslation('common')
+  const example = t('variable-example', { count: 42 })
+
+  return <div>{example}</div> // <div>Using a variable 42</div>
+}
+```
+
+You can consume the translations directly on your pages, you don't have to worry about loading the namespaces files manually on each page. The [next-translate plugin](#add-next-translate-plugin) loads only the namespaces that the page needs and only with the current language.
+
+## 3. Configuration
 
 In the configuration file you can use both the configuration that we specified here and the own [features about internationalization of Next.js 10](https://nextjs.org/docs/advanced-features/i18n-routing).
 
 | Option            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Type                            | Default                                                                         |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------- |
 | `defaultLocale`   | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string`                        | `"en"`                                                                          |
-| `locales`         | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Array<string>`                 | `[]`                                                                            |
-| `currentPagesDir` | A string with the directory where you have the pages code. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `string`                        | `"pages_"`                                                                      |
-| `finalPagesDir`   | A string with the directory that is going to be used to build the pages. Only "pages" and "src/pages" are possible. This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                               | `string`                        | `"pages"`                                                                       |
-| `localesPath`     | A string with the directory of JSONs locales. . This is needed for the "build step".                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `string`                        | `"locales"`                                                                     |
-| `package`         | Indicate that the **localesPath** is a package or yarn workspace.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | `boolean`                       | `false`                                                                         |
-| `loadLocaleFrom`  | As an alternative to `localesPath`, if `appWithI18n` is used instead of the "build step". It's an async function that returns the dynamic import of each locale.                                                                                                                                                                                                                                                                                                                                                                                                                                       | `Function`                      | `null`                                                                          |
-| `pages`           | An object that defines the namespaces used in each page. Example of object: `{"/": ["home", "example"]}`. To add namespaces to all pages you should use the key `"*"`, ex: `{"*": ["common"]}`. It's also possible to use regex using `rgx:` on front: `{"rgx:/form$": ["form"]}`. In case of using a custom server as an [alternative](#11-do-i-need-this-build-step-is-there-an-alternative) of the "build step", you can also use a function instead of an array, to provide some namespaces depending on some rules, ex: `{ "/": ({ req, query }) => query.type === 'example' ? ['example'] : []}` | `Object<Array<string>/Function` | `{}`                                                                            |
-| `logger`          | Function to log the **missing keys** in development and production. If you are using `i18n.json` as config file you should change it to `i18n.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `function`                      | By default the logger is a function doing a `console.warn` only in development. |  |
-| `logBuild`        | Configure if the build result should be logged to the console                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `Boolean`                       | `true`                                                                          |
+| `locales`         | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `string[]`                 | `[]`                                                                       |  
+| `loadLocaleFrom`  | Change the way you load the namespaces.                                                                                                                                                                                                                                                                                                                                                                                                                        | `function` that returns a `Promise` with the `JSON`.                      | By default is loading the namespaces from **locales** root directory.                                                                          |
+| `pages`           | An object that defines the namespaces used in each page. Example of object: `{"/": ["home", "example"]}`. To add namespaces to all pages you should use the key `"*"`, ex: `{"*": ["common"]}`. It's also possible to use regex using `rgx:` on front: `{"rgx:/form$": ["form"]}`. You can also use a function instead of an array, to provide some namespaces depending on some rules, ex: `{ "/": ({ req, query }) => query.type === 'example' ? ['example'] : []}` | `Object<string[] or function>` | `{}`                                                       |
+| `logger`          | Function to log the **missing keys** in development and production. If you are using `i18n.json` as config file you should change it to `i18n.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `function`                      | By default the logger is a function doing a `console.warn` only in development. |     |
+| `logBuild`        | Each page has a log indicating: namespaces, current language and method used to load the namespaces. With this you can disable it.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `Boolean`                       | `true`                                                                          |
+| `loader`        | If you wish to disable the webpack loader and manually load the namespaces on each page, we give you the opportunity to do so by disabling this option.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Boolean`                       | `true`                                                                          |
 
-## 5. API
+## 4. API
 
 ### useTranslation
 
-📦**Size**: ~150b
+**Size**: ~150b 📦
 
 This hook is the recommended way to use translations in your pages / components.
 
@@ -329,15 +250,15 @@ The `t` function:
   - **i18nKey**: string (namespace:key)
   - **query**: Object _(optional)_ (example: { name: 'Leonard' })
   - **options**: Object _(optional)_
-    - **fallback**: string | string[] - fallback if i18nKey doesn't exist. [See more](#9-fallbacks).
-    - **returnObjects**: boolean - Get part of the JSON with all the translations. [See more](#8-nested-translations).
+    - **fallback**: string | string[] - fallback if i18nKey doesn't exist. [See more](#8-fallbacks).
+    - **returnObjects**: boolean - Get part of the JSON with all the translations. [See more](#7-nested-translations).
 - **Output**: string
 
 ### withTranslation
 
-📦**Size**: ~560b
+**Size**: ~560b 📦
 
-It's an alternative to `useTranslation` hook, but in a HOC for these components that are no-functional.
+It's an alternative to `useTranslation` hook, but in a HOC for these components that are no-functional. _(Not recommended, it's better to use the `useTranslation` hook.)_.
 
 The `withTranslation` HOC returns a Component with an extra prop named `i18n` (Object { t: Function, lang: string }).
 
@@ -361,7 +282,7 @@ export default withTranslation(NoFunctionalComponent)
 
 ### Trans Component
 
-📦**Size**: ~1.4kb
+**Size**: ~1.4kb 📦
 
 Sometimes we need to do some translations with HTML inside the text (bolds, links, etc), the `Trans` component is exactly what you need for this. We recommend to use this component only in this case, for other cases we highly recommend the usage of `useTranslation` hook instead.
 
@@ -398,34 +319,9 @@ Or using `components` prop as a object:
   - `values` - Object - query params
   - `fallback` - string | string[] - Optional. Fallback i18nKey if the i18nKey doesn't match.
 
-### appWithI18n
-
-📦**Size**: ~3.7kb
-
-Using the "build step" you'll never need this.
-
-This HOC is the way to wrap all your app under translations in the case that you are using a custom server as an [alternative](#12-do-i-need-this-build-step-is-there-an-alternative) to the "build step", adding logic to the `getInitialProps` to download the necessary namespaces in order to use it in your pages.
-
-Example:
-
-`_app.js`
-
-```jsx
-import appWithI18n from 'next-translate/appWithI18n'
-import i18nConfig from '../i18n'
-
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
-}
-
-export default appWithI18n(MyApp, i18nConfig)
-```
-
-See more details about the [config](#4-configuration) you can use.
-
 ### DynamicNamespaces
 
-📦**Size**: ~1.5kb
+**Size**: ~1.5kb 📦
 
 The `DynamicNamespaces` component is useful to load dynamic namespaces, for example, in modals.
 
@@ -438,13 +334,7 @@ import DynamicNamespaces from 'next-translate/DynamicNamespaces'
 
 export default function ExampleWithDynamicNamespace() {
   return (
-    <DynamicNamespaces
-      dynamic={(lang, ns) =>
-        import(`../../locales/${lang}/${ns}.json`).then((m) => m.default)
-      }
-      namespaces={['dynamic']}
-      fallback="Loading..."
-    >
+    <DynamicNamespaces namespaces={['dynamic']} fallback="Loading...">
       {/* ALSO IS POSSIBLE TO USE NAMESPACES FROM THE PAGE */}
       <h1>
         <Trans i18nKey="common:title" />
@@ -465,11 +355,16 @@ Remember that `['dynamic']` namespace should **not** be listed on `pages` config
   }
 ```
 
+- **Props**:
+  - `namespaces` - string[] - list of dynamic namespaces to download - **Required**.
+  - `fallback`- ReactNode - Fallback to display meanwhile the namespaces are loading. - **Optional**.
+  - `dynamic` - function - By default it uses the [loadLocaleFrom](#3-configuration) in the configuration to load the namespaces, but you can specify another destination. - **Optional**.
+
 ### I18nProvider
 
-📦**Size**: ~3kb
+**Size**: ~3kb 📦
 
-The `I18nProvider` is a context provider internally used by next-translate to provide the current **lang** and the page **namespaces**. SO MAYBE YOU'LL NEVER NEED THIS.
+The `I18nProvider` is a context provider internally used by next-translate to provide the current **lang** and the page **namespaces**. **SO MAYBE YOU'LL NEVER NEED THIS**.
 
 However, it's exposed to the API because it can be useful in some cases. For example, to use multi-language translations in a page.
 
@@ -507,45 +402,104 @@ export default function Page() {
 }
 ```
 
-## 6. Plurals
+### appWithI18n
 
-You can define plurals this way:
+**Size**: ~3.7kb 📦
 
-```json
-{
-  "plural-example": "This is singular because the value is {{count}}",
-  "plural-example_0": "Is zero because the value is {{count}}",
-  "plural-example_2": "Is two because the value is {{count}}",
-  "plural-example_other": "Is in plural because the value is {{count}}"
-}
-```
+The `appWithI18n` is internally used by next-translate. **SO MAYBE YOU'LL NEVER NEED THIS**. However, we expose it in the API in case you disable the webpack [loader](#3-configuration) option and decide to load the namespaces manually.
+
+If you wish not to use the webpack loader, then you should put this in your `_app.js` file (and create the `_app.js` file if you don't have it).
 
 Example:
 
+`_app.js`
+
 ```jsx
-function PluralExample() {
-  const [count, setCount] = useState(0)
-  const { t } = useTranslation()
+import appWithI18n from 'next-translate/appWithI18n'
+import i18nConfig from '../i18n'
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCount((v) => (v === 5 ? 0 : v + 1))
-    }, 1000)
+function MyApp({ Component, pageProps }) {
+  return <Component {...pageProps} />
+}
 
-    return () => clearInterval(interval)
-  }, [])
+// Wraping your _app.js
+export default appWithI18n(MyApp, {
+  ...i18nConfig,
+  // Set to false if you want to load all the namespaces on _app.js getInitialProps
+  skipInitialProps: true, 
+})
+```
 
-  return <p>{t('namespace:plural-example', { count })}</p>
+If `skipInitialProps=true`, then you should also use the [loadNamespaces](#loadnamespaces) helper to manually load the namespaces on each page.
+
+
+### loadNamespaces
+
+**Size**: ~1.9kb 📦
+
+The `loadNamespaces` is internally used by next-translate. **SO MAYBE YOU'LL NEVER NEED THIS**. However, we expose it in the API in case you disable the webpack [loader](#3-configuration) option and decide to load the namespaces manually.
+
+To load the namespaces, you must return in your pages the props that the helper provides.
+
+```js
+import loadNamespaces from 'next-translate/loadNamespaces'
+import i18nConfig from '../i18n'
+
+export function getStaticProps({ locale }) {
+  const options = {
+    locale,
+    pathname: '/about',
+    ...i18nConfig,
+  }
+
+  return {
+    props: {
+      ...(await loadNamespaces(options)),
+    }
+  }
+}
+```
+To work well, it is necessary that your `_app.js` will be wrapped with the [appWithI18n](#appwithi18n).
+
+## 5. Plurals
+
+We support 6 plural forms (taken from [CLDR Plurals](http://cldr.unicode.org/index/cldr-spec/plural-rules) page) by adding to the key this suffix:
+
+- `_zero`
+- `_one` (singular)
+- `_two` (dual)
+- `_few` (paucal)
+- `_many` (also used for fractions if they have a separate class)
+- `_other` (required—general plural form—also used if the language only has a single form)
+
+_See more info about plurals [here](https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html#sl)_.
+
+Only the last one, **`_other`**, is required because it’s the only common plural form used in all locales.
+
+All other plural forms depends on locale. For example English has only two: `_one` and `_other` (1 cat vs. 2 cats). Some languages have more, like Russian and Arabic.
+
+In addition, we also support **an exact match** by specifying the number (`_0`, `_999`) and this works for all locales. Here is an example:
+
+<small>Code:</small>
+
+```js
+// **Note**: Only works if the name of the variable is {{count}}.
+t('cart-message', { count })
+```
+
+<small>Namespace:</small>
+
+```js
+{
+  "cart-message_0": "The cart is empty", // when count === 0
+  "cart-message_one": "The cart has only {{count}} product", // singular
+  "cart-message_other": "The cart has {{count}} products", // plural
+  "cart-message_999": "The cart is full", // when count === 999
 }
 ```
 
-Result:
 
-![plural](images/plural.gif 'Plural example')
-
-**Note**: Only works if the name of the variable is {{count}}.
-
-## 7. Use HTML inside the translation
+## 6. Use HTML inside the translation
 
 You can define HTML inside the translation this way:
 
@@ -578,7 +532,7 @@ Each index of `components` array corresponds with `<index></index>` of the defin
 
 In the `components` array, it's not necessary to pass the children of each element. Children will be calculated.
 
-## 8. Nested translations
+## 7. Nested translations
 
 In the namespace, it's possible to define nested keys like this:
 
@@ -621,9 +575,9 @@ t('namespace:array-example', { count: 1 }, { returnObjects: true })
 */
 ```
 
-### 9. Fallbacks
+### 8. Fallbacks
 
-If no translation exists you can define fallbacks (`string|Array<string>`) to search for other translations:
+If no translation exists you can define fallbacks (`string|string[]`) to search for other translations:
 
 ```js
 const { t } = useTranslation()
@@ -660,7 +614,7 @@ In Trans Component:
 />
 ```
 
-## 10. How to change the language
+## 9. How to change the language
 
 In order to change the current language you can use the [Next.js navigation](https://nextjs.org/docs/advanced-features/i18n-routing) (Link and Router) passing the `locale` prop.
 
@@ -691,11 +645,11 @@ function ChangeLanguage() {
 }
 ```
 
-## 11. How to save the user-defined language
+## 10. How to save the user-defined language
 
 You can set a cookie named `NEXT_LOCALE` with the user-defined language as value, this way a locale can be forced.
 
-## 12. How to use multi-language in a page
+## 11. How to use multi-language in a page
 
 In some cases, when the page is in the current language, you may want to do some exceptions displaying some text in another language.
 
@@ -703,31 +657,7 @@ In this case, you can achieve this by using the `I18nProvider`.
 
 Learn how to do it [here](#i18nprovider).
 
-## 13. Do I need this "build step"? Is there an alternative?
-
-The "build step" exists only to simplify work with Automatic Static Optimization, so right now it is the recommended way. However, if you prefer not to do the "build step", there are two alternatives.
-
-### First alternative
-
-If you don't need Automatic Static Optimization in your project, you can achieve the same by using a [appWithI18n](#appwithi18n).
-
-Pros and cons:
-
-- 🔴 Automatic Static Optimization is not an option
-- 🟢 Easy to configure
-
-Learn more: [Docs](docs/USING_APP_WRAPPER.md) · [Example](https://github.com/vinissimus/next-translate/tree/master/examples/with-appWithI18n)
-
-### Second alternative
-
-You can achieve the same that the "build step" by adding some helper to load the namespaces en each page (similar than the "build step" does).
-
-Pros and cons:
-
-- 🟢 Automatic Static Optimization
-- 🔴 Hard to configure
-
-## 14. Demos
+## 12. Demos
 
 ### Demo from Next.js
 
@@ -801,12 +731,12 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://andrew-c.com"><img src="https://avatars2.githubusercontent.com/u/11482515?v=4" width="100px;" alt=""/><br /><sub><b>Andrew Chung</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=hibearpanda" title="Code">💻</a></td>
     <td align="center"><a href="http://cuthanh.com"><img src="https://avatars0.githubusercontent.com/u/9281080?v=4" width="100px;" alt=""/><br /><sub><b>Thanh Minh</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=thanhlmm" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/croutonn"><img src="https://avatars1.githubusercontent.com/u/68943932?v=4" width="100px;" alt=""/><br /><sub><b>crouton</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=croutonn" title="Code">💻</a></td>
+    <td align="center"><a href="http://patrickmuff.ch"><img src="https://avatars3.githubusercontent.com/u/3121902?v=4" width="100px;" alt=""/><br /><sub><b>Patrick</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=dislick" title="Documentation">📖</a></td>
   </tr>
 </table>
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
