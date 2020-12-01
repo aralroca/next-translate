@@ -1,3 +1,4 @@
+import path from 'path'
 import templateWithHoc from './templateWithHoc'
 import templateWithLoader from './templateWithLoader'
 import {
@@ -8,7 +9,10 @@ import {
   hasHOC,
 } from './utils'
 
-const defaultAppPath = process.cwd() + '/node_modules/next/dist/pages/_app'
+const defaultAppPath = path.join(
+  process.cwd(),
+  'node_modules/next/dist/pages/_app'
+)
 
 export default function loader(rawCode) {
   const {

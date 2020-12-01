@@ -5,16 +5,16 @@ import { hasHOC } from './utils'
  * - Update GIFs from READMEs
  * - Convert to TypeScript the plugin files
  * - Add in the migration guide the case from comming to custom server
- * - Test webpack loader in windows
  */
 export default function nextTranslate(nextConfig: any = {}) {
   const fs = require('fs')
+  const path = require('path')
   const test = /\.(tsx|ts|js|mjs|jsx)$/
-  const arePagesInsideSrc = fs.existsSync(process.cwd() + '/src/pages')
-  let file = '/i18n.js'
+  const arePagesInsideSrc = fs.existsSync(path.join(process.cwd(), 'src/pages'))
+  let file = 'i18n.js'
 
-  if (!fs.existsSync(process.cwd() + file)) file = '/i18n.json'
-  if (!fs.existsSync(process.cwd() + file)) {
+  if (!fs.existsSync(path.join(process.cwd(), file))) file = 'i18n.json'
+  if (!fs.existsSync(path.join(process.cwd(), file))) {
     console.error(
       '🚨 [next-translate] You should provide the next-translate config inside i18n.js / i18n.json root file.'
     )
@@ -29,7 +29,7 @@ export default function nextTranslate(nextConfig: any = {}) {
     pages,
     logger,
     ...restI18n
-  } = require(process.cwd() + file)
+  } = require(path.join(process.cwd(), file))
 
   // @todo Remove all these warnings on 1.1.0
   const migrationLink =
@@ -60,12 +60,14 @@ export default function nextTranslate(nextConfig: any = {}) {
 
   // Check if exist a getInitialProps on _app.js
   let hasGetInitialPropsOnAppJs = false
-  const pagesPath =
-    process.cwd() + (arePagesInsideSrc ? '/src/pages' : '/pages')
+  const pagesPath = path.join(
+    process.cwd(),
+    arePagesInsideSrc ? '/src/pages' : '/pages'
+  )
   const app = fs.readdirSync(pagesPath).find((page) => page.startsWith('_app.'))
 
   if (app) {
-    const code = fs.readFileSync(`${pagesPath}/${app}`).toString('UTF-8')
+    const code = fs.readFileSync(path.join(pagesPath, app)).toString('UTF-8')
     hasGetInitialPropsOnAppJs =
       !!code.match(/\WgetInitialProps\W/g) || hasHOC(code)
   }
@@ -84,6 +86,11 @@ export default function nextTranslate(nextConfig: any = {}) {
           ? nextConfig.webpack(conf, options)
           : conf
 
+      config.resolve.alias = {
+        ...(config.resolve.alias || {}),
+        '@next-translate-root': path.resolve(process.cwd()),
+      }
+
       // we give the opportunity for people to use next-translate without altering
       // any document, allowing them to manually add the necessary helpers on each
       // page to load the namespaces.
@@ -96,7 +103,7 @@ export default function nextTranslate(nextConfig: any = {}) {
           options: {
             extensionsRgx: test,
             hasGetInitialPropsOnAppJs,
-            pagesPath: pagesPath + '/',
+            pagesPath: path.join(pagesPath, '/'),
             hasLoadLocaleFrom: typeof restI18n.loadLocaleFrom === 'function',
           },
         },

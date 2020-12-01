@@ -1,9 +1,8 @@
 import templateWithHoc from '../src/plugin/templateWithHoc'
 import prettier from 'prettier'
 
-const clean = (t) => {
-  const cwd = new RegExp(process.cwd().replace(/\//gm, '\\/'), 'gm')
-  return prettier.format(t.replace(cwd, ''), { parser: 'typescript' })
+function clean(code) {
+  return prettier.format(code, { parser: 'typescript' })
 }
 
 const tests = [
