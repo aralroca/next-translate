@@ -30,7 +30,7 @@ export default function loader(rawCode) {
   // Skip rest of files that are not inside /pages
   if (!this.resourcePath.startsWith(pagesPath)) return rawCode
 
-  const page = this.resourcePath.replace(pagesPath, '/', '')
+  const page = this.resourcePath.replace(pagesPath, '/').replace(/\\/g, '/')
   const pageNoExt = page.replace(extensionsRgx, '')
   const code = rawCode.replace(clearCommentsRgx, '')
   const typescript = page.endsWith('.ts') || page.endsWith('.tsx')
