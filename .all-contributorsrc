@@ -160,8 +160,17 @@
         "code"
       ]
     },
+    {     
+      "login": "dislick",
+      "name": "Patrick",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/3121902?v=4",
+      "profile": "http://patrickmuff.ch",
+      "contributions": [
+        "doc"
+      ]
+    },
     {
-      "login": "vimutti77",
+     "login": "vimutti77",
       "name": "Vantroy",
       "avatar_url": "https://avatars3.githubusercontent.com/u/27840664?v=4",
       "profile": "https://github.com/vimutti77",

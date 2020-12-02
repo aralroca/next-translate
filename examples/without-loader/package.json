@@ -1,0 +1,16 @@
+{
+  "name": "-",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build"
+  },
+  "dependencies": {
+    "next": "10.0.3",
+    "next-translate": "link:../../",
+    "react": "link:../../node_modules/react",
+    "react-dom": "link:../../node_modules/react-dom"
+  }
+}
