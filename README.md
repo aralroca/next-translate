@@ -47,9 +47,9 @@
 - [11. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
 - [12. Demos](#12-demos)
   - [Demo from Next.js](#demo-from-nextjs)
-  - [Basic demo: With the "build step"](#basic-demo-with-the-build-step)
-  - [Basic demo: Using the appWithI18n alternative](#basic-demo-using-the-appwithi18n-alternative)
-  - [Basic demo: Without the "build step"](#basic-demo-without-the-build-step)
+  - [Basic demo](#basic-demo)
+  - [Complex demo](#complex-demo)
+  - [Without the webpack loader demo](#without-the-webpack-loader-demo)
 - [Contributors ✨](#contributors-)
 
 <p align="center">
@@ -673,29 +673,35 @@ npx create-next-app --example with-next-translate with-next-translate-app
 yarn create next-app --example with-next-translate with-next-translate-app
 ```
 
-### Basic demo: With the "build step"
+### Basic demo
 
 This demo is in this repository:
 
 - `git clone git@github.com:vinissimus/next-translate.git`
 - `cd next-translate`
-- `yarn && yarn example:with-build-step`
+- `yarn && yarn example:basic`
 
-### Basic demo: Using the appWithI18n alternative
+### Complex demo
 
-This demo is in this repository:
-
-- `git clone git@github.com:vinissimus/next-translate.git`
-- `cd next-translate`
-- `yarn && yarn example:with-server`
-
-### Basic demo: Without the "build step"
+Similar than the basic demo but with some extras: TypeScript, Webpack 5, MDX, with _app.js on top, pages located on src/pages folder, loading locales from src/translations with a different structure.
 
 This demo is in this repository:
 
 - `git clone git@github.com:vinissimus/next-translate.git`
 - `cd next-translate`
-- `yarn && yarn example:without-build-step`
+- `yarn && yarn example:complex`
+
+### Without the webpack loader demo
+
+Similar than the basic example but loading the page namespaces manually deactivating the webpack loader in the i18n.json config file.
+
+> We do not recommend that it be used in this way. However we give the opportunity for anyone to do so if they are not comfortable with our webpack loader.
+
+This demo is in this repository:
+
+- `git clone git@github.com:vinissimus/next-translate.git`
+- `cd next-translate`
+- `yarn && yarn example:without-loader`
 
 [badge-prwelcome]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [prwelcome]: http://makeapullrequest.com
