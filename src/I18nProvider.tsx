@@ -101,15 +101,15 @@ export default function I18nProvider({
   lang: lng,
   namespaces = {},
   children,
-  logger = missingKeyLogger,
-  loadLocaleFrom = () => Promise.resolve({}),
+  config,
 }: I18nProviderProps) {
-  const { lang: parentLang } = useTranslation()
+  const { lang: parentLang, config: parentConfig = {} } = useTranslation()
   const { locale, defaultLocale } = useRouter() || {}
   const lang = lng || parentLang || locale || defaultLocale || ''
   const ns = useContext(NsContext)
   const allNamespaces = { ...ns, ...namespaces } as Record<string, Object>
   const pluralRules = new Intl.PluralRules(lang)
+  const { logger = missingKeyLogger } = config || parentConfig
 
   function t(
     key: string = '',
@@ -152,7 +152,9 @@ export default function I18nProvider({
   }
 
   return (
-    <I18nContext.Provider value={{ lang, t, loadLocaleFrom } as I18n}>
+    <I18nContext.Provider
+      value={{ lang, t, config: config || parentConfig } as I18n}
+    >
       <NsContext.Provider value={allNamespaces}>{children}</NsContext.Provider>
     </I18nContext.Provider>
   )
