@@ -19,14 +19,13 @@ export default function appWithI18n(
   }
 
   function AppWithTranslations(props: Props) {
-    const { logger, loadLocaleFrom, defaultLocale } = config
+    const { defaultLocale } = config
 
     return (
       <I18nProvider
         lang={props.pageProps?.__lang || props.__lang || defaultLocale}
         namespaces={props.pageProps?.__namespaces || props.__namespaces}
-        logger={logger}
-        loadLocaleFrom={loadLocaleFrom}
+        config={config}
       >
         <AppToTranslate {...props} />
       </I18nProvider>

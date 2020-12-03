@@ -16,23 +16,15 @@ export interface I18n {
     query: TranslationQuery | null | undefined
   ): string
   t(i18nKey: string | TemplateStringsArray): string
-
   lang: string
-  loadLocaleFrom?: (
-    language: string,
-    namespace: string
-  ) => Promise<I18nDictionary>
+  config?: I18nConfig
 }
 
 export interface I18nProviderProps {
   lang?: string
   namespaces?: Record<string, I18nDictionary>
   children?: ReactNode
-  logger?: I18nLogger
-  loadLocaleFrom?: (
-    language: string,
-    namespace: string
-  ) => Promise<I18nDictionary>
+  config?: I18nConfig
 }
 
 export interface TransProps {

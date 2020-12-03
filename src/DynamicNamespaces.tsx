@@ -9,10 +9,11 @@ export default function DynamicNamespaces({
   fallback,
   children,
 }: DynamicNamespacesProps): any {
-  const { lang, loadLocaleFrom } = useTranslation()
+  const { lang, config = {} } = useTranslation()
   const [loaded, setLoaded] = useState(false)
   const [pageNs, setPageNs] = useState<I18nDictionary[]>([])
-  const loadLocale = dynamic || loadLocaleFrom
+  const loadLocale =
+    dynamic || config.loadLocaleFrom || (() => Promise.resolve({}))
 
   async function loadNamespaces() {
     if (typeof loadLocale !== 'function') return
