@@ -42,6 +42,11 @@ function plural(
 ): string {
   if (!query || typeof query.count !== 'number') return key
 
+  const nestedKey = `${key}.${pluralRules.select(query.count)}`
+  if (getDicValue(dic, nestedKey) !== undefined) {
+    return nestedKey
+  }
+
   const numKey = `${key}_${query.count}`
   if (getDicValue(dic, numKey) !== undefined) return numKey
 

@@ -390,6 +390,65 @@ describe('useTranslation', () => {
       )
       expect(container.textContent).toContain(expected)
     })
+
+    describe('nested', () => {
+      test('should work with zero | count=0', () => {
+        const i18nKey = 'ns:withzero'
+        const expected = 'The number is ZERO!'
+        const with_0 = {
+          withzero: {
+            one: 'The number is NOT ZERO',
+            other: 'The number is ZERO!',
+          },
+        }
+        const { container } = render(
+          <TestEnglish
+            namespaces={{ ns: with_0 }}
+            i18nKey={i18nKey}
+            query={{ count: 0 }}
+          />
+        )
+        expect(container.textContent).toContain(expected)
+      })
+
+      test('should work with singular | count=1', () => {
+        const i18nKey = 'ns:withsingular'
+        const expected = 'The number is NOT ZERO'
+        const withSingular = {
+          withsingular: {
+            one: 'The number is NOT ZERO',
+            other: 'Oops!',
+          },
+        }
+        const { container } = render(
+          <TestEnglish
+            namespaces={{ ns: withSingular }}
+            i18nKey={i18nKey}
+            query={{ count: 1 }}
+          />
+        )
+        expect(container.textContent).toContain(expected)
+      })
+
+      test('should work with plural | count=2', () => {
+        const i18nKey = 'ns:withplural'
+        const expected = 'Number is bigger than one!'
+        const withPlural = {
+          withplural: {
+            one: 'Singular',
+            other: 'Number is bigger than one!',
+          },
+        }
+        const { container } = render(
+          <TestEnglish
+            namespaces={{ ns: withPlural }}
+            i18nKey={i18nKey}
+            query={{ count: 2 }}
+          />
+        )
+        expect(container.textContent).toContain(expected)
+      })
+    })
   })
 
   describe('options', () => {

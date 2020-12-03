@@ -463,7 +463,7 @@ To work well, it is necessary that your `_app.js` will be wrapped with the [appW
 
 ## 5. Plurals
 
-We support 6 plural forms (taken from [CLDR Plurals](http://cldr.unicode.org/index/cldr-spec/plural-rules) page) by adding to the key this suffix:
+We support 6 plural forms (taken from [CLDR Plurals](http://cldr.unicode.org/index/cldr-spec/plural-rules) page) by adding to the key this suffix (or nesting it under the key with no `_` prefix):
 
 - `_zero`
 - `_one` (singular)
