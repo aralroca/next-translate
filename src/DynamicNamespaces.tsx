@@ -12,7 +12,8 @@ export default function DynamicNamespaces({
   const { lang, config = {} } = useTranslation()
   const [loaded, setLoaded] = useState(false)
   const [pageNs, setPageNs] = useState<I18nDictionary[]>([])
-  const loadLocale = dynamic || config.loadLocaleFrom
+  const loadLocale =
+    dynamic || config.loadLocaleFrom || (() => Promise.resolve({}))
 
   async function loadNamespaces() {
     if (typeof loadLocale !== 'function') return
