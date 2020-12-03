@@ -498,6 +498,19 @@ t('cart-message', { count })
 }
 ```
 
+or
+
+```js
+{
+  "cart-message": {
+     "0": "The cart is empty", // when count === 0
+     "one": "The cart has only {{count}} product", // singular
+     "other": "The cart has {{count}} products", // plural
+     "999": "The cart is full", // when count === 999
+  } 
+}
+```
+
 
 ## 6. Use HTML inside the translation
 
