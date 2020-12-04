@@ -227,7 +227,7 @@ describe('useTranslation', () => {
         grandfather: {
           parent: {
             child: 'Singular {{count}}',
-            child_plural: 'Plural! {{count}}',
+            child_other: 'Plural! {{count}}',
           },
         },
       }
@@ -270,7 +270,7 @@ describe('useTranslation', () => {
       const withSingular = {
         withsingular: 'The number is NOT ZERO',
         withsingular_0: 'The number is ZERO!',
-        withsingular_plural: 'Oops!',
+        withsingular_other: 'Oops!',
       }
       const { container } = render(
         <TestEnglish
@@ -288,7 +288,7 @@ describe('useTranslation', () => {
       const withSingular = {
         withsingular: 'The number is NOT ONE',
         withsingular_1: 'The number is ONE!',
-        withsingular_plural: 'Oops!',
+        withsingular_other: 'Oops!',
       }
       const { container } = render(
         <TestEnglish
@@ -306,7 +306,7 @@ describe('useTranslation', () => {
       const with_1 = {
         withsingular: 'The number is NOT ONE',
         withsingular_1: 'The number is ONE!',
-        withsingular_plural: 'Oops!',
+        withsingular_other: 'Oops!',
       }
       const { container } = render(
         <TestEnglish
@@ -324,7 +324,7 @@ describe('useTranslation', () => {
       const with_0 = {
         withsingular: 'The number is NOT ZERO',
         withsingular_0: 'The number is ZERO!',
-        withsingular_plural: 'Oops!',
+        withsingular_other: 'Oops!',
       }
       const { container } = render(
         <TestEnglish
@@ -342,7 +342,7 @@ describe('useTranslation', () => {
       const withPlural = {
         withplural: 'Singular',
         withplural_1: 'The number is ONE!',
-        withplural_plural: 'Number is bigger than one!',
+        withplural_other: 'Number is bigger than one!',
       }
       const { container } = render(
         <TestEnglish
@@ -360,7 +360,7 @@ describe('useTranslation', () => {
       const withPlural = {
         withplural: 'Singular',
         withplural_2: 'The number is TWO!',
-        withplural_plural: 'Number is bigger than one!',
+        withplural_other: 'Number is bigger than one!',
       }
       const { container } = render(
         <TestEnglish
@@ -389,6 +389,124 @@ describe('useTranslation', () => {
         </I18nProvider>
       )
       expect(container.textContent).toContain(expected)
+    })
+
+    describe('nested', () => {
+      test('should work with 0 | count=0', () => {
+        const i18nKey = 'ns:withzero'
+        const expected = 'The number is ZERO!'
+        const with_0 = {
+          withzero: {
+            one: 'The number is NOT ZERO',
+            other: 'The number is not ZERO!',
+            0: 'The number is ZERO!',
+          },
+        }
+        const { container } = render(
+          <TestEnglish
+            namespaces={{ ns: with_0 }}
+            i18nKey={i18nKey}
+            query={{ count: 0 }}
+          />
+        )
+        expect(container.textContent).toContain(expected)
+      })
+
+      test('should work with zero | count=0', () => {
+        const i18nKey = 'ns:withzero'
+        const expected = 'The number is ZERO!'
+        const with_0 = {
+          withzero: {
+            one: 'The number is NOT ZERO',
+            other: 'The number is ZERO!',
+          },
+        }
+        const { container } = render(
+          <TestEnglish
+            namespaces={{ ns: with_0 }}
+            i18nKey={i18nKey}
+            query={{ count: 0 }}
+          />
+        )
+        expect(container.textContent).toContain(expected)
+      })
+
+      test('should work with singular | count=1', () => {
+        const i18nKey = 'ns:withsingular'
+        const expected = 'The number is NOT ZERO'
+        const withSingular = {
+          withsingular: {
+            one: 'The number is NOT ZERO',
+            other: 'Oops!',
+          },
+        }
+        const { container } = render(
+          <TestEnglish
+            namespaces={{ ns: withSingular }}
+            i18nKey={i18nKey}
+            query={{ count: 1 }}
+          />
+        )
+        expect(container.textContent).toContain(expected)
+      })
+
+      test('should work with 1 | count=1', () => {
+        const i18nKey = 'ns:withsingular'
+        const expected = 'The number is NOT ZERO'
+        const withSingular = {
+          withsingular: {
+            1: 'The number is NOT ZERO',
+            other: 'Oops!',
+          },
+        }
+        const { container } = render(
+          <TestEnglish
+            namespaces={{ ns: withSingular }}
+            i18nKey={i18nKey}
+            query={{ count: 1 }}
+          />
+        )
+        expect(container.textContent).toContain(expected)
+      })
+
+      test('should work with plural | count=2', () => {
+        const i18nKey = 'ns:withplural'
+        const expected = 'Number is bigger than one!'
+        const withPlural = {
+          withplural: {
+            one: 'Singular',
+            other: 'Number is bigger than one!',
+          },
+        }
+        const { container } = render(
+          <TestEnglish
+            namespaces={{ ns: withPlural }}
+            i18nKey={i18nKey}
+            query={{ count: 2 }}
+          />
+        )
+        expect(container.textContent).toContain(expected)
+      })
+
+      test('should work with 2 | count=2', () => {
+        const i18nKey = 'ns:withplural'
+        const expected = 'Number is 2!'
+        const withPlural = {
+          withplural: {
+            one: 'Singular',
+            2: 'Number is 2!',
+            other: 'Number is bigger than one!',
+          },
+        }
+        const { container } = render(
+          <TestEnglish
+            namespaces={{ ns: withPlural }}
+            i18nKey={i18nKey}
+            query={{ count: 2 }}
+          />
+        )
+        expect(container.textContent).toContain(expected)
+      })
     })
   })
 
@@ -625,6 +743,40 @@ describe('useTranslation', () => {
 
       const { container } = render(
         <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should support alternative interpolation delimeter options', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:template-object-interpolation', {
+          count: 3,
+          something: 'cats',
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'There are 3 cats.'
+      const templateString = {
+        'template-object-interpolation': 'There are ${count} ${something}.',
+      }
+
+      const config = {
+        interpolation: {
+          prefix: '${',
+          suffix: '}',
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+          config={config}
+        >
           <Inner />
         </I18nProvider>
       )

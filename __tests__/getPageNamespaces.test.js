@@ -1,4 +1,4 @@
-import getPageNamespaces from '../src/_helpers/getPageNamespaces'
+import getPageNamespaces from '../src/getPageNamespaces'
 
 describe('getPageNamespaces', () => {
   let ctx
