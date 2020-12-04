@@ -17,15 +17,21 @@ const defaultAppPath = path.join(
 export default function loader(rawCode) {
   const {
     hasGetInitialPropsOnAppJs,
+    hasAppJs,
     extensionsRgx,
     pagesPath,
     hasLoadLocaleFrom,
   } = this.query
 
   // In case that there aren't /_app.js we want to overwrite the default _app
-  // to provide the I18Provider on top
-  if (this.resourcePath.startsWith(defaultAppPath))
+  // to provide the I18Provider on top.
+  if (this.resourcePath.startsWith(defaultAppPath)) {
+    // There are cases that a default appjs is served even if it already has
+    // an appjs defined. For example when using a class extended from NextApp.
+    // For these cases we must not overwrite it.
+    if (hasAppJs) return rawCode
     return getDefaultAppJs(hasLoadLocaleFrom)
+  }
 
   // Skip rest of files that are not inside /pages
   if (!this.resourcePath.startsWith(pagesPath)) return rawCode

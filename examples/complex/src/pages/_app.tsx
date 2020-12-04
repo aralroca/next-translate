@@ -1,10 +1,13 @@
 import React from 'react'
-import type { AppProps } from 'next/app'
+import NextApp from 'next/app'
 
 import '../styles.css'
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+class MyApp extends NextApp {
+  render() {
+    const { Component, pageProps } = this.props
+    return <Component {...pageProps} />
+  }
 }
 
 export default MyApp
