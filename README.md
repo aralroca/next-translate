@@ -62,7 +62,7 @@ The main goal of this library is to keep the translations as simple as possible 
 
 Next-translate has two parts: Next.js plugin + i18n API.
 
-**Features** ✨: 
+**Features** ✨
 
 - 🚀  ・ Works well with automatic page optimization.
 - 🦄  ・ Easy to use and configure.
