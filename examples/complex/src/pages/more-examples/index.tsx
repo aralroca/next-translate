@@ -12,7 +12,7 @@ const Component = (props: any) => <p {...props} />
 export default function MoreExamples() {
   const { t } = useTranslation('more-examples')
   const exampleWithVariable = t('example-with-variable', {
-    count: 42,
+    exampleOfVariable: 42,
   })
 
   return (
