@@ -68,7 +68,7 @@ Next-translate has two parts: Next.js plugin + i18n API.
 - 🦄  ・ Easy to use and configure.
 - 🌍  ・ Basic i18n support: interpolation, plurals, useTranslation hook, Trans component...
 - 🈂️  ・ It loads only the necessary translations _(for page and for locale)_.
-- 📦  ・ Tiny (~1kb) and tree shakable.
+- 📦  ・ Tiny (~1kb) and tree shakable. No dependencies.
 
 <p align="center">
     <img width="500" src="images/bundle-size.png" alt="Bundle size" />
