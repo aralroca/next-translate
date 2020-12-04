@@ -159,6 +159,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "josephfarina",
+      "name": "Joey",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/17398284?v=4",
+      "profile": "https://www.npmjs.com/~farinajoey",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
