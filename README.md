@@ -464,7 +464,7 @@ To work well, it is necessary that your `_app.js` will be wrapped with the [appW
 
 ## 5. Plurals
 
-We support 6 plural forms (taken from [CLDR Plurals](http://cldr.unicode.org/index/cldr-spec/plural-rules) page) by adding to the key this suffix:
+We support 6 plural forms (taken from [CLDR Plurals](http://cldr.unicode.org/index/cldr-spec/plural-rules) page) by adding to the key this suffix (or nesting it under the key with no `_` prefix):
 
 - `_zero`
 - `_one` (singular)
@@ -496,6 +496,19 @@ t('cart-message', { count })
   "cart-message_one": "The cart has only {{count}} product", // singular
   "cart-message_other": "The cart has {{count}} products", // plural
   "cart-message_999": "The cart is full", // when count === 999
+}
+```
+
+or
+
+```js
+{
+  "cart-message": {
+     "0": "The cart is empty", // when count === 0
+     "one": "The cart has only {{count}} product", // singular
+     "other": "The cart has {{count}} products", // plural
+     "999": "The cart is full", // when count === 999
+  } 
 }
 ```
 

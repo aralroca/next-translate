@@ -24,10 +24,13 @@ function getDicValue(
 ): string | undefined | unknown {
   const value: string | unknown = key
     .split('.')
-    .reduce(
-      (val: Object, key: string) => val[key as keyof typeof val] || {},
-      dic
-    )
+    .reduce((val: Object, key: string) => {
+      if (typeof val === 'string') {
+        return {}
+      }
+
+      return val[key as keyof typeof val] || {}
+    }, dic)
 
   if (
     typeof value === 'string' ||
@@ -55,6 +58,12 @@ function plural(
   if (query.count > 1 && getDicValue(dic, pluralKey) !== undefined) {
     return pluralKey
   }
+
+  const nestedNumKey = `${key}.${query.count}`
+  if (getDicValue(dic, nestedNumKey) !== undefined) return nestedNumKey
+
+  const nestedKey = `${key}.${pluralRules.select(query.count)}`
+  if (getDicValue(dic, nestedKey) !== undefined) return nestedKey
 
   return key
 }
