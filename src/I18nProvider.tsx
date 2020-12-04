@@ -2,7 +2,13 @@ import React, { createContext, useContext } from 'react'
 import { useRouter } from 'next/router'
 import I18nContext from './_context'
 import useTranslation from './useTranslation'
-import { I18n, I18nProviderProps, LoggerProps, TranslationQuery } from '.'
+import {
+  I18n,
+  I18nConfig,
+  I18nProviderProps,
+  LoggerProps,
+  TranslationQuery,
+} from '.'
 
 const NsContext = createContext({})
 
@@ -56,27 +62,53 @@ function plural(
 /**
  * Replace {{variables}} to query values
  */
-function interpolation(text?: string, query?: TranslationQuery | null): string {
+function interpolation({
+  text,
+  query,
+  config,
+}: {
+  text?: string
+  query?: TranslationQuery | null
+  config: I18nConfig
+}): string {
   if (!text || !query) return text || ''
 
+  const escapeRegex = (str: string) =>
+    str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+  const {
+    interpolation: { prefix, suffix } = { prefix: '{{', suffix: '}}' },
+  } = config
+
   return Object.keys(query).reduce((all, varKey) => {
-    const regex = new RegExp(`{{\\s*${varKey}\\s*}}`, 'gm')
+    const regex = new RegExp(
+      `${escapeRegex(prefix)}\\s*${varKey}\\s*${escapeRegex(suffix)}`,
+      'gm'
+    )
     all = all.replace(regex, `${query[varKey]}`)
     return all
   }, text)
 }
 
-function objectInterpolation(
-  obj: Record<string, string | unknown>,
+function objectInterpolation({
+  obj,
+  query,
+  config,
+}: {
+  obj: Record<string, string | unknown>
   query?: TranslationQuery | null
-): Object {
+  config: I18nConfig
+}): Object {
   if (!query || Object.keys(query).length === 0) return obj
 
   Object.keys(obj).forEach((key) => {
     if (obj[key] instanceof Object)
-      objectInterpolation(obj[key] as Record<string, string | unknown>, query)
+      objectInterpolation({
+        obj: obj[key] as Record<string, string | unknown>,
+        query,
+        config,
+      })
     if (typeof obj[key] === 'string')
-      obj[key] = interpolation(obj[key] as string, query)
+      obj[key] = interpolation({ text: obj[key] as string, query, config })
   })
 
   return obj
@@ -146,10 +178,14 @@ export default function I18nProvider({
     }
 
     if (value instanceof Object) {
-      return objectInterpolation(value as Record<string, unknown>, query)
+      return objectInterpolation({
+        obj: value as Record<string, unknown>,
+        query,
+        config,
+      })
     }
 
-    return interpolation(value as string, query) || k
+    return interpolation({ text: value as string, query, config }) || k
   }
 
   return (

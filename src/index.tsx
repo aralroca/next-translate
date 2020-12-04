@@ -47,6 +47,10 @@ export interface I18nConfig {
   logger?: I18nLogger
   loader?: boolean
   logBuild?: boolean
+  interpolation?: {
+    prefix: string
+    suffix: string
+  }
 }
 
 export interface LoaderConfig extends I18nConfig {

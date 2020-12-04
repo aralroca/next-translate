@@ -630,5 +630,39 @@ describe('useTranslation', () => {
       )
       expect(container.textContent).toContain(expected)
     })
+
+    test('should support alternative interpolation delimeter options', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:template-object-interpolation', {
+          count: 3,
+          something: 'cats',
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'There are 3 cats.'
+      const templateString = {
+        'template-object-interpolation': 'There are ${count} ${something}.',
+      }
+
+      const config = {
+        interpolation: {
+          prefix: '${',
+          suffix: '}',
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+          config={config}
+        >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
   })
 })
