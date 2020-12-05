@@ -5,17 +5,21 @@ export interface TranslationQuery {
   [name: string]: string | number
 }
 
-export interface I18n {
-  t(
+export interface Translate {
+  (
     i18nKey: string | TemplateStringsArray,
     query: TranslationQuery | null | undefined,
     options: { returnObjects?: boolean; fallback?: string | string[] }
   ): string | object
-  t(
+  <R = string>(
     i18nKey: string | TemplateStringsArray,
     query: TranslationQuery | null | undefined
-  ): string
-  t(i18nKey: string | TemplateStringsArray): string
+  ): R
+  <R = string>(i18nKey: string | TemplateStringsArray): R
+}
+
+export interface I18n {
+  t: Translate
   lang: string
   config?: I18nConfig
 }
