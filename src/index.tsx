@@ -1,21 +1,22 @@
-import { ReactElement, ReactNode } from 'react'
-import nextTranslate from './plugin'
+import { ReactElement, ReactNode } from 'react';
+
+import nextTranslate from './plugin';
 
 export interface TranslationQuery {
   [name: string]: string | number
 }
 
 export interface Translate {
-  (
+  <T = string>(
     i18nKey: string | TemplateStringsArray,
     query: TranslationQuery | null | undefined,
     options: { returnObjects?: boolean; fallback?: string | string[] }
-  ): string | object
-  <R = string>(
+  ): T
+  (
     i18nKey: string | TemplateStringsArray,
     query: TranslationQuery | null | undefined
-  ): R
-  <R = string>(i18nKey: string | TemplateStringsArray): R
+  ): string
+  (i18nKey: string | TemplateStringsArray): string
 }
 
 export interface I18n {
@@ -82,8 +83,8 @@ export interface I18nDictionary {
 export interface DynamicNamespacesProps {
   dynamic?: (language: string, namespace: string) => Promise<I18nDictionary>
   namespaces?: string[]
-  fallback?: React.ReactNode
-  children?: React.ReactNode
+  fallback?: ReactNode
+  children?: ReactNode
 }
 
 module.exports = nextTranslate
