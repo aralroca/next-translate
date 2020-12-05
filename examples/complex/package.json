@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "build": "next build"
+    "build": "next build",
+    "analyze": "ANALYZE=true yarn build"
   },
   "dependencies": {
     "@mdx-js/loader": "1.6.21",
@@ -16,6 +17,7 @@
     "react-dom": "link:../../node_modules/react-dom"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "10.0.3",
     "@types/node": "14.14.10",
     "@types/react": "17.0.0",
     "typescript": "4.1.2"
