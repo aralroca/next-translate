@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strict": false,
+    "module": "ES2020",
+    "target": "es5",
+    "jsx": "react",
+    "removeComments": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "declaration": true,
+    "lib": ["esnext", "dom"],
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./lib/esm"
+  },
+  "include": ["./src"]
+}
