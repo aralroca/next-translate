@@ -12,16 +12,24 @@ function createPackageFromFile(file, prefix, subfolder) {
 
   const packageJSON = JSON.stringify(
     {
-      internal: true,
+      name: name.toLowerCase(),
+      private: true,
       main: `${prefix}lib/cjs/${subfolder}${name}.js`,
       module: `${prefix}lib/esm/${subfolder}${name}.js`,
-      types: `${prefix}lib/esm/${subfolder}${name}.d.ts`,
+      types: `${prefix}${subfolder}${name}.d.ts`,
     },
     undefined,
     2
   )
 
   fs.writeFileSync(`${subfolder}${name}/package.json`, packageJSON)
+
+  // It seems that VSCode and IDEs using auto-import are referenced by where the
+  // types are. So moving the types to the root fix the auto-imports.
+  fs.renameSync(
+    `./types/${subfolder}${name}.d.ts`,
+    `./${subfolder}${name}.d.ts`
+  )
 }
 
 function createPackagesFromFolder(folder, prefix, subfolder = '') {

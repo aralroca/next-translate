@@ -10,7 +10,8 @@
     "declaration": true,
     "lib": ["esnext", "dom"],
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./lib/esm"
+    "outDir": "./lib/esm",
+    "declarationDir": "./types"
   },
   "include": ["./src"]
 }
