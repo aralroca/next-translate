@@ -5,6 +5,7 @@
 !*.json
 !*.js
 !*.ts
+*.d.ts
 !*.tsx
 !src/plugin
 !examples

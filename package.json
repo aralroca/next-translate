@@ -1,6 +1,6 @@
 {
   "name": "next-translate",
-  "version": "1.0.0-canary.6",
+  "version": "1.0.0-canary.7",
   "description": "Tiny and powerful i18n tools (Next plugin + API) to translate your Next.js pages.",
   "license": "MIT",
   "keywords": [
@@ -28,23 +28,24 @@
   },
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
-  "types": "./lib/esm/index.d.ts",
+  "types": "./index.d.ts",
   "files": [
     "cli",
     "lib",
-    "plugin",
-    "appWithI18n",
-    "DynamicNamespaces",
-    "I18nProvider",
-    "loadNamespaces",
-    "Trans",
-    "withTranslation",
-    "useTranslation"
+    "plugin*",
+    "appWithI18n*",
+    "DynamicNamespaces*",
+    "I18nProvider*",
+    "loadNamespaces*",
+    "Trans*",
+    "withTranslation*",
+    "useTranslation*",
+    "index*"
   ],
   "scripts": {
     "build": "yarn clean && cross-env NODE_ENV=production && yarn tsc",
     "clean": "yarn clean:build && yarn clean:examples",
-    "clean:build": "rm -rf lib plugin appWith* Dynamic* I18n* index _context loadNa* Trans useT* withT* getP*",
+    "clean:build": "rm -rf lib plugin appWith* Dynamic* I18n* index _context loadNa* Trans useT* withT* getP* *.d.ts types",
     "clean:examples": "rm -rf examples/**/.next && rm -rf examples/**/node_modules && rm -rf examples/**/yarn.lock",
     "example": "yarn example:complex",
     "example:basic": "yarn build && cd examples/basic && yarn && yarn dev",
