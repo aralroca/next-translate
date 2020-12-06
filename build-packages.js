@@ -12,7 +12,8 @@ function createPackageFromFile(file, prefix, subfolder) {
 
   const packageJSON = JSON.stringify(
     {
-      internal: true,
+      name: name.toLowerCase(),
+      private: true,
       main: `${prefix}lib/cjs/${subfolder}${name}.js`,
       module: `${prefix}lib/esm/${subfolder}${name}.js`,
       types: `${prefix}lib/esm/${subfolder}${name}.d.ts`,
