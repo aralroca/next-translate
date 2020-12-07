@@ -2,36 +2,36 @@ import { LoaderConfig } from '.'
 import getPageNamespaces from './getPageNamespaces'
 
 export default async function loadNamespaces(config: LoaderConfig = {}) {
+  const conf = { ...globalThis.i18nConfig, ...config }
   const __lang: string =
-    config.locale || config.router?.locale || config.defaultLocale || ''
+    conf.locale || conf.router?.locale || conf.defaultLocale || ''
 
-  if (!config.pathname) {
+  if (!conf.pathname) {
     console.warn(
       '🚨 [next-translate] You forgot to pass the "pathname" inside "loadNamespaces" configuration'
     )
     return { __lang }
   }
 
-  if (!config.loaderName && config.loader !== false) {
+  if (!conf.loaderName && conf.loader !== false) {
     console.warn(
       '🚨 [next-translate] You can remove the "loadNamespaces" helper, unless you set "loader: false" in your i18n config file.'
     )
   }
 
-  const page =
-    removeTrailingSlash(config.pathname.replace(/\/index$/, '')) || '/'
-  const namespaces = await getPageNamespaces(config, page, config)
+  const page = removeTrailingSlash(conf.pathname.replace(/\/index$/, '')) || '/'
+  const namespaces = await getPageNamespaces(conf, page, conf)
   const defaultLoader = (l, n) => Promise.resolve({})
   const pageNamespaces =
     (await Promise.all(
       namespaces.map((ns) =>
-        typeof config.loadLocaleFrom === 'function'
-          ? config.loadLocaleFrom(__lang, ns)
+        typeof conf.loadLocaleFrom === 'function'
+          ? conf.loadLocaleFrom(__lang, ns)
           : defaultLoader(__lang, ns)
       )
     ).catch(() => {})) || []
 
-  if (config.logBuild !== false && typeof window === 'undefined') {
+  if (conf.logBuild !== false && typeof window === 'undefined') {
     const color = (c) => `\x1b[36m${c}\x1b[0m`
     console.log(
       color('next-translate'),
@@ -42,7 +42,7 @@ export default async function loadNamespaces(config: LoaderConfig = {}) {
       '- namespaces:',
       color(namespaces.join(', ')),
       '- used loader:',
-      color(config.loaderName || '-')
+      color(conf.loaderName || '-')
     )
   }
 

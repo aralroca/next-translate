@@ -1,6 +1,6 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react'
 
-import nextTranslate from './plugin';
+import nextTranslate from './plugin'
 
 export interface TranslationQuery {
   [name: string]: string | number
@@ -22,7 +22,6 @@ export interface Translate {
 export interface I18n {
   t: Translate
   lang: string
-  config?: I18nConfig
 }
 
 export interface I18nProviderProps {

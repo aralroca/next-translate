@@ -2,7 +2,6 @@ import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
 import loadNamespaces from 'next-translate/loadNamespaces'
-import i18nConfig from '../../../i18n'
 
 export default function DynamicRoute() {
   const { query } = useRouter()
@@ -36,7 +35,6 @@ export function getStaticPaths({ locales }) {
 export async function getStaticProps(ctx) {
   return {
     props: await loadNamespaces({
-      ...i18nConfig,
       ...ctx,
       pathname: '/more-examples/dynamicroute/[slug]',
     }),

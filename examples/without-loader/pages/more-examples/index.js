@@ -6,7 +6,6 @@ import loadNamespaces from 'next-translate/loadNamespaces'
 import PluralExample from '../../components/plural-example'
 import Header from '../../components/header'
 import NoFunctionalComponent from '../../components/no-functional-component'
-import i18nConfig from '../../i18n'
 
 const Component = (props) => <p {...props} />
 
@@ -52,7 +51,6 @@ export default function MoreExamples() {
 export async function getStaticProps(ctx) {
   return {
     props: await loadNamespaces({
-      ...i18nConfig,
       ...ctx,
       pathname: '/more-examples',
     }),

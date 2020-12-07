@@ -32,6 +32,8 @@ export default function appWithI18n(
     )
   }
 
+  globalThis.i18nConfig = config
+
   if (config.skipInitialProps) return AppWithTranslations
 
   AppWithTranslations.getInitialProps = async (appCtx: any) => {

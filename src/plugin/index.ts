@@ -5,15 +5,6 @@ export default function nextTranslate(nextConfig: any = {}) {
   const path = require('path')
   const test = /\.(tsx|ts|js|mjs|jsx)$/
   const arePagesInsideSrc = fs.existsSync(path.join(process.cwd(), 'src/pages'))
-  let file = 'i18n.js'
-
-  if (!fs.existsSync(path.join(process.cwd(), file))) file = 'i18n.json'
-  if (!fs.existsSync(path.join(process.cwd(), file))) {
-    console.error(
-      '🚨 [next-translate] You should provide the next-translate config inside i18n.js / i18n.json root file.'
-    )
-    return nextConfig
-  }
 
   const i18n = nextConfig.i18n || {}
   const {
@@ -23,7 +14,7 @@ export default function nextTranslate(nextConfig: any = {}) {
     pages,
     logger,
     ...restI18n
-  } = require(path.join(process.cwd(), file))
+  } = require(path.join(process.cwd(), 'i18n'))
 
   // @todo Remove all these warnings on 1.1.0
   const migrationLink =
