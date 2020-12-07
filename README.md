@@ -375,7 +375,7 @@ Remember that `['dynamic']` namespace should **not** be listed on `pages` config
 
 Asynchronous function to load the `t` function outside components / pages. It works on both server-side and client-side.
 
-Unlike the useTranslation hook, we can use here any namespace, it doesn't have to be a namespace defined in the "pages" configuration. It downloads the namespace indicated as parameter on runtime.
+Unlike the useTranslation hook, we can use here any namespace, it doesn't have to be a namespace defined in the "pages" configuration. It downloads the namespace indicated as a parameter on runtime.
 
 Example inside `getStaticProps`:
 
