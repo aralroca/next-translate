@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { DynamicNamespacesProps, I18nDictionary } from '.'
-import I18nProvider from './I18nProvider'
+import React, { useContext, useEffect, useState } from 'react'
+import { DynamicNamespacesProps, I18nDictionary, I18nConfig } from '.'
+import I18nProvider, { InternalContext } from './I18nProvider'
 import useTranslation from './useTranslation'
 
 export default function DynamicNamespaces({
@@ -9,7 +9,8 @@ export default function DynamicNamespaces({
   fallback,
   children,
 }: DynamicNamespacesProps): any {
-  const { lang, config = {} } = useTranslation()
+  const config = useContext(InternalContext).config as I18nConfig
+  const { lang } = useTranslation()
   const [loaded, setLoaded] = useState(false)
   const [pageNs, setPageNs] = useState<I18nDictionary[]>([])
   const loadLocale =

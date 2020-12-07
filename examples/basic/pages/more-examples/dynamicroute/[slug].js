@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
+import getT from 'next-translate/getT'
 import { useRouter } from 'next/router'
 
-export default function DynamicRoute() {
+export default function DynamicRoute({ title }) {
   const { query } = useRouter()
   const { t, lang } = useTranslation()
 
@@ -10,13 +11,19 @@ export default function DynamicRoute() {
 
   return (
     <>
-      <h1>{t`more-examples:dynamic-route`}</h1>
-      <h2>
+      <h1>{title}</h1>
+      <h2>{t`more-examples:dynamic-route`}</h2>
+      <h3>
         {query.slug} - {lang}
-      </h2>
+      </h3>
       <Link href="/">
         <a>{t`more-examples:go-to-home`}</a>
       </Link>
     </>
   )
+}
+
+export async function getServerSideProps({ locale }) {
+  const t = await getT(locale, 'common')
+  return { props: { title: t('title') } }
 }

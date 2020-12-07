@@ -36,8 +36,10 @@
   - [withTranslation](#withtranslation)
   - [Trans Component](#trans-component)
   - [DynamicNamespaces](#dynamicnamespaces)
+  - [getT](#gett)
   - [I18nProvider](#i18nprovider)
   - [appWithI18n](#appwithi18n)
+  - [loadNamespaces](#loadnamespaces)
 - [5. Plurals](#5-plurals)
 - [6. Use HTML inside the translation](#6-use-html-inside-the-translation)
 - [7. Nested translations](#7-nested-translations)
@@ -367,6 +369,41 @@ Remember that `['dynamic']` namespace should **not** be listed on `pages` config
   - `fallback`- ReactNode - Fallback to display meanwhile the namespaces are loading. - **Optional**.
   - `dynamic` - function - By default it uses the [loadLocaleFrom](#3-configuration) in the configuration to load the namespaces, but you can specify another destination. - **Optional**.
 
+### getT
+
+**Size**: ~1.3kb 📦
+
+Asynchronous function to load the `t` function outside components / pages. It works on both server-side and client-side.
+
+Unlike the useTranslation hook, we can use here any namespace, it doesn't have to be a namespace defined in the "pages" configuration. It downloads the namespace indicated as a parameter on runtime.
+
+Example inside `getStaticProps`:
+
+```js
+import getT from 'next-translate/getT'
+// ...
+export async function getStaticProps({ locale }) {
+  const t = await getT(locale, 'common')
+  const title = t('title')
+  return { props: { title } }
+}
+```
+
+Example inside API Route:
+
+```js
+import getT from 'next-translate/getT'
+
+export default async function handler(req, res) {
+  const t = await getT(req.query.__nextLocale, 'common')
+  const title = t('title')
+
+  res.statusCode = 200
+  res.setHeader('Content-Type', 'application/json')
+  res.end(JSON.stringify({ title }))
+}
+```
+
 ### I18nProvider
 
 **Size**: ~3kb 📦
@@ -450,23 +487,16 @@ To load the namespaces, you must return in your pages the props that the helper 
 
 ```js
 import loadNamespaces from 'next-translate/loadNamespaces'
-import i18nConfig from '../i18n'
 
 export function getStaticProps({ locale }) {
-  const options = {
-    locale,
-    pathname: '/about',
-    ...i18nConfig,
-  }
-
   return {
     props: {
-      ...(await loadNamespaces(options)),
+      ...(await loadNamespaces({ locale, pathname: '/about' })),
     }
   }
 }
 ```
-To work well, it is necessary that your `_app.js` will be wrapped with the [appWithI18n](#appwithi18n).
+🚨 To work well, it is necessary that your `_app.js` will be wrapped with the [appWithI18n](#appwithi18n). Also, the `loadLocaleFrom` configuration property is **mandatory** to define it.
 
 ## 5. Plurals
 

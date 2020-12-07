@@ -2,7 +2,6 @@ import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
 import loadNamespaces from 'next-translate/loadNamespaces'
 import { useRouter } from 'next/router'
-import i18nConfig from '../../../i18n'
 
 export default function All() {
   const { query } = useRouter()
@@ -46,7 +45,6 @@ export function getStaticPaths({ locales }) {
 export async function getStaticProps(ctx) {
   return {
     props: await loadNamespaces({
-      ...i18nConfig,
       ...ctx,
       pathname: '/more-examples/catchall/[..all]',
     }),

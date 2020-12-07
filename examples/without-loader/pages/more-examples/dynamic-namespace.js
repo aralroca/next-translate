@@ -2,7 +2,6 @@ import React from 'react'
 import Trans from 'next-translate/Trans'
 import DynamicNamespaces from 'next-translate/DynamicNamespaces'
 import loadNamespaces from 'next-translate/loadNamespaces'
-import i18nConfig from '../../i18n'
 
 export default function ExampleWithDynamicNamespace() {
   return (
@@ -21,7 +20,6 @@ export default function ExampleWithDynamicNamespace() {
 export async function getStaticProps(ctx) {
   return {
     props: await loadNamespaces({
-      ...i18nConfig,
       ...ctx,
       pathname: '/more-examples/dynamic-namespace',
     }),
