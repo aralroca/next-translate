@@ -32,7 +32,10 @@ export default function appWithI18n(
     )
   }
 
-  globalThis.i18nConfig = config
+  // @ts-ignore
+  if (typeof window === 'undefined') global.i18nConfig = config
+  // @ts-ignore
+  else window.i18nConfig = config
 
   if (config.skipInitialProps) return AppWithTranslations
 
