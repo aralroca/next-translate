@@ -1,0 +1,20 @@
+{
+  "example-with-variable": "Este es un ejemplo con variable ${exampleOfVariable}",
+  "plural-example": {
+    "one": "Es en singular porque el valor es ${count}",
+    "0": "Es cero porque el valor es ${count}",
+    "2": "Es dos porque el valor es ${count}",
+    "other": "Es en plural porque el valor es ${count}"
+  },
+  "example-with-html": "<0>Este es un ejemplo <1>usando HTML</1> dentro de la traducción</0>",
+  "no-functional-example": "Traducción hecha desde un componente no funcional",
+  "dynamic-namespaces-link": "Ver un ejemplo de carga dinámica",
+  "dynamic-route": "Ruta dinamica",
+  "mdx-example": "Este es un ejemplo con MDX",
+  "go-to-home": "Ir a la página principal",
+  "nested-example": {
+    "very-nested": {
+      "nested": "¡Ejemplo anidado!"
+    }
+  }
+}

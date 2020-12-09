@@ -1,43 +1,34 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+*
+!.github
+!docs
+!docs/*
+!*.json
+!*.js
+!*.ts
+*.d.ts
+!*.tsx
+!src/plugin
+!examples
+!examples/**/*
+!src
+!__tests__
+!.babelrc
+!.prettierignore
 
 # dependencies
 /node_modules
 /examples/*/node_modules
+/examples/*/yarn.lock
 
+# next.js internal files
 out
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# next.js
 /.next/
 /examples/*/.next/
-
-/out/
-
-# production
-/build
-/dist
-
-# misc
-.DS_Store
-.env*
 
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# build pages
-/pages
-/examples/with-build-step/pages
-
-# lib build
-*.js
-!src/**/*.js
-!__tests__/*.js
-!examples/**/*.js
-
+# vscode
 .vscode

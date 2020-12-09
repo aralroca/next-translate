@@ -1,18 +1,22 @@
 {
   "name": "next-translate",
-  "version": "0.20.2",
-  "description": "Next.js utility to translate pages in a easy way.",
+  "version": "1.0.0",
+  "description": "Tiny and powerful i18n tools (Next plugin + API) to translate your Next.js pages.",
   "license": "MIT",
   "keywords": [
     "react",
+    "preact",
     "i18n",
     "nextjs",
     "next.js",
     "next",
+    "plugin",
+    "translate",
     "translation",
-    "localization",
+    "internationalization",
     "locale",
-    "static"
+    "locales",
+    "globalization"
   ],
   "repository": {
     "type": "git",
@@ -22,43 +26,66 @@
     "name": "Aral Roca Gòmez",
     "email": "contact@aralroca.com"
   },
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./index.d.ts",
+  "files": [
+    "cli",
+    "lib",
+    "plugin*",
+    "appWithI18n*",
+    "DynamicNamespaces*",
+    "I18nProvider*",
+    "getT*",
+    "loadNamespaces*",
+    "Trans*",
+    "withTranslation*",
+    "useTranslation*",
+    "index*"
+  ],
   "scripts": {
-    "build": "yarn clean && cross-env NODE_ENV=production babel src -d .",
-    "clean": "rm -f *.js && yarn clean:examples",
+    "build": "yarn clean && cross-env NODE_ENV=production && yarn tsc",
+    "clean": "yarn clean:build && yarn clean:examples",
+    "clean:build": "rm -rf lib plugin appWith* Dynamic* I18n* index _context loadNa* Trans useT* withT* getP* getC* *.d.ts getT transC* wrapT* types",
     "clean:examples": "rm -rf examples/**/.next && rm -rf examples/**/node_modules && rm -rf examples/**/yarn.lock",
-    "example": "yarn example:with-build-step",
-    "example:with-appWithI18n": "yarn build && cd examples/with-appWithI18n && yarn && yarn dev",
-    "example:with-build-step": "yarn build && cd examples/with-build-step && yarn && yarn dev",
-    "example:without-build-step": "yarn build && cd examples/without-build-step && yarn && yarn dev",
+    "example": "yarn example:complex",
+    "example:basic": "yarn build && cd examples/basic && yarn && yarn dev",
+    "example:complex": "yarn build && cd examples/complex && yarn && yarn dev",
+    "example:without-loader": "yarn build && cd examples/without-loader && yarn && yarn dev",
     "format": "pretty-quick",
     "prepublish": "yarn test && yarn build",
     "test": "cross-env NODE_ENV=test jest",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage",
-    "test:watch": "cross-env NODE_ENV=test jest --watch"
+    "test:watch": "cross-env NODE_ENV=test jest --watch",
+    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && node build-packages.js"
   },
   "bin": {
     "next-translate": "./cli/builder.js"
   },
   "devDependencies": {
-    "@babel/cli": "7.12.1",
-    "@babel/core": "7.12.3",
-    "@babel/preset-env": "7.12.1",
-    "@testing-library/react": "11.1.0",
-    "@types/node": "^14.14.6",
-    "@types/react": "^16.9.55",
-    "babel-jest": "26.6.1",
+    "@babel/cli": "7.12.8",
+    "@babel/core": "7.12.9",
+    "@babel/preset-env": "7.12.7",
+    "@babel/preset-typescript": "7.12.7",
+    "@testing-library/react": "11.2.2",
+    "@types/node": "14.14.10",
+    "@types/react": "17.0.0",
+    "@types/react-dom": "17.0.0",
+    "@types/webpack": "4.41.25",
+    "babel-jest": "26.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
     "babel-preset-minify": "0.5.1",
     "cross-env": "7.0.2",
     "express": "4.17.1",
     "husky": "4.3.0",
-    "jest": "26.6.1",
-    "next": "10.0.0",
-    "prettier": "2.1.2",
+    "jest": "26.6.3",
+    "next": "10.0.3",
+    "prettier": "2.2.0",
     "pretty-quick": "3.1.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "supertest": "6.0.0"
+    "supertest": "6.0.1",
+    "typescript": "4.1.2"
   },
   "peerDependencies": {
     "next": ">= 10.0.0",
@@ -81,7 +108,7 @@
       "<rootDir>/src"
     ],
     "transform": {
-      "^.+\\.jsx?$": "babel-jest"
+      "^.+\\.(j|t)sx?$": "babel-jest"
     }
   }
 }

@@ -5,7 +5,7 @@ import Trans from '../src/Trans'
 
 const TestEnglish = ({ namespaces, logger, ...props }) => {
   return (
-    <I18nProvider lang="en" namespaces={namespaces} logger={logger}>
+    <I18nProvider lang="en" namespaces={namespaces} config={{ logger }}>
       <Trans {...props} />
     </I18nProvider>
   )
