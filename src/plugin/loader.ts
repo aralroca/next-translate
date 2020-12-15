@@ -9,19 +9,17 @@ import {
   hasHOC,
 } from './utils'
 
-const defaultAppPath = path.join(
-  process.cwd(),
-  'node_modules/next/dist/pages/_app'
-)
-
 export default function loader(rawCode) {
   const {
     hasGetInitialPropsOnAppJs,
     hasAppJs,
     extensionsRgx,
     pagesPath,
+    dir,
     hasLoadLocaleFrom,
   } = this.query
+
+  const defaultAppPath = path.join(dir, 'node_modules/next/dist/pages/_app')
 
   // In case that there aren't /_app.js we want to overwrite the default _app
   // to provide the I18Provider on top.
