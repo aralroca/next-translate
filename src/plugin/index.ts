@@ -1,15 +1,10 @@
 import { hasHOC } from './utils'
 
-const dir =
-  process.env.NX_WORKSPACE_ROOT ||
-  process.env.LERNA_PACKAGE_NAME ||
-  process.env.NEXT_APP_PATH ||
-  process.cwd()
-
 export default function nextTranslate(nextConfig: any = {}) {
   const fs = require('fs')
   const path = require('path')
   const test = /\.(tsx|ts|js|mjs|jsx)$/
+  const dir = process.env.NEXT_APP_PATH || nextConfig.dir || process.cwd()
   const arePagesInsideSrc = fs.existsSync(path.join(dir, 'src/pages'))
 
   const i18n = nextConfig.i18n || {}
