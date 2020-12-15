@@ -92,7 +92,6 @@ export default function nextTranslate(nextConfig: any = {}) {
             extensionsRgx: test,
             hasGetInitialPropsOnAppJs,
             hasAppJs: !!app,
-            dir,
             pagesPath: path.join(pagesPath, '/'),
             hasLoadLocaleFrom: typeof restI18n.loadLocaleFrom === 'function',
           },
