@@ -46,7 +46,7 @@
 - [9. How to change the language](#9-how-to-change-the-language)
 - [10. How to save the user-defined language](#10-how-to-save-the-user-defined-language)
 - [11. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
-- [12. How to use next-translate in a mono-repo]()
+- [12. How to use next-translate in a mono-repo](#12-how-to-use-next-translate-in-a-mono-repo)
 - [13. Demos](#13-demos)
   - [Demo from Next.js](#demo-from-nextjs)
   - [Basic demo](#basic-demo)
