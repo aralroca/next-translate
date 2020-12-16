@@ -4,7 +4,12 @@ export default function nextTranslate(nextConfig: any = {}) {
   const fs = require('fs')
   const path = require('path')
   const test = /\.(tsx|ts|js|mjs|jsx)$/
-  const dir = process.env.NEXT_APP_PATH || nextConfig.dir || process.cwd()
+
+  // NEXT_TRANSLATE_PATH env is supported both relative and absolute path
+  const dir = path.resolve(
+    path.relative(process.cwd(), process.env.NEXT_TRANSLATE_PATH || '.')
+  )
+
   const arePagesInsideSrc = fs.existsSync(path.join(dir, 'src/pages'))
 
   const i18n = nextConfig.i18n || {}
