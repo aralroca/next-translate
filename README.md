@@ -46,7 +46,8 @@
 - [9. How to change the language](#9-how-to-change-the-language)
 - [10. How to save the user-defined language](#10-how-to-save-the-user-defined-language)
 - [11. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
-- [12. Demos](#12-demos)
+- [12. How to use next-translate in a mono-repo](#12-how-to-use-next-translate-in-a-mono-repo)
+- [13. Demos](#13-demos)
   - [Demo from Next.js](#demo-from-nextjs)
   - [Basic demo](#basic-demo)
   - [Complex demo](#complex-demo)
@@ -706,7 +707,11 @@ In this case, you can achieve this by using the `I18nProvider`.
 
 Learn how to do it [here](#i18nprovider).
 
-## 12. Demos
+## 12. How to use next-translate in a mono-repo
+
+Next-translate uses by default the current working directory of the Node.js process (`process.cwd()`). If you want to change it you can use the `NEXT_TRANSLATE_PATH` environment variable. It supports both relative and absolute path.
+
+## 13. Demos
 
 ### Demo from Next.js
 
