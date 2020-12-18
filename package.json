@@ -1,6 +1,6 @@
 {
   "name": "next-translate",
-  "version": "1.0.1-canary.3",
+  "version": "1.0.1-canary.4",
   "description": "Tiny and powerful i18n tools (Next plugin + API) to translate your Next.js pages.",
   "license": "MIT",
   "keywords": [
