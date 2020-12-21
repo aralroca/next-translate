@@ -4,7 +4,13 @@ export default function nextTranslate(nextConfig: any = {}) {
   const fs = require('fs')
   const path = require('path')
   const test = /\.(tsx|ts|js|mjs|jsx)$/
-  const arePagesInsideSrc = fs.existsSync(path.join(process.cwd(), 'src/pages'))
+
+  // NEXT_TRANSLATE_PATH env is supported both relative and absolute path
+  const dir = path.resolve(
+    path.relative(process.cwd(), process.env.NEXT_TRANSLATE_PATH || '.')
+  )
+
+  const arePagesInsideSrc = fs.existsSync(path.join(dir, 'src/pages'))
 
   const i18n = nextConfig.i18n || {}
   const {
@@ -14,7 +20,7 @@ export default function nextTranslate(nextConfig: any = {}) {
     pages,
     logger,
     ...restI18n
-  } = require(path.join(process.cwd(), 'i18n'))
+  } = require(path.join(dir, 'i18n'))
 
   // @todo Remove all these warnings on 1.1.0
   const migrationLink =
@@ -45,10 +51,7 @@ export default function nextTranslate(nextConfig: any = {}) {
 
   // Check if exist a getInitialProps on _app.js
   let hasGetInitialPropsOnAppJs = false
-  const pagesPath = path.join(
-    process.cwd(),
-    arePagesInsideSrc ? '/src/pages' : '/pages'
-  )
+  const pagesPath = path.join(dir, arePagesInsideSrc ? '/src/pages' : '/pages')
   const app = fs.readdirSync(pagesPath).find((page) => page.startsWith('_app.'))
 
   if (app) {
@@ -73,7 +76,7 @@ export default function nextTranslate(nextConfig: any = {}) {
 
       config.resolve.alias = {
         ...(config.resolve.alias || {}),
-        '@next-translate-root': path.resolve(process.cwd()),
+        '@next-translate-root': path.resolve(dir),
       }
 
       // we give the opportunity for people to use next-translate without altering

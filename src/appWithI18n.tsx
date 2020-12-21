@@ -1,5 +1,4 @@
 import React from 'react'
-import type { NextPage } from 'next'
 import I18nProvider from './I18nProvider'
 import loadNamespaces from './loadNamespaces'
 import { LoaderConfig } from '.'
@@ -8,8 +7,24 @@ type Props = {
   [key: string]: any
 }
 
+interface PartialNextContext {
+  res?: any
+  AppTree?: NextComponentType<PartialNextContext>
+  Component?: NextComponentType<PartialNextContext>
+  ctx?: PartialNextContext
+  [key: string]: any
+}
+
+type NextComponentType<
+  C extends PartialNextContext = PartialNextContext,
+  IP = {},
+  P = {}
+> = React.ComponentType<P> & {
+  getInitialProps?(context: C): IP | Promise<IP>
+}
+
 export default function appWithI18n(
-  AppToTranslate: NextPage,
+  AppToTranslate: NextComponentType,
   config: LoaderConfig = {}
 ) {
   if (!config.isLoader && config.loader !== false) {
