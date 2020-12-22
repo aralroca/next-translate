@@ -125,6 +125,18 @@ const nextTranslate = require('next-translate')
 module.exports = nextTranslate()
 ```
 
+Or if you already have **next.config.js** file and want to keep the changes in it, pass the config object to the `nextTranslate()`. For example for webpack you could do it like this:
+
+```js
+const nextTranslate = require('next-translate')
+
+module.exports = nextTranslate({
+  webpack: (config, { isServer, webpack }) => {
+    return config;
+  }
+})
+```
+
 ### Add i18n.js config file
 
 Add a configuration file `i18n.json` _(or `i18n.js` with `module.exports`)_ in the root of the project. Each page should have its namespaces. Take a look at it in the [config](#3-configuration) section for more details.
