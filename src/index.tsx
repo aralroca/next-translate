@@ -33,7 +33,7 @@ export interface I18nProviderProps {
 
 export interface TransProps {
   i18nKey: string
-  components?: ReactElement[]
+  components?: ReactElement[] | Record<string, ReactElement>
   values?: TranslationQuery
   fallback?: string | string[]
 }
