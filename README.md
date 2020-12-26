@@ -690,7 +690,7 @@ import i18nConfig from '../i18n.json'
 
 const { locales } = i18nConfig
 
-function ChangeLanguage() {
+export default function ChangeLanguage() {
   const { t, lang } = useTranslation()
 
   return locales.map((lng) => {
@@ -704,6 +704,29 @@ function ChangeLanguage() {
       </Link>
     )
   })
+}
+```
+
+If you used the `i18n.js` config instead of the `i18n.json`, you can use the [Next.js useRouter hook](https://nextjs.org/docs/api-reference/next/router#userouter) to access the `locales` object and list all locales using the `Link` component.
+
+```js
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import useTranslation from 'next-translate/useTranslation';
+
+export default function ChangeLanguage() {
+  const { locales } = useRouter();
+  const { t, lang } = useTranslation()
+
+  return locales.map((lng) => {
+    if (lng === lang) return null;
+
+    return (
+      <Link href="/" locale={lng} key={lng}>
+        {t(`layout:language-name-${lng}`)}
+      </Link>
+    );
+  });
 }
 ```
 
