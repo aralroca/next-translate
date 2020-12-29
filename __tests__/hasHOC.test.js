@@ -18,6 +18,26 @@ describe('hasHOC', () => {
       `)
       ).toBe(true)
     })
+    test('with -> curry config on HOC', () => {
+      expect(
+        hasHOC(`
+          import React from 'react';
+          import Head from 'next/head';
+          import { withUrqlClient } from 'next-urql';
+          
+          const Index = () => {
+            const [result] = useQuery({
+              query: '{ test }',
+            });
+            return null
+          };
+
+          export default withUrqlClient((_ssrExchange, ctx) => ({
+            url: 'http://localhost:3000/graphql',
+          },{ssr:true}))(Index);
+        `)
+      ).toBe(true)
+    })
     test('with -> with withTranslation + another hoc', () => {
       expect(
         hasHOC(`
@@ -61,10 +81,50 @@ describe('hasHOC', () => {
       `)
       ).toBe(false)
     })
+    test('with -> curry config on fake HOC', () => {
+      expect(
+        hasHOC(`
+          import React from 'react';
+          import Head from 'next/head';
+          import { withUrqlClient } from 'next-urql';
+          
+          const Index = () => {
+            const [result] = useQuery({
+              query: '{ test }',
+            });
+            return null
+          };
+
+          const fakeHoc = withUrqlClient((_ssrExchange, ctx) => ({
+            url: 'http://localhost:3000/graphql',
+          },{ssr:true}))(Index);
+
+          export default Index
+        `)
+      ).toBe(false)
+    })
     test('with -> export default function', () => {
       expect(
         hasHOC(`
         export default function Page() {
+          return <div>Hello world</div>
+        }
+      `)
+      ).toBe(false)
+    })
+    test('with -> export default function with props', () => {
+      expect(
+        hasHOC(`
+        export default function Page(Props) {
+          return <div>Hello world</div>
+        }
+      `)
+      ).toBe(false)
+    })
+    test('with -> export default arrow function with props', () => {
+      expect(
+        hasHOC(`
+        export default (Props) => {
           return <div>Hello world</div>
         }
       `)

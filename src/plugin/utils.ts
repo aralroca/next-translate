@@ -48,7 +48,7 @@ export function isPageToIgnore(page) {
 }
 
 export function hasHOC(rawData) {
-  const hocRgx = new RegExp('[^\\(|\\| )]+\\([A-Z][^\\(|\\| )]*\\)')
+  const hocRgx = new RegExp('[^\\(|\\| )]+\\(.[^\\(|\\| )]*\\)')
   const hasWithTranslationHOC = new RegExp(
     'import *(\\w*) *.*from *.*next-translate\\/withTranslation.*'
   )
