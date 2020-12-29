@@ -707,7 +707,9 @@ export default function ChangeLanguage() {
 }
 ```
 
-If you used the `i18n.js` config instead of the `i18n.json`, you can use the [Next.js useRouter hook](https://nextjs.org/docs/api-reference/next/router#userouter) to access the `locales` object and list all locales using the `Link` component.
+Another way of accessing the `locales` list to change the language is using the `Next.js router`. The `locales` list can be accessed using the [Next.js useRouter hook](https://nextjs.org/docs/api-reference/next/router#userouter).
+
+An example of a possible `ChangeLanguage` component using the `useRouter` hook from `Next.js`:
 
 ```js
 import { useRouter } from 'next/router';
