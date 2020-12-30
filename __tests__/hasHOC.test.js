@@ -18,6 +18,86 @@ describe('hasHOC', () => {
       `)
       ).toBe(true)
     })
+    test('with -> curry config on HOC', () => {
+      expect(
+        hasHOC(`
+          import React from 'react';
+          import Head from 'next/head';
+          import { withUrqlClient } from 'next-urql';
+          
+          const Index = () => {
+            const [result] = useQuery({
+              query: '{ test }',
+            });
+            return null
+          };
+
+          export default withUrqlClient((_ssrExchange, ctx) => ({
+            url: 'http://localhost:3000/graphql',
+          },{ssr:true}))(Index);
+        `)
+      ).toBe(true)
+    })
+    test('with -> curry config on HOC in a class', () => {
+      expect(
+        hasHOC(`
+          import React from 'react';
+          import Head from 'next/head';
+          import { withUrqlClient } from 'next-urql';
+          
+          class Index {
+            render() { 
+              return null
+            }
+          }
+
+          export default withUrqlClient((_ssrExchange, ctx) => ({
+            url: 'http://localhost:3000/graphql',
+          },{ssr:true}))(Index);
+        `)
+      ).toBe(true)
+    })
+    test('with -> curry empty config on HOC', () => {
+      expect(
+        hasHOC(`
+          import React from 'react';
+          import Head from 'next/head';
+          import { withHOC } from 'hoc-example';
+          
+          const Index = () => null
+
+          export default withHOC()(Index);
+        `)
+      ).toBe(true)
+    })
+    test('with -> curry config on HOC in different order', () => {
+      expect(
+        hasHOC(`
+          import React from 'react';
+          import Head from 'next/head';
+          import { withHOC } from 'hoc-example';
+          
+          const Index = () => null
+
+          export default withHOC(Index)({ someconfig: true })();
+        `)
+      ).toBe(true)
+    })
+    test('with -> curry empty config on HOC with a reference', () => {
+      expect(
+        hasHOC(`
+          import React from 'react';
+          import Head from 'next/head';
+          import { withHOC } from 'hoc-example';
+          
+          const Index = () => null
+
+          const refComp = withHOC()(Index);
+
+          export default refComp
+        `)
+      ).toBe(true)
+    })
     test('with -> with withTranslation + another hoc', () => {
       expect(
         hasHOC(`
@@ -61,10 +141,70 @@ describe('hasHOC', () => {
       `)
       ).toBe(false)
     })
+    test('with -> curry config on fake HOC', () => {
+      expect(
+        hasHOC(`
+          import React from 'react';
+          import Head from 'next/head';
+          import { withUrqlClient } from 'next-urql';
+          
+          const Index = () => {
+            const [result] = useQuery({
+              query: '{ test }',
+            });
+            return null
+          };
+
+          const fakeHoc = withUrqlClient((_ssrExchange, ctx) => ({
+            url: 'http://localhost:3000/graphql',
+          },{ssr:true}))(Index);
+
+          export default Index
+        `)
+      ).toBe(false)
+    })
     test('with -> export default function', () => {
       expect(
         hasHOC(`
         export default function Page() {
+          return <div>Hello world</div>
+        }
+      `)
+      ).toBe(false)
+    })
+    test('with -> export default class', () => {
+      expect(
+        hasHOC(`
+        export default class Page { // (some comment)
+          render() {
+            return <div>Hello world</div>
+          }
+        }
+      `)
+      ).toBe(false)
+    })
+    test('with -> export default function with props', () => {
+      expect(
+        hasHOC(`
+        export default function Page(Props) {
+          return <div>Hello world</div>
+        }
+      `)
+      ).toBe(false)
+    })
+    test('with -> export default arrow function with props', () => {
+      expect(
+        hasHOC(`
+        export default (Props) => {
+          return <div>Hello world</div>
+        }
+      `)
+      ).toBe(false)
+    })
+    test('with -> export default arrow function with destructured props', () => {
+      expect(
+        hasHOC(`
+        export default ({ title }) => {
           return <div>Hello world</div>
         }
       `)
