@@ -1,4 +1,3 @@
-import path from 'path'
 import templateWithHoc from './templateWithHoc'
 import templateWithLoader from './templateWithLoader'
 import {
