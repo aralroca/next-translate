@@ -835,6 +835,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/tperamaki"><img src="https://avatars0.githubusercontent.com/u/26067988?v=4" width="100px;" alt=""/><br /><sub><b>Teemu Perämäki</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=tperamaki" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/luisgserrano"><img src="https://avatars3.githubusercontent.com/u/2024164?v=4" width="100px;" alt=""/><br /><sub><b>Luis Serrano</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=luisgserrano" title="Documentation">📖</a></td>
   </tr>
 </table>
 
