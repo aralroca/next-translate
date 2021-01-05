@@ -14,7 +14,6 @@ export default function withTranslation<P = unknown>(
   }
 
   WithTranslation.getInitialProps = async (ctx) => {
-    console.log('WithCesTranslation.getInitialProps')
     const WrappedComponent = Component as NextComponentType<any, any, any>
     if (WrappedComponent.getInitialProps) {
       return (await WrappedComponent.getInitialProps(ctx)) || {}
