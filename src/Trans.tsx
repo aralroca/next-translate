@@ -25,7 +25,7 @@ function getElements(
 
 function formatElements(
   value: string,
-  elements: ReactElement[] = []
+  elements: ReactElement[] | Record<string, ReactElement> = []
 ): string | ReactNode[] {
   const parts = value.replace(nlRe, '').split(tagRe)
 

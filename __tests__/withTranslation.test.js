@@ -33,6 +33,15 @@ const TestRussian = ({ i18nKey, query, namespaces }) => {
 describe('withTranslation', () => {
   afterEach(cleanup)
 
+  describe('getInitialProps', () => {
+    test('should invoke getInitialProps of inner component', async () => {
+      Translate.getInitialProps = jest.fn()
+      const wrapperWithTranslation = withTranslation(Translate)
+      await wrapperWithTranslation.getInitialProps()
+      expect(Translate.getInitialProps).toBeCalled()
+    })
+  })
+
   describe('plurals', () => {
     test('should work with singular | count=1', () => {
       const i18nKey = 'ns:withsingular'
