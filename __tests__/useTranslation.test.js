@@ -750,15 +750,6 @@ describe('useTranslation', () => {
     })
 
     test('should support alternative interpolation delimeter options', () => {
-      const Inner = () => {
-        const { t } = useTranslation()
-        const text = t('ns:template-object-interpolation', {
-          count: 3,
-          something: 'cats',
-        })
-        return <>{text}</>
-      }
-
       const expected = 'There are 3 cats.'
       const templateString = {
         'template-object-interpolation': 'There are ${count} ${something}.',
@@ -777,7 +768,13 @@ describe('useTranslation', () => {
           namespaces={{ ns: templateString }}
           config={config}
         >
-          <Inner />
+          <Inner
+            i18nKey="ns:template-object-interpolation"
+            query={{
+              count: 3,
+              something: 'cats',
+            }}
+          />
         </I18nProvider>
       )
       expect(container.textContent).toContain(expected)
@@ -786,75 +783,45 @@ describe('useTranslation', () => {
 
   describe('interpolation', () => {
     test('works with spaces', () => {
-      const Inner = () => {
-        const { t } = useTranslation()
-        const text = t('ns:interpolation', {
-          count: 3,
-        })
-        return <>{text}</>
-      }
-
       const expected = 'There are 3 cats.'
       const templateString = {
-        'interpolation': 'There are {{   count }} cats.',
+        interpolation: 'There are {{   count }} cats.',
       }
 
       const { container } = render(
-        <I18nProvider
-          lang="en"
-          namespaces={{ ns: templateString }}
-        >
-          <Inner />
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner i18nKey="ns:interpolation" query={{ count: 3 }} />
         </I18nProvider>
       )
       expect(container.textContent).toContain(expected)
     })
 
     test('works with empty format', () => {
-      const Inner = () => {
-        const { t } = useTranslation()
-        const text = t('ns:interpolation', {
-          count: 3,
-        })
-        return <>{text}</>
-      }
-
       const expected = 'There are 3 cats.'
       const templateString = {
-        'interpolation': 'There are {{count, }} cats.',
+        interpolation: 'There are {{count, }} cats.',
       }
 
       const { container } = render(
-        <I18nProvider
-          lang="en"
-          namespaces={{ ns: templateString }}
-        >
-          <Inner />
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner i18nKey="ns:interpolation" query={{ count: 3 }} />
         </I18nProvider>
       )
       expect(container.textContent).toContain(expected)
     })
 
     test('uses configured formatter', () => {
-      const Inner = () => {
-        const { t } = useTranslation()
-        const text = t('ns:interpolation', {
-          count: 3,
-        })
-        return <>{text}</>
-      }
-
       const expected = 'There are <number>3</number> cats.'
       const templateString = {
-        'interpolation': 'There are {{count, number}} cats.',
+        interpolation: 'There are {{count, number}} cats.',
       }
 
       const config = {
         interpolation: {
-          format: (value, format/*, @todo locale*/) => {
+          format: (value, format) => {
             return `<${format}>${value}</${format}>`
-          }
-        }
+          },
+        },
       }
 
       const { container } = render(
@@ -863,35 +830,52 @@ describe('useTranslation', () => {
           namespaces={{ ns: templateString }}
           config={config}
         >
-          <Inner />
+          <Inner i18nKey="ns:interpolation" query={{ count: 3 }} />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('current locale is provided to the formatter', () => {
+      const expected = 'There are en:number:3 cats.'
+      const templateString = {
+        interpolation: 'There are {{count, number}} cats.',
+      }
+
+      const config = {
+        interpolation: {
+          format: (value, format, locale) => {
+            return `${locale}:${format}:${value}`
+          },
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+          config={config}
+        >
+          <Inner i18nKey="ns:interpolation" query={{ count: 3 }} />
         </I18nProvider>
       )
       expect(container.textContent).toContain(expected)
     })
 
     test('replaces all parameters', () => {
-      const Inner = () => {
-        const { t } = useTranslation()
-        const text = t('ns:interpolation', {
-          cats: 3,
-          dogs: 3,
-          total: 6,
-          object: 'house'
-        })
-        return <>{text}</>
-      }
-
-      const expected = 'There are <digits>3</digits> dogs and <number>3</number> cats in this house, that are <number>6</number> animals.'
+      const expected =
+        'There are <digits>3</digits> dogs and <number>3</number> cats in this house, that are <number>6</number> animals.'
       const templateString = {
-        'interpolation': 'There are {{dogs, digits}} dogs and {{cats, number}} cats in this {{object}}, that are {{total, number}} animals.',
+        interpolation:
+          'There are {{dogs, digits}} dogs and {{cats, number}} cats in this {{object}}, that are {{total, number}} animals.',
       }
 
       const config = {
         interpolation: {
-          format: (value, format/*, @todo locale*/) => {
+          format: (value, format /*, @todo locale*/) => {
             return `<${format}>${value}</${format}>`
-          }
-        }
+          },
+        },
       }
 
       const { container } = render(
@@ -900,32 +884,32 @@ describe('useTranslation', () => {
           namespaces={{ ns: templateString }}
           config={config}
         >
-          <Inner />
+          <Inner
+            i18nKey="ns:interpolation"
+            query={{
+              cats: 3,
+              dogs: 3,
+              total: 6,
+              object: 'house',
+            }}
+          />
         </I18nProvider>
       )
       expect(container.textContent).toContain(expected)
     })
 
     test('format allows spaces, hyphens and (upper-case) letters', () => {
-      const Inner = () => {
-        const { t } = useTranslation()
-        const text = t('ns:interpolation', {
-          count: 3,
-        })
-        return <>{text}</>
-      }
-
       const expected = 'There are <to-numBer>3</to-numBer> cats.'
       const templateString = {
-        'interpolation': 'There are {{count,to-numBer  }} cats.',
+        interpolation: 'There are {{count,to-numBer  }} cats.',
       }
 
       const config = {
         interpolation: {
-          format: (value, format/*, @todo locale*/) => {
+          format: (value, format) => {
             return `<${format}>${value}</${format}>`
-          }
-        }
+          },
+        },
       }
 
       const { container } = render(
@@ -934,31 +918,22 @@ describe('useTranslation', () => {
           namespaces={{ ns: templateString }}
           config={config}
         >
-          <Inner />
+          <Inner i18nKey="ns:interpolation" query={{ count: 3 }} />
         </I18nProvider>
       )
       expect(container.textContent).toContain(expected)
     })
 
     test('skips invalid format', () => {
-      const Inner = () => {
-        const { t } = useTranslation()
-        const text = t('ns:interpolation', {
-          count: 3,
-        })
-        return <>{text}</>
-      }
-
       const templateString = {
-        'interpolation': 'There are {{count, .number}} cats.',
+        interpolation: 'There are {{count, .number}} cats.',
       }
 
+      const formatter = jest.fn()
       const config = {
         interpolation: {
-          format: (value, format/*, @todo locale*/) => {
-            return `<${format}>${value}</${format}>`
-          }
-        }
+          format: formatter,
+        },
       }
 
       const { container } = render(
@@ -967,32 +942,22 @@ describe('useTranslation', () => {
           namespaces={{ ns: templateString }}
           config={config}
         >
-          <Inner />
+          <Inner i18nKey="ns:interpolation" query={{ count: 3 }} />
         </I18nProvider>
       )
       expect(container.textContent).toContain(templateString.interpolation)
+      expect(formatter).toHaveBeenCalledTimes(0)
     })
 
     test('works without formatter', () => {
-      const Inner = () => {
-        const { t } = useTranslation()
-        const text = t('ns:interpolation', {
-          count: 3,
-        })
-        return <>{text}</>
-      }
-
       const expected = 'There are 3 cats.'
       const templateString = {
-        'interpolation': 'There are {{count, number}} cats.',
+        interpolation: 'There are {{count, number}} cats.',
       }
 
       const { container } = render(
-        <I18nProvider
-          lang="en"
-          namespaces={{ ns: templateString }}
-        >
-          <Inner />
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner i18nKey="ns:interpolation" query={{ count: 3 }} />
         </I18nProvider>
       )
       expect(container.textContent).toContain(expected)

@@ -1,6 +1,11 @@
 import { I18nConfig, LoggerProps, TranslationQuery } from '.'
 
-export default function transCore({ config, allNamespaces, pluralRules }) {
+export default function transCore({
+  config,
+  allNamespaces,
+  pluralRules,
+  lang,
+}) {
   const { logger = missingKeyLogger } = config
 
   function t(key = '', query, options) {
@@ -37,10 +42,11 @@ export default function transCore({ config, allNamespaces, pluralRules }) {
         obj: value as Record<string, unknown>,
         query,
         config,
+        lang,
       })
     }
 
-    return interpolation({ text: value as string, query, config }) || k
+    return interpolation({ text: value as string, query, config, lang }) || k
   }
 
   return t
@@ -109,22 +115,25 @@ function interpolation({
   text,
   query,
   config,
+  lang,
 }: {
   text?: string
   query?: TranslationQuery | null
   config: I18nConfig
+  lang: string
 }): string {
   if (!text || !query) return text || ''
 
   const escapeRegex = (str: string) =>
     str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
-  const {
-    format = null, prefix = '{{', suffix = '}}'
-  } = (config.interpolation || {})
+  const { format = null, prefix = '{{', suffix = '}}' } =
+    config.interpolation || {}
 
   return Object.keys(query).reduce((all, varKey) => {
     const regex = new RegExp(
-      `${escapeRegex(prefix)}\\s*${varKey}\\s*,?\\s*([\\w-]+)?\\s*${escapeRegex(suffix)}`,
+      `${escapeRegex(prefix)}\\s*${varKey}\\s*,?\\s*([\\w-]+)?\\s*${escapeRegex(
+        suffix
+      )}`,
       'gm'
     )
 
@@ -133,8 +142,8 @@ function interpolation({
       // $1 undefined can mean either no formatting requested: "{{name}}"
       // or no format name given: "{{name, }}" -> ignore
       return $1 && format
-        ? format(query[varKey], $1/*,  @todo how to supply current locale? */) as string
-        : query[varKey] as string
+        ? (format(query[varKey], $1, lang) as string)
+        : (query[varKey] as string)
     })
   }, text)
 }
@@ -143,10 +152,12 @@ function objectInterpolation({
   obj,
   query,
   config,
+  lang,
 }: {
   obj: Record<string, string | unknown>
   query?: TranslationQuery | null
   config: I18nConfig
+  lang: string
 }): any {
   if (!query || Object.keys(query).length === 0) return obj
 
@@ -156,9 +167,15 @@ function objectInterpolation({
         obj: obj[key] as Record<string, string | unknown>,
         query,
         config,
+        lang,
       })
     if (typeof obj[key] === 'string')
-      obj[key] = interpolation({ text: obj[key] as string, query, config })
+      obj[key] = interpolation({
+        text: obj[key] as string,
+        query,
+        config,
+        lang,
+      })
   })
 
   return obj

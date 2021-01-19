@@ -46,8 +46,9 @@
 - [9. How to change the language](#9-how-to-change-the-language)
 - [10. How to save the user-defined language](#10-how-to-save-the-user-defined-language)
 - [11. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
-- [12. How to use next-translate in a mono-repo](#12-how-to-use-next-translate-in-a-mono-repo)
-- [13. Demos](#13-demos)
+- [12. Interpolation and Formatting](#12-interpolation-and-formatting)
+- [13. How to use next-translate in a mono-repo](#13-how-to-use-next-translate-in-a-mono-repo)
+- [14. Demos](#14-demos)
   - [Demo from Next.js](#demo-from-nextjs)
   - [Basic demo](#basic-demo)
   - [Complex demo](#complex-demo)
@@ -229,7 +230,7 @@ In the configuration file you can use both the configuration that we specified h
 | `logger`          | Function to log the **missing keys** in development and production. If you are using `i18n.json` as config file you should change it to `i18n.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `function`                      | By default the logger is a function doing a `console.warn` only in development. |     |
 | `logBuild`        | Each page has a log indicating: namespaces, current language and method used to load the namespaces. With this you can disable it.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `Boolean`                       | `true`                                                                          |
 | `loader`        | If you wish to disable the webpack loader and manually load the namespaces on each page, we give you the opportunity to do so by disabling this option.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Boolean`                       | `true`                                                                          |
-| `interpolation`   | Change the delimeter that is used for interpolation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `{prefix: string; suffix: string}` | `{prefix: '{{', suffix: '}}'}`
+| `interpolation`   | Change the delimeter that is used for interpolation and optionally define a custom formatter                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `{prefix: string; suffix: string; format: function}` | `{prefix: '{{', suffix: '}}'}`
 
 ## 4. API
 
@@ -744,11 +745,33 @@ In this case, you can achieve this by using the `I18nProvider`.
 
 Learn how to do it [here](#i18nprovider).
 
-## 12. How to use next-translate in a mono-repo
+## 12. Interpolation and Formatting
+
+You can format your interpolation parameters according to the current locale by using `{{param, formatName}}` in your translations and supplying a formatter via config:
+
+```jsx
+interpolation: {
+  format: function (value, format, lng) {
+    if(format === 'number') {
+      return (new Intl.NumberFormat(lng)).format(value);
+    }
+
+    return value;
+  }
+}
+```
+
+  * The formatter is automatically called if you supply a parameter: `t("ns:translation-key", {value: 1.23})` and specify a format in the language file: `"translation-key": "The value is {{value, number}}"`
+  * If no formatter is specified in the config the parameter will be returned as-is.
+  * Format names may include letters and hyphens, e.g. "shortdate", "short-date" or "shortDate", while "date.short" is not allowed.
+  * It is your responsibility to return something for all formats, e.g. by finishing the function with `return value;`, or the parameter will not be displayed.
+  * The formatter will not be called if no format was given, e.g. "{{param}}" or "{{param, }}".
+
+## 13. How to use next-translate in a mono-repo
 
 Next-translate uses by default the current working directory of the Node.js process (`process.cwd()`). If you want to change it you can use the `NEXT_TRANSLATE_PATH` environment variable. It supports both relative and absolute path.
 
-## 13. Demos
+## 14. Demos
 
 ### Demo from Next.js
 
