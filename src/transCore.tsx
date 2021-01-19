@@ -119,16 +119,23 @@ function interpolation({
   const escapeRegex = (str: string) =>
     str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
   const {
-    interpolation: { prefix, suffix } = { prefix: '{{', suffix: '}}' },
-  } = config
+    format = null, prefix = '{{', suffix = '}}'
+  } = (config.interpolation || {})
 
   return Object.keys(query).reduce((all, varKey) => {
     const regex = new RegExp(
-      `${escapeRegex(prefix)}\\s*${varKey}\\s*${escapeRegex(suffix)}`,
+      `${escapeRegex(prefix)}\\s*${varKey}\\s*,?\\s*([\\w-]+)?\\s*${escapeRegex(suffix)}`,
       'gm'
     )
-    all = all.replace(regex, `${query[varKey]}`)
-    return all
+
+    // $1 is the first match group
+    return all.replace(regex, (_match, $1) => {
+      // $1 undefined can mean either no formatting requested: "{{name}}"
+      // or no format name given: "{{name, }}" -> ignore
+      return $1 && format
+        ? format(query[varKey], $1/*,  @todo how to supply current locale? */) as string
+        : query[varKey] as string
+    })
   }, text)
 }
 
