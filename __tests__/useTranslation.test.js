@@ -872,7 +872,7 @@ describe('useTranslation', () => {
 
       const config = {
         interpolation: {
-          format: (value, format /*, @todo locale*/) => {
+          format: (value, format) => {
             return `<${format}>${value}</${format}>`
           },
         },
