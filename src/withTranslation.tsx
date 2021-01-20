@@ -6,10 +6,11 @@ import { NextComponentType } from 'next'
  * HOC to use the translations in no-functional components
  */
 export default function withTranslation<P = unknown>(
-  Component: React.ComponentType<P> | NextComponentType<any, any, any>
+  Component: React.ComponentType<P> | NextComponentType<any, any, any>,
+  defaultNs?: string
 ): React.ComponentType<Omit<P, 'i18n'>> {
   const WithTranslation: NextComponentType<any, any, any> = (props: P) => {
-    const i18n = useTranslation()
+    const i18n = useTranslation(defaultNs)
     return <Component {...props} i18n={i18n} />
   }
 
