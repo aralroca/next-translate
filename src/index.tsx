@@ -3,7 +3,8 @@ import { ReactElement, ReactNode } from 'react'
 import nextTranslate from './plugin'
 
 export interface TranslationQuery {
-  [name: string]: string | number
+  // the parameters could be anything if interpolation format is used, e.g. Date objects, users, ...
+  [name: string]: any
 }
 
 export interface Translate {

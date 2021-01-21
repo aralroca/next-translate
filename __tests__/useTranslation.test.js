@@ -782,7 +782,7 @@ describe('useTranslation', () => {
   })
 
   describe('interpolation', () => {
-    test('works with spaces', () => {
+    test('works with spaces in the pattern', () => {
       const expected = 'There are 3 cats.'
       const templateString = {
         interpolation: 'There are {{   count }} cats.',
@@ -810,6 +810,65 @@ describe('useTranslation', () => {
       expect(container.textContent).toContain(expected)
     })
 
+    test('works with undefined parameter', () => {
+      const expected = 'Got undefined here.'
+      const templateString = {
+        interpolation: 'Got {{something}} here.',
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner i18nKey="ns:interpolation" query={{ something: undefined }} />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('works with null parameter', () => {
+      const expected = 'Got null here.'
+      const templateString = {
+        interpolation: 'Got {{something}} here.',
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner i18nKey="ns:interpolation" query={{ something: null }} />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('works with boolean parameter', () => {
+      const expected = 'Got true here.'
+      const templateString = {
+        interpolation: 'Got {{something}} here.',
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner i18nKey="ns:interpolation" query={{ something: true }} />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('works with object parameter', () => {
+      const now = new Date()
+
+      // even when the given parameter is no string it will still be casted
+      const expected = `Now it's ${now.toString()}.`
+      const templateString = {
+        interpolation: "Now it's {{date}}.",
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner i18nKey="ns:interpolation" query={{ date: now }} />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
     test('uses configured formatter', () => {
       const expected = 'There are <number>3</number> cats.'
       const templateString = {
@@ -831,6 +890,96 @@ describe('useTranslation', () => {
           config={config}
         >
           <Inner i18nKey="ns:interpolation" query={{ count: 3 }} />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('formatter can use object parameter', () => {
+      const now = new Date()
+      const expected = `Now it's ${now.toDateString()}.`
+      const templateString = {
+        interpolation: "Now it's {{now,date}}.",
+      }
+
+      const config = {
+        interpolation: {
+          format: (value, format) => {
+            if (format === 'date') return value.toDateString()
+            return `<${format}>${value}</${format}>`
+          },
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+          config={config}
+        >
+          <Inner i18nKey="ns:interpolation" query={{ now }} />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('works if formatter returns a castable object', () => {
+      const now = new Date()
+
+      // the formatter should always return a string, but if it doesn't it still works
+      const expected = `Now it's ${now.toString()}.`
+
+      const templateString = {
+        interpolation: "Now it's {{now, date}}.",
+      }
+
+      const config = {
+        interpolation: {
+          format: (value, format) => {
+            if (format === 'date') return value
+            return `<${format}>${value}</${format}>`
+          },
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+          config={config}
+        >
+          <Inner i18nKey="ns:interpolation" query={{ now }} />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('works if formatter returns any object', () => {
+      const now = { time: 'now' }
+
+      // the formatter should always return a string, but if it doesn't it still works
+      const expected = `Now it's [object Object].`
+
+      const templateString = {
+        interpolation: "Now it's {{now, unchanged}}.",
+      }
+
+      const config = {
+        interpolation: {
+          format: (value, format) => {
+            if (format === 'unchanged') return value
+            return `<${format}>${value}</${format}>`
+          },
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+          config={config}
+        >
+          <Inner i18nKey="ns:interpolation" query={{ now }} />
         </I18nProvider>
       )
       expect(container.textContent).toContain(expected)
