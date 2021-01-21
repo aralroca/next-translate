@@ -301,6 +301,12 @@ class Description extends React.Component {
 export default withTranslation(NoFunctionalComponent)
 ```
 
+Similar to `useTranslation("common")` you can call `withTranslation` with the second parameter defining a default namespace to use:
+
+```
+export default withTranslation(NoFunctionalComponent, "common")
+```
+
 ### Trans Component
 
 **Size**: ~1.4kb 📦
