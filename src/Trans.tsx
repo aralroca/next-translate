@@ -5,7 +5,7 @@ import React, {
   ReactElement,
   ReactNode,
 } from 'react'
-import { TransProps } from '.'
+import { TransComponentsObject, TransProps } from '.'
 import useTranslation from './useTranslation'
 
 const tagRe = /<(\w+)>(.*?)<\/\1>|<(\w+)\/>/
@@ -25,7 +25,7 @@ function getElements(
 
 function formatElements(
   value: string,
-  elements: ReactElement[] = []
+  elements: ReactElement[] | TransComponentsObject = []
 ): string | ReactNode[] {
   const parts = value.replace(nlRe, '').split(tagRe)
 

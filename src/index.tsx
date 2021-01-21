@@ -6,6 +6,10 @@ export interface TranslationQuery {
   [name: string]: string | number
 }
 
+export interface TransComponentsObject {
+  [key: string]: ReactElement
+}
+
 export interface Translate {
   <T = string>(
     i18nKey: string | TemplateStringsArray,
@@ -33,7 +37,7 @@ export interface I18nProviderProps {
 
 export interface TransProps {
   i18nKey: string
-  components?: ReactElement[]
+  components?: ReactElement[] | TransComponentsObject
   values?: TranslationQuery
   fallback?: string | string[]
 }
