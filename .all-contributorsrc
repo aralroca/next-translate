@@ -213,6 +213,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "j-schumann",
+      "name": "j-schumann",
+      "avatar_url": "https://avatars.githubusercontent.com/u/114239?v=4",
+      "profile": "https://github.com/j-schumann",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
