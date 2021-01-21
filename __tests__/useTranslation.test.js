@@ -782,5 +782,53 @@ describe('useTranslation', () => {
       )
       expect(container.textContent).toContain(expected)
     })
+
+    test('should work with empty interpolation result', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:empty-interpolation', {
+          something: '',
+        })
+        return <>{text}</>
+      }
+
+      const expected = ''
+      const templateString = {
+        'empty-interpolation': '{{something}}',
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+        >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should allow empty translations', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:empty-translation.nested')
+        return <>{text}</>
+      }
+
+      const expected = ''
+      const templateString = {
+        'empty-translation': { 'nested': '' },
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+        >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
   })
 })
