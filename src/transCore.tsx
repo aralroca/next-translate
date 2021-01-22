@@ -37,6 +37,11 @@ export default function transCore({
       }
     }
 
+    // no need to try interpolation
+    if (empty) {
+      return k
+    }
+
     if (value instanceof Object) {
       return objectInterpolation({
         obj: value as Record<string, unknown>,
@@ -46,7 +51,9 @@ export default function transCore({
       })
     }
 
-    return interpolation({ text: value as string, query, config, lang }) || k
+    // this can return an empty string if either value was already empty
+    // or it contained only an interpolation (e.g. "{{name}}") and the query param was empty
+    return interpolation({ text: value as string, query, config })
   }
 
   return t
@@ -69,7 +76,10 @@ function getDicValue(
         return {}
       }
 
-      return val[key as keyof typeof val] || {}
+      const res = val[key as keyof typeof val]
+
+      // pass all truthy values or (empty) strings
+      return res || (typeof res === "string" ? res : {})
     }, dic)
 
   if (
