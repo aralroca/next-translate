@@ -53,7 +53,7 @@ export default function transCore({
 
     // this can return an empty string if either value was already empty
     // or it contained only an interpolation (e.g. "{{name}}") and the query param was empty
-    return interpolation({ text: value as string, query, config })
+    return interpolation({ text: value as string, query, config, lang })
   }
 
   return t
@@ -79,7 +79,7 @@ function getDicValue(
       const res = val[key as keyof typeof val]
 
       // pass all truthy values or (empty) strings
-      return res || (typeof res === "string" ? res : {})
+      return res || (typeof res === 'string' ? res : {})
     }, dic)
 
   if (
