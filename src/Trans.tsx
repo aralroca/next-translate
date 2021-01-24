@@ -6,7 +6,7 @@ const tagRe = /<(\w+)>(.*?)<\/\1>|<(\w+)\/>/
 const nlRe = /(?:\r\n|\r|\n)/g
 
 function getElements(
-  parts: Array<string | undefined>,
+  parts: Array<string | undefined>
 ): Array<string | undefined>[] {
   if (!parts.length) return []
 
@@ -19,7 +19,7 @@ function getElements(
 
 function formatElements(
   value: string,
-  elements: TransPropsComponents = [],
+  elements: TransPropsComponents = []
 ): string | ReactNode[] {
   const parts = value.replace(nlRe, '').split(tagRe)
 
