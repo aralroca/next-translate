@@ -31,9 +31,13 @@ export interface I18nProviderProps {
   config?: I18nConfig
 }
 
+export type TransPropsComponents =
+  | ReactElement[]
+  | { [key: string]: ReactElement }
+
 export interface TransProps {
   i18nKey: string
-  components?: ReactElement[]
+  components?: TransPropsComponents
   values?: TranslationQuery
   fallback?: string | string[]
 }
