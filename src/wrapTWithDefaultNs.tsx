@@ -9,14 +9,14 @@ export default function wrapTWithDefaultNs(oldT: any, defaultNs?: string) {
     if (!k.includes(':')) k = `${defaultNs}:${k}`
 
     // Use default namespace for query.fallback keys
-    if (query?.fallback) {
-      if (Array.isArray(query.fallback)) {
-        query.fallback = query.fallback.map((k) =>
+    if (options?.fallback) {
+      if (Array.isArray(options.fallback)) {
+        options.fallback = options.fallback.map((k) =>
           k.includes(':') ? k : `${defaultNs}:${k}`
         )
       } else {
-        const k = query.fallback
-        query.fallback = k.includes(':') ? k : `${defaultNs}:${k}`
+        const k = options.fallback
+        options.fallback = k.includes(':') ? k : `${defaultNs}:${k}`
       }
     }
 
