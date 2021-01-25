@@ -15,7 +15,7 @@
 [![PRs Welcome][badge-prwelcome]][prwelcome]
 <a href="https://github.com/vinissimus/next-translate/actions?query=workflow%3ACI" alt="Tests status">
 <img src="https://github.com/vinissimus/next-translate/workflows/CI/badge.svg" /></a>
-<a href="https://twitter.com/intent/follow?screen_name=shields_io">
+<a href="https://twitter.com/intent/follow?screen_name=aralroca">
 <img src="https://img.shields.io/twitter/follow/aralroca?style=social&logo=twitter"
             alt="follow on Twitter"></a>
 
