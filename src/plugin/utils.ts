@@ -92,7 +92,9 @@ export function hasHOC(rawData) {
       const isCompInVar = new RegExp(` *${ref} += +(function|class) +`).test(
         line
       )
-      const isArrowFunc = new RegExp(` *${ref} += +\\(.*=>`).test(line)
+      const isArrowFunc = new RegExp(` *${ref}(: *\\w+ *)? += +\\(.*=>`).test(
+        line
+      )
       const isPotentialHOC = /=.*\(/.test(line)
 
       return (
