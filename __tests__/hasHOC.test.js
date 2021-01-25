@@ -131,7 +131,7 @@ describe('hasHOC', () => {
   })
 
   describe('HOC -> should return false', () => {
-    test('', () => {
+    test('with -> arrow function with TS type', () => {
       expect(
         hasHOC(`
         import { NextPage } from 'next'
