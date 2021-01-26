@@ -37,7 +37,9 @@ function formatElements(
   if (before) tree.push(before)
 
   getElements(parts).forEach(([key, children, after], realIndex: number) => {
-    const element = elements[key as string] || <Fragment />
+    const element =
+      // @ts-ignore
+      elements[key as string] || <Fragment />
 
     tree.push(
       cloneElement(

@@ -1,4 +1,4 @@
-import { LoaderConfig } from '.'
+import { LoaderConfig, LocaleLoader } from '.'
 import getConfig from './getConfig'
 import getPageNamespaces from './getPageNamespaces'
 
@@ -27,7 +27,7 @@ export default async function loadNamespaces(
 
   const page = removeTrailingSlash(conf.pathname.replace(/\/index$/, '')) || '/'
   const namespaces = await getPageNamespaces(conf, page, conf)
-  const defaultLoader = (l, n) => Promise.resolve({})
+  const defaultLoader: LocaleLoader = () => Promise.resolve({})
   const pageNamespaces =
     (await Promise.all(
       namespaces.map((ns) =>
@@ -38,7 +38,7 @@ export default async function loadNamespaces(
     ).catch(() => {})) || []
 
   if (conf.logBuild !== false && typeof window === 'undefined') {
-    const color = (c) => `\x1b[36m${c}\x1b[0m`
+    const color = (c: string) => `\x1b[36m${c}\x1b[0m`
     console.log(
       color('next-translate'),
       `- compiled page:`,
@@ -54,7 +54,7 @@ export default async function loadNamespaces(
 
   return {
     __lang,
-    __namespaces: namespaces.reduce((obj, ns, i) => {
+    __namespaces: namespaces.reduce((obj: Record<string, object>, ns, i) => {
       obj[ns] = pageNamespaces[i]
       return obj
     }, {}),
