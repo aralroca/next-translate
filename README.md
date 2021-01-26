@@ -812,6 +812,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/tperamaki"><img src="https://avatars0.githubusercontent.com/u/26067988?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Teemu Perämäki</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=tperamaki" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/luisgserrano"><img src="https://avatars3.githubusercontent.com/u/2024164?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Luis Serrano</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=luisgserrano" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/j-schumann"><img src="https://avatars.githubusercontent.com/u/114239?v=4?s=100" width="100px;" alt=""/><br /><sub><b>j-schumann</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=j-schumann" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/andrehsu"><img src="https://avatars.githubusercontent.com/u/4470828?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andre Hsu</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=andrehsu" title="Code">💻</a></td>
   </tr>
 </table>
 
