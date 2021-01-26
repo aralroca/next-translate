@@ -222,6 +222,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "andrehsu",
+      "name": "Andre Hsu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4470828?v=4",
+      "profile": "https://github.com/andrehsu",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
