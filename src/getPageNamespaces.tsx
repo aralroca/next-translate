@@ -21,7 +21,7 @@ export default async function getPageNamespaces(
     typeof ns === 'function' ? ns(ctx) : ns || []
 
   // Namespaces promises using regex
-  const rgxs = Object.keys(pages).reduce((arr, p) => {
+  const rgxs = Object.keys(pages).reduce((arr: Promise<string[]>[], p) => {
     if (
       p.substring(0, rgx.length) === rgx &&
       new RegExp(p.replace(rgx, '')).test(page)
@@ -29,7 +29,7 @@ export default async function getPageNamespaces(
       arr.push(getNs(pages[p]))
     }
     return arr
-  }, [] as Promise<string[]>[])
+  }, [])
 
   return [
     ...(await getNs(pages['*'])),

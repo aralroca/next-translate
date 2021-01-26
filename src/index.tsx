@@ -6,18 +6,11 @@ export interface TranslationQuery {
   [name: string]: string | number
 }
 
-export interface Translate {
-  <T = string>(
-    i18nKey: string | TemplateStringsArray,
-    query: TranslationQuery | null | undefined,
-    options: { returnObjects?: boolean; fallback?: string | string[] }
-  ): T
-  (
-    i18nKey: string | TemplateStringsArray,
-    query: TranslationQuery | null | undefined
-  ): string
-  (i18nKey: string | TemplateStringsArray): string
-}
+export type Translate = (
+  i18nKey: string | TemplateStringsArray,
+  query?: TranslationQuery | null,
+  options?: { returnObjects?: boolean; fallback?: string | string[] }
+) => string
 
 export interface I18n {
   t: Translate
