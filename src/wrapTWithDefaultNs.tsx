@@ -1,10 +1,13 @@
 import { Translate } from '.'
 
-export default function wrapTWithDefaultNs(oldT: any, defaultNs?: string) {
+export default function wrapTWithDefaultNs(
+  oldT: Translate,
+  defaultNs?: string
+): Translate {
   if (typeof defaultNs !== 'string') return oldT
 
   // Use default namespace if namespace is missing
-  function t(key = '', query, options): Translate {
+  const t: Translate = (key = '', query, options) => {
     let k = Array.isArray(key) ? key[0] : key
     if (!k.includes(':')) k = `${defaultNs}:${k}`
 

@@ -46,9 +46,7 @@ function formatElements(
 
         // format children for pair tags
         // unpaired tags might have children if it's a component passed as a variable
-        children
-          ? formatElements(children as string, elements)
-          : element.props.children
+        children ? formatElements(children, elements) : element.props.children
       )
     )
 
@@ -79,7 +77,7 @@ export default function Trans({
 
     if (!components || components.length === 0) return text
 
-    return formatElements(text as string, components)
+    return formatElements(text, components)
   }, [i18nKey, values, components]) as string
 
   return result

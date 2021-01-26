@@ -2,7 +2,12 @@ import { LoaderConfig } from '.'
 import getConfig from './getConfig'
 import getPageNamespaces from './getPageNamespaces'
 
-export default async function loadNamespaces(config: LoaderConfig = {}) {
+export default async function loadNamespaces(
+  config: LoaderConfig = {}
+): Promise<{
+  __lang: string
+  __namespaces?: Record<string, object>
+}> {
   const conf = { ...getConfig(), ...config }
   const __lang: string =
     conf.locale || conf.router?.locale || conf.defaultLocale || ''
@@ -52,7 +57,7 @@ export default async function loadNamespaces(config: LoaderConfig = {}) {
     __namespaces: namespaces.reduce((obj, ns, i) => {
       obj[ns] = pageNamespaces[i]
       return obj
-    }, {} as Record<string, object>),
+    }, {}),
   }
 }
 
