@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import I18nContext from './_context'
 import transCore from './transCore'
 import useTranslation from './useTranslation'
-import { I18nProviderProps } from '.'
+import { I18nDictionary, I18nProviderProps } from '.'
 
 export const InternalContext = createContext({ ns: {}, config: {} })
 
@@ -17,7 +17,7 @@ export default function I18nProvider({
   const { locale, defaultLocale } = useRouter() || {}
   const lang = lng || parentLang || locale || defaultLocale || ''
   const internal = useContext(InternalContext)
-  const allNamespaces: Record<string, object> = {
+  const allNamespaces: Record<string, I18nDictionary> = {
     ...internal.ns,
     ...namespaces,
   }

@@ -33,13 +33,15 @@ export interface TransProps {
 
 export type PageValue = string[] | ((context: object) => string[])
 
+export type LocaleLoader = (
+  language: string | undefined,
+  namespace: string
+) => Promise<I18nDictionary>
+
 export interface I18nConfig {
   defaultLocale?: string
   locales?: string[]
-  loadLocaleFrom?: (
-    language: string,
-    namespace: string
-  ) => Promise<I18nDictionary>
+  loadLocaleFrom?: LocaleLoader
   pages?: Record<string, PageValue>
   logger?: I18nLogger
   loader?: boolean
@@ -69,14 +71,26 @@ export interface I18nLogger {
 }
 
 export interface I18nDictionary {
-  [key: string]: unknown
+  [key: string]: string | I18nDictionary
 }
 
 export interface DynamicNamespacesProps {
-  dynamic?: (language: string, namespace: string) => Promise<I18nDictionary>
+  dynamic?: LocaleLoader
   namespaces?: string[]
   fallback?: ReactNode
   children?: ReactNode
+}
+
+declare global {
+  module NodeJS {
+    interface Global {
+      i18nConfig: LoaderConfig
+    }
+  }
+
+  interface Window {
+    i18nConfig: LoaderConfig
+  }
 }
 
 module.exports = nextTranslate

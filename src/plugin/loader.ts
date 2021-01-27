@@ -4,22 +4,25 @@ import {
   clearCommentsRgx,
   getDefaultAppJs,
   hasExportName,
-  isPageToIgnore,
   hasHOC,
+  isPageToIgnore,
 } from './utils'
 
-export default function loader(rawCode) {
+export default function loader(rawCode: string) {
   const {
     hasGetInitialPropsOnAppJs,
     hasAppJs,
     extensionsRgx,
     pagesPath,
     hasLoadLocaleFrom,
+    // @ts-ignore
   } = this.query
 
   // Normalize slashes in a file path to be posix/unix-like forward slashes
   const normalizedPagesPath = pagesPath.replace(/\\/g, '/')
-  const normalizedResourcePath = this.resourcePath.replace(/\\/g, '/')
+  const normalizedResourcePath: string =
+    // @ts-ignore
+    this.resourcePath.replace(/\\/g, '/')
 
   // In case that there aren't /_app.js we want to overwrite the default _app
   // to provide the I18Provider on top.

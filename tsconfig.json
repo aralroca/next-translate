@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
-    "strict": false,
+    "strict": true,
     "module": "ES2020",
     "target": "es5",
     "jsx": "react",
     "removeComments": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
     "declaration": true,
     "lib": ["esnext", "dom"],
     "forceConsistentCasingInFileNames": true,
