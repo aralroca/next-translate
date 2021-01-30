@@ -44,6 +44,7 @@ export interface I18nConfig {
   loadLocaleFrom?: LocaleLoader
   pages?: Record<string, PageValue>
   logger?: I18nLogger
+  staticsHoc?: Function
   loader?: boolean
   logBuild?: boolean
   interpolation?: {
