@@ -47,6 +47,10 @@ export default function appWithI18n(
     )
   }
 
+  if (typeof config.staticsHoc === 'function') {
+    config.staticsHoc(AppWithTranslations, AppToTranslate)
+  }
+
   // @ts-ignore
   if (typeof window === 'undefined') global.i18nConfig = config
   // @ts-ignore

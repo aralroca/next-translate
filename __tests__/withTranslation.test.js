@@ -33,6 +33,15 @@ const TestRussian = ({ i18nKey, query, namespaces }) => {
 describe('withTranslation', () => {
   afterEach(cleanup)
 
+  describe('getInitialProps', () => {
+    test('should invoke getInitialProps of inner component', async () => {
+      Translate.getInitialProps = jest.fn()
+      const wrapperWithTranslation = withTranslation(Translate)
+      await wrapperWithTranslation.getInitialProps()
+      expect(Translate.getInitialProps).toBeCalled()
+    })
+  })
+
   describe('plurals', () => {
     test('should work with singular | count=1', () => {
       const i18nKey = 'ns:withsingular'
@@ -226,5 +235,21 @@ describe('withTranslation', () => {
       )
       expect(container.textContent).toContain(expected)
     })
+  })
+
+  test('should work with default namespace', () => {
+    const i18nKey = 'simple'
+    const namespace = {
+      simple: 'This is working',
+    }
+
+    const Inner = withTranslation(Translate, 'ns')
+
+    const { container } = render(
+      <I18nProvider lang="en" namespaces={{ ns: namespace }}>
+        <Inner i18nKey={i18nKey} />
+      </I18nProvider>
+    )
+    expect(container.textContent).toContain(namespace.simple)
   })
 })

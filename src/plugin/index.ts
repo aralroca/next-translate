@@ -52,7 +52,9 @@ export default function nextTranslate(nextConfig: any = {}) {
   // Check if exist a getInitialProps on _app.js
   let hasGetInitialPropsOnAppJs = false
   const pagesPath = path.join(dir, arePagesInsideSrc ? '/src/pages' : '/pages')
-  const app = fs.readdirSync(pagesPath).find((page) => page.startsWith('_app.'))
+  const app = fs
+    .readdirSync(pagesPath)
+    .find((page: string) => page.startsWith('_app.'))
 
   if (app) {
     const code = fs.readFileSync(path.join(pagesPath, app)).toString('UTF-8')
@@ -68,7 +70,7 @@ export default function nextTranslate(nextConfig: any = {}) {
       locales,
       defaultLocale,
     },
-    webpack(conf, options) {
+    webpack(conf: any, options: Record<string, any>) {
       const config =
         typeof nextConfig.webpack === 'function'
           ? nextConfig.webpack(conf, options)

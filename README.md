@@ -230,6 +230,7 @@ In the configuration file you can use both the configuration that we specified h
 | `logBuild`        | Each page has a log indicating: namespaces, current language and method used to load the namespaces. With this you can disable it.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `Boolean`                       | `true`                                                                          |
 | `loader`        | If you wish to disable the webpack loader and manually load the namespaces on each page, we give you the opportunity to do so by disabling this option.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Boolean`                       | `true`                                                                          |
 | `interpolation`   | Change the delimeter that is used for interpolation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `{prefix: string; suffix: string}` | `{prefix: '{{', suffix: '}}'}`
+| `staticsHoc`   | The HOCs we have in our API ([appWithI18n](#appwithi18n)), do not use [hoist-non-react-statics](https://github.com/mridgway/hoist-non-react-statics) in order not to include more kb than necessary _(static values different than getInitialProps in the pages are rarely used)_. If you have any conflict with statics, you can add hoist-non-react-statics (or any other alternative) here. [See an example](docs/hoist-non-react-statics.md).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `Function` | `null`
 
 ## 4. API
 
@@ -299,6 +300,12 @@ class Description extends React.Component {
 }
 
 export default withTranslation(NoFunctionalComponent)
+```
+
+Similar to `useTranslation("common")` you can call `withTranslation` with the second parameter defining a default namespace to use:
+
+```
+export default withTranslation(NoFunctionalComponent, "common")
 ```
 
 ### Trans Component
@@ -690,7 +697,7 @@ import i18nConfig from '../i18n.json'
 
 const { locales } = i18nConfig
 
-function ChangeLanguage() {
+export default function ChangeLanguage() {
   const { t, lang } = useTranslation()
 
   return locales.map((lng) => {
@@ -704,6 +711,31 @@ function ChangeLanguage() {
       </Link>
     )
   })
+}
+```
+
+Another way of accessing the `locales` list to change the language is using the `Next.js router`. The `locales` list can be accessed using the [Next.js useRouter hook](https://nextjs.org/docs/api-reference/next/router#userouter).
+
+An example of a possible `ChangeLanguage` component using the `useRouter` hook from `Next.js`:
+
+```js
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import useTranslation from 'next-translate/useTranslation';
+
+export default function ChangeLanguage() {
+  const { locales } = useRouter();
+  const { t, lang } = useTranslation()
+
+  return locales.map((lng) => {
+    if (lng === lang) return null;
+
+    return (
+      <Link href="/" locale={lng} key={lng}>
+        {t(`layout:language-name-${lng}`)}
+      </Link>
+    );
+  });
 }
 ```
 

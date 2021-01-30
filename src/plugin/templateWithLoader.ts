@@ -1,7 +1,7 @@
 import { overwriteLoadLocales } from './utils'
 
 export default function templateWithLoader(
-  rawCode,
+  rawCode: string,
   {
     page = '',
     typescript = false,
@@ -25,7 +25,7 @@ export default function templateWithLoader(
         new RegExp(
           `(const|var|let|async +function|function|import|import {.* as) +${loader}\\W`
         ),
-        (v) =>
+        (v: string) =>
           v.replace(new RegExp(`\\W${loader}\\W`), (r) =>
             r.replace(loader, '_' + loader)
           )
@@ -38,7 +38,7 @@ export default function templateWithLoader(
         new RegExp(
           `export +(const|var|let|async +function|function) +_${loader}`
         ),
-        (v) => v.replace('export', '')
+        (v: string) => v.replace('export', '')
       )
       // Replacing: "export { getStaticProps }" to ""
       .replace(/export +\{ *(getStaticProps|getServerSideProps)( |,)*\}/, '')
@@ -50,21 +50,24 @@ export default function templateWithLoader(
       //    export { getStaticPropsFake, somethingelse, b as getStaticProps }
       // To:
       //    export { getStaticPropsFake, somethingelse }
-      .replace(new RegExp(`^ *export {(.|\n)*${loader}(.|\n)*}`, 'gm'), (v) => {
-        return v
-          .replace(new RegExp(`(\\w+ +as +)?${loader}\\W`, 'gm'), (v) =>
-            v.endsWith(loader) ? '' : v[v.length - 1]
-          )
-          .replace(/,( |\n)*,/gm, ',')
-          .replace(/{( |\n)*,/gm, '{')
-          .replace(/{,( \n)*}/gm, '}')
-          .replace(/^ *export +{( |\n)*}\W*$/gm, '')
-      })
+      .replace(
+        new RegExp(`^ *export {(.|\n)*${loader}(.|\n)*}`, 'gm'),
+        (v: string) => {
+          return v
+            .replace(new RegExp(`(\\w+ +as +)?${loader}\\W`, 'gm'), (v) =>
+              v.endsWith(loader) ? '' : v[v.length - 1]
+            )
+            .replace(/,( |\n)*,/gm, ',')
+            .replace(/{( |\n)*,/gm, '{')
+            .replace(/{,( \n)*}/gm, '}')
+            .replace(/^ *export +{( |\n)*}\W*$/gm, '')
+        }
+      )
       // Replacing:
       //    import { something, getStaticProps, somethingelse } from './getStaticProps'
       // To:
       //    import { something, getStaticProps as _getStaticProps, somethingelse } from './getStaticProps'
-      .replace(/^ *import +{( |\n)*[^}]*/gm, (v) => {
+      .replace(/^ *import +{( |\n)*[^}]*/gm, (v: string) => {
         if (v.match(new RegExp(`\\W+${loader} +as `))) return v
         return v.replace(new RegExp(`\\W+${loader}(\\W|$)`), (r) =>
           r.replace(loader, `${loader} as _${loader}`)
