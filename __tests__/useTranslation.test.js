@@ -185,6 +185,35 @@ describe('useTranslation', () => {
       expect(container.textContent).toBe(expected)
     })
 
+    test('should work with fallbacks that depend on the defined default namespace | t as function', () => {
+      const Inner = () => {
+        const { t } = useTranslation('a')
+
+        return (
+          <>
+            {t('test')} {t('unknown', {}, { fallback: 'fallback' })}
+          </>
+        )
+      }
+
+      const ns = {
+        a: {
+          test: 'Test text',
+          fallback: 'Fallback text',
+        },
+      }
+
+      const expected = 'Test text Fallback text'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={ns}>
+          <Inner />
+        </I18nProvider>
+      )
+
+      expect(container.textContent).toBe(expected)
+    })
+
     test('should return the key as fallback using a template string WITHOUT PROVIDER', () => {
       const Inner = () => {
         const { t } = useTranslation()
@@ -1127,10 +1156,7 @@ describe('useTranslation', () => {
       }
 
       const { container } = render(
-        <I18nProvider
-          lang="en"
-          namespaces={{ ns: templateString }}
-        >
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
           <Inner />
         </I18nProvider>
       )
@@ -1146,14 +1172,11 @@ describe('useTranslation', () => {
 
       const expected = ''
       const templateString = {
-        'empty-translation': { 'nested': '' },
+        'empty-translation': { nested: '' },
       }
 
       const { container } = render(
-        <I18nProvider
-          lang="en"
-          namespaces={{ ns: templateString }}
-        >
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
           <Inner />
         </I18nProvider>
       )

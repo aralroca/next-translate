@@ -131,6 +131,22 @@ describe('hasHOC', () => {
   })
 
   describe('HOC -> should return false', () => {
+    test('with -> arrow function with TS type', () => {
+      expect(
+        hasHOC(`
+        import { NextPage } from 'next'
+        import useTranslation from 'next-translate/useTranslation'
+        import React from 'react'
+
+        const NotFoundPage: NextPage = () => {
+          const { t } = useTranslation()
+          return <div>{t('error:page-not-found')}</div>
+        }
+
+        export default NotFoundPage
+        `)
+      ).toBe(false)
+    })
     test('with -> any export default', () => {
       expect(
         hasHOC(`

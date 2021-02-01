@@ -1,7 +1,7 @@
 import { clearCommentsRgx, overwriteLoadLocales } from './utils'
 
 export default function templateWithHoc(
-  code,
+  code: string,
   {
     skipInitialProps = false,
     typescript = false,
