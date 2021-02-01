@@ -1,16 +1,16 @@
-import { ReactElement, ReactNode } from 'react'
+import { ReactElement, ReactNode } from 'react';
 
-import nextTranslate from './plugin'
+import nextTranslate from './plugin';
 
 export interface TranslationQuery {
   [name: string]: string | number
 }
 
-export type Translate = (
+export type Translate = <T = string>(
   i18nKey: string | TemplateStringsArray,
   query?: TranslationQuery | null,
   options?: { returnObjects?: boolean; fallback?: string | string[] }
-) => string
+) => T
 
 export interface I18n {
   t: Translate
