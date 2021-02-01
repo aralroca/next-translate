@@ -10,7 +10,12 @@ export default async function getT(locale = '', namespace = '') {
   const loader: LocaleLoader = config.loadLocaleFrom || defaultLoader
   const allNamespaces = { [namespace]: await loader(lang, namespace) }
   const pluralRules = new Intl.PluralRules(lang)
-  const t = transCore({ config, allNamespaces, pluralRules, lang })
+  const t = transCore({
+    config,
+    allNamespaces,
+    pluralRules,
+    lang: lang as string,
+  })
 
   return wrapTWithDefaultNs(t, namespace)
 }
