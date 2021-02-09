@@ -223,7 +223,7 @@ In the configuration file you can use both the configuration that we specified h
 | Option            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Type                            | Default                                                                         |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------- |
 | `defaultLocale`   | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string`                        | `"en"`                                                                          |
-| `locales`         | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `string[]`                 | `[]`                                                                       |  
+| `locales`         | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `string[]`                 | `[]`                                                                       |
 | `loadLocaleFrom`  | Change the way you load the namespaces.                                                                                                                                                                                                                                                                                                                                                                                                                        | `function` that returns a `Promise` with the `JSON`.                      | By default is loading the namespaces from **locales** root directory.                                                                          |
 | `pages`           | An object that defines the namespaces used in each page. Example of object: `{"/": ["home", "example"]}`. To add namespaces to all pages you should use the key `"*"`, ex: `{"*": ["common"]}`. It's also possible to use regex using `rgx:` on front: `{"rgx:/form$": ["form"]}`. You can also use a function instead of an array, to provide some namespaces depending on some rules, ex: `{ "/": ({ req, query }) => query.type === 'example' ? ['example'] : []}` | `Object<string[] or function>` | `{}`                                                       |
 | `logger`          | Function to log the **missing keys** in development and production. If you are using `i18n.json` as config file you should change it to `i18n.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `function`                      | By default the logger is a function doing a `console.warn` only in development. |     |
@@ -489,7 +489,7 @@ function MyApp({ Component, pageProps }) {
 export default appWithI18n(MyApp, {
   ...i18nConfig,
   // Set to false if you want to load all the namespaces on _app.js getInitialProps
-  skipInitialProps: true, 
+  skipInitialProps: true,
 })
 ```
 
@@ -563,7 +563,7 @@ or
      "one": "The cart has only {{count}} product", // singular
      "other": "The cart has {{count}} products", // plural
      "999": "The cart is full", // when count === 999
-  } 
+  }
 }
 ```
 
@@ -687,7 +687,7 @@ In Trans Component:
 
 In order to change the current language you can use the [Next.js navigation](https://nextjs.org/docs/advanced-features/i18n-routing) (Link and Router) passing the `locale` prop.
 
-An example of a possible `ChangeLanguage` component:
+An example of a possible `ChangeLanguage` component using the `useRouter` hook from `Next.js`:
 
 ```js
 import React from 'react'
@@ -703,8 +703,6 @@ export default function ChangeLanguage() {
   return locales.map((lng) => {
     if (lng === lang) return null
 
-    // Or you can attach the current pathname at the end
-    // to keep the same page
     return (
       <Link href="/" locale={lng} key={lng}>
         {t(`layout:language-name-${lng}`)}
@@ -714,30 +712,20 @@ export default function ChangeLanguage() {
 }
 ```
 
-Another way of accessing the `locales` list to change the language is using the `Next.js router`. The `locales` list can be accessed using the [Next.js useRouter hook](https://nextjs.org/docs/api-reference/next/router#userouter).
-
-An example of a possible `ChangeLanguage` component using the `useRouter` hook from `Next.js`:
+You could also use `setLanguage` to change the language while keeping the same page.
 
 ```js
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import useTranslation from 'next-translate/useTranslation';
+import React from 'react'
+import setLanguage from 'next-translate/setLanguage'
 
 export default function ChangeLanguage() {
-  const { locales } = useRouter();
-  const { t, lang } = useTranslation()
-
-  return locales.map((lng) => {
-    if (lng === lang) return null;
-
-    return (
-      <Link href="/" locale={lng} key={lng}>
-        {t(`layout:language-name-${lng}`)}
-      </Link>
-    );
-  });
+  return (
+    <button onClick={async () => await setLanguage('en')}>EN</button>
+  )
 }
 ```
+
+Another way of accessing the `locales` list to change the language is using the `Next.js router`. The `locales` list can be accessed using the [Next.js useRouter hook](https://nextjs.org/docs/api-reference/next/router#userouter).
 
 ## 10. How to save the user-defined language
 
