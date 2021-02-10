@@ -745,7 +745,7 @@ You can set a cookie named `NEXT_LOCALE` with the user-defined language as value
 
 Example of hook:
 
-```
+```js
 import { useRouter } from 'next/router'
 
 // ...
