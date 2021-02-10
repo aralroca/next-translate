@@ -743,6 +743,28 @@ export default function ChangeLanguage() {
 
 You can set a cookie named `NEXT_LOCALE` with the user-defined language as value, this way a locale can be forced.
 
+Example of hook:
+
+```js
+import { useRouter } from 'next/router'
+
+// ...
+
+function usePersistLocaleCookie() {
+    const { locale, defaultLocale } = useRouter()
+
+    useEffect(persistLocaleCookie, [locale, defaultLocale])
+    function persistLocaleCookie() {
+      if(locale !== defaultLocale) {
+         const date = new Date()
+         const expireMs = 100 * 365 * 24 * 60 * 60 * 1000 // 100 days
+         date.setTime(date.getTime() + expireMs)
+         document.cookie = `NEXT_LOCALE=${locale};expires=${date.toUTCString()};path=/`
+      }
+    }
+}
+```
+
 ## 11. How to use multi-language in a page
 
 In some cases, when the page is in the current language, you may want to do some exceptions displaying some text in another language.
