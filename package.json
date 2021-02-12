@@ -89,7 +89,8 @@
   },
   "peerDependencies": {
     "next": ">= 10.0.0",
-    "react": ">= 16.8.0"
+    "react": ">= 16.8.0",
+    "pkg-dir": ">= 4.2.0"
   },
   "husky": {
     "hooks": {
