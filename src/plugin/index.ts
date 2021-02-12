@@ -7,7 +7,7 @@ export default function nextTranslate(nextConfig: any = {}) {
 
   // NEXT_TRANSLATE_PATH env is supported both relative and absolute path
   const dir = path.resolve(
-    path.relative(process.cwd(), process.env.NEXT_TRANSLATE_PATH || '.')
+    path.relative(pkgDir(), process.env.NEXT_TRANSLATE_PATH || '.')
   )
 
   const arePagesInsideSrc = fs.existsSync(path.join(dir, 'src/pages'))
@@ -102,5 +102,13 @@ export default function nextTranslate(nextConfig: any = {}) {
 
       return config
     },
+  }
+}
+
+function pkgDir() {
+  try {
+    return require('pkg-dir').sync() || process.cwd()
+  } catch (e) {
+    return process.cwd()
   }
 }
