@@ -667,7 +667,7 @@ const textOrFallback = t(
   'ns:text',
   { count: 42 },
   {
-    fallback: ['ns:fallback1', 'ns:fallbac2'],
+    fallback: ['ns:fallback1', 'ns:fallback2'],
   }
 )
 ```
