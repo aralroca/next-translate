@@ -41,12 +41,13 @@
     "Trans*",
     "withTranslation*",
     "useTranslation*",
+    "setLanguage",
     "index*"
   ],
   "scripts": {
     "build": "yarn clean && cross-env NODE_ENV=production && yarn tsc",
     "clean": "yarn clean:build && yarn clean:examples",
-    "clean:build": "rm -rf lib plugin appWith* Dynamic* I18n* index _context loadNa* Trans useT* withT* getP* getC* *.d.ts getT transC* wrapT* types",
+    "clean:build": "rm -rf lib plugin appWith* Dynamic* I18n* index _context loadNa* setLang* Trans useT* withT* getP* getC* *.d.ts getT transC* wrapT* types",
     "clean:examples": "rm -rf examples/**/.next && rm -rf examples/**/node_modules && rm -rf examples/**/yarn.lock",
     "example": "yarn example:complex",
     "example:basic": "yarn build && cd examples/basic && yarn && yarn dev",
