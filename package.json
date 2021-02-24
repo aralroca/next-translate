@@ -41,7 +41,7 @@
     "Trans*",
     "withTranslation*",
     "useTranslation*",
-    "setLanguage",
+    "setLanguage*",
     "index*"
   ],
   "scripts": {
