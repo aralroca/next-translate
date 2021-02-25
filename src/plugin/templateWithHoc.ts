@@ -30,10 +30,14 @@ export default function templateWithHoc(
     )
   }
 
-  // Replace all single quotes with double qoutes so that
-  // template.replace(tokenToReplace, `\n${modifiedCode}\n`)
-  // can replace tokenToReplace without issues
-  modifiedCode = modifiedCode.replace(/'/g, `"`)
+  // Replace single quotes in '$something$' boundaries with double qoutes
+  // so that template.replace(tokenToReplace, `\n${modifiedCode}\n`)
+  // works without issues when going through special $' sequence.
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_a_parameter
+  // Originally issue is caused by '$RefreshHelpers$'
+  modifiedCode = modifiedCode.replace(/('\$).+(\$')/gi, (match) => {
+    return match.replace(/'/g, '"')
+  })
 
   let template = `
     import __i18nConfig from '@next-translate-root/i18n'
