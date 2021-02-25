@@ -75,6 +75,11 @@ export default function templateWithLoader(
       })
   }
 
+  // Replace all single quotes with double qoutes so that
+  // template.replace(tokenToReplace, `\n${modifiedCode}\n`)
+  // can replace tokenToReplace without issues
+  modifiedCode = modifiedCode.replace(/'/g, `"`)
+
   let template = `
     import __i18nConfig from '@next-translate-root/i18n'
     import __loadNamespaces from 'next-translate/loadNamespaces'
