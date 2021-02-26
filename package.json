@@ -108,6 +108,10 @@
       "<rootDir>/__tests__",
       "<rootDir>/src"
     ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      ".utils.js"
+    ],
     "transform": {
       "^.+\\.(j|t)sx?$": "babel-jest"
     }
