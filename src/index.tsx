@@ -7,11 +7,11 @@ export interface TranslationQuery {
   [name: string]: any
 }
 
-export type Translate = (
+export type Translate = <T = string>(
   i18nKey: string | TemplateStringsArray,
   query?: TranslationQuery | null,
   options?: { returnObjects?: boolean; fallback?: string | string[] }
-) => string
+) => T
 
 export interface I18n {
   t: Translate
