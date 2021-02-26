@@ -1,9 +1,24 @@
-import { I18nConfig, LoggerProps, TranslationQuery } from '.'
+import {
+  I18nConfig,
+  I18nDictionary,
+  LoaderConfig,
+  LoggerProps,
+  TranslationQuery,
+} from '.'
+import { Translate } from './index'
 
-export default function transCore({ config, allNamespaces, pluralRules }) {
+export default function transCore({
+  config,
+  allNamespaces,
+  pluralRules,
+}: {
+  config: LoaderConfig
+  allNamespaces: Record<string, I18nDictionary>
+  pluralRules: Intl.PluralRules
+}): Translate {
   const { logger = missingKeyLogger } = config
 
-  function t(key = '', query, options) {
+  const t: Translate = (key = '', query, options) => {
     const k = Array.isArray(key) ? key[0] : key
     const [namespace, i18nKey] = k.split(/:(.+)/)
     const dic = allNamespaces[namespace] || {}
@@ -32,6 +47,11 @@ export default function transCore({ config, allNamespaces, pluralRules }) {
       }
     }
 
+    // no need to try interpolation
+    if (empty) {
+      return k
+    }
+
     if (value instanceof Object) {
       return objectInterpolation({
         obj: value as Record<string, unknown>,
@@ -40,7 +60,9 @@ export default function transCore({ config, allNamespaces, pluralRules }) {
       })
     }
 
-    return interpolation({ text: value as string, query, config }) || k
+    // this can return an empty string if either value was already empty
+    // or it contained only an interpolation (e.g. "{{name}}") and the query param was empty
+    return interpolation({ text: value as string, query, config })
   }
 
   return t
@@ -50,20 +72,23 @@ export default function transCore({ config, allNamespaces, pluralRules }) {
  * Get value from key (allow nested keys as parent.children)
  */
 function getDicValue(
-  dic: Object,
+  dic: I18nDictionary,
   key: string = '',
   options: { returnObjects?: boolean; fallback?: string | string[] } = {
     returnObjects: false,
   }
-): string | undefined | unknown {
-  const value: string | unknown = key
+): string | undefined | object {
+  const value: string | object = key
     .split('.')
-    .reduce((val: Object, key: string) => {
+    .reduce((val: I18nDictionary | string, key: string) => {
       if (typeof val === 'string') {
         return {}
       }
 
-      return val[key as keyof typeof val] || {}
+      const res = val[key as keyof typeof val]
+
+      // pass all truthy values or (empty) strings
+      return res || (typeof res === 'string' ? res : {})
     }, dic)
 
   if (
@@ -72,14 +97,16 @@ function getDicValue(
   ) {
     return value
   }
+
+  return undefined
 }
 
 /**
  * Control plural keys depending the {{count}} variable
  */
 function plural(
-  pluralRules,
-  dic: Object,
+  pluralRules: Intl.PluralRules,
+  dic: I18nDictionary,
   key: string,
   query?: TranslationQuery | null
 ): string {

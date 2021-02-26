@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { DynamicNamespacesProps, I18nDictionary, I18nConfig } from '.'
+import { DynamicNamespacesProps, I18nConfig, I18nDictionary } from '.'
 import I18nProvider, { InternalContext } from './I18nProvider'
 import useTranslation from './useTranslation'
 
@@ -35,10 +35,13 @@ export default function DynamicNamespaces({
   return (
     <I18nProvider
       lang={lang}
-      namespaces={namespaces.reduce((obj, ns, i) => {
-        obj[ns] = pageNs[i]
-        return obj
-      }, {} as Record<string, I18nDictionary>)}
+      namespaces={namespaces.reduce(
+        (obj: Record<string, I18nDictionary>, ns, i) => {
+          obj[ns] = pageNs[i]
+          return obj
+        },
+        {}
+      )}
     >
       {children}
     </I18nProvider>

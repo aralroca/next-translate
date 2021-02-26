@@ -4,22 +4,29 @@ import {
   clearCommentsRgx,
   getDefaultAppJs,
   hasExportName,
-  isPageToIgnore,
   hasHOC,
+  isPageToIgnore,
 } from './utils'
 
-export default function loader(rawCode) {
+export default function loader(rawCode: string) {
   const {
     hasGetInitialPropsOnAppJs,
     hasAppJs,
     extensionsRgx,
     pagesPath,
     hasLoadLocaleFrom,
+    // @ts-ignore
   } = this.query
+
+  // Normalize slashes in a file path to be posix/unix-like forward slashes
+  const normalizedPagesPath = pagesPath.replace(/\\/g, '/')
+  const normalizedResourcePath: string =
+    // @ts-ignore
+    this.resourcePath.replace(/\\/g, '/')
 
   // In case that there aren't /_app.js we want to overwrite the default _app
   // to provide the I18Provider on top.
-  if (this.resourcePath.includes('node_modules/next/dist/pages/_app')) {
+  if (normalizedResourcePath.includes('node_modules/next/dist/pages/_app')) {
     // There are cases that a default appjs is served even if it already has
     // an appjs defined. For example when using a class extended from NextApp.
     // For these cases we must not overwrite it.
@@ -28,9 +35,9 @@ export default function loader(rawCode) {
   }
 
   // Skip rest of files that are not inside /pages
-  if (!this.resourcePath.startsWith(pagesPath)) return rawCode
+  if (!normalizedResourcePath.startsWith(normalizedPagesPath)) return rawCode
 
-  const page = this.resourcePath.replace(pagesPath, '/').replace(/\\/g, '/')
+  const page = normalizedResourcePath.replace(normalizedPagesPath, '/')
   const pageNoExt = page.replace(extensionsRgx, '')
   const code = rawCode.replace(clearCommentsRgx, '')
   const typescript = page.endsWith('.ts') || page.endsWith('.tsx')

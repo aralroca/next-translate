@@ -15,7 +15,7 @@
 [![PRs Welcome][badge-prwelcome]][prwelcome]
 <a href="https://github.com/vinissimus/next-translate/actions?query=workflow%3ACI" alt="Tests status">
 <img src="https://github.com/vinissimus/next-translate/workflows/CI/badge.svg" /></a>
-<a href="https://twitter.com/intent/follow?screen_name=shields_io">
+<a href="https://twitter.com/intent/follow?screen_name=aralroca">
 <img src="https://img.shields.io/twitter/follow/aralroca?style=social&logo=twitter"
             alt="follow on Twitter"></a>
 
@@ -223,13 +223,14 @@ In the configuration file you can use both the configuration that we specified h
 | Option            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Type                            | Default                                                                         |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------- |
 | `defaultLocale`   | ISO of the default locale ("en" as default).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string`                        | `"en"`                                                                          |
-| `locales`         | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `string[]`                 | `[]`                                                                       |  
+| `locales`         | An array with all the languages to use in the project.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `string[]`                 | `[]`                                                                       |
 | `loadLocaleFrom`  | Change the way you load the namespaces.                                                                                                                                                                                                                                                                                                                                                                                                                        | `function` that returns a `Promise` with the `JSON`.                      | By default is loading the namespaces from **locales** root directory.                                                                          |
 | `pages`           | An object that defines the namespaces used in each page. Example of object: `{"/": ["home", "example"]}`. To add namespaces to all pages you should use the key `"*"`, ex: `{"*": ["common"]}`. It's also possible to use regex using `rgx:` on front: `{"rgx:/form$": ["form"]}`. You can also use a function instead of an array, to provide some namespaces depending on some rules, ex: `{ "/": ({ req, query }) => query.type === 'example' ? ['example'] : []}` | `Object<string[] or function>` | `{}`                                                       |
 | `logger`          | Function to log the **missing keys** in development and production. If you are using `i18n.json` as config file you should change it to `i18n.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `function`                      | By default the logger is a function doing a `console.warn` only in development. |     |
 | `logBuild`        | Each page has a log indicating: namespaces, current language and method used to load the namespaces. With this you can disable it.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `Boolean`                       | `true`                                                                          |
 | `loader`        | If you wish to disable the webpack loader and manually load the namespaces on each page, we give you the opportunity to do so by disabling this option.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Boolean`                       | `true`                                                                          |
 | `interpolation`   | Change the delimeter that is used for interpolation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `{prefix: string; suffix: string}` | `{prefix: '{{', suffix: '}}'}`
+| `staticsHoc`   | The HOCs we have in our API ([appWithI18n](#appwithi18n)), do not use [hoist-non-react-statics](https://github.com/mridgway/hoist-non-react-statics) in order not to include more kb than necessary _(static values different than getInitialProps in the pages are rarely used)_. If you have any conflict with statics, you can add hoist-non-react-statics (or any other alternative) here. [See an example](docs/hoist-non-react-statics.md).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `Function` | `null`
 
 ## 4. API
 
@@ -299,6 +300,12 @@ class Description extends React.Component {
 }
 
 export default withTranslation(NoFunctionalComponent)
+```
+
+Similar to `useTranslation("common")` you can call `withTranslation` with the second parameter defining a default namespace to use:
+
+```
+export default withTranslation(NoFunctionalComponent, "common")
 ```
 
 ### Trans Component
@@ -482,7 +489,7 @@ function MyApp({ Component, pageProps }) {
 export default appWithI18n(MyApp, {
   ...i18nConfig,
   // Set to false if you want to load all the namespaces on _app.js getInitialProps
-  skipInitialProps: true, 
+  skipInitialProps: true,
 })
 ```
 
@@ -556,7 +563,7 @@ or
      "one": "The cart has only {{count}} product", // singular
      "other": "The cart has {{count}} products", // plural
      "999": "The cart is full", // when count === 999
-  } 
+  }
 }
 ```
 
@@ -660,7 +667,7 @@ const textOrFallback = t(
   'ns:text',
   { count: 42 },
   {
-    fallback: ['ns:fallback1', 'ns:fallbac2'],
+    fallback: ['ns:fallback1', 'ns:fallback2'],
   }
 )
 ```
@@ -680,7 +687,7 @@ In Trans Component:
 
 In order to change the current language you can use the [Next.js navigation](https://nextjs.org/docs/advanced-features/i18n-routing) (Link and Router) passing the `locale` prop.
 
-An example of a possible `ChangeLanguage` component:
+An example of a possible `ChangeLanguage` component using the `useRouter` hook from `Next.js`:
 
 ```js
 import React from 'react'
@@ -696,8 +703,6 @@ export default function ChangeLanguage() {
   return locales.map((lng) => {
     if (lng === lang) return null
 
-    // Or you can attach the current pathname at the end
-    // to keep the same page
     return (
       <Link href="/" locale={lng} key={lng}>
         {t(`layout:language-name-${lng}`)}
@@ -707,34 +712,46 @@ export default function ChangeLanguage() {
 }
 ```
 
-Another way of accessing the `locales` list to change the language is using the `Next.js router`. The `locales` list can be accessed using the [Next.js useRouter hook](https://nextjs.org/docs/api-reference/next/router#userouter).
-
-An example of a possible `ChangeLanguage` component using the `useRouter` hook from `Next.js`:
+You could also use `setLanguage` to change the language while keeping the same page.
 
 ```js
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import useTranslation from 'next-translate/useTranslation';
+import React from 'react'
+import setLanguage from 'next-translate/setLanguage'
 
 export default function ChangeLanguage() {
-  const { locales } = useRouter();
-  const { t, lang } = useTranslation()
-
-  return locales.map((lng) => {
-    if (lng === lang) return null;
-
-    return (
-      <Link href="/" locale={lng} key={lng}>
-        {t(`layout:language-name-${lng}`)}
-      </Link>
-    );
-  });
+  return (
+    <button onClick={async () => await setLanguage('en')}>EN</button>
+  )
 }
 ```
+
+Another way of accessing the `locales` list to change the language is using the `Next.js router`. The `locales` list can be accessed using the [Next.js useRouter hook](https://nextjs.org/docs/api-reference/next/router#userouter).
 
 ## 10. How to save the user-defined language
 
 You can set a cookie named `NEXT_LOCALE` with the user-defined language as value, this way a locale can be forced.
+
+Example of hook:
+
+```js
+import { useRouter } from 'next/router'
+
+// ...
+
+function usePersistLocaleCookie() {
+    const { locale, defaultLocale } = useRouter()
+
+    useEffect(persistLocaleCookie, [locale, defaultLocale])
+    function persistLocaleCookie() {
+      if(locale !== defaultLocale) {
+         const date = new Date()
+         const expireMs = 100 * 365 * 24 * 60 * 60 * 1000 // 100 days
+         date.setTime(date.getTime() + expireMs)
+         document.cookie = `NEXT_LOCALE=${locale};expires=${date.toUTCString()};path=/`
+      }
+    }
+}
+```
 
 ## 11. How to use multi-language in a page
 
@@ -807,40 +824,43 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://aralroca.com"><img src="https://avatars3.githubusercontent.com/u/13313058?v=4" width="100px;" alt=""/><br /><sub><b>Aral Roca Gomez</b></sub></a><br /><a href="#maintenance-aralroca" title="Maintenance">🚧</a> <a href="https://github.com/vinissimus/next-translate/commits?author=aralroca" title="Code">💻</a></td>
-    <td align="center"><a href="https://twitter.com/vincentducorps"><img src="https://avatars0.githubusercontent.com/u/6338609?v=4" width="100px;" alt=""/><br /><sub><b>Vincent Ducorps</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=vincentducorps" title="Code">💻</a></td>
-    <td align="center"><a href="https://www.rahwn.com"><img src="https://avatars3.githubusercontent.com/u/36173920?v=4" width="100px;" alt=""/><br /><sub><b>Björn Rave</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=BjoernRave" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/justincy"><img src="https://avatars2.githubusercontent.com/u/1037458?v=4" width="100px;" alt=""/><br /><sub><b>Justin</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=justincy" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/psanlorenzo"><img src="https://avatars2.githubusercontent.com/u/42739235?v=4" width="100px;" alt=""/><br /><sub><b>Pol</b></sub></a><br /><a href="#infra-psanlorenzo" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-    <td align="center"><a href="https://twitter.com/ftonato"><img src="https://avatars2.githubusercontent.com/u/5417662?v=4" width="100px;" alt=""/><br /><sub><b>Ademílson F. Tonato</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=ftonato" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/Faulik"><img src="https://avatars3.githubusercontent.com/u/749225?v=4" width="100px;" alt=""/><br /><sub><b>Faul</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=Faulik" title="Code">💻</a></td>
+    <td align="center"><a href="https://aralroca.com"><img src="https://avatars3.githubusercontent.com/u/13313058?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Aral Roca Gomez</b></sub></a><br /><a href="#maintenance-aralroca" title="Maintenance">🚧</a> <a href="https://github.com/vinissimus/next-translate/commits?author=aralroca" title="Code">💻</a></td>
+    <td align="center"><a href="https://twitter.com/vincentducorps"><img src="https://avatars0.githubusercontent.com/u/6338609?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Vincent Ducorps</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=vincentducorps" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.rahwn.com"><img src="https://avatars3.githubusercontent.com/u/36173920?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Björn Rave</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=BjoernRave" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/justincy"><img src="https://avatars2.githubusercontent.com/u/1037458?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Justin</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=justincy" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/psanlorenzo"><img src="https://avatars2.githubusercontent.com/u/42739235?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pol</b></sub></a><br /><a href="#infra-psanlorenzo" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://twitter.com/ftonato"><img src="https://avatars2.githubusercontent.com/u/5417662?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ademílson F. Tonato</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=ftonato" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Faulik"><img src="https://avatars3.githubusercontent.com/u/749225?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Faul</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=Faulik" title="Code">💻</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/bickmaev5"><img src="https://avatars2.githubusercontent.com/u/13235737?v=4" width="100px;" alt=""/><br /><sub><b>bickmaev5</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=bickmaev5" title="Code">💻</a></td>
-    <td align="center"><a href="https://p.ier.re"><img src="https://avatars1.githubusercontent.com/u/1866496?v=4" width="100px;" alt=""/><br /><sub><b>Pierre Grimaud</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=pgrimaud" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://roman-minchyn.de"><img src="https://avatars0.githubusercontent.com/u/6419697?v=4" width="100px;" alt=""/><br /><sub><b>Roman Minchyn</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=dnepro" title="Documentation">📖</a> <a href="https://github.com/vinissimus/next-translate/commits?author=dnepro" title="Code">💻</a></td>
-    <td align="center"><a href="https://www.egorphilippov.me/"><img src="https://avatars2.githubusercontent.com/u/595980?v=4" width="100px;" alt=""/><br /><sub><b>Egor</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=lone-cloud" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/dhobbs"><img src="https://avatars2.githubusercontent.com/u/367375?v=4" width="100px;" alt=""/><br /><sub><b>Darren</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=dhobbs" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/giovannigiordano"><img src="https://avatars3.githubusercontent.com/u/15145952?v=4" width="100px;" alt=""/><br /><sub><b>Giovanni Giordano</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=giovannigiordano" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/kidnapkin"><img src="https://avatars0.githubusercontent.com/u/9214135?v=4" width="100px;" alt=""/><br /><sub><b>Eugene</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=kidnapkin" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/bickmaev5"><img src="https://avatars2.githubusercontent.com/u/13235737?v=4?s=100" width="100px;" alt=""/><br /><sub><b>bickmaev5</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=bickmaev5" title="Code">💻</a></td>
+    <td align="center"><a href="https://p.ier.re"><img src="https://avatars1.githubusercontent.com/u/1866496?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pierre Grimaud</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=pgrimaud" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://roman-minchyn.de"><img src="https://avatars0.githubusercontent.com/u/6419697?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Roman Minchyn</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=dnepro" title="Documentation">📖</a> <a href="https://github.com/vinissimus/next-translate/commits?author=dnepro" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.egorphilippov.me/"><img src="https://avatars2.githubusercontent.com/u/595980?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Egor</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=lone-cloud" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/dhobbs"><img src="https://avatars2.githubusercontent.com/u/367375?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Darren</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=dhobbs" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/giovannigiordano"><img src="https://avatars3.githubusercontent.com/u/15145952?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Giovanni Giordano</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=giovannigiordano" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/kidnapkin"><img src="https://avatars0.githubusercontent.com/u/9214135?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Eugene</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=kidnapkin" title="Code">💻</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://andrew-c.com"><img src="https://avatars2.githubusercontent.com/u/11482515?v=4" width="100px;" alt=""/><br /><sub><b>Andrew Chung</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=hibearpanda" title="Code">💻</a></td>
-    <td align="center"><a href="http://cuthanh.com"><img src="https://avatars0.githubusercontent.com/u/9281080?v=4" width="100px;" alt=""/><br /><sub><b>Thanh Minh</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=thanhlmm" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/croutonn"><img src="https://avatars1.githubusercontent.com/u/68943932?v=4" width="100px;" alt=""/><br /><sub><b>crouton</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=croutonn" title="Code">💻</a></td>
-    <td align="center"><a href="http://patrickmuff.ch"><img src="https://avatars3.githubusercontent.com/u/3121902?v=4" width="100px;" alt=""/><br /><sub><b>Patrick</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=dislick" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/vimutti77"><img src="https://avatars3.githubusercontent.com/u/27840664?v=4" width="100px;" alt=""/><br /><sub><b>Vantroy</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=vimutti77" title="Code">💻</a></td>
-    <td align="center"><a href="https://www.npmjs.com/~farinajoey"><img src="https://avatars1.githubusercontent.com/u/17398284?v=4" width="100px;" alt=""/><br /><sub><b>Joey</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=josephfarina" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/gurkerl83"><img src="https://avatars0.githubusercontent.com/u/301689?v=4" width="100px;" alt=""/><br /><sub><b>gurkerl83</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=gurkerl83" title="Code">💻</a></td>
+    <td align="center"><a href="https://andrew-c.com"><img src="https://avatars2.githubusercontent.com/u/11482515?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andrew Chung</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=hibearpanda" title="Code">💻</a></td>
+    <td align="center"><a href="http://cuthanh.com"><img src="https://avatars0.githubusercontent.com/u/9281080?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Thanh Minh</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=thanhlmm" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/croutonn"><img src="https://avatars1.githubusercontent.com/u/68943932?v=4?s=100" width="100px;" alt=""/><br /><sub><b>crouton</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=croutonn" title="Code">💻</a></td>
+    <td align="center"><a href="http://patrickmuff.ch"><img src="https://avatars3.githubusercontent.com/u/3121902?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Patrick</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=dislick" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/vimutti77"><img src="https://avatars3.githubusercontent.com/u/27840664?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Vantroy</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=vimutti77" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.npmjs.com/~farinajoey"><img src="https://avatars1.githubusercontent.com/u/17398284?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Joey</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=josephfarina" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/gurkerl83"><img src="https://avatars0.githubusercontent.com/u/301689?v=4?s=100" width="100px;" alt=""/><br /><sub><b>gurkerl83</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=gurkerl83" title="Code">💻</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/tperamaki"><img src="https://avatars0.githubusercontent.com/u/26067988?v=4" width="100px;" alt=""/><br /><sub><b>Teemu Perämäki</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=tperamaki" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/luisgserrano"><img src="https://avatars3.githubusercontent.com/u/2024164?v=4" width="100px;" alt=""/><br /><sub><b>Luis Serrano</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=luisgserrano" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/tperamaki"><img src="https://avatars0.githubusercontent.com/u/26067988?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Teemu Perämäki</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=tperamaki" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/luisgserrano"><img src="https://avatars3.githubusercontent.com/u/2024164?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Luis Serrano</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=luisgserrano" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/j-schumann"><img src="https://avatars.githubusercontent.com/u/114239?v=4?s=100" width="100px;" alt=""/><br /><sub><b>j-schumann</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=j-schumann" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/andrehsu"><img src="https://avatars.githubusercontent.com/u/4470828?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andre Hsu</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=andrehsu" title="Code">💻</a></td>
   </tr>
 </table>
 
-<!-- markdownlint-enable -->
+<!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
