@@ -1,4 +1,5 @@
 import templateWithLoader from '../src/plugin/templateWithLoader'
+import { specialStringsRenderer } from './templateWith.utils'
 import prettier from 'prettier'
 
 function clean(code) {
@@ -315,7 +316,10 @@ const tests = [
       },
     ],
   },
-]
+].map((t) => {
+  t.code = specialStringsRenderer + '\n' + t.code
+  return t
+})
 
 describe('templateWithLoader', () => {
   tests.forEach((d) => {
