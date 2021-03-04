@@ -71,7 +71,7 @@ export interface I18nLogger {
   (context: LoggerProps): void
 }
 
-interface Container<T> {
+export interface Container<T> {
   [index: number]: Container<T> | T
 }
 

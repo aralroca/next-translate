@@ -1,4 +1,5 @@
 import {
+  Container,
   I18nConfig,
   I18nDictionary,
   LoaderConfig,
@@ -80,16 +81,35 @@ function getDicValue(
 ): string | undefined | object {
   const value: string | object = key
     .split('.')
-    .reduce((val: I18nDictionary | string, key: string) => {
-      if (typeof val === 'string') {
-        return {}
-      }
+    .reduce(
+      (
+        val: I18nDictionary | string | Container<I18nDictionary | string>,
+        key: string
+      ) => {
+        if (typeof val === 'string') {
+          return {}
+        }
 
-      const res = val[key as keyof typeof val]
+        /**
+         * Check if value is instance of container
+         */
+        const isContainer = <T,>(
+          val: string | I18nDictionary | Container<T>
+        ): val is Container<T> => {
+          return Array.isArray(val)
+        }
 
-      // pass all truthy values or (empty) strings
-      return res || (typeof res === 'string' ? res : {})
-    }, dic)
+        if (isContainer<I18nDictionary | string>(val)) {
+          return {}
+        }
+
+        const res = val[key as keyof typeof val]
+
+        // pass all truthy values or (empty) strings
+        return res || (typeof res === 'string' ? res : {})
+      },
+      dic
+    )
 
   if (
     typeof value === 'string' ||
