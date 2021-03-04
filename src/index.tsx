@@ -71,8 +71,12 @@ export interface I18nLogger {
   (context: LoggerProps): void
 }
 
+interface Container<T> {
+  [index: number]: Container<T> | T
+}
+
 export interface I18nDictionary {
-  [key: string]: string | I18nDictionary
+  [key: string]: string | I18nDictionary | Container<I18nDictionary | string>
 }
 
 export interface DynamicNamespacesProps {
