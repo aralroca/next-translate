@@ -116,7 +116,7 @@ function plural(
   if (getDicValue(dic, numKey) !== undefined) return numKey
 
   const pluralKey = `${key}_${pluralRules.select(query.count)}`
-  if (query.count > 1 && getDicValue(dic, pluralKey) !== undefined) {
+  if (query.count > 0 && getDicValue(dic, pluralKey) !== undefined) {
     return pluralKey
   }
 
