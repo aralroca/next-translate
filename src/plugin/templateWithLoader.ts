@@ -75,11 +75,6 @@ export default function templateWithLoader(
       })
   }
 
-  // Replace all single quotes with double qoutes so that
-  // template.replace(tokenToReplace, `\n${modifiedCode}\n`)
-  // can replace tokenToReplace without issues
-  modifiedCode = modifiedCode.replace(/'/g, `"`)
-
   let template = `
     import __i18nConfig from '@next-translate-root/i18n'
     import __loadNamespaces from 'next-translate/loadNamespaces'
@@ -105,5 +100,9 @@ export default function templateWithLoader(
 
   if (typescript) template = template.replace(/\n/g, '\n// @ts-ignore\n')
 
-  return template.replace(tokenToReplace, `\n${modifiedCode}\n`)
+  // Use callback to avoid parsing special patterns specific for .replace()
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_a_parameter
+  return template.replace(tokenToReplace, () => {
+    return `\n${modifiedCode}\n`
+  })
 }

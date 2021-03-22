@@ -4,6 +4,10 @@ exports[`templateWithLoader exporting as a arrow function - without loader page:
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
 export default () => <div>Hello world</div>;
 
 export async function getServerSideProps(ctx) {
@@ -29,6 +33,10 @@ exports[`templateWithLoader exporting as a arrow function - without loader page:
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
 export default () => <div>Hello world</div>;
 
 export async function getStaticProps(ctx) {
@@ -53,6 +61,11 @@ export async function getStaticProps(ctx) {
 exports[`templateWithLoader exporting as a class - with loader page: /index | loader: getStaticProps | hasLoader: true 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
 
 import React from \\"react\\";
 
@@ -93,6 +106,11 @@ exports[`templateWithLoader exporting as a class in a diferent line - without lo
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+
 import React from \\"react\\";
 
 class Page extends React.Component {
@@ -128,6 +146,11 @@ exports[`templateWithLoader exporting as a class in a diferent line - without lo
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+
 import React from \\"react\\";
 
 class Page extends React.Component {
@@ -162,6 +185,11 @@ export async function getStaticProps(ctx) {
 exports[`templateWithLoader exporting as a function - with loader page: /index | loader: getStaticProps | hasLoader: true 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
 
 export default function Page() {
   return <div>Hello world</div>;
@@ -202,6 +230,11 @@ exports[`templateWithLoader exporting as a function - without loader page: /blog
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+
 export default function Page() {
   return <div>Hello world</div>;
 }
@@ -229,6 +262,11 @@ exports[`templateWithLoader exporting as a function - without loader page: /inde
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+
 export default function Page() {
   return <div>Hello world</div>;
 }
@@ -255,6 +293,11 @@ export async function getStaticProps(ctx) {
 exports[`templateWithLoader exporting as a function in diferent line - with loader page: /index | loader: getServerSideProps | hasLoader: true 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
 
 function Page() {
   return <div>Hello world</div>;
@@ -293,6 +336,11 @@ exports[`templateWithLoader exporting as a function in diferent line - without l
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+
 function Page() {
   return <div>Hello world</div>;
 }
@@ -322,6 +370,11 @@ exports[`templateWithLoader exporting as a function in diferent line - without l
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+
 function Page() {
   return <div>Hello world</div>;
 }
@@ -350,6 +403,11 @@ export async function getStaticProps(ctx) {
 exports[`templateWithLoader loader as a arrow function page: /index | loader: getStaticProps | hasLoader: true 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
 
 export default function Page() {
   return <div>Hello world</div>;
@@ -383,6 +441,11 @@ export async function getStaticProps(ctx) {
 exports[`templateWithLoader loader imported to another place page: /index | loader: getStaticProps | hasLoader: true 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
 
 import _getStaticProps from \\"somewhere/getStaticProps\\";
 import getStaticPaths from \\"somewhere/getStaticPaths\\";
@@ -422,6 +485,11 @@ exports[`templateWithLoader loader with named import to another place + rename p
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+
 import { getStaticPropsA as _getStaticProps } from \\"somewhere/getStaticProps\\";
 import { getStaticProps as getStaticPaths } from \\"somewhere/getStaticPaths\\";
 
@@ -460,6 +528,11 @@ exports[`templateWithLoader loader with named import to another place page: /ind
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+
 import { getStaticProps as _getStaticProps } from \\"somewhere/getStaticProps\\";
 import { getStaticPaths } from \\"somewhere/getStaticPaths\\";
 
@@ -497,6 +570,11 @@ export async function getStaticProps(ctx) {
 exports[`templateWithLoader loader with one named import to another place page: /index | loader: getStaticProps | hasLoader: true 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
 
 import {
   getStaticPaths,
@@ -539,6 +617,10 @@ exports[`templateWithLoader should add the "as" on the import only when is neces
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
 import { getStaticProps as _getStaticProps } from \\"somewhere/getStaticProps\\";
 import { getStaticProps as _getStaticProps } from \\"somewhere/getStaticProps\\";
 
@@ -591,6 +673,11 @@ export async function getStaticProps(ctx) {
 exports[`templateWithLoader should remove exports of existings loaders with "as" page: /index | loader: getStaticProps | hasLoader: true 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
 
 export { anotherThing };
 

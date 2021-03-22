@@ -1,4 +1,5 @@
 import templateWithHoc from '../src/plugin/templateWithHoc'
+import { specialStringsRenderer } from './templateWith.utils'
 import prettier from 'prettier'
 
 function clean(code) {
@@ -150,7 +151,10 @@ const tests = [
   `,
     cases: [{ skipInitialProps: false }, { skipInitialProps: true }],
   },
-]
+].map((t) => {
+  t.code = specialStringsRenderer + '\n' + t.code
+  return t
+})
 
 describe('templateWithHoc', () => {
   tests.forEach((d) => {

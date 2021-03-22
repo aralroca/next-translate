@@ -311,6 +311,24 @@ describe('useTranslation', () => {
       expect(container.textContent).toContain(expected)
     })
 
+    test('should work with singular | count=1', () => {
+      const i18nKey = 'ns:withsingular'
+      const expected = 'The number is NOT ZERO'
+      const withSingular = {
+        withsingular_one: 'The number is NOT ZERO',
+        withsingular_0: 'The number is ZERO!',
+        withsingular_other: 'Oops!',
+      }
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ ns: withSingular }}
+          i18nKey={i18nKey}
+          query={{ count: 1 }}
+        />
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
     test('should work with singular | count=0', () => {
       const i18nKey = 'ns:withsingular'
       const expected = 'The number is NOT ONE'
@@ -797,6 +815,40 @@ describe('useTranslation', () => {
         interpolation: {
           prefix: '${',
           suffix: '}',
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+          config={config}
+        >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should support alternative interpolation without suffix', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:template-object-interpolation', {
+          count: 3,
+          something: 'cats',
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'There are 3 cats.'
+      const templateString = {
+        'template-object-interpolation': 'There are :count :something.',
+      }
+
+      const config = {
+        interpolation: {
+          prefix: ':',
+          suffix: '',
         },
       }
 

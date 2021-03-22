@@ -123,7 +123,9 @@ describe('withTranslation', () => {
           query={{ count: 1 }}
         />
       )
-      expect(r5.container.textContent).toContain('The cart has only 1 product')
+      expect(r5.container.textContent).toContain(
+        'The cart number ends with one'
+      )
 
       const r6 = render(
         <TestRussian
