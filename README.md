@@ -567,6 +567,8 @@ or
 }
 ```
 
+> Intl.PluralRules API is **only available for modern browsers**, if you want to use it in legacy browsers you should add a [polyfill](https://github.com/eemeli/intl-pluralrules). 
+
 
 ## 6. Use HTML inside the translation
 
