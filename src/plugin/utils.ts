@@ -42,6 +42,7 @@ export function hasExportName(data: string, name: string) {
 export function isPageToIgnore(page: string) {
   return Boolean(
     page.startsWith('/api/') ||
+      page.startsWith('/api.') ||
       page.startsWith('/_document.') ||
       page.match(specFileOrFolderRgx)
   )
