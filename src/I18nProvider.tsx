@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import I18nContext from './_context'
 import transCore from './transCore'
