@@ -438,6 +438,44 @@ export async function getStaticProps(ctx) {
 "
 `;
 
+exports[`templateWithLoader loader as a wrapper page: /index | loader: getStaticProps | hasLoader: true 1`] = `
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
+import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+
+export default function Page() {
+  return <div>Hello world</div>;
+}
+
+const _getStaticProps = wrapper.getStaticProps(() => ({ props: {} }));
+
+export async function getStaticProps(ctx) {
+  let res = _getStaticProps(ctx);
+  if (typeof res.then === \\"function\\") res = await res;
+  return {
+    ...res,
+    props: {
+      ...(res.props || {}),
+      ...(await __loadNamespaces({
+        ...ctx,
+        pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
+        ...__i18nConfig,
+        loadLocaleFrom: (l, n) =>
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
+      })),
+    },
+  };
+}
+"
+`;
+
 exports[`templateWithLoader loader imported to another place page: /index | loader: getStaticProps | hasLoader: true 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
