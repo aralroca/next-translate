@@ -180,6 +180,24 @@ const tests = [
     ],
   },
   {
+    describe: 'loader as a wrapper',
+    code: `
+      export default function Page() {
+        return <div>Hello world</div>
+      }
+
+      const getStaticProps = wrapper.getStaticProps(() => ({ props: {} }))
+      export { getStaticProps }
+  `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: true,
+      },
+    ],
+  },
+  {
     describe: 'loader imported to another place',
     code: `
       import getStaticProps from 'somewhere/getStaticProps'
