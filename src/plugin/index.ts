@@ -91,7 +91,7 @@ export default function nextTranslate(nextConfig: any = {}) {
         use: {
           loader: 'next-translate/plugin/loader',
           options: {
-            extensionsRgx: test,
+            extensionsRgx: restI18n.extensionsRgx || test,
             hasGetInitialPropsOnAppJs,
             hasAppJs: !!app,
             pagesPath: path.join(pagesPath, '/'),
