@@ -858,6 +858,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/j-schumann"><img src="https://avatars.githubusercontent.com/u/114239?v=4?s=100" width="100px;" alt=""/><br /><sub><b>j-schumann</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=j-schumann" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/andrehsu"><img src="https://avatars.githubusercontent.com/u/4470828?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andre Hsu</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=andrehsu" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/slevy85"><img src="https://avatars.githubusercontent.com/u/18260229?v=4?s=100" width="100px;" alt=""/><br /><sub><b>slevy85</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=slevy85" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.berndartmueller.com"><img src="https://avatars.githubusercontent.com/u/761018?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bernd Artmüller</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=berndartmueller" title="Code">💻</a></td>
   </tr>
 </table>
 
