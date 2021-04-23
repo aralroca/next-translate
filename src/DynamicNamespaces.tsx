@@ -28,7 +28,7 @@ export default function DynamicNamespaces({
 
   useEffect(() => {
     loadNamespaces()
-  }, [])
+  }, [namespaces.join()])
 
   if (!loaded) return fallback || null
 
