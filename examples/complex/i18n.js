@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 module.exports = {
   locales: ['en', 'ca', 'es'],
   defaultLocale: 'en',
@@ -14,4 +16,10 @@ module.exports = {
   },
   loadLocaleFrom: (locale, namespace) =>
     import(`./src/translations/${namespace}_${locale}`).then((m) => m.default),
+
+  loadLocaleFromSync: (locale, namespace) => {
+    return JSON.parse(
+      fs.readFileSync(`./src/translations/${namespace}_${locale}.json`)
+    )
+  },
 }

@@ -38,10 +38,16 @@ export type LocaleLoader = (
   namespace: string
 ) => Promise<I18nDictionary>
 
+export type LocaleLoaderSync = (
+  language: string | undefined,
+  namespace: string
+) => I18nDictionary
+
 export interface I18nConfig {
   defaultLocale?: string
   locales?: string[]
   loadLocaleFrom?: LocaleLoader
+  loadLocaleFromSync?: LocaleLoaderSync
   pages?: Record<string, PageValue>
   logger?: I18nLogger
   staticsHoc?: Function

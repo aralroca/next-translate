@@ -36,13 +36,58 @@ export default function appWithI18n(
   function AppWithTranslations(props: Props) {
     const { defaultLocale } = config
 
+    var ns = {}
+    var pageProps
+
+    if (typeof window === 'undefined') {
+      if (
+        props.router &&
+        props.router.isFallback &&
+        props.Component &&
+        typeof props.Component.__PAGE_NEXT_NAMESPACES === 'function'
+      ) {
+        ns =
+          props.Component.__PAGE_NEXT_NAMESPACES({
+            locale: props.router.locale,
+            pathname: props.router.pathname,
+          }) || {}
+
+        pageProps = { ...ns, ...props.pageProps }
+      }
+    } else {
+      if (
+        props.Component &&
+        typeof props.Component.__PAGE_NEXT_NAMESPACES === 'function'
+      ) {
+        ns = props.Component.__PAGE_NEXT_NAMESPACES() || {}
+
+        pageProps = { ...ns, ...props.pageProps }
+      }
+    }
+
+    if (pageProps == null) {
+      pageProps = props.pageProps
+    }
+
+    var newProps: any = {
+      ...props,
+      pageProps,
+    }
+
     return (
       <I18nProvider
-        lang={props.pageProps?.__lang || props.__lang || defaultLocale}
-        namespaces={props.pageProps?.__namespaces || props.__namespaces}
+        lang={pageProps?.__lang || props.__lang || defaultLocale}
+        namespaces={pageProps?.__namespaces || props.__namespaces}
         config={config}
       >
-        <AppToTranslate {...props} />
+        <AppToTranslate {...newProps} />
+        <script
+          id="__NEXT_NAMESPACES_DATA__"
+          type="application/json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(ns || {}),
+          }}
+        />
       </I18nProvider>
     )
   }

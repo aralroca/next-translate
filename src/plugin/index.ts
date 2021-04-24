@@ -81,6 +81,13 @@ export default function nextTranslate(nextConfig: any = {}) {
         '@next-translate-root': path.resolve(dir),
       }
 
+      // translating Next.js fallback pages requires the use of `fs` module
+      if (!options.isServer) {
+        config.node = {
+          fs: 'empty',
+        }
+      }
+
       // we give the opportunity for people to use next-translate without altering
       // any document, allowing them to manually add the necessary helpers on each
       // page to load the namespaces.
