@@ -69,7 +69,7 @@ export default function Trans({
   components,
   fallback,
 }: TransProps): any {
-  const { t } = useTranslation()
+  const { t, lang } = useTranslation()
 
   /**
    * Memorize the transformation
@@ -80,7 +80,7 @@ export default function Trans({
     if (!components || components.length === 0) return text
 
     return formatElements(text, components)
-  }, [i18nKey, values, components]) as string
+  }, [i18nKey, values, components, lang]) as string
 
   return result
 }

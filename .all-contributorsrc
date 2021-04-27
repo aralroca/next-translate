@@ -231,6 +231,33 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "slevy85",
+      "name": "slevy85",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18260229?v=4",
+      "profile": "https://github.com/slevy85",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "berndartmueller",
+      "name": "Bernd Artmüller",
+      "avatar_url": "https://avatars.githubusercontent.com/u/761018?v=4",
+      "profile": "https://www.berndartmueller.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "rihardssceredins",
+      "name": "Rihards Ščeredins",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23099574?v=4",
+      "profile": "https://github.com/rihardssceredins",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

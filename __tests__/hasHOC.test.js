@@ -324,6 +324,18 @@ describe('hasHOC', () => {
       `)
       ).toBe(false)
     })
+    test('with -> it has getStaticProps in a wrapper', () => {
+      expect(
+        hasHOC(`
+        import withWrapper from 'somewhere'
+
+        function Page() {
+          return <div>Hello world</div>
+        }
+
+        export const getStaticProps = wrapper()`)
+      ).toBe(false)
+    })
     test('with -> it has getStaticProps', () => {
       expect(
         hasHOC(`

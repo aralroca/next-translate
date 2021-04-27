@@ -13,6 +13,8 @@
 !src
 !__tests__
 !.babelrc
+!.husky
+!.husky/*
 !.prettierignore
 
 # dependencies

@@ -232,6 +232,8 @@ In the configuration file you can use both the configuration that we specified h
 | `loader`        | If you wish to disable the webpack loader and manually load the namespaces on each page, we give you the opportunity to do so by disabling this option.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Boolean`                       | `true`                                                                          |
 | `interpolation`   | Change the delimeter that is used for interpolation and optionally define a custom formatter                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `{prefix: string; suffix: string; format: function}` | `{prefix: '{{', suffix: '}}'}`
 | `staticsHoc`   | The HOCs we have in our API ([appWithI18n](#appwithi18n)), do not use [hoist-non-react-statics](https://github.com/mridgway/hoist-non-react-statics) in order not to include more kb than necessary _(static values different than getInitialProps in the pages are rarely used)_. If you have any conflict with statics, you can add hoist-non-react-statics (or any other alternative) here. [See an example](docs/hoist-non-react-statics.md).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `Function` | `null`
+| `extensionsRgx`   | Change the regex used by the webpack loader to find Next.js pages. | `Regex` | `/\.(tsx\|ts\|js\|mjs\|jsx)$/`
+
 
 ## 4. API
 
@@ -568,6 +570,8 @@ or
 }
 ```
 
+> Intl.PluralRules API is **only available for modern browsers**, if you want to use it in legacy browsers you should add a [polyfill](https://github.com/eemeli/intl-pluralrules). 
+
 
 ## 6. Use HTML inside the translation
 
@@ -878,6 +882,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/luisgserrano"><img src="https://avatars3.githubusercontent.com/u/2024164?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Luis Serrano</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=luisgserrano" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/j-schumann"><img src="https://avatars.githubusercontent.com/u/114239?v=4?s=100" width="100px;" alt=""/><br /><sub><b>j-schumann</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=j-schumann" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/andrehsu"><img src="https://avatars.githubusercontent.com/u/4470828?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andre Hsu</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=andrehsu" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/slevy85"><img src="https://avatars.githubusercontent.com/u/18260229?v=4?s=100" width="100px;" alt=""/><br /><sub><b>slevy85</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=slevy85" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.berndartmueller.com"><img src="https://avatars.githubusercontent.com/u/761018?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bernd Artmüller</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=berndartmueller" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/rihardssceredins"><img src="https://avatars.githubusercontent.com/u/23099574?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rihards Ščeredins</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=rihardssceredins" title="Code">💻</a></td>
   </tr>
 </table>
 

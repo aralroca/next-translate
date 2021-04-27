@@ -1,4 +1,5 @@
 import templateWithLoader from '../src/plugin/templateWithLoader'
+import { specialStringsRenderer } from './templateWith.utils'
 import prettier from 'prettier'
 
 function clean(code) {
@@ -179,6 +180,24 @@ const tests = [
     ],
   },
   {
+    describe: 'loader as a wrapper',
+    code: `
+      export default function Page() {
+        return <div>Hello world</div>
+      }
+
+      const getStaticProps = wrapper.getStaticProps(() => ({ props: {} }))
+      export { getStaticProps }
+  `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: true,
+      },
+    ],
+  },
+  {
     describe: 'loader imported to another place',
     code: `
       import getStaticProps from 'somewhere/getStaticProps'
@@ -315,7 +334,10 @@ const tests = [
       },
     ],
   },
-]
+].map((t) => {
+  t.code = specialStringsRenderer + '\n' + t.code
+  return t
+})
 
 describe('templateWithLoader', () => {
   tests.forEach((d) => {
