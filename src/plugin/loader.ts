@@ -96,9 +96,6 @@ export default function loader(rawCode: string) {
     isGetStaticProps || isGetServerSideProps || isGetInitialProps
 
   if (isGetInitialProps || (!hasLoader && isWrapperWithExternalHOC)) {
-    console.warn(
-      `🚨 [next-translate] In Next 10.x.x there is an issue related to i18n and getInitialProps. We recommend to replace getInitialProps to getServerSideProps on ${page}. Issue: https://github.com/vercel/next.js/issues/18396`
-    )
     return templateWithHoc(rawCode, { typescript, hasLoadLocaleFrom })
   }
 
