@@ -10,7 +10,11 @@ export default async function loadNamespaces(
 }> {
   const conf = { ...getConfig(), ...config }
   const __lang: string =
-    conf.locale || conf.router?.locale || conf.defaultLocale || ''
+    conf.req?.locale ||
+    conf.locale ||
+    conf.router?.locale ||
+    conf.defaultLocale ||
+    ''
 
   if (!conf.pathname) {
     console.warn(
