@@ -60,6 +60,7 @@ export interface LoaderConfig extends I18nConfig {
   skipInitialProps?: boolean
   loaderName?: string
   isLoader?: boolean
+  [key: string]: any
 }
 
 export interface LoggerProps {
