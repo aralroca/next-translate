@@ -767,7 +767,11 @@ Learn how to do it [here](#i18nprovider).
 
 ## 12. How to use next-translate in a mono-repo
 
-Next-translate uses by default the current working directory of the Node.js process (`process.cwd()`). If you want to change it you can use the `NEXT_TRANSLATE_PATH` environment variable. It supports both relative and absolute path.
+Next-translate uses by default the current working directory of the Node.js process (`process.cwd()`).
+
+If you want to change it you can use :
+- the `NEXT_TRANSLATE_PATH` environment variable. It supports both relative and absolute path
+- the native NodeJS function `process.chdir(PATH_TO_NEXT_TRANSLATE)` to move the `process.cwd()`
 
 ## 13. Demos
 
