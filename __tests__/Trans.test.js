@@ -48,6 +48,21 @@ describe('Trans', () => {
       )
       expect(container.textContent).toContain(expected)
     })
+
+    test('should work the same way than useTranslate with default value', () => {
+      const i18nKey = 'ns:number'
+      const expected = 'The number is 42'
+
+      const { container } = render(
+        <TestEnglish
+          namespaces={{}}
+          i18nKey={i18nKey}
+          values={{ num: 42 }}
+          defaultTrans="The number is {{ num }}"
+        />
+      )
+      expect(container.textContent).toContain(expected)
+    })
   })
 
   describe('with components', () => {
