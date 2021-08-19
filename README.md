@@ -867,6 +867,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://www.berndartmueller.com"><img src="https://avatars.githubusercontent.com/u/761018?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bernd Artmüller</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=berndartmueller" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/rihardssceredins"><img src="https://avatars.githubusercontent.com/u/23099574?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rihards Ščeredins</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=rihardssceredins" title="Code">💻</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://its-just-nans.github.io"><img src="https://avatars.githubusercontent.com/u/56606507?v=4?s=100" width="100px;" alt=""/><br /><sub><b>n4n5</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=Its-Just-Nans" title="Documentation">📖</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-restore -->
