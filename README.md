@@ -749,7 +749,7 @@ function usePersistLocaleCookie() {
     function persistLocaleCookie() {
       if(locale !== defaultLocale) {
          const date = new Date()
-         const expireMs = 100 * 365 * 24 * 60 * 60 * 1000 // 100 days
+         const expireMs = 100 * 24 * 60 * 60 * 1000 // 100 days
          date.setTime(date.getTime() + expireMs)
          document.cookie = `NEXT_LOCALE=${locale};expires=${date.toUTCString()};path=/`
       }
@@ -767,7 +767,11 @@ Learn how to do it [here](#i18nprovider).
 
 ## 12. How to use next-translate in a mono-repo
 
-Next-translate uses by default the current working directory of the Node.js process (`process.cwd()`). If you want to change it you can use the `NEXT_TRANSLATE_PATH` environment variable. It supports both relative and absolute path.
+Next-translate uses by default the current working directory of the Node.js process (`process.cwd()`).
+
+If you want to change it you can use :
+- the `NEXT_TRANSLATE_PATH` environment variable. It supports both relative and absolute path
+- the native NodeJS function `process.chdir(PATH_TO_NEXT_TRANSLATE)` to move the `process.cwd()`
 
 ## 13. Demos
 
