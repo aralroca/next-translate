@@ -68,6 +68,7 @@ export default function Trans({
   values,
   components,
   fallback,
+  defaultTrans,
 }: TransProps): any {
   const { t, lang } = useTranslation()
 
@@ -75,7 +76,7 @@ export default function Trans({
    * Memorize the transformation
    */
   const result = useMemo(() => {
-    const text = t(i18nKey, values, { fallback })
+    const text = t(i18nKey, values, { fallback, default: defaultTrans })
 
     if (!components || components.length === 0) return text
 

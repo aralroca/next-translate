@@ -47,6 +47,10 @@ export default function transCore({
       }
     }
 
+    if (empty && options?.default && fallbacks?.length == 0) {
+      return interpolation({ text: options?.default, query, config })
+    }
+
     // no need to try interpolation
     if (empty) {
       return k
