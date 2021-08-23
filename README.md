@@ -257,6 +257,7 @@ export default function Description() {
   const titleFromOtherNamespace = t('ns2:title')
   const description = t`description` // also works as template string
   const example = t('ns2:example', { count: 3 }) // and with query params
+  const exampleDefault = t('ns:example', { count: 3 }, { default: "The count is: {{count}}." }) // and with default translation
 
   return (
     <>
@@ -276,6 +277,7 @@ The `t` function:
   - **options**: Object _(optional)_
     - **fallback**: string | string[] - fallback if i18nKey doesn't exist. [See more](#8-fallbacks).
     - **returnObjects**: boolean - Get part of the JSON with all the translations. [See more](#7-nested-translations).
+    - **default**: string - Default translation for the key. If fallback keys are used, it will be used only after exhausting all the fallbacks.
 - **Output**: string
 
 ### withTranslation
@@ -340,6 +342,7 @@ Or using `components` prop as a object:
     b: <b className="red" />,
   }}
   values={{ count: 42 }}
+  defaultTrans="<component>The number is <b>{{count}}</b></component>"
 />
 ```
 
@@ -348,6 +351,7 @@ Or using `components` prop as a object:
   - `components` - Array<Node> | Object<Node> - In case of Array each index corresponds to the defined tag `<0>`/`<1>`. In case of object each key corresponds to the defined tag `<example>`.
   - `values` - Object - query params
   - `fallback` - string | string[] - Optional. Fallback i18nKey if the i18nKey doesn't match.
+  - `defaultTrans` - string - Default translation for the key. If fallback keys are used, it will be used only after exhausting all the fallbacks.
 
 ### DynamicNamespaces
 
