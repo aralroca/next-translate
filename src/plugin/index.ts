@@ -22,33 +22,6 @@ export default function nextTranslate(nextConfig: any = {}) {
     ...restI18n
   } = require(path.join(dir, 'i18n'))
 
-  // @todo Remove all these warnings on 1.1.0
-  const migrationLink =
-    'https://github.com/vinissimus/next-translate/releases/tag/1.0.0'
-  if (restI18n.currentPagesDir) {
-    console.warn(
-      `🚨 [next-translate] "currentPagesDir" is no longer necessary, you can just remove it. Learn more on ${migrationLink}`
-    )
-  }
-
-  if (restI18n.finalPagesDir) {
-    console.warn(
-      `🚨 [next-translate] "finalPagesDir" is no longer necessary, you can just remove it. Learn more on ${migrationLink}`
-    )
-  }
-
-  if (restI18n.localesPath) {
-    console.warn(
-      `🚨 [next-translate] "localesPath" is no longer supported, you should replace it to "loadLocaleFrom". Learn more on ${migrationLink}`
-    )
-  }
-
-  if (restI18n.package !== undefined) {
-    console.warn(
-      `🚨 [next-translate] "package" is no longer supported, you should replace it to "loadLocaleFrom". Learn more on ${migrationLink}`
-    )
-  }
-
   // Check if exist a getInitialProps on _app.js
   let hasGetInitialPropsOnAppJs = false
   const pagesPath = path.join(dir, arePagesInsideSrc ? '/src/pages' : '/pages')
