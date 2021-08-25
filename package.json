@@ -1,6 +1,6 @@
 {
   "name": "next-translate",
-  "version": "1.1.0-canary.1",
+  "version": "1.1.0-canary.2",
   "description": "Tiny and powerful i18n tools (Next plugin + API) to translate your Next.js pages.",
   "license": "MIT",
   "keywords": [
@@ -30,7 +30,6 @@
   "module": "./lib/esm/index.js",
   "types": "./index.d.ts",
   "files": [
-    "cli",
     "lib",
     "plugin*",
     "appWithI18n*",
@@ -61,9 +60,6 @@
     "test:coverage": "cross-env NODE_ENV=test jest --coverage",
     "test:watch": "cross-env NODE_ENV=test jest --watch",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && node build-packages.js"
-  },
-  "bin": {
-    "next-translate": "./cli/builder.js"
   },
   "devDependencies": {
     "@babel/cli": "7.13.14",
