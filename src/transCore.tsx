@@ -34,9 +34,8 @@ export default function transCore({
         ? [options.fallback]
         : options?.fallback || []
 
-    // Log only during CSR
-    if (typeof window !== 'undefined' && empty) {
-      logger({ namespace, i18nKey })
+    if (logger !== missingKeyLogger || (typeof window !== 'undefined' && empty)){
+        logger({ namespace, i18nKey })
     }
 
     // Fallbacks
