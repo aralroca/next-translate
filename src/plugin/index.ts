@@ -59,10 +59,7 @@ export default function nextTranslate(nextConfig: any = {}) {
       // page to load the namespaces.
       if (!loader) return config
 
-      const babelIndex = config.module.rules.findIndex((m: any) =>
-        m.use?.config?.configFile?.endsWith?.('.babelrc')
-      )
-      const loaderOptions = {
+      config.module.rules.push({
         test,
         use: {
           loader: 'next-translate/plugin/loader',
@@ -74,13 +71,7 @@ export default function nextTranslate(nextConfig: any = {}) {
             hasLoadLocaleFrom: typeof restI18n.loadLocaleFrom === 'function',
           },
         },
-      }
-
-      if (babelIndex > -1) {
-        config.module.splice(1, 0, loaderOptions)
-      } else {
-        config.module.rules.push(loaderOptions)
-      }
+      })
 
       return config
     },
