@@ -46,6 +46,9 @@ export default function loader(rawCode: string) {
   // "export default" on the page
   if (!code.includes('export default')) return rawCode
 
+  // Skip any transformation if the page is not in raw code
+  if (code.includes('__N_SSG = ')) return rawCode
+
   // In case there is a getInitialProps in _app it means that we can
   // reuse the existing getInitialProps on the top to load the namespaces.
   //
