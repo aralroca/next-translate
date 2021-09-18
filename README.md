@@ -257,6 +257,7 @@ export default function Description() {
   const titleFromOtherNamespace = t('ns2:title')
   const description = t`description` // also works as template string
   const example = t('ns2:example', { count: 3 }) // and with query params
+  const exampleDefault = t('ns:example', { count: 3 }, { default: "The count is: {{count}}." }) // and with default translation
 
   return (
     <>
@@ -276,6 +277,7 @@ The `t` function:
   - **options**: Object _(optional)_
     - **fallback**: string | string[] - fallback if i18nKey doesn't exist. [See more](#8-fallbacks).
     - **returnObjects**: boolean - Get part of the JSON with all the translations. [See more](#7-nested-translations).
+    - **default**: string - Default translation for the key. If fallback keys are used, it will be used only after exhausting all the fallbacks.
 - **Output**: string
 
 ### withTranslation
@@ -340,6 +342,7 @@ Or using `components` prop as a object:
     b: <b className="red" />,
   }}
   values={{ count: 42 }}
+  defaultTrans="<component>The number is <b>{{count}}</b></component>"
 />
 ```
 
@@ -348,6 +351,7 @@ Or using `components` prop as a object:
   - `components` - Array<Node> | Object<Node> - In case of Array each index corresponds to the defined tag `<0>`/`<1>`. In case of object each key corresponds to the defined tag `<example>`.
   - `values` - Object - query params
   - `fallback` - string | string[] - Optional. Fallback i18nKey if the i18nKey doesn't match.
+  - `defaultTrans` - string - Default translation for the key. If fallback keys are used, it will be used only after exhausting all the fallbacks.
 
 ### DynamicNamespaces
 
@@ -767,7 +771,11 @@ Learn how to do it [here](#i18nprovider).
 
 ## 12. How to use next-translate in a mono-repo
 
-Next-translate uses by default the current working directory of the Node.js process (`process.cwd()`). If you want to change it you can use the `NEXT_TRANSLATE_PATH` environment variable. It supports both relative and absolute path.
+Next-translate uses by default the current working directory of the Node.js process (`process.cwd()`).
+
+If you want to change it you can use :
+- the `NEXT_TRANSLATE_PATH` environment variable. It supports both relative and absolute path
+- the native NodeJS function `process.chdir(PATH_TO_NEXT_TRANSLATE)` to move the `process.cwd()`
 
 ## 13. Demos
 
@@ -862,6 +870,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/slevy85"><img src="https://avatars.githubusercontent.com/u/18260229?v=4?s=100" width="100px;" alt=""/><br /><sub><b>slevy85</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=slevy85" title="Code">💻</a></td>
     <td align="center"><a href="https://www.berndartmueller.com"><img src="https://avatars.githubusercontent.com/u/761018?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bernd Artmüller</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=berndartmueller" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/rihardssceredins"><img src="https://avatars.githubusercontent.com/u/23099574?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rihards Ščeredins</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=rihardssceredins" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://its-just-nans.github.io"><img src="https://avatars.githubusercontent.com/u/56606507?v=4?s=100" width="100px;" alt=""/><br /><sub><b>n4n5</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=Its-Just-Nans" title="Documentation">📖</a></td>
   </tr>
 </table>
 

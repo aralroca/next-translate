@@ -905,5 +905,89 @@ describe('useTranslation', () => {
       )
       expect(container.textContent).toBe(expected)
     })
+
+    test('should allow default translation', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:no-translation', undefined, {
+          default: 'This is a default translation',
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'This is a default translation'
+      const templateString = {}
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should allow default translation with fallback as string', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:no-translation', undefined, {
+          default: 'This is a default translation',
+          fallback: 'ns:no-translation2',
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'This is a default translation'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{}}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should allow default translation with fallback as array of strings', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:no-translation', undefined, {
+          default: 'This is a default translation',
+          fallback: ['ns:no-translation2', 'ns:no-translation3'],
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'This is a default translation'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{}}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should allow default translation with interpolation', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t(
+          'ns:no-translation',
+          { count: 3 },
+          {
+            default: 'This is a default translation with a count: {{count}}',
+            fallback: 'ns:no-translation2',
+          }
+        )
+        return <>{text}</>
+      }
+
+      const expected = 'This is a default translation with a count: 3'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{}}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
   })
 })

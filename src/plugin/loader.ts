@@ -46,6 +46,12 @@ export default function loader(rawCode: string) {
   // "export default" on the page
   if (!code.includes('export default')) return rawCode
 
+  // Skip any transformation if the page is not in raw code
+  // Fixes issue with Nx: https://github.com/vinissimus/next-translate/issues/677
+  if (code.match(/export *\w* *(__N_SSP|__N_SSG) *=/)) {
+    return rawCode
+  }
+
   // In case there is a getInitialProps in _app it means that we can
   // reuse the existing getInitialProps on the top to load the namespaces.
   //
