@@ -10,21 +10,32 @@ export default function nextTranslate(nextConfig: any = {}) {
     path.relative(pkgDir(), process.env.NEXT_TRANSLATE_PATH || '.')
   )
 
-  const arePagesInsideSrc = fs.existsSync(path.join(dir, 'src/pages'))
-
   const i18n = nextConfig.i18n || {}
-  const {
+  let {
     locales,
     defaultLocale,
     loader = true,
+    pagesInDir,
     pages,
     logger,
     ...restI18n
   } = require(path.join(dir, 'i18n'))
 
-  // Check if exist a getInitialProps on _app.js
   let hasGetInitialPropsOnAppJs = false
-  const pagesPath = path.join(dir, arePagesInsideSrc ? '/src/pages' : '/pages')
+
+  // https://github.com/blitz-js/blitz/blob/canary/nextjs/packages/next/build/utils.ts#L54-L59
+  if (!pagesInDir) {
+    pagesInDir === 'pages'
+    if (fs.existsSync(path.join(dir, 'src/pages'))) {
+      pagesInDir = 'src/pages'
+    } else if (fs.existsSync(path.join(dir, 'app/pages'))) {
+      pagesInDir = 'app/pages'
+    } else if (fs.existsSync(path.join(dir, 'integrations/pages'))) {
+      pagesInDir = 'integrations/pages'
+    }
+  }
+
+  const pagesPath = path.join(dir, pagesInDir)
   const app = fs
     .readdirSync(pagesPath)
     .find((page: string) => page.startsWith('_app.'))
