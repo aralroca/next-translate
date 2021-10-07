@@ -25,7 +25,7 @@ export default function nextTranslate(nextConfig: any = {}) {
 
   // https://github.com/blitz-js/blitz/blob/canary/nextjs/packages/next/build/utils.ts#L54-L59
   if (!pagesInDir) {
-    pagesInDir === 'pages'
+    pagesInDir = 'pages'
     if (fs.existsSync(path.join(dir, 'src/pages'))) {
       pagesInDir = 'src/pages'
     } else if (fs.existsSync(path.join(dir, 'app/pages'))) {
