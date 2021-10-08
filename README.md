@@ -232,6 +232,7 @@ In the configuration file you can use both the configuration that we specified h
 | `interpolation`   | Change the delimeter that is used for interpolation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `{prefix: string; suffix: string}` | `{prefix: '{{', suffix: '}}'}`
 | `staticsHoc`   | The HOCs we have in our API ([appWithI18n](#appwithi18n)), do not use [hoist-non-react-statics](https://github.com/mridgway/hoist-non-react-statics) in order not to include more kb than necessary _(static values different than getInitialProps in the pages are rarely used)_. If you have any conflict with statics, you can add hoist-non-react-statics (or any other alternative) here. [See an example](docs/hoist-non-react-statics.md).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `Function` | `null`
 | `extensionsRgx`   | Change the regex used by the webpack loader to find Next.js pages. | `Regex` | `/\.(tsx\|ts\|js\|mjs\|jsx)$/`
+| `pagesInDir`   | If you run `next ./my-app` to change where your pages are, you can here define `my-app/pages` so that next-translate can guess where they are. | `String` | If you don't define it, by default the pages will be searched for in the classic places like `pages` and `src/pages`.
 
 
 ## 4. API
@@ -873,6 +874,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://its-just-nans.github.io"><img src="https://avatars.githubusercontent.com/u/56606507?v=4?s=100" width="100px;" alt=""/><br /><sub><b>n4n5</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=Its-Just-Nans" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://rubenmoya.dev"><img src="https://avatars.githubusercontent.com/u/905225?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rubén Moya</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=rubenmoya" title="Code">💻</a></td>
   </tr>
 </table>
 
