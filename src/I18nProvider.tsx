@@ -23,7 +23,7 @@ export default function I18nProvider({
   }
   const pluralRules = new Intl.PluralRules(lang)
   const config = { ...internal.config, ...newConfig }
-  const t = transCore({ config, allNamespaces, pluralRules })
+  const t = transCore({ config, allNamespaces, pluralRules, lang })
 
   return (
     <I18nContext.Provider value={{ lang, t }}>
