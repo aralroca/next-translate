@@ -53,6 +53,7 @@ export interface I18nConfig {
   loader?: boolean
   logBuild?: boolean
   interpolation?: {
+    format?: Function
     prefix: string
     suffix: string
   }

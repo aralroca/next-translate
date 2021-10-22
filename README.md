@@ -43,11 +43,12 @@
 - [6. Use HTML inside the translation](#6-use-html-inside-the-translation)
 - [7. Nested translations](#7-nested-translations)
 - [8. Fallbacks](#8-fallbacks)
-- [9. How to change the language](#9-how-to-change-the-language)
-- [10. How to save the user-defined language](#10-how-to-save-the-user-defined-language)
-- [11. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
-- [12. How to use next-translate in a mono-repo](#12-how-to-use-next-translate-in-a-mono-repo)
-- [13. Demos](#13-demos)
+- [9. Formatter](#9-formatter)
+- [10. How to change the language](#10-how-to-change-the-language)
+- [11. How to save the user-defined language](#11-how-to-save-the-user-defined-language)
+- [12. How to use multi-language in a page](#12-how-to-use-multi-language-in-a-page)
+- [13. How to use next-translate in a mono-repo](#13-how-to-use-next-translate-in-a-mono-repo)
+- [14. Demos](#14-demos)
   - [Demo from Next.js](#demo-from-nextjs)
   - [Basic demo](#basic-demo)
   - [Complex demo](#complex-demo)
@@ -229,7 +230,7 @@ In the configuration file you can use both the configuration that we specified h
 | `logger`          | Function to log the **missing keys** in development and production. If you are using `i18n.json` as config file you should change it to `i18n.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `function`                      | By default the logger is a function doing a `console.warn` only in development. |     |
 | `logBuild`        | Each page has a log indicating: namespaces, current language and method used to load the namespaces. With this you can disable it.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `Boolean`                       | `true`                                                                          |
 | `loader`        | If you wish to disable the webpack loader and manually load the namespaces on each page, we give you the opportunity to do so by disabling this option.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Boolean`                       | `true`                                                                          |
-| `interpolation`   | Change the delimeter that is used for interpolation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `{prefix: string; suffix: string}` | `{prefix: '{{', suffix: '}}'}`
+| `interpolation`   | Change the delimeter that is used for interpolation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `{prefix: string; suffix: string, formatter: function }` | `{prefix: '{{', suffix: '}}'}`
 | `staticsHoc`   | The HOCs we have in our API ([appWithI18n](#appwithi18n)), do not use [hoist-non-react-statics](https://github.com/mridgway/hoist-non-react-statics) in order not to include more kb than necessary _(static values different than getInitialProps in the pages are rarely used)_. If you have any conflict with statics, you can add hoist-non-react-statics (or any other alternative) here. [See an example](docs/hoist-non-react-statics.md).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `Function` | `null`
 | `extensionsRgx`   | Change the regex used by the webpack loader to find Next.js pages. | `Regex` | `/\.(tsx\|ts\|js\|mjs\|jsx)$/`
 | `pagesInDir`   | If you run `next ./my-app` to change where your pages are, you can here define `my-app/pages` so that next-translate can guess where they are. | `String` | If you don't define it, by default the pages will be searched for in the classic places like `pages` and `src/pages`.
@@ -692,7 +693,57 @@ In Trans Component:
 />
 ```
 
-## 9. How to change the language
+## 9. Formatter
+
+You can format params using the `interpolation.formatter` config function.
+
+in `i18n.js`:
+
+```js
+const formatters = {
+  es: new Intl.NumberFormat("es-ES"),
+  en: new Intl.NumberFormat("en-EN"),
+}
+
+return {
+  // ...
+  interpolation: {
+    format: (value, format, lang) => {
+      if(format === 'number') return formatters[lang].format(value)
+      return value 
+    }
+  }
+}
+```
+
+In English namespace:
+
+```json
+{
+  "example": "The number is {{count, number}}"
+}
+```
+
+In Spanish namespace:
+
+```json
+{
+  "example": "El número es {{count, number}}"
+}
+```
+
+Using:
+
+```js
+t('example', { count: 33.5 })
+```
+
+Returns:
+
+- In English: `The number is 33.5`
+- In Spanish: `El número es 33,5`
+
+## 10. How to change the language
 
 In order to change the current language you can use the [Next.js navigation](https://nextjs.org/docs/advanced-features/i18n-routing) (Link and Router) passing the `locale` prop.
 
@@ -736,7 +787,7 @@ export default function ChangeLanguage() {
 
 Another way of accessing the `locales` list to change the language is using the `Next.js router`. The `locales` list can be accessed using the [Next.js useRouter hook](https://nextjs.org/docs/api-reference/next/router#userouter).
 
-## 10. How to save the user-defined language
+## 11. How to save the user-defined language
 
 You can set a cookie named `NEXT_LOCALE` with the user-defined language as value, this way a locale can be forced.
 
@@ -762,7 +813,7 @@ function usePersistLocaleCookie() {
 }
 ```
 
-## 11. How to use multi-language in a page
+## 12. How to use multi-language in a page
 
 In some cases, when the page is in the current language, you may want to do some exceptions displaying some text in another language.
 
@@ -770,7 +821,7 @@ In this case, you can achieve this by using the `I18nProvider`.
 
 Learn how to do it [here](#i18nprovider).
 
-## 12. How to use next-translate in a mono-repo
+## 13. How to use next-translate in a mono-repo
 
 Next-translate uses by default the current working directory of the Node.js process (`process.cwd()`).
 
@@ -778,7 +829,7 @@ If you want to change it you can use :
 - the `NEXT_TRANSLATE_PATH` environment variable. It supports both relative and absolute path
 - the native NodeJS function `process.chdir(PATH_TO_NEXT_TRANSLATE)` to move the `process.cwd()`
 
-## 13. Demos
+## 14. Demos
 
 ### Demo from Next.js
 
