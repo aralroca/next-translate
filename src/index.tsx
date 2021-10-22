@@ -3,7 +3,7 @@ import { ReactElement, ReactNode } from 'react'
 import nextTranslate from './plugin'
 
 export interface TranslationQuery {
-  [name: string]: string | number
+  [name: string]: any
 }
 
 export type Translate = <T = string>(

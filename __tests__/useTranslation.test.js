@@ -1071,6 +1071,41 @@ describe('useTranslation', () => {
       expect(container.textContent).toContain(expected)
     })
 
+    test('uses configured formatter with an object', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:interpolation', {
+          count: { value: 3 },
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'There are <object(en)>3</object(en)> cats.'
+      const templateString = {
+        interpolation: 'There are {{count, object}} cats.',
+      }
+
+      const config = {
+        interpolation: {
+          format: (v, format, lang) => {
+            const tag = `${format}(${lang})`
+            return `<${tag}>${v.value}</${tag}>`
+          },
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+          config={config}
+        >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
     test('replaces all parameters', () => {
       const Inner = () => {
         const { t } = useTranslation()
