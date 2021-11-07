@@ -3,7 +3,7 @@ import { ReactElement, ReactNode } from 'react'
 import nextTranslate from './plugin'
 
 export interface TranslationQuery {
-  [name: string]: string | number
+  [name: string]: any
 }
 
 export type Translate = <T = string>(
@@ -53,6 +53,7 @@ export interface I18nConfig {
   loader?: boolean
   logBuild?: boolean
   interpolation?: {
+    format?: Function
     prefix: string
     suffix: string
   }
