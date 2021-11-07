@@ -1,4 +1,5 @@
-const specFileOrFolderRgx = /(__mocks__|__tests__)|(\.(spec|test)\.(tsx|ts|js|jsx)$)/
+const specFileOrFolderRgx =
+  /(__mocks__|__tests__)|(\.(spec|test)\.(tsx|ts|js|jsx)$)/
 
 export const clearCommentsRgx = /\/\*[\s\S]*?\*\/|\/\/.*/g
 
@@ -44,6 +45,7 @@ export function isPageToIgnore(page: string) {
     page.startsWith('/api/') ||
       page.startsWith('/api.') ||
       page.startsWith('/_document.') ||
+      page.startsWith('_middleware') ||
       page.match(specFileOrFolderRgx)
   )
 }
