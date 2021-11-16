@@ -31,7 +31,7 @@ describe('Trans', () => {
       expect(container.textContent).toContain(expected)
     })
 
-    test('should work with nested keys', () => {
+    test.only('should work with nested keys', () => {
       const i18nKey = 'ns:parent.child'
       const expected = 'The number is 42'
       const withSingular = {
@@ -45,6 +45,50 @@ describe('Trans', () => {
           i18nKey={i18nKey}
           values={{ num: 42 }}
         />
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work with nested keys and custom keySeparator', () => {
+      const i18nKey = 'ns:parent_child'
+      const expected = 'The number is 42'
+      const withSingular = {
+        parent: {
+          child: 'The number is {{ num }}',
+        },
+      }
+
+      const config = { keySeparator: '_' }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: withSingular }}
+          config={config}
+        >
+          <Trans i18nKey={i18nKey} values={{ num: 42 }} />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work with no keySeparator', () => {
+      const i18nKey = 'ns:parent.child'
+      const expected = 'The number is 42'
+      const withSingular = {
+        'parent.child': 'The number is {{ num }}',
+      }
+
+      const config = { keySeparator: false }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: withSingular }}
+          config={config}
+        >
+          <Trans i18nKey={i18nKey} values={{ num: 42 }} />
+        </I18nProvider>
       )
       expect(container.textContent).toContain(expected)
     })
