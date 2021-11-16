@@ -31,7 +31,7 @@ describe('Trans', () => {
       expect(container.textContent).toContain(expected)
     })
 
-    test.only('should work with nested keys', () => {
+    test('should work with nested keys', () => {
       const i18nKey = 'ns:parent.child'
       const expected = 'The number is 42'
       const withSingular = {
