@@ -24,8 +24,8 @@ export default function transCore({
     const k = Array.isArray(key) ? key[0] : key
     const [namespace, i18nKey] = k.split(/:(.+)/)
     const dic = allNamespaces[namespace] || {}
-    const keyWithPlural = plural(pluralRules, dic, i18nKey, query)
-    const value = getDicValue(dic, keyWithPlural, options)
+    const keyWithPlural = plural(pluralRules, dic, i18nKey, config, query)
+    const value = getDicValue(dic, keyWithPlural, config, options)
 
     const empty =
       typeof value === 'undefined' ||
@@ -81,13 +81,16 @@ export default function transCore({
 function getDicValue(
   dic: I18nDictionary,
   key: string = '',
+  config: I18nConfig,
   options: { returnObjects?: boolean; fallback?: string | string[] } = {
     returnObjects: false,
   }
 ): string | undefined | object {
-  const value: string | object = key
-    .split('.')
-    .reduce((val: I18nDictionary | string, key: string) => {
+  const { keySeparator = '.' } = config || {}
+  const keyParts = keySeparator ? key.split(keySeparator) : [key]
+
+  const value: string | object = keyParts.reduce(
+    (val: I18nDictionary | string, key: string) => {
       if (typeof val === 'string') {
         return {}
       }
@@ -96,7 +99,9 @@ function getDicValue(
 
       // pass all truthy values or (empty) strings
       return res || (typeof res === 'string' ? res : {})
-    }, dic)
+    },
+    dic
+  )
 
   if (
     typeof value === 'string' ||
@@ -115,23 +120,24 @@ function plural(
   pluralRules: Intl.PluralRules,
   dic: I18nDictionary,
   key: string,
+  config: I18nConfig,
   query?: TranslationQuery | null
 ): string {
   if (!query || typeof query.count !== 'number') return key
 
   const numKey = `${key}_${query.count}`
-  if (getDicValue(dic, numKey) !== undefined) return numKey
+  if (getDicValue(dic, numKey, config) !== undefined) return numKey
 
   const pluralKey = `${key}_${pluralRules.select(query.count)}`
-  if (query.count > 0 && getDicValue(dic, pluralKey) !== undefined) {
+  if (query.count > 0 && getDicValue(dic, pluralKey, config) !== undefined) {
     return pluralKey
   }
 
   const nestedNumKey = `${key}.${query.count}`
-  if (getDicValue(dic, nestedNumKey) !== undefined) return nestedNumKey
+  if (getDicValue(dic, nestedNumKey, config) !== undefined) return nestedNumKey
 
   const nestedKey = `${key}.${pluralRules.select(query.count)}`
-  if (getDicValue(dic, nestedKey) !== undefined) return nestedKey
+  if (getDicValue(dic, nestedKey, config) !== undefined) return nestedKey
 
   return key
 }

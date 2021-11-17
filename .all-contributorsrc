@@ -276,6 +276,26 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "testerez",
+      "name": "Tom Esterez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/815236?v=4",
+      "profile": "https://github.com/testerez",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+     "login": "dndhm",
+      "name": "Dan Needham",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1122983?v=4",
+      "profile": "http://www.dan-needham.com",
+      "contributions": [
+        "code",
+        "test",
+        "doc"
+       ]
     }
   ],
   "contributorsPerLine": 7,
