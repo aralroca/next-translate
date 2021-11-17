@@ -324,7 +324,7 @@ Sometimes we need to do some translations with HTML inside the text (bolds, link
 Example:
 
 ```jsx
-// The defined dictionary enter is like:
+// The defined dictionary entry is like:
 // "example": "<0>The number is <1>{{count}}</1></0>",
 <Trans
   i18nKey="common:example"
@@ -336,7 +336,7 @@ Example:
 Or using `components` prop as a object:
 
 ```jsx
-// The defined dictionary enter is like:
+// The defined dictionary entry is like:
 // "example": "<component>The number is <b>{{count}}</b></component>",
 <Trans
   i18nKey="common:example"
@@ -355,6 +355,30 @@ Or using `components` prop as a object:
   - `values` - Object - query params
   - `fallback` - string | string[] - Optional. Fallback i18nKey if the i18nKey doesn't match.
   - `defaultTrans` - string - Default translation for the key. If fallback keys are used, it will be used only after exhausting all the fallbacks.
+
+In cases where we require the functionality of the `Trans` component, but need a **string** to be interpolated, rather than the output of the `t(props.i18nKey)` function, there is also a `TransText` component, which takes a `text` prop instead of `i18nKey`.
+
+- **Props**:
+  - `text` - string - The string which (optionally) contains tags requiring interpolation
+  - `components` - Array | Object - This behaves exactly the same as `Trans` (see above).
+
+This is especially useful when mapping over the output of a `t()` with `returnObjects: true`:
+```jsx
+// The defined dictionary entry is like:
+// "content-list": ["List of <link>things</link>", "with <em>tags</em>"]
+const contentList = t('someNamespace:content-list', {}, { returnObjects: true });
+
+{contentList.map((listItem: string) => (
+  <TransText
+    text={listItem}
+    components={{
+      link: <a href="some-url" />,
+      em: <em />,
+    }}
+  />
+)}
+
+```
 
 ### DynamicNamespaces
 
@@ -576,7 +600,7 @@ or
 }
 ```
 
-> Intl.PluralRules API is **only available for modern browsers**, if you want to use it in legacy browsers you should add a [polyfill](https://github.com/eemeli/intl-pluralrules). 
+> Intl.PluralRules API is **only available for modern browsers**, if you want to use it in legacy browsers you should add a [polyfill](https://github.com/eemeli/intl-pluralrules).
 
 
 ## 6. Use HTML inside the translation
@@ -711,7 +735,7 @@ return {
   interpolation: {
     format: (value, format, lang) => {
       if(format === 'number') return formatters[lang].format(value)
-      return value 
+      return value
     }
   }
 }
