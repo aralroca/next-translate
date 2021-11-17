@@ -231,6 +231,7 @@ In the configuration file you can use both the configuration that we specified h
 | `logBuild`        | Each page has a log indicating: namespaces, current language and method used to load the namespaces. With this you can disable it.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `Boolean`                       | `true`                                                                          |
 | `loader`        | If you wish to disable the webpack loader and manually load the namespaces on each page, we give you the opportunity to do so by disabling this option.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Boolean`                       | `true`                                                                          |
 | `interpolation`   | Change the delimeter that is used for interpolation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `{prefix: string; suffix: string, formatter: function }` | `{prefix: '{{', suffix: '}}'}`
+| `keySeparator`   | Change the separator that is used for nested keys. Set to `false` to disable keys nesting in JSON translation files. Can be useful if you want to use natural text as keys.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `string` &#124; `false` | `'.'`
 | `staticsHoc`   | The HOCs we have in our API ([appWithI18n](#appwithi18n)), do not use [hoist-non-react-statics](https://github.com/mridgway/hoist-non-react-statics) in order not to include more kb than necessary _(static values different than getInitialProps in the pages are rarely used)_. If you have any conflict with statics, you can add hoist-non-react-statics (or any other alternative) here. [See an example](docs/hoist-non-react-statics.md).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `Function` | `null`
 | `extensionsRgx`   | Change the regex used by the webpack loader to find Next.js pages. | `Regex` | `/\.(tsx\|ts\|js\|mjs\|jsx)$/`
 | `pagesInDir`   | If you run `next ./my-app` to change where your pages are, you can here define `my-app/pages` so that next-translate can guess where they are. | `String` | If you don't define it, by default the pages will be searched for in the classic places like `pages` and `src/pages`.
@@ -323,7 +324,7 @@ Sometimes we need to do some translations with HTML inside the text (bolds, link
 Example:
 
 ```jsx
-// The defined dictionary enter is like:
+// The defined dictionary entry is like:
 // "example": "<0>The number is <1>{{count}}</1></0>",
 <Trans
   i18nKey="common:example"
@@ -335,7 +336,7 @@ Example:
 Or using `components` prop as a object:
 
 ```jsx
-// The defined dictionary enter is like:
+// The defined dictionary entry is like:
 // "example": "<component>The number is <b>{{count}}</b></component>",
 <Trans
   i18nKey="common:example"
@@ -354,6 +355,30 @@ Or using `components` prop as a object:
   - `values` - Object - query params
   - `fallback` - string | string[] - Optional. Fallback i18nKey if the i18nKey doesn't match.
   - `defaultTrans` - string - Default translation for the key. If fallback keys are used, it will be used only after exhausting all the fallbacks.
+
+In cases where we require the functionality of the `Trans` component, but need a **string** to be interpolated, rather than the output of the `t(props.i18nKey)` function, there is also a `TransText` component, which takes a `text` prop instead of `i18nKey`.
+
+- **Props**:
+  - `text` - string - The string which (optionally) contains tags requiring interpolation
+  - `components` - Array | Object - This behaves exactly the same as `Trans` (see above).
+
+This is especially useful when mapping over the output of a `t()` with `returnObjects: true`:
+```jsx
+// The defined dictionary entry is like:
+// "content-list": ["List of <link>things</link>", "with <em>tags</em>"]
+const contentList = t('someNamespace:content-list', {}, { returnObjects: true });
+
+{contentList.map((listItem: string) => (
+  <TransText
+    text={listItem}
+    components={{
+      link: <a href="some-url" />,
+      em: <em />,
+    }}
+  />
+)}
+
+```
 
 ### DynamicNamespaces
 
@@ -575,7 +600,7 @@ or
 }
 ```
 
-> Intl.PluralRules API is **only available for modern browsers**, if you want to use it in legacy browsers you should add a [polyfill](https://github.com/eemeli/intl-pluralrules). 
+> Intl.PluralRules API is **only available for modern browsers**, if you want to use it in legacy browsers you should add a [polyfill](https://github.com/eemeli/intl-pluralrules).
 
 
 ## 6. Use HTML inside the translation
@@ -710,7 +735,7 @@ return {
   interpolation: {
     format: (value, format, lang) => {
       if(format === 'number') return formatters[lang].format(value)
-      return value 
+      return value
     }
   }
 }
@@ -926,6 +951,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://its-just-nans.github.io"><img src="https://avatars.githubusercontent.com/u/56606507?v=4?s=100" width="100px;" alt=""/><br /><sub><b>n4n5</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=Its-Just-Nans" title="Documentation">📖</a></td>
     <td align="center"><a href="https://rubenmoya.dev"><img src="https://avatars.githubusercontent.com/u/905225?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rubén Moya</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=rubenmoya" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/testerez"><img src="https://avatars.githubusercontent.com/u/815236?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tom Esterez</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=testerez" title="Code">💻</a></td>
     <td align="center"><a href="http://www.dan-needham.com"><img src="https://avatars.githubusercontent.com/u/1122983?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dan Needham</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=dndhm" title="Code">💻</a> <a href="https://github.com/vinissimus/next-translate/commits?author=dndhm" title="Tests">⚠️</a> <a href="https://github.com/vinissimus/next-translate/commits?author=dndhm" title="Documentation">📖</a></td>
   </tr>
 </table>

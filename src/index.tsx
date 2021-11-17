@@ -57,6 +57,7 @@ export interface I18nConfig {
     prefix: string
     suffix: string
   }
+  keySeparator?: string | false
 }
 
 export interface LoaderConfig extends I18nConfig {
