@@ -35,6 +35,7 @@ export interface TransProps {
   values?: TranslationQuery
   fallback?: string | string[]
   defaultTrans?: string
+  ns?: string
 }
 
 export type PageValue = string[] | ((context: object) => string[])

@@ -93,6 +93,23 @@ describe('Trans', () => {
       expect(container.textContent).toContain(expected)
     })
 
+    test('should work with ns prop', () => {
+      const i18nKey = 'number'
+      const expected = 'The number is 42'
+      const ns = {
+        number: 'The number is 42',
+      }
+
+      const config = { keySeparator: false }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns }} config={config}>
+          <Trans i18nKey={i18nKey} ns="ns" />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
     test('should work the same way than useTranslate with default value', () => {
       const i18nKey = 'ns:number'
       const expected = 'The number is 42'
