@@ -37,8 +37,6 @@ export default function transCore({
     const { i18nKey, namespace = options?.defaultNS ?? config.defaultNS } =
       splitNsKey(k, nsSeparator)
 
-    console.log({ i18nKey, namespace })
-
     const dic = (namespace && allNamespaces[namespace]) || {}
     const keyWithPlural = plural(pluralRules, dic, i18nKey, config, query)
     const value = getDicValue(dic, keyWithPlural, config, options)
