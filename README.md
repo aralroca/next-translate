@@ -283,6 +283,7 @@ The `t` function:
     - **fallback**: string | string[] - fallback if i18nKey doesn't exist. [See more](#8-fallbacks).
     - **returnObjects**: boolean - Get part of the JSON with all the translations. [See more](#7-nested-translations).
     - **default**: string - Default translation for the key. If fallback keys are used, it will be used only after exhausting all the fallbacks.
+    - **ns**: string - Namespace to use when none is embded in the `i18nKey`.
 - **Output**: string
 
 ### withTranslation

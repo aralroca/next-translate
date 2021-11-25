@@ -34,8 +34,10 @@ export default function transCore({
     const k = Array.isArray(key) ? key[0] : key
     const { nsSeparator = ':' } = config
 
-    const { i18nKey, namespace = options?.defaultNS ?? config.defaultNS } =
-      splitNsKey(k, nsSeparator)
+    const { i18nKey, namespace = options?.ns ?? config.defaultNS } = splitNsKey(
+      k,
+      nsSeparator
+    )
 
     const dic = (namespace && allNamespaces[namespace]) || {}
     const keyWithPlural = plural(pluralRules, dic, i18nKey, config, query)
