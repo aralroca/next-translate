@@ -15,8 +15,9 @@ export default function Trans({
   components,
   fallback,
   defaultTrans,
+  ns,
 }: TransProps): any {
-  const { t, lang } = useTranslation()
+  const { t, lang } = useTranslation(ns)
 
   /**
    * Memoize the transformation

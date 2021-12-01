@@ -7,6 +7,16 @@ import {
 } from '.'
 import { Translate } from './index'
 
+function splitNsKey(key: string, nsSeparator: string | false) {
+  if (!nsSeparator) return { i18nKey: key }
+  const i = key.indexOf(nsSeparator)
+  if (i < 0) return { i18nKey: key }
+  return {
+    namespace: key.slice(0, i),
+    i18nKey: key.slice(i + nsSeparator.length),
+  }
+}
+
 export default function transCore({
   config,
   allNamespaces,
@@ -22,8 +32,14 @@ export default function transCore({
 
   const t: Translate = (key = '', query, options) => {
     const k = Array.isArray(key) ? key[0] : key
-    const [namespace, i18nKey] = k.split(/:(.+)/)
-    const dic = allNamespaces[namespace] || {}
+    const { nsSeparator = ':' } = config
+
+    const { i18nKey, namespace = options?.ns ?? config.defaultNS } = splitNsKey(
+      k,
+      nsSeparator
+    )
+
+    const dic = (namespace && allNamespaces[namespace]) || {}
     const keyWithPlural = plural(pluralRules, dic, i18nKey, config, query)
     const value = getDicValue(dic, keyWithPlural, config, options)
 
@@ -221,9 +237,9 @@ function missingKeyLogger({ namespace, i18nKey }: LoggerProps): void {
   if (process.env.NODE_ENV === 'production') return
 
   // This means that instead of "ns:value", "value" has been misspelled (without namespace)
-  if (!i18nKey) {
+  if (!namespace) {
     console.warn(
-      `[next-translate] The text "${namespace}" has no namespace in front of it.`
+      `[next-translate] The text "${i18nKey}" has no namespace in front of it.`
     )
     return
   }
