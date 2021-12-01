@@ -3,13 +3,13 @@ import { I18n } from '.'
 import wrapTWithDefaultNs from './wrapTWithDefaultNs'
 import I18nContext from './_context'
 
-export default function useTranslation(defaultNs?: string): I18n {
+export default function useTranslation(defaultNS?: string): I18n {
   const ctx = useContext(I18nContext)
   return useMemo(
     () => ({
       ...ctx,
-      t: wrapTWithDefaultNs(ctx.t, defaultNs),
+      t: wrapTWithDefaultNs(ctx.t, defaultNS),
     }),
-    [ctx, defaultNs]
+    [ctx, defaultNS]
   )
 }
