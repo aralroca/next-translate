@@ -278,6 +278,17 @@
       ]
     },
     {
+     "login": "dndhm",
+      "name": "Dan Needham",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1122983?v=4",
+      "profile": "http://www.dan-needham.com",
+      "contributions": [
+        "code",
+        "test",
+        "doc"
+       ]
+    },
+    {
       "login": "testerez",
       "name": "Tom Esterez",
       "avatar_url": "https://avatars.githubusercontent.com/u/815236?v=4",
@@ -285,7 +296,7 @@
       "contributions": [
         "code"
       ]
-    }
+     }
   ],
   "contributorsPerLine": 7,
   "projectName": "next-translate",
