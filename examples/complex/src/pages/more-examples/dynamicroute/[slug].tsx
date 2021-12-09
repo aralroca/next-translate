@@ -26,10 +26,12 @@ export default function DynamicRoute({ title = '' }) {
 
 export function getStaticPaths({ locales }: any) {
   return {
-    paths: locales.map((locale: string) => ({
-      locale,
-      params: { slug: 'example' },
-    })),
+    paths: locales
+      .filter((locale: string) => locale !== 'default')
+      .map((locale: string) => ({
+        locale,
+        params: { slug: 'example' },
+      })),
     fallback: true,
   }
 }

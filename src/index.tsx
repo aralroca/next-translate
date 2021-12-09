@@ -49,6 +49,7 @@ export interface I18nConfig {
   defaultLocale?: string
   locales?: string[]
   loadLocaleFrom?: LocaleLoader
+  localesToIgnore?: string[]
   pages?: Record<string, PageValue>
   logger?: I18nLogger
   staticsHoc?: Function

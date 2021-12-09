@@ -15,6 +15,7 @@ export default async function loadNamespaces(
   __namespaces?: Record<string, object>
 }> {
   const conf = { ...getConfig(), ...config }
+  const localesToIgnore = conf.localesToIgnore || ['default']
   const __lang: string =
     conf.req?.locale ||
     conf.locale ||
@@ -28,6 +29,8 @@ export default async function loadNamespaces(
     )
     return { __lang }
   }
+
+  if (localesToIgnore.includes(__lang)) return { __lang }
 
   if (!conf.loaderName && conf.loader !== false) {
     console.warn(
@@ -65,7 +68,7 @@ export default async function loadNamespaces(
   return {
     __lang,
     __namespaces: namespaces.reduce((obj: Record<string, object>, ns, i) => {
-      obj[ns] = pageNamespaces[i]
+      obj[ns] = pageNamespaces[i] || null
       return obj
     }, {}),
   }
