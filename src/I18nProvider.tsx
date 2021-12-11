@@ -15,14 +15,16 @@ export default function I18nProvider({
 }: I18nProviderProps) {
   const { lang: parentLang } = useTranslation()
   const { locale, defaultLocale } = useRouter() || {}
-  const lang = lng || parentLang || locale || defaultLocale || ''
   const internal = useContext(InternalContext)
   const allNamespaces: Record<string, I18nDictionary> = {
     ...internal.ns,
     ...namespaces,
   }
-  const pluralRules = new Intl.PluralRules(lang)
+  const lang = lng || parentLang || locale || defaultLocale || ''
   const config = { ...internal.config, ...newConfig }
+  const localesToIgnore = config.localesToIgnore || ['default']
+  const ignoreLang = localesToIgnore.includes(lang)
+  const pluralRules = new Intl.PluralRules(ignoreLang ? undefined : lang)
   const t = transCore({ config, allNamespaces, pluralRules, lang })
 
   return (
