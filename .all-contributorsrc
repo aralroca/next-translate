@@ -276,6 +276,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "bmvantunes",
+      "name": "Bruno Antunes",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9042965?v=4",
+      "profile": "https://www.youtube.com/BrunoAntunesPT",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
