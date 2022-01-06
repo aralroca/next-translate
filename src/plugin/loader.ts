@@ -15,6 +15,7 @@ export default function loader(rawCode: string) {
     extensionsRgx,
     pagesPath,
     hasLoadLocaleFrom,
+    revalidate,
     // @ts-ignore
   } = this.query
 
@@ -116,5 +117,6 @@ export default function loader(rawCode: string) {
     loader,
     hasLoader,
     hasLoadLocaleFrom,
+    revalidate,
   })
 }
