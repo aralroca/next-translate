@@ -13,6 +13,7 @@ export type Translate = <T = string>(
     returnObjects?: boolean
     fallback?: string | string[]
     default?: string
+    ns?: string
   }
 ) => T
 
@@ -34,6 +35,7 @@ export interface TransProps {
   values?: TranslationQuery
   fallback?: string | string[]
   defaultTrans?: string
+  ns?: string
 }
 
 export type PageValue = string[] | ((context: object) => string[])
@@ -47,6 +49,7 @@ export interface I18nConfig {
   defaultLocale?: string
   locales?: string[]
   loadLocaleFrom?: LocaleLoader
+  localesToIgnore?: string[]
   pages?: Record<string, PageValue>
   logger?: I18nLogger
   staticsHoc?: Function
@@ -58,6 +61,9 @@ export interface I18nConfig {
     prefix: string
     suffix: string
   }
+  keySeparator?: string | false
+  nsSeparator?: string | false
+  defaultNS?: string
 }
 
 export interface LoaderConfig extends I18nConfig {
@@ -71,7 +77,7 @@ export interface LoaderConfig extends I18nConfig {
 }
 
 export interface LoggerProps {
-  namespace: string
+  namespace: string | undefined
   i18nKey: string
 }
 

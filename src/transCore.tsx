@@ -7,6 +7,16 @@ import {
 } from '.'
 import { Translate } from './index'
 
+function splitNsKey(key: string, nsSeparator: string | false) {
+  if (!nsSeparator) return { i18nKey: key }
+  const i = key.indexOf(nsSeparator)
+  if (i < 0) return { i18nKey: key }
+  return {
+    namespace: key.slice(0, i),
+    i18nKey: key.slice(i + nsSeparator.length),
+  }
+}
+
 export default function transCore({
   config,
   allNamespaces,
@@ -22,10 +32,16 @@ export default function transCore({
 
   const t: Translate = (key = '', query, options) => {
     const k = Array.isArray(key) ? key[0] : key
-    const [namespace, i18nKey] = k.split(/:(.+)/)
-    const dic = allNamespaces[namespace] || {}
-    const keyWithPlural = plural(pluralRules, dic, i18nKey, query)
-    const value = getDicValue(dic, keyWithPlural, options)
+    const { nsSeparator = ':' } = config
+
+    const { i18nKey, namespace = options?.ns ?? config.defaultNS } = splitNsKey(
+      k,
+      nsSeparator
+    )
+
+    const dic = (namespace && allNamespaces[namespace]) || {}
+    const keyWithPlural = plural(pluralRules, dic, i18nKey, config, query)
+    const value = getDicValue(dic, keyWithPlural, config, options)
 
     const empty =
       typeof value === 'undefined' ||
@@ -81,13 +97,16 @@ export default function transCore({
 function getDicValue(
   dic: I18nDictionary,
   key: string = '',
+  config: I18nConfig,
   options: { returnObjects?: boolean; fallback?: string | string[] } = {
     returnObjects: false,
   }
 ): string | undefined | object {
-  const value: string | object = key
-    .split('.')
-    .reduce((val: I18nDictionary | string, key: string) => {
+  const { keySeparator = '.' } = config || {}
+  const keyParts = keySeparator ? key.split(keySeparator) : [key]
+
+  const value: string | object = keyParts.reduce(
+    (val: I18nDictionary | string, key: string) => {
       if (typeof val === 'string') {
         return {}
       }
@@ -96,7 +115,9 @@ function getDicValue(
 
       // pass all truthy values or (empty) strings
       return res || (typeof res === 'string' ? res : {})
-    }, dic)
+    },
+    dic
+  )
 
   if (
     typeof value === 'string' ||
@@ -115,23 +136,24 @@ function plural(
   pluralRules: Intl.PluralRules,
   dic: I18nDictionary,
   key: string,
+  config: I18nConfig,
   query?: TranslationQuery | null
 ): string {
   if (!query || typeof query.count !== 'number') return key
 
   const numKey = `${key}_${query.count}`
-  if (getDicValue(dic, numKey) !== undefined) return numKey
+  if (getDicValue(dic, numKey, config) !== undefined) return numKey
 
   const pluralKey = `${key}_${pluralRules.select(query.count)}`
-  if (query.count > 0 && getDicValue(dic, pluralKey) !== undefined) {
+  if (query.count > 0 && getDicValue(dic, pluralKey, config) !== undefined) {
     return pluralKey
   }
 
   const nestedNumKey = `${key}.${query.count}`
-  if (getDicValue(dic, nestedNumKey) !== undefined) return nestedNumKey
+  if (getDicValue(dic, nestedNumKey, config) !== undefined) return nestedNumKey
 
   const nestedKey = `${key}.${pluralRules.select(query.count)}`
-  if (getDicValue(dic, nestedKey) !== undefined) return nestedKey
+  if (getDicValue(dic, nestedKey, config) !== undefined) return nestedKey
 
   return key
 }
@@ -215,9 +237,9 @@ function missingKeyLogger({ namespace, i18nKey }: LoggerProps): void {
   if (process.env.NODE_ENV === 'production') return
 
   // This means that instead of "ns:value", "value" has been misspelled (without namespace)
-  if (!i18nKey) {
+  if (!namespace) {
     console.warn(
-      `[next-translate] The text "${namespace}" has no namespace in front of it.`
+      `[next-translate] The text "${i18nKey}" has no namespace in front of it.`
     )
     return
   }

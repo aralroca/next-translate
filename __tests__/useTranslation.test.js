@@ -160,6 +160,51 @@ describe('useTranslation', () => {
       expect(container.textContent).toBe(expected)
     })
 
+    test('should work with custom nsSeparator', () => {
+      const Inner = () => {
+        const { t } = useTranslation('a')
+        return t`b||test`
+      }
+
+      const ns = {
+        a: { test: 'Test from A' },
+        b: { test: 'Test from B' },
+      }
+
+      const expected = 'Test from B'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={ns} config={{ nsSeparator: '||' }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should work with natural text as key and defaultNS', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        return t`progress: loading...`
+      }
+
+      const ns = {
+        a: { 'progress: loading...': 'progression: chargement...' },
+      }
+
+      const expected = 'progression: chargement...'
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={ns}
+          config={{ nsSeparator: false, keySeparator: false, defaultNS: 'a' }}
+        >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
     test('should work with a defined default namespace | t as function', () => {
       const Inner = () => {
         const { t } = useTranslation('a')
