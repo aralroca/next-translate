@@ -49,6 +49,67 @@ describe('Trans', () => {
       expect(container.textContent).toContain(expected)
     })
 
+    test('should work with nested keys and custom keySeparator', () => {
+      const i18nKey = 'ns:parent_child'
+      const expected = 'The number is 42'
+      const withSingular = {
+        parent: {
+          child: 'The number is {{ num }}',
+        },
+      }
+
+      const config = { keySeparator: '_' }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: withSingular }}
+          config={config}
+        >
+          <Trans i18nKey={i18nKey} values={{ num: 42 }} />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work with no keySeparator', () => {
+      const i18nKey = 'ns:parent.child'
+      const expected = 'The number is 42'
+      const withSingular = {
+        'parent.child': 'The number is {{ num }}',
+      }
+
+      const config = { keySeparator: false }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: withSingular }}
+          config={config}
+        >
+          <Trans i18nKey={i18nKey} values={{ num: 42 }} />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work with ns prop', () => {
+      const i18nKey = 'number'
+      const expected = 'The number is 42'
+      const ns = {
+        number: 'The number is 42',
+      }
+
+      const config = { keySeparator: false }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns }} config={config}>
+          <Trans i18nKey={i18nKey} ns="ns" />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
     test('should work the same way than useTranslate with default value', () => {
       const i18nKey = 'ns:number'
       const expected = 'The number is 42'
