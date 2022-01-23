@@ -55,6 +55,7 @@ export interface I18nConfig {
   staticsHoc?: Function
   loader?: boolean
   logBuild?: boolean
+  revalidate?: number
   interpolation?: {
     format?: Function
     prefix: string
