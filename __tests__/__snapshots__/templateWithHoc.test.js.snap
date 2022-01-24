@@ -177,23 +177,12 @@ $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 
 import React from \\"react\\";
 
-/*
-    const __Page_Next_Translate__ = class FakePage extends React.Component {
-      render() {
-        return <div>Hello world</div>
-      }
-    } */
-
 const __Page_Next_Translate__ = class Page extends React.Component {
   render() {
     return <div>Hello world</div>;
   }
 };
 
-// FakePage.getInitialProps = () => ({})
-/* 
-     __Page_Next_Translate__.getInitialProps = () => ({})
-    */
 __Page_Next_Translate__.getInitialProps = () => ({});
 
 export default __appWithI18n(__Page_Next_Translate__, {
@@ -217,23 +206,12 @@ $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 
 import React from \\"react\\";
 
-/*
-    const __Page_Next_Translate__ = class FakePage extends React.Component {
-      render() {
-        return <div>Hello world</div>
-      }
-    } */
-
 const __Page_Next_Translate__ = class Page extends React.Component {
   render() {
     return <div>Hello world</div>;
   }
 };
 
-// FakePage.getInitialProps = () => ({})
-/* 
-     __Page_Next_Translate__.getInitialProps = () => ({})
-    */
 __Page_Next_Translate__.getInitialProps = () => ({});
 
 export default __appWithI18n(__Page_Next_Translate__, {
@@ -439,10 +417,6 @@ const Page = () => <div>Hello world</div>;
 
 Page.getInitialProps = () => ({});
 
-// const __Page_Next_Translate__ = Page
-/*
-      const __Page_Next_Translate__ = Page
-    */
 const __Page_Next_Translate__ = Page;
 
 export default __appWithI18n(__Page_Next_Translate__, {
@@ -468,10 +442,6 @@ const Page = () => <div>Hello world</div>;
 
 Page.getInitialProps = () => ({});
 
-// const __Page_Next_Translate__ = Page
-/*
-      const __Page_Next_Translate__ = Page
-    */
 const __Page_Next_Translate__ = Page;
 
 export default __appWithI18n(__Page_Next_Translate__, {
