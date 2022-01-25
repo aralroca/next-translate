@@ -36,13 +36,6 @@ export function getStaticPaths({ locales }: any) {
   }
 }
 
-// CHECKING that there is no error with getStaticProps in comment
-// Issue: https://github.com/vinissimus/next-translate/issues/753
-// export const getStaticProps: GetStaticProps = async ({ locale }) => {
-//  const t = await getT(locale, 'common')
-//  return { props: { title: t('title') } }
-//}
-
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const t = await getT(locale, 'common')
   return { props: { title: t('title') } }

@@ -720,7 +720,7 @@ import {
   getStaticPropsB,
 } from \\"somewhere/getStaticProps\\";
 let _getStaticProps = false;
-
+// Comment to import getStaticProps
 const a = \\"import { getStaticProps }\\";
 
 export async function getStaticProps(ctx) {
@@ -899,49 +899,6 @@ export async function getStaticProps(ctx) {
 `;
 
 exports[`templateWithLoader should use the revalidate value already present on getStaticProps arrow function page: /index | loader: getStaticProps | hasLoader: true | revalidate: 77 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
-import { GetStaticProps } from \\"next\\";
-
-export default function Page() {
-  return <div>Hello world</div>;
-}
-
-const _getStaticProps: GetStaticProps = () => {
-  return { revalidate: 10, props: { prop1: \\"hello\\" } };
-};
-
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
-  return {
-    revalidate: 77,
-    ...res,
-    props: {
-      ...(res.props || {}),
-      ...(await __loadNamespaces({
-        ...ctx,
-        pathname: \\"/index\\",
-        loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
-        loadLocaleFrom: (l, n) =>
-          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
-      })),
-    },
-  };
-}
-"
-`;
-
-exports[`templateWithLoader should work with duplicated loader but one in a comment page: /index | loader: getStaticProps | hasLoader: true | revalidate: 77 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
 

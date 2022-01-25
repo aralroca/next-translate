@@ -14,10 +14,7 @@ export default function templateWithHoc(
 
   // Replacing all the possible "export default" (if there are comments
   // can be possible to have more than one)
-  let modifiedCode = codeWithoutComments.replace(
-    /export +default/g,
-    `const ${pageName} =`
-  )
+  let modifiedCode = code.replace(/export +default/g, `const ${pageName} =`)
 
   // It is necessary to change the name of the page that uses getInitialProps
   // to ours, this way we avoid issues.

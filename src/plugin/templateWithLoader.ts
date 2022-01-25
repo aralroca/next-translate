@@ -1,4 +1,4 @@
-import { clearCommentsRgx, overwriteLoadLocales } from './utils'
+import { overwriteLoadLocales } from './utils'
 
 export default function templateWithLoader(
   rawCode: string,
@@ -12,7 +12,7 @@ export default function templateWithLoader(
   } = {}
 ) {
   const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
-  let modifiedCode = rawCode.replace(clearCommentsRgx, '')
+  let modifiedCode = rawCode
 
   if (hasLoader) {
     modifiedCode = modifiedCode

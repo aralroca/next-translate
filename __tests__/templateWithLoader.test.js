@@ -427,32 +427,6 @@ const tests = [
       },
     ],
   },
-  {
-    describe: 'should work with duplicated loader but one in a comment',
-    code: `
-    import { GetStaticProps } from 'next'
-
-    export default function Page() {
-      return <div>Hello world</div>
-    }
-
-    // export const getStaticProps: GetStaticProps = () => {
-    //  return { revalidate:10, props: { prop1: 'hello' } }
-    // }
-    
-    export const getStaticProps: GetStaticProps = () => {
-      return { revalidate:10, props: { prop1: 'hello' } }
-    }
-    `,
-    cases: [
-      {
-        page: '/index',
-        loader: 'getStaticProps',
-        hasLoader: true,
-        revalidate: 77,
-      },
-    ],
-  },
 ].map((t) => {
   t.code = specialStringsRenderer + '\n' + t.code
   return t
