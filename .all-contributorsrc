@@ -278,7 +278,6 @@
       ]
     },
     {
-
       "login": "testerez",
       "name": "Tom Esterez",
       "avatar_url": "https://avatars.githubusercontent.com/u/815236?v=4",
@@ -288,7 +287,7 @@
       ]
     },
     {
-     "login": "dndhm",
+      "login": "dndhm",
       "name": "Dan Needham",
       "avatar_url": "https://avatars.githubusercontent.com/u/1122983?v=4",
       "profile": "http://www.dan-needham.com",
@@ -296,7 +295,7 @@
         "code",
         "test",
         "doc"
-       ]
+      ]
     },
     {
       "login": "bmvantunes",
@@ -306,7 +305,16 @@
       "contributions": [
         "code"
       ]
-     }
+    },
+    {
+      "login": "kaan-atakan",
+      "name": "Kaan Atakan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56063979?v=4",
+      "profile": "https://github.com/kaan-atakan",
+      "contributions": [
+        "code"
+      ]
+    }
   ],
   "contributorsPerLine": 7,
   "projectName": "next-translate",

@@ -959,6 +959,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/testerez"><img src="https://avatars.githubusercontent.com/u/815236?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tom Esterez</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=testerez" title="Code">💻</a></td>
     <td align="center"><a href="http://www.dan-needham.com"><img src="https://avatars.githubusercontent.com/u/1122983?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dan Needham</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=dndhm" title="Code">💻</a> <a href="https://github.com/vinissimus/next-translate/commits?author=dndhm" title="Tests">⚠️</a> <a href="https://github.com/vinissimus/next-translate/commits?author=dndhm" title="Documentation">📖</a></td>
     <td align="center"><a href="https://www.youtube.com/BrunoAntunesPT"><img src="https://avatars.githubusercontent.com/u/9042965?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bruno Antunes</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=bmvantunes" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/kaan-atakan"><img src="https://avatars.githubusercontent.com/u/56063979?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kaan Atakan</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=kaan-atakan" title="Code">💻</a></td>
   </tr>
 </table>
 
