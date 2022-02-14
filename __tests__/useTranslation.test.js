@@ -44,6 +44,28 @@ describe('useTranslation', () => {
       expect(container.textContent).toBe(expected)
     })
 
+    test('interpolation should not be lazy', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        return t('common:key', {
+          something: 'something',
+          somethingElse: 'something else',
+        })
+      }
+
+      const expected = 'something else'
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ common: { key: '{{somethingElse}}' } }}
+        >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
     test('should return the key as fallback using wrong the nested translations', () => {
       const i18nKey = 'ns:grandfather.parent'
       const expected = 'ns:grandfather.parent'

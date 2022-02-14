@@ -183,7 +183,7 @@ function interpolation({
   } = config.interpolation || {}
 
   const regexEnd =
-    suffix === '' ? '' : `\\s*,?\\s*([\\w-]+)?\\s*${escapeRegex(suffix)}`
+    suffix === '' ? '' : `(?:[\\s,]+([\\w-]*))?\\s*${escapeRegex(suffix)}`
   return Object.keys(query).reduce((all, varKey) => {
     const regex = new RegExp(
       `${escapeRegex(prefix)}\\s*${varKey}${regexEnd}`,
