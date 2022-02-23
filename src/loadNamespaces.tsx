@@ -1,6 +1,7 @@
 import { LoaderConfig, LocaleLoader } from '.'
 import getConfig from './getConfig'
 import getPageNamespaces from './getPageNamespaces'
+import { I18nDictionary } from '.'
 
 const colorEnabled =
   process.env.NODE_DISABLE_COLORS == null &&
@@ -43,12 +44,22 @@ export default async function loadNamespaces(
   const defaultLoader: LocaleLoader = () => Promise.resolve({})
   const pageNamespaces =
     (await Promise.all(
-      namespaces.map((ns) =>
-        typeof conf.loadLocaleFrom === 'function'
-          ? conf.loadLocaleFrom(__lang, ns)
-          : defaultLoader(__lang, ns)
+      namespaces.map(
+        (ns) =>
+          new Promise<I18nDictionary>((resolve) => {
+            if (typeof conf.loadLocaleFrom === 'function') {
+              conf
+                .loadLocaleFrom(__lang, ns)
+                .then(resolve)
+                .catch(() => resolve({}))
+            } else {
+              defaultLoader(__lang, ns)
+                .then(resolve)
+                .catch(() => resolve({}))
+            }
+          })
       )
-    ).catch(() => {})) || []
+    )) || []
 
   if (conf.logBuild !== false && typeof window === 'undefined') {
     const color = (c: string) => (colorEnabled ? `\x1b[36m${c}\x1b[0m` : c)
