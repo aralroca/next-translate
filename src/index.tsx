@@ -53,6 +53,7 @@ export interface I18nConfig {
   pages?: Record<string, PageValue>
   logger?: I18nLogger
   staticsHoc?: Function
+  extensionsRgx?: string
   loader?: boolean
   logBuild?: boolean
   revalidate?: number
