@@ -154,7 +154,6 @@ describe('withTranslation', () => {
       const withSingular = {
         withsingular: 'The number is NOT ONE',
         withsingular_1: 'The number is ONE!',
-        withsingular_other: 'Oops!',
       }
       const { container } = render(
         <TestEnglish

@@ -402,7 +402,23 @@ describe('useTranslation', () => {
       const withSingular = {
         withsingular: 'The number is NOT ONE',
         withsingular_1: 'The number is ONE!',
-        withsingular_other: 'Oops!',
+      }
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ ns: withSingular }}
+          i18nKey={i18nKey}
+          query={{ count: 0 }}
+        />
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work with plural | count=0', () => {
+      const i18nKey = 'ns:withsingular'
+      const expected = 'The number is ZERO'
+      const withSingular = {
+        withsingular_one: 'The number is NOT ZERO',
+        withsingular_other: 'The number is ZERO!',
       }
       const { container } = render(
         <TestEnglish
@@ -438,7 +454,6 @@ describe('useTranslation', () => {
       const with_0 = {
         withsingular: 'The number is NOT ZERO',
         withsingular_0: 'The number is ZERO!',
-        withsingular_other: 'Oops!',
       }
       const { container } = render(
         <TestEnglish
@@ -482,6 +497,48 @@ describe('useTranslation', () => {
           i18nKey={i18nKey}
           query={{ count: 2 }}
         />
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work with _zero for ar language | count=0', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        return t('ns:withplural', { count: 0 })
+      }
+
+      const expected = 'The number is zero'
+      const templateString = {
+        withplural_zero: 'The number is zero',
+        withplural_2: 'The number is TWO!',
+        withplural_other: 'Number is bigger than one!',
+      }
+
+      const { container } = render(
+        <I18nProvider lang="ar" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work with _one for fr language | count=0', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        return t('ns:withplural', { count: 0 })
+      }
+
+      const expected = 'The number is zero'
+      const templateString = {
+        withplural_one: 'The number is zero',
+        withplural_2: 'The number is TWO!',
+        withplural_other: 'Number is bigger than one!',
+      }
+
+      const { container } = render(
+        <I18nProvider lang="fr" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
       )
       expect(container.textContent).toContain(expected)
     })
