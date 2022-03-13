@@ -334,6 +334,99 @@ const tests = [
       },
     ],
   },
+  {
+    describe: 'should add "revalidate: 55" prop into getStaticProps',
+    code: `function Page() {
+      return <div>Hello world</div>
+    }
+
+    export default Page`,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: true,
+        revalidate: 55,
+      },
+    ],
+  },
+  {
+    describe:
+      'should not add "revalidate" prop into getStaticProps because revalidate = 0',
+    code: `function Page() {
+      return <div>Hello world</div>
+    }
+
+    export default Page`,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: true,
+        revalidate: 0,
+      },
+    ],
+  },
+  {
+    describe:
+      'should not add "revalidate" prop into getStaticProps because revalidate < 0',
+    code: `function Page() {
+      return <div>Hello world</div>
+    }
+
+    export default Page`,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: true,
+        revalidate: -1,
+      },
+    ],
+  },
+  {
+    describe:
+      'should allow developers to override revalidate prop per page, by having the "default" revalidate defined before "...res"',
+    code: `export default function Page() {
+      return <div>Hello world</div>
+    }
+    
+    export function getStaticProps(){
+      return { revalidate:10, props: { prop1: 'hello' } }
+    }
+    `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: true,
+        revalidate: 88,
+      },
+    ],
+  },
+  {
+    describe:
+      'should use the revalidate value already present on getStaticProps arrow function',
+    code: `
+    import { GetStaticProps } from 'next'
+
+    export default function Page() {
+      return <div>Hello world</div>
+    }
+    
+    export const getStaticProps: GetStaticProps = () => {
+      return { revalidate:10, props: { prop1: 'hello' } }
+    }
+    `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+        hasLoader: true,
+        revalidate: 77,
+      },
+    ],
+  },
 ].map((t) => {
   t.code = specialStringsRenderer + '\n' + t.code
   return t

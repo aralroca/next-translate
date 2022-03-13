@@ -8,6 +8,7 @@ export default function templateWithLoader(
     loader = 'getStaticProps',
     hasLoader = false,
     hasLoadLocaleFrom = false,
+    revalidate = 0,
   } = {}
 ) {
   const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
@@ -83,6 +84,7 @@ export default function templateWithLoader(
         ${hasLoader ? `let res = _${loader}(ctx)` : ''}
         ${hasLoader ? `if(typeof res.then === 'function') res = await res` : ''}
         return {
+          ${hasLoader && revalidate > 0 ? `revalidate: ${revalidate},` : ''}
           ${hasLoader ? '...res,' : ''}
           props: {
             ${hasLoader ? '...(res.props || {}),' : ''}

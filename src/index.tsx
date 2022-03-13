@@ -3,13 +3,18 @@ import { ReactElement, ReactNode } from 'react'
 import nextTranslate from './plugin'
 
 export interface TranslationQuery {
-  [name: string]: string | number
+  [name: string]: any
 }
 
 export type Translate = <T = string>(
   i18nKey: string | TemplateStringsArray,
   query?: TranslationQuery | null,
-  options?: { returnObjects?: boolean; fallback?: string | string[] }
+  options?: {
+    returnObjects?: boolean
+    fallback?: string | string[]
+    default?: string
+    ns?: string
+  }
 ) => T
 
 export interface I18n {
@@ -29,6 +34,8 @@ export interface TransProps {
   components?: ReactElement[] | Record<string, ReactElement>
   values?: TranslationQuery
   fallback?: string | string[]
+  defaultTrans?: string
+  ns?: string
 }
 
 export type PageValue = string[] | ((context: object) => string[])
@@ -42,15 +49,22 @@ export interface I18nConfig {
   defaultLocale?: string
   locales?: string[]
   loadLocaleFrom?: LocaleLoader
+  localesToIgnore?: string[]
   pages?: Record<string, PageValue>
   logger?: I18nLogger
   staticsHoc?: Function
+  extensionsRgx?: string
   loader?: boolean
   logBuild?: boolean
+  revalidate?: number
   interpolation?: {
+    format?: Function
     prefix: string
     suffix: string
   }
+  keySeparator?: string | false
+  nsSeparator?: string | false
+  defaultNS?: string
 }
 
 export interface LoaderConfig extends I18nConfig {
@@ -64,7 +78,7 @@ export interface LoaderConfig extends I18nConfig {
 }
 
 export interface LoggerProps {
-  namespace: string
+  namespace: string | undefined
   i18nKey: string
 }
 

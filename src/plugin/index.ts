@@ -10,48 +10,32 @@ export default function nextTranslate(nextConfig: any = {}) {
     path.relative(pkgDir(), process.env.NEXT_TRANSLATE_PATH || '.')
   )
 
-  const arePagesInsideSrc = fs.existsSync(path.join(dir, 'src/pages'))
-
   const i18n = nextConfig.i18n || {}
-  const {
+  let {
     locales,
     defaultLocale,
     loader = true,
+    pagesInDir,
     pages,
     logger,
     ...restI18n
   } = require(path.join(dir, 'i18n'))
 
-  // @todo Remove all these warnings on 1.1.0
-  const migrationLink =
-    'https://github.com/vinissimus/next-translate/releases/tag/1.0.0'
-  if (restI18n.currentPagesDir) {
-    console.warn(
-      `🚨 [next-translate] "currentPagesDir" is no longer necessary, you can just remove it. Learn more on ${migrationLink}`
-    )
-  }
-
-  if (restI18n.finalPagesDir) {
-    console.warn(
-      `🚨 [next-translate] "finalPagesDir" is no longer necessary, you can just remove it. Learn more on ${migrationLink}`
-    )
-  }
-
-  if (restI18n.localesPath) {
-    console.warn(
-      `🚨 [next-translate] "localesPath" is no longer supported, you should replace it to "loadLocaleFrom". Learn more on ${migrationLink}`
-    )
-  }
-
-  if (restI18n.package !== undefined) {
-    console.warn(
-      `🚨 [next-translate] "package" is no longer supported, you should replace it to "loadLocaleFrom". Learn more on ${migrationLink}`
-    )
-  }
-
-  // Check if exist a getInitialProps on _app.js
   let hasGetInitialPropsOnAppJs = false
-  const pagesPath = path.join(dir, arePagesInsideSrc ? '/src/pages' : '/pages')
+
+  // https://github.com/blitz-js/blitz/blob/canary/nextjs/packages/next/build/utils.ts#L54-L59
+  if (!pagesInDir) {
+    pagesInDir = 'pages'
+    if (fs.existsSync(path.join(dir, 'src/pages'))) {
+      pagesInDir = 'src/pages'
+    } else if (fs.existsSync(path.join(dir, 'app/pages'))) {
+      pagesInDir = 'app/pages'
+    } else if (fs.existsSync(path.join(dir, 'integrations/pages'))) {
+      pagesInDir = 'integrations/pages'
+    }
+  }
+
+  const pagesPath = path.join(dir, pagesInDir)
   const app = fs
     .readdirSync(pagesPath)
     .find((page: string) => page.startsWith('_app.'))
@@ -92,6 +76,7 @@ export default function nextTranslate(nextConfig: any = {}) {
           loader: 'next-translate/plugin/loader',
           options: {
             extensionsRgx: restI18n.extensionsRgx || test,
+            revalidate: restI18n.revalidate || 0,
             hasGetInitialPropsOnAppJs,
             hasAppJs: !!app,
             pagesPath: path.join(pagesPath, '/'),

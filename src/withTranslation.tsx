@@ -7,10 +7,10 @@ import { NextComponentType } from 'next'
  */
 export default function withTranslation<P = unknown>(
   Component: React.ComponentType<P> | NextComponentType<any, any, any>,
-  defaultNs?: string
+  defaultNS?: string
 ): React.ComponentType<Omit<P, 'i18n'>> {
   const WithTranslation: NextComponentType<any, any, any> = (props: P) => {
-    const i18n = useTranslation(defaultNs)
+    const i18n = useTranslation(defaultNS)
     return <Component {...props} i18n={i18n} />
   }
 

@@ -43,11 +43,12 @@
 - [6. Use HTML inside the translation](#6-use-html-inside-the-translation)
 - [7. Nested translations](#7-nested-translations)
 - [8. Fallbacks](#8-fallbacks)
-- [9. How to change the language](#9-how-to-change-the-language)
-- [10. How to save the user-defined language](#10-how-to-save-the-user-defined-language)
-- [11. How to use multi-language in a page](#11-how-to-use-multi-language-in-a-page)
-- [12. How to use next-translate in a mono-repo](#12-how-to-use-next-translate-in-a-mono-repo)
-- [13. Demos](#13-demos)
+- [9. Formatter](#9-formatter)
+- [10. How to change the language](#10-how-to-change-the-language)
+- [11. How to save the user-defined language](#11-how-to-save-the-user-defined-language)
+- [12. How to use multi-language in a page](#12-how-to-use-multi-language-in-a-page)
+- [13. How to use next-translate in a mono-repo](#13-how-to-use-next-translate-in-a-mono-repo)
+- [14. Demos](#14-demos)
   - [Demo from Next.js](#demo-from-nextjs)
   - [Basic demo](#basic-demo)
   - [Complex demo](#complex-demo)
@@ -229,10 +230,15 @@ In the configuration file you can use both the configuration that we specified h
 | `logger`          | Function to log the **missing keys** in development and production. If you are using `i18n.json` as config file you should change it to `i18n.js`.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `function`                      | By default the logger is a function doing a `console.warn` only in development. |     |
 | `logBuild`        | Each page has a log indicating: namespaces, current language and method used to load the namespaces. With this you can disable it.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `Boolean`                       | `true`                                                                          |
 | `loader`        | If you wish to disable the webpack loader and manually load the namespaces on each page, we give you the opportunity to do so by disabling this option.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Boolean`                       | `true`                                                                          |
-| `interpolation`   | Change the delimeter that is used for interpolation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `{prefix: string; suffix: string}` | `{prefix: '{{', suffix: '}}'}`
+| `interpolation`   | Change the delimeter that is used for interpolation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `{prefix: string; suffix: string, formatter: function }` | `{prefix: '{{', suffix: '}}'}`
+| `keySeparator`   | Change the separator that is used for nested keys. Set to `false` to disable keys nesting in JSON translation files. Can be useful if you want to use natural text as keys.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `string` &#124; `false` | `'.'`
+| `nsSeparator`   | char to split namespace from key. You should set it to `false` if you want to use natural text as keys.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `string` &#124; `false` | `':'`
+| `defaultNS`   | default namespace used if not passed to `useTranslation` or in the translation key.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `string` | `undefined`
 | `staticsHoc`   | The HOCs we have in our API ([appWithI18n](#appwithi18n)), do not use [hoist-non-react-statics](https://github.com/mridgway/hoist-non-react-statics) in order not to include more kb than necessary _(static values different than getInitialProps in the pages are rarely used)_. If you have any conflict with statics, you can add hoist-non-react-statics (or any other alternative) here. [See an example](docs/hoist-non-react-statics.md).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `Function` | `null`
 | `extensionsRgx`   | Change the regex used by the webpack loader to find Next.js pages. | `Regex` | `/\.(tsx\|ts\|js\|mjs\|jsx)$/`
-
+| `revalidate`   | If you want to have a default revalidate on each page we give you the opportunity to do so by passing a number to revalidate. You can still define getStaticProps on a page with a different revalidate amount and override this default override. | `Number` | If you don't define it, by default the pages will have no revalidate.
+| `pagesInDir`   | If you run `next ./my-app` to change where your pages are, you can here define `my-app/pages` so that next-translate can guess where they are. | `String` | If you don't define it, by default the pages will be searched for in the classic places like `pages` and `src/pages`.
+| `localesToIgnore`   | Indicate these locales to ignore when you are prefixing the default locale using a middleware (in Next +12, [learn how to do it](https://nextjs.org/docs/advanced-features/i18n-routing#prefixing-the-default-locale)) | `Array<string>` | `['default']`
 
 ## 4. API
 
@@ -257,6 +263,7 @@ export default function Description() {
   const titleFromOtherNamespace = t('ns2:title')
   const description = t`description` // also works as template string
   const example = t('ns2:example', { count: 3 }) // and with query params
+  const exampleDefault = t('ns:example', { count: 3 }, { default: "The count is: {{count}}." }) // and with default translation
 
   return (
     <>
@@ -276,6 +283,8 @@ The `t` function:
   - **options**: Object _(optional)_
     - **fallback**: string | string[] - fallback if i18nKey doesn't exist. [See more](#8-fallbacks).
     - **returnObjects**: boolean - Get part of the JSON with all the translations. [See more](#7-nested-translations).
+    - **default**: string - Default translation for the key. If fallback keys are used, it will be used only after exhausting all the fallbacks.
+    - **ns**: string - Namespace to use when none is embded in the `i18nKey`.
 - **Output**: string
 
 ### withTranslation
@@ -319,7 +328,7 @@ Sometimes we need to do some translations with HTML inside the text (bolds, link
 Example:
 
 ```jsx
-// The defined dictionary enter is like:
+// The defined dictionary entry is like:
 // "example": "<0>The number is <1>{{count}}</1></0>",
 <Trans
   i18nKey="common:example"
@@ -331,7 +340,7 @@ Example:
 Or using `components` prop as a object:
 
 ```jsx
-// The defined dictionary enter is like:
+// The defined dictionary entry is like:
 // "example": "<component>The number is <b>{{count}}</b></component>",
 <Trans
   i18nKey="common:example"
@@ -340,6 +349,7 @@ Or using `components` prop as a object:
     b: <b className="red" />,
   }}
   values={{ count: 42 }}
+  defaultTrans="<component>The number is <b>{{count}}</b></component>"
 />
 ```
 
@@ -348,6 +358,32 @@ Or using `components` prop as a object:
   - `components` - Array<Node> | Object<Node> - In case of Array each index corresponds to the defined tag `<0>`/`<1>`. In case of object each key corresponds to the defined tag `<example>`.
   - `values` - Object - query params
   - `fallback` - string | string[] - Optional. Fallback i18nKey if the i18nKey doesn't match.
+  - `defaultTrans` - string - Default translation for the key. If fallback keys are used, it will be used only after exhausting all the fallbacks.
+  - `ns` - Namespace to use when none is embedded in `i18nKey`
+
+In cases where we require the functionality of the `Trans` component, but need a **string** to be interpolated, rather than the output of the `t(props.i18nKey)` function, there is also a `TransText` component, which takes a `text` prop instead of `i18nKey`.
+
+- **Props**:
+  - `text` - string - The string which (optionally) contains tags requiring interpolation
+  - `components` - Array | Object - This behaves exactly the same as `Trans` (see above).
+
+This is especially useful when mapping over the output of a `t()` with `returnObjects: true`:
+```jsx
+// The defined dictionary entry is like:
+// "content-list": ["List of <link>things</link>", "with <em>tags</em>"]
+const contentList = t('someNamespace:content-list', {}, { returnObjects: true });
+
+{contentList.map((listItem: string) => (
+  <TransText
+    text={listItem}
+    components={{
+      link: <a href="some-url" />,
+      em: <em />,
+    }}
+  />
+)}
+
+```
 
 ### DynamicNamespaces
 
@@ -569,7 +605,7 @@ or
 }
 ```
 
-> Intl.PluralRules API is **only available for modern browsers**, if you want to use it in legacy browsers you should add a [polyfill](https://github.com/eemeli/intl-pluralrules). 
+> Intl.PluralRules API is **only available for modern browsers**, if you want to use it in legacy browsers you should add a [polyfill](https://github.com/eemeli/intl-pluralrules).
 
 
 ## 6. Use HTML inside the translation
@@ -687,7 +723,57 @@ In Trans Component:
 />
 ```
 
-## 9. How to change the language
+## 9. Formatter
+
+You can format params using the `interpolation.formatter` config function.
+
+in `i18n.js`:
+
+```js
+const formatters = {
+  es: new Intl.NumberFormat("es-ES"),
+  en: new Intl.NumberFormat("en-EN"),
+}
+
+return {
+  // ...
+  interpolation: {
+    format: (value, format, lang) => {
+      if(format === 'number') return formatters[lang].format(value)
+      return value
+    }
+  }
+}
+```
+
+In English namespace:
+
+```json
+{
+  "example": "The number is {{count, number}}"
+}
+```
+
+In Spanish namespace:
+
+```json
+{
+  "example": "El número es {{count, number}}"
+}
+```
+
+Using:
+
+```js
+t('example', { count: 33.5 })
+```
+
+Returns:
+
+- In English: `The number is 33.5`
+- In Spanish: `El número es 33,5`
+
+## 10. How to change the language
 
 In order to change the current language you can use the [Next.js navigation](https://nextjs.org/docs/advanced-features/i18n-routing) (Link and Router) passing the `locale` prop.
 
@@ -731,7 +817,7 @@ export default function ChangeLanguage() {
 
 Another way of accessing the `locales` list to change the language is using the `Next.js router`. The `locales` list can be accessed using the [Next.js useRouter hook](https://nextjs.org/docs/api-reference/next/router#userouter).
 
-## 10. How to save the user-defined language
+## 11. How to save the user-defined language
 
 You can set a cookie named `NEXT_LOCALE` with the user-defined language as value, this way a locale can be forced.
 
@@ -757,7 +843,7 @@ function usePersistLocaleCookie() {
 }
 ```
 
-## 11. How to use multi-language in a page
+## 12. How to use multi-language in a page
 
 In some cases, when the page is in the current language, you may want to do some exceptions displaying some text in another language.
 
@@ -765,11 +851,15 @@ In this case, you can achieve this by using the `I18nProvider`.
 
 Learn how to do it [here](#i18nprovider).
 
-## 12. How to use next-translate in a mono-repo
+## 13. How to use next-translate in a mono-repo
 
-Next-translate uses by default the current working directory of the Node.js process (`process.cwd()`). If you want to change it you can use the `NEXT_TRANSLATE_PATH` environment variable. It supports both relative and absolute path.
+Next-translate uses by default the current working directory of the Node.js process (`process.cwd()`).
 
-## 13. Demos
+If you want to change it you can use :
+- the `NEXT_TRANSLATE_PATH` environment variable. It supports both relative and absolute path
+- the native NodeJS function `process.chdir(PATH_TO_NEXT_TRANSLATE)` to move the `process.cwd()`
+
+## 14. Demos
 
 ### Demo from Next.js
 
@@ -862,6 +952,15 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/slevy85"><img src="https://avatars.githubusercontent.com/u/18260229?v=4?s=100" width="100px;" alt=""/><br /><sub><b>slevy85</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=slevy85" title="Code">💻</a></td>
     <td align="center"><a href="https://www.berndartmueller.com"><img src="https://avatars.githubusercontent.com/u/761018?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bernd Artmüller</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=berndartmueller" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/rihardssceredins"><img src="https://avatars.githubusercontent.com/u/23099574?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rihards Ščeredins</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=rihardssceredins" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://its-just-nans.github.io"><img src="https://avatars.githubusercontent.com/u/56606507?v=4?s=100" width="100px;" alt=""/><br /><sub><b>n4n5</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=Its-Just-Nans" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://rubenmoya.dev"><img src="https://avatars.githubusercontent.com/u/905225?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rubén Moya</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=rubenmoya" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/testerez"><img src="https://avatars.githubusercontent.com/u/815236?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tom Esterez</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=testerez" title="Code">💻</a></td>
+    <td align="center"><a href="http://www.dan-needham.com"><img src="https://avatars.githubusercontent.com/u/1122983?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dan Needham</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=dndhm" title="Code">💻</a> <a href="https://github.com/vinissimus/next-translate/commits?author=dndhm" title="Tests">⚠️</a> <a href="https://github.com/vinissimus/next-translate/commits?author=dndhm" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://www.youtube.com/BrunoAntunesPT"><img src="https://avatars.githubusercontent.com/u/9042965?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bruno Antunes</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=bmvantunes" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/kaan-atakan"><img src="https://avatars.githubusercontent.com/u/56063979?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kaan Atakan</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=kaan-atakan" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/groomain"><img src="https://avatars.githubusercontent.com/u/3601848?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Romain</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=groomain" title="Code">💻</a></td>
   </tr>
 </table>
 

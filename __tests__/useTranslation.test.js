@@ -44,6 +44,28 @@ describe('useTranslation', () => {
       expect(container.textContent).toBe(expected)
     })
 
+    test('interpolation should not be lazy', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        return t('common:key', {
+          something: 'something',
+          somethingElse: 'something else',
+        })
+      }
+
+      const expected = 'something else'
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ common: { key: '{{somethingElse}}' } }}
+        >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
     test('should return the key as fallback using wrong the nested translations', () => {
       const i18nKey = 'ns:grandfather.parent'
       const expected = 'ns:grandfather.parent'
@@ -154,6 +176,51 @@ describe('useTranslation', () => {
 
       const { container } = render(
         <I18nProvider lang="en" namespaces={ns}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should work with custom nsSeparator', () => {
+      const Inner = () => {
+        const { t } = useTranslation('a')
+        return t`b||test`
+      }
+
+      const ns = {
+        a: { test: 'Test from A' },
+        b: { test: 'Test from B' },
+      }
+
+      const expected = 'Test from B'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={ns} config={{ nsSeparator: '||' }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should work with natural text as key and defaultNS', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        return t`progress: loading...`
+      }
+
+      const ns = {
+        a: { 'progress: loading...': 'progression: chargement...' },
+      }
+
+      const expected = 'progression: chargement...'
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={ns}
+          config={{ nsSeparator: false, keySeparator: false, defaultNS: 'a' }}
+        >
           <Inner />
         </I18nProvider>
       )
@@ -335,7 +402,23 @@ describe('useTranslation', () => {
       const withSingular = {
         withsingular: 'The number is NOT ONE',
         withsingular_1: 'The number is ONE!',
-        withsingular_other: 'Oops!',
+      }
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ ns: withSingular }}
+          i18nKey={i18nKey}
+          query={{ count: 0 }}
+        />
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work with plural | count=0', () => {
+      const i18nKey = 'ns:withsingular'
+      const expected = 'The number is ZERO'
+      const withSingular = {
+        withsingular_one: 'The number is NOT ZERO',
+        withsingular_other: 'The number is ZERO!',
       }
       const { container } = render(
         <TestEnglish
@@ -371,7 +454,6 @@ describe('useTranslation', () => {
       const with_0 = {
         withsingular: 'The number is NOT ZERO',
         withsingular_0: 'The number is ZERO!',
-        withsingular_other: 'Oops!',
       }
       const { container } = render(
         <TestEnglish
@@ -415,6 +497,48 @@ describe('useTranslation', () => {
           i18nKey={i18nKey}
           query={{ count: 2 }}
         />
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work with _zero for ar language | count=0', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        return t('ns:withplural', { count: 0 })
+      }
+
+      const expected = 'The number is zero'
+      const templateString = {
+        withplural_zero: 'The number is zero',
+        withplural_2: 'The number is TWO!',
+        withplural_other: 'Number is bigger than one!',
+      }
+
+      const { container } = render(
+        <I18nProvider lang="ar" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('should work with _one for fr language | count=0', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        return t('ns:withplural', { count: 0 })
+      }
+
+      const expected = 'The number is zero'
+      const templateString = {
+        withplural_one: 'The number is zero',
+        withplural_2: 'The number is TWO!',
+        withplural_other: 'Number is bigger than one!',
+      }
+
+      const { container } = render(
+        <I18nProvider lang="fr" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
       )
       expect(container.textContent).toContain(expected)
     })
@@ -904,6 +1028,337 @@ describe('useTranslation', () => {
         </I18nProvider>
       )
       expect(container.textContent).toBe(expected)
+    })
+
+    test('should allow default translation', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:no-translation', undefined, {
+          default: 'This is a default translation',
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'This is a default translation'
+      const templateString = {}
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should allow default translation with fallback as string', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:no-translation', undefined, {
+          default: 'This is a default translation',
+          fallback: 'ns:no-translation2',
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'This is a default translation'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{}}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should allow default translation with fallback as array of strings', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:no-translation', undefined, {
+          default: 'This is a default translation',
+          fallback: ['ns:no-translation2', 'ns:no-translation3'],
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'This is a default translation'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{}}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
+    test('should allow default translation with interpolation', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t(
+          'ns:no-translation',
+          { count: 3 },
+          {
+            default: 'This is a default translation with a count: {{count}}',
+            fallback: 'ns:no-translation2',
+          }
+        )
+        return <>{text}</>
+      }
+
+      const expected = 'This is a default translation with a count: 3'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{}}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+  })
+
+  describe('interpolation', () => {
+    test('works with spaces', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:interpolation', {
+          count: 3,
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'There are 3 cats.'
+      const templateString = {
+        interpolation: 'There are {{   count }} cats.',
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('works with empty format', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:interpolation', {
+          count: 3,
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'There are 3 cats.'
+      const templateString = {
+        interpolation: 'There are {{count, }} cats.',
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('uses configured formatter', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:interpolation', {
+          count: 3,
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'There are <number(en)>3</number(en)> cats.'
+      const templateString = {
+        interpolation: 'There are {{count, number}} cats.',
+      }
+
+      const config = {
+        interpolation: {
+          format: (value, format, lang) => {
+            const tag = `${format}(${lang})`
+            return `<${tag}>${value}</${tag}>`
+          },
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+          config={config}
+        >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('uses configured formatter with an object', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:interpolation', {
+          count: { value: 3 },
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'There are <object(en)>3</object(en)> cats.'
+      const templateString = {
+        interpolation: 'There are {{count, object}} cats.',
+      }
+
+      const config = {
+        interpolation: {
+          format: (v, format, lang) => {
+            const tag = `${format}(${lang})`
+            return `<${tag}>${v.value}</${tag}>`
+          },
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+          config={config}
+        >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('replaces all parameters', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:interpolation', {
+          cats: 3,
+          dogs: 3,
+          total: 6,
+          object: 'house',
+        })
+        return <>{text}</>
+      }
+
+      const expected =
+        'There are <digits-en>3</digits-en> dogs and <number-en>3</number-en> cats in this house, that are <number-en>6</number-en> animals.'
+      const templateString = {
+        interpolation:
+          'There are {{dogs, digits}} dogs and {{cats, number}} cats in this {{object}}, that are {{total, number}} animals.',
+      }
+
+      const config = {
+        interpolation: {
+          format: (value, format, lang) => {
+            const tag = `${format}-${lang}`
+            return `<${tag}>${value}</${tag}>`
+          },
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+          config={config}
+        >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('format allows spaces, hyphens and (upper-case) letters', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:interpolation', {
+          count: 3,
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'There are <to-numBer(en)>3</to-numBer(en)> cats.'
+      const templateString = {
+        interpolation: 'There are {{count,to-numBer  }} cats.',
+      }
+
+      const config = {
+        interpolation: {
+          format: (value, format, lang) => {
+            const tag = `${format}(${lang})`
+            return `<${tag}>${value}</${tag}>`
+          },
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+          config={config}
+        >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
+    test('skips invalid format', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:interpolation', {
+          count: 3,
+        })
+        return <>{text}</>
+      }
+
+      const templateString = {
+        interpolation: 'There are {{count, .number}} cats.',
+      }
+
+      const config = {
+        interpolation: {
+          format: (value, format, lang) => {
+            const tag = `${format}(${lang})`
+            return `<${tag}>${value}</${tag}>`
+          },
+        },
+      }
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={{ ns: templateString }}
+          config={config}
+        >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(templateString.interpolation)
+    })
+
+    test('works without formatter', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:interpolation', {
+          count: 3,
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'There are 3 cats.'
+      const templateString = {
+        interpolation: 'There are {{count, number}} cats.',
+      }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
     })
   })
 })

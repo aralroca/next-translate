@@ -2,6 +2,12 @@ import { LoaderConfig, LocaleLoader } from '.'
 import getConfig from './getConfig'
 import getPageNamespaces from './getPageNamespaces'
 
+const colorEnabled =
+  process.env.NODE_DISABLE_COLORS == null &&
+  process.env.NO_COLOR == null &&
+  process.env.TERM !== 'dumb' &&
+  process.env.FORCE_COLOR !== '0'
+
 export default async function loadNamespaces(
   config: LoaderConfig = {}
 ): Promise<{
@@ -9,6 +15,7 @@ export default async function loadNamespaces(
   __namespaces?: Record<string, object>
 }> {
   const conf = { ...getConfig(), ...config }
+  const localesToIgnore = conf.localesToIgnore || ['default']
   const __lang: string =
     conf.req?.locale ||
     conf.locale ||
@@ -22,6 +29,8 @@ export default async function loadNamespaces(
     )
     return { __lang }
   }
+
+  if (localesToIgnore.includes(__lang)) return { __lang }
 
   if (!conf.loaderName && conf.loader !== false) {
     console.warn(
@@ -42,7 +51,7 @@ export default async function loadNamespaces(
     ).catch(() => {})) || []
 
   if (conf.logBuild !== false && typeof window === 'undefined') {
-    const color = (c: string) => `\x1b[36m${c}\x1b[0m`
+    const color = (c: string) => (colorEnabled ? `\x1b[36m${c}\x1b[0m` : c)
     console.log(
       color('next-translate'),
       `- compiled page:`,
@@ -59,7 +68,7 @@ export default async function loadNamespaces(
   return {
     __lang,
     __namespaces: namespaces.reduce((obj: Record<string, object>, ns, i) => {
-      obj[ns] = pageNamespaces[i]
+      obj[ns] = pageNamespaces[i] || null
       return obj
     }, {}),
   }
