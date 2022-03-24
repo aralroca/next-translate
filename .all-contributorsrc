@@ -323,6 +323,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ajmnz",
+      "name": "Arnau Jiménez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/57961822?v=4",
+      "profile": "http://ajb.cat",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
