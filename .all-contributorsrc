@@ -332,6 +332,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "edwinveldhuizen",
+      "name": "Edwin Veldhuizen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1787915?v=4",
+      "profile": "https://github.com/edwinveldhuizen",
+       "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
