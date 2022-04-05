@@ -32,7 +32,7 @@ export default function transCore({
 
   const t: Translate = (key = '', query, options) => {
     const k = Array.isArray(key) ? key[0] : key
-    const { nsSeparator = ':' } = config
+    const { nsSeparator = ':', loggerEnvironment = 'browser' } = config
 
     const { i18nKey, namespace = options?.ns ?? config.defaultNS } = splitNsKey(
       k,
@@ -53,8 +53,10 @@ export default function transCore({
         : options?.fallback || []
 
     if (
-      (logger !== missingKeyLogger || typeof window !== 'undefined') &&
-      empty
+      empty &&
+      (loggerEnvironment === 'both' ||
+        loggerEnvironment ===
+          (typeof window === 'undefined' ? 'node' : 'browser'))
     ) {
       logger({ namespace, i18nKey })
     }

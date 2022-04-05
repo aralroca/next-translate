@@ -52,6 +52,7 @@ export interface I18nConfig {
   localesToIgnore?: string[]
   pages?: Record<string, PageValue>
   logger?: I18nLogger
+  loggerEnvironment?: 'node' | 'browser' | 'both'
   staticsHoc?: Function
   extensionsRgx?: string
   loader?: boolean
