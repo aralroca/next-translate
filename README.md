@@ -962,6 +962,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/kaan-atakan"><img src="https://avatars.githubusercontent.com/u/56063979?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kaan Atakan</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=kaan-atakan" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/groomain"><img src="https://avatars.githubusercontent.com/u/3601848?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Romain</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=groomain" title="Code">💻</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/edwinveldhuizen"><img src="https://avatars.githubusercontent.com/u/1787915?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Edwin Veldhuizen</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=edwinveldhuizen" title="Code">💻</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-restore -->
