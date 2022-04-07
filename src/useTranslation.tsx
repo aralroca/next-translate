@@ -10,6 +10,6 @@ export default function useTranslation(defaultNS?: string): I18n {
       ...ctx,
       t: wrapTWithDefaultNs(ctx.t, defaultNS),
     }),
-    [ctx, defaultNS]
+    [ctx.lang, defaultNS]
   )
 }
