@@ -1,9 +1,4 @@
-import {
-  cloneElement,
-  Fragment,
-  ReactElement,
-  ReactNode,
-} from 'react'
+import React, { cloneElement, Fragment, ReactElement, ReactNode } from 'react'
 
 const tagRe = /<(\w+)>(.*?)<\/\1>|<(\w+)\/>/
 const nlRe = /(?:\r\n|\r|\n)/g
@@ -19,7 +14,6 @@ function getElements(
     [(paired || unpaired) as string, children || ('' as string), after],
   ].concat(getElements(parts.slice(4, parts.length)))
 }
-
 
 export default function formatElements(
   value: string,
