@@ -338,7 +338,16 @@
       "name": "Edwin Veldhuizen",
       "avatar_url": "https://avatars.githubusercontent.com/u/1787915?v=4",
       "profile": "https://github.com/edwinveldhuizen",
-       "contributions": [
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "duc-gp",
+      "name": "Duc Ngo Viet",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40763918?v=4",
+      "profile": "http://dviet.de",
+      "contributions": [
         "code"
       ]
     }
