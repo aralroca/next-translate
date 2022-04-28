@@ -399,7 +399,7 @@ import React from 'react'
 import Trans from 'next-translate/Trans'
 import DynamicNamespaces from 'next-translate/DynamicNamespaces'
 
-export default function ExampleWithDynamicHook() {
+export default function ExampleWithDynamicNamespace() {
   return (
     <DynamicNamespaces namespaces={['dynamic']} fallback="Loading...">
       {/* ALSO IS POSSIBLE TO USE NAMESPACES FROM THE PAGE */}
