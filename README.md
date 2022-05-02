@@ -967,6 +967,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://ajb.cat"><img src="https://avatars.githubusercontent.com/u/57961822?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Arnau Jiménez</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=ajmnz" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/edwinveldhuizen"><img src="https://avatars.githubusercontent.com/u/1787915?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Edwin Veldhuizen</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=edwinveldhuizen" title="Code">💻</a></td>
     <td align="center"><a href="http://dviet.de"><img src="https://avatars.githubusercontent.com/u/40763918?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Duc Ngo Viet</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=duc-gp" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/wuifdesign"><img src="https://avatars.githubusercontent.com/u/5678318?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Wuif</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=wuifdesign" title="Code">💻</a></td>
   </tr>
 </table>
 
