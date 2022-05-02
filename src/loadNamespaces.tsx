@@ -45,10 +45,10 @@ export default async function loadNamespaces(
     (await Promise.all(
       namespaces.map((ns) =>
         typeof conf.loadLocaleFrom === 'function'
-          ? conf.loadLocaleFrom(__lang, ns)
+          ? conf.loadLocaleFrom(__lang, ns).catch(() => ({}))
           : defaultLoader(__lang, ns)
       )
-    ).catch(() => {})) || []
+    )) || []
 
   if (conf.logBuild !== false && typeof window === 'undefined') {
     const color = (c: string) => (colorEnabled ? `\x1b[36m${c}\x1b[0m` : c)
