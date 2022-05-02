@@ -343,14 +343,24 @@
       ]
     },
     {
-      "login": "wuifdesign",
-      "name": "Wuif",
-      "avatar_url": "https://avatars.githubusercontent.com/u/5678318?v=4",
-      "profile": "https://github.com/wuifdesign",
+
+      "login": "duc-gp",
+      "name": "Duc Ngo Viet",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40763918?v=4",
+      "profile": "http://dviet.de",
       "contributions": [
         "code"
       ]
-    }
+    },
+    {
+        "login": "wuifdesign",
+        "name": "Wuif",
+        "avatar_url": "https://avatars.githubusercontent.com/u/5678318?v=4",
+        "profile": "https://github.com/wuifdesign",
+        "contributions": [
+        "code"
+      ]
+    },
   ],
   "contributorsPerLine": 7,
   "projectName": "next-translate",
