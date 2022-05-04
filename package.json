@@ -103,10 +103,16 @@
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",
-      ".utils.js"
+      ".utils.js",
+      ".testCases.js"
     ],
     "transform": {
       "^.+\\.(j|t)sx?$": "babel-jest"
     }
+  },
+  "dependencies": {
+    "@babel/generator": "^7.17.10",
+    "@babel/parser": "^7.17.10",
+    "@babel/types": "^7.17.10"
   }
 }

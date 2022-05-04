@@ -1,14 +1,17 @@
+import * as babelParser from '@babel/parser'
+import { identifier, isExportDefaultDeclaration } from '@babel/types'
+import { getNamedExport } from './ast'
+
 import templateWithHoc from './templateWithHoc'
 import templateWithLoader from './templateWithLoader'
 import {
   clearCommentsRgx,
   getDefaultAppJs,
-  hasExportName,
   hasHOC,
   isPageToIgnore,
 } from './utils'
 
-export default function loader(rawCode: string) {
+export default function loader(rawCode: string): string {
   const {
     hasGetInitialPropsOnAppJs,
     hasAppJs,
@@ -36,22 +39,35 @@ export default function loader(rawCode: string) {
   }
 
   // Skip rest of files that are not inside /pages
-  if (!normalizedResourcePath.startsWith(normalizedPagesPath)) return rawCode
+  if (!normalizedResourcePath.startsWith(normalizedPagesPath)) {
+    return rawCode
+  }
 
   const page = normalizedResourcePath.replace(normalizedPagesPath, '/')
   const pageNoExt = page.replace(extensionsRgx, '')
   const code = rawCode.replace(clearCommentsRgx, '')
-  const typescript = page.endsWith('.ts') || page.endsWith('.tsx')
-
-  // Skip any transformation if for some reason they forgot to write the
-  // "export default" on the page
-  if (!code.includes('export default')) return rawCode
 
   // Skip any transformation if the page is not in raw code
   // Fixes issue with Nx: https://github.com/vinissimus/next-translate/issues/677
   if (code.match(/export *\w* *(__N_SSP|__N_SSG) *=/)) {
     return rawCode
   }
+
+  let ast
+  try {
+    ast = babelParser.parse(rawCode, {
+      sourceType: 'module',
+      plugins: ['typescript', 'jsx'],
+    })
+  } catch (error) {
+    console.info('[next-translate]', error, rawCode)
+    throw new Error('Failed to parse code.')
+  }
+
+  const { body } = ast.program
+
+  // Skip any transformation if for some reason there is no default export
+  if (!body.some((s) => isExportDefaultDeclaration(s))) return rawCode
 
   // In case there is a getInitialProps in _app it means that we can
   // reuse the existing getInitialProps on the top to load the namespaces.
@@ -62,16 +78,15 @@ export default function loader(rawCode: string) {
   // This way, the only modified file has to be the _app.js.
   if (hasGetInitialPropsOnAppJs) {
     return pageNoExt === '/_app'
-      ? templateWithHoc(rawCode, { typescript, hasLoadLocaleFrom })
+      ? templateWithHoc(ast, { hasLoadLocaleFrom })
       : rawCode
   }
 
   // In case the _app does not have getInitialProps, we can add only the
   // I18nProvider to ensure that translations work inside _app.js
   if (pageNoExt === '/_app') {
-    return templateWithHoc(rawCode, {
+    return templateWithHoc(ast, {
       skipInitialProps: true,
-      typescript,
       hasLoadLocaleFrom,
     })
   }
@@ -93,30 +108,31 @@ export default function loader(rawCode: string) {
   //   This is in order to avoid issues because the getInitialProps is the only
   //   one that can be overwritten on a HoC.
   // Use getInitialProps to load the namespaces
-  const isWrapperWithExternalHOC = hasHOC(code)
   const isDynamicPage = page.includes('[')
   const isGetInitialProps = !!code.match(/\WgetInitialProps\W/g)
-  const isGetServerSideProps = hasExportName(code, 'getServerSideProps')
-  const isGetStaticPaths = hasExportName(code, 'getStaticPaths')
-  const isGetStaticProps = hasExportName(code, 'getStaticProps')
+  const isGetServerSideProps = !!getNamedExport(body, getServerSidePropsId)
+  const isGetStaticPaths = !!getNamedExport(body, identifier('getStaticPaths'))
+  const isGetStaticProps = !!getNamedExport(body, getStaticPropsId)
   const hasLoader =
     isGetStaticProps || isGetServerSideProps || isGetInitialProps
+  const isWrappedWithExternalHOC = !hasLoader && hasHOC(code)
 
-  if (isGetInitialProps || (!hasLoader && isWrapperWithExternalHOC)) {
-    return templateWithHoc(rawCode, { typescript, hasLoadLocaleFrom })
+  if (isGetInitialProps || (!hasLoader && isWrappedWithExternalHOC)) {
+    return templateWithHoc(ast, { hasLoadLocaleFrom })
   }
 
-  const loader =
+  const loaderId =
     isGetServerSideProps || (!hasLoader && isDynamicPage && !isGetStaticPaths)
-      ? 'getServerSideProps'
-      : 'getStaticProps'
+      ? getServerSidePropsId
+      : getStaticPropsId
 
-  return templateWithLoader(rawCode, {
+  return templateWithLoader(ast, {
     page: pageNoExt,
-    typescript,
-    loader,
-    hasLoader,
+    loaderId,
     hasLoadLocaleFrom,
     revalidate,
   })
 }
+
+const getServerSidePropsId = identifier('getServerSideProps')
+const getStaticPropsId = identifier('getStaticProps')

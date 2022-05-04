@@ -1,14 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`templateWithHoc exporting a arrow function with Hoc skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 import someHoc from \\"whatever\\";
 
 const __Page_Next_Translate__ = someHoc(() => {
@@ -26,14 +20,8 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc exporting a arrow function with Hoc skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 import someHoc from \\"whatever\\";
 
 const __Page_Next_Translate__ = someHoc(() => {
@@ -51,20 +39,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc exporting a arrow function with getInitialProps skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 
 const Page = () => <div>Hello world</div>;
 
 Page.getInitialProps = () => ({});
 
 const __Page_Next_Translate__ = Page;
-
 export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
@@ -76,20 +58,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc exporting a arrow function with getInitialProps skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 
 const Page = () => <div>Hello world</div>;
 
 Page.getInitialProps = () => ({});
 
 const __Page_Next_Translate__ = Page;
-
 export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
@@ -100,15 +76,9 @@ export default __appWithI18n(__Page_Next_Translate__, {
 "
 `;
 
-exports[`templateWithHoc exporting a class with a getInitialProps static | exporting apart skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
+exports[`templateWithHoc exporting a class with a getInitialProps static | exporting apart skipInitialProps: false 1`] = `
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 import React from \\"react\\";
 
 class Page extends React.Component {
@@ -122,7 +92,6 @@ class Page extends React.Component {
 }
 
 const __Page_Next_Translate__ = Page;
-
 export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
@@ -133,15 +102,9 @@ export default __appWithI18n(__Page_Next_Translate__, {
 "
 `;
 
-exports[`templateWithHoc exporting a class with a getInitialProps static | exporting apart skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
+exports[`templateWithHoc exporting a class with a getInitialProps static | exporting apart skipInitialProps: true 1`] = `
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 import React from \\"react\\";
 
 class Page extends React.Component {
@@ -155,7 +118,6 @@ class Page extends React.Component {
 }
 
 const __Page_Next_Translate__ = Page;
-
 export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
@@ -167,36 +129,30 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc exporting a class with a getInitialProps static outside + one commented before skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 import React from \\"react\\";
-
 /*
-    const __Page_Next_Translate__ = class FakePage extends React.Component {
-      render() {
-        return <div>Hello world</div>
-      }
-    } */
+export default class FakePage extends React.Component {
+  render() {
+    return <div>Hello world</div>
+  }
+} */
 
-const __Page_Next_Translate__ = class Page extends React.Component {
+class Page extends React.Component {
   render() {
     return <div>Hello world</div>;
   }
-};
+}
 
 // FakePage.getInitialProps = () => ({})
-/* 
-     __Page_Next_Translate__.getInitialProps = () => ({})
-    */
-__Page_Next_Translate__.getInitialProps = () => ({});
 
-export default __appWithI18n(__Page_Next_Translate__, {
+/* 
+  Page.getInitialProps = () => ({})
+*/
+Page.getInitialProps = () => ({});
+
+export default __appWithI18n(Page, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
@@ -207,36 +163,30 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc exporting a class with a getInitialProps static outside + one commented before skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 import React from \\"react\\";
-
 /*
-    const __Page_Next_Translate__ = class FakePage extends React.Component {
-      render() {
-        return <div>Hello world</div>
-      }
-    } */
+export default class FakePage extends React.Component {
+  render() {
+    return <div>Hello world</div>
+  }
+} */
 
-const __Page_Next_Translate__ = class Page extends React.Component {
+class Page extends React.Component {
   render() {
     return <div>Hello world</div>;
   }
-};
+}
 
 // FakePage.getInitialProps = () => ({})
-/* 
-     __Page_Next_Translate__.getInitialProps = () => ({})
-    */
-__Page_Next_Translate__.getInitialProps = () => ({});
 
-export default __appWithI18n(__Page_Next_Translate__, {
+/* 
+  Page.getInitialProps = () => ({})
+*/
+Page.getInitialProps = () => ({});
+
+export default __appWithI18n(Page, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
@@ -247,25 +197,19 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc exporting a class with a getInitialProps static outside skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 import React from \\"react\\";
 
-const __Page_Next_Translate__ = class Page extends React.Component {
+class Page extends React.Component {
   render() {
     return <div>Hello world</div>;
   }
-};
+}
 
-__Page_Next_Translate__.getInitialProps = () => ({});
+Page.getInitialProps = () => ({});
 
-export default __appWithI18n(__Page_Next_Translate__, {
+export default __appWithI18n(Page, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
@@ -276,25 +220,19 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc exporting a class with a getInitialProps static outside skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 import React from \\"react\\";
 
-const __Page_Next_Translate__ = class Page extends React.Component {
+class Page extends React.Component {
   render() {
     return <div>Hello world</div>;
   }
-};
+}
 
-__Page_Next_Translate__.getInitialProps = () => ({});
+Page.getInitialProps = () => ({});
 
-export default __appWithI18n(__Page_Next_Translate__, {
+export default __appWithI18n(Page, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
@@ -305,17 +243,11 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc exporting a class with a getInitialProps static skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 import React from \\"react\\";
 
-const __Page_Next_Translate__ = class Page extends React.Component {
+class Page extends React.Component {
   static getInitialProps() {
     return {};
   }
@@ -323,9 +255,9 @@ const __Page_Next_Translate__ = class Page extends React.Component {
   render() {
     return <div>Hello world</div>;
   }
-};
+}
 
-export default __appWithI18n(__Page_Next_Translate__, {
+export default __appWithI18n(Page, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: false,
@@ -336,17 +268,11 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc exporting a class with a getInitialProps static skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 import React from \\"react\\";
 
-const __Page_Next_Translate__ = class Page extends React.Component {
+class Page extends React.Component {
   static getInitialProps() {
     return {};
   }
@@ -354,9 +280,9 @@ const __Page_Next_Translate__ = class Page extends React.Component {
   render() {
     return <div>Hello world</div>;
   }
-};
+}
 
-export default __appWithI18n(__Page_Next_Translate__, {
+export default __appWithI18n(Page, {
   ...__i18nConfig,
   isLoader: true,
   skipInitialProps: true,
@@ -367,14 +293,8 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc exporting a variable and with an existing HoC skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 import withWrapper from \\"somewhere\\";
 
 function Page() {
@@ -383,9 +303,7 @@ function Page() {
 
 const anothervariable = withWrapper(Page);
 const somevariable = anothervariable;
-
 const __Page_Next_Translate__ = somevariable;
-
 export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
@@ -397,14 +315,8 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc exporting a variable and with an existing HoC skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 import withWrapper from \\"somewhere\\";
 
 function Page() {
@@ -413,9 +325,7 @@ function Page() {
 
 const anothervariable = withWrapper(Page);
 const somevariable = anothervariable;
-
 const __Page_Next_Translate__ = somevariable;
-
 export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
@@ -427,24 +337,18 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc page with multiple commented "export default" + the correct one should do it right skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 
 const Page = () => <div>Hello world</div>;
 
-Page.getInitialProps = () => ({});
+Page.getInitialProps = () => ({}); // export default Page
 
-// const __Page_Next_Translate__ = Page
 /*
-      const __Page_Next_Translate__ = Page
-    */
-const __Page_Next_Translate__ = Page;
+  export default Page
+*/
 
+const __Page_Next_Translate__ = Page;
 export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
@@ -456,24 +360,18 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc page with multiple commented "export default" + the correct one should do it right skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 
 const Page = () => <div>Hello world</div>;
 
-Page.getInitialProps = () => ({});
+Page.getInitialProps = () => ({}); // export default Page
 
-// const __Page_Next_Translate__ = Page
 /*
-      const __Page_Next_Translate__ = Page
-    */
-const __Page_Next_Translate__ = Page;
+  export default Page
+*/
 
+const __Page_Next_Translate__ = Page;
 export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
@@ -485,20 +383,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc page without "export default" should skip any transformation skipInitialProps: false 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 
 const Page = () => <div>Hello world</div>;
 
 Page.getInitialProps = () => ({});
 
 const __Page_Next_Translate__ = Page;
-
 export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,
@@ -510,20 +402,14 @@ export default __appWithI18n(__Page_Next_Translate__, {
 `;
 
 exports[`templateWithHoc page without "export default" should skip any transformation skipInitialProps: true 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __appWithI18n from \\"next-translate/appWithI18n\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
+"import __appWithI18n from \\"next-translate/appWithI18n\\";
+import __i18nConfig from \\"@next-translate-root/i18n\\";
 
 const Page = () => <div>Hello world</div>;
 
 Page.getInitialProps = () => ({});
 
 const __Page_Next_Translate__ = Page;
-
 export default __appWithI18n(__Page_Next_Translate__, {
   ...__i18nConfig,
   isLoader: true,

@@ -1,110 +1,182 @@
-import { overwriteLoadLocales } from './utils'
+import generate from '@babel/generator'
+import * as babelParser from '@babel/parser'
+import {
+  arrayExpression,
+  arrayPattern,
+  awaitExpression,
+  blockStatement,
+  callExpression,
+  exportNamedDeclaration,
+  exportSpecifier,
+  File,
+  functionDeclaration,
+  Identifier,
+  identifier,
+  importDeclaration,
+  importDefaultSpecifier,
+  memberExpression,
+  numericLiteral,
+  ObjectExpression,
+  objectExpression,
+  ObjectProperty,
+  objectProperty,
+  returnStatement,
+  spreadElement,
+  stringLiteral,
+  variableDeclaration,
+  variableDeclarator,
+} from '@babel/types'
+import { removeNamedExport } from './ast'
+import { defaultLoaderAst } from './utils'
 
 export default function templateWithLoader(
-  rawCode: string,
+  ast: babelParser.ParseResult<File>,
   {
     page = '',
-    typescript = false,
-    loader = 'getStaticProps',
-    hasLoader = false,
+    loaderId = identifier('getStaticProps'),
     hasLoadLocaleFrom = false,
     revalidate = 0,
   } = {}
 ) {
-  const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
-  let modifiedCode = rawCode
+  const { body } = ast.program
 
-  if (hasLoader) {
-    modifiedCode = modifiedCode
-      // Replacing:
-      //    const getStaticProps = () => console.log('getStaticProps')
-      //    import getStaticProps from './getStaticProps'
-      // To:
-      //    const _getStaticProps = () => console.log('getStaticProps')
-      //    import _getStaticProps from './getStaticProps'
-      .replace(
-        new RegExp(
-          `(const|var|let|async +function|function|import|import {.* as) +${loader}\\W`
-        ),
-        (v: string) =>
-          v.replace(new RegExp(`\\W${loader}\\W`), (r) =>
-            r.replace(loader, '_' + loader)
-          )
-      )
-      // Replacing:
-      //    export const _getStaticProps = () => ({ props: {} })
-      // To:
-      //    const _getStaticProps = () => ({ props: {} })
-      .replace(
-        new RegExp(
-          `export +(const|var|let|async +function|function) +_${loader}`
-        ),
-        (v: string) => v.replace('export', '')
-      )
-      // Replacing: "export { getStaticProps }" to ""
-      .replace(/export +\{ *(getStaticProps|getServerSideProps)( |,)*\}/, '')
-      // Replacing:
-      //    export { something, getStaticProps, somethingelse }
-      // To:
-      //    export { something, somethingelse }
-      // And:
-      //    export { getStaticPropsFake, somethingelse, b as getStaticProps }
-      // To:
-      //    export { getStaticPropsFake, somethingelse }
-      .replace(
-        new RegExp(`^ *export {(.|\n)*${loader}(.|\n)*}`, 'gm'),
-        (v: string) => {
-          return v
-            .replace(new RegExp(`(\\w+ +as +)?${loader}\\W`, 'gm'), (v) =>
-              v.endsWith(loader) ? '' : v[v.length - 1]
-            )
-            .replace(/,( |\n)*,/gm, ',')
-            .replace(/{( |\n)*,/gm, '{')
-            .replace(/{,( \n)*}/gm, '}')
-            .replace(/^ *export +{( |\n)*}\W*$/gm, '')
-        }
-      )
-      // Replacing:
-      //    import { something, getStaticProps, somethingelse } from './getStaticProps'
-      // To:
-      //    import { something, getStaticProps as _getStaticProps, somethingelse } from './getStaticProps'
-      .replace(/^ *import +{( |\n)*[^}]*/gm, (v: string) => {
-        if (v.match(new RegExp(`\\W+${loader} +as `))) return v
-        return v.replace(new RegExp(`\\W+${loader}(\\W|$)`), (r) =>
-          r.replace(loader, `${loader} as _${loader}`)
-        )
-      })
+  const i18nConfigId = identifier('__i18nConfig')
+  const loadNamespacesId = identifier('__loadNamespaces')
+
+  body.unshift(
+    importDeclaration(
+      [importDefaultSpecifier(loadNamespacesId)],
+      stringLiteral('next-translate/loadNamespaces')
+    ),
+    importDeclaration(
+      [importDefaultSpecifier(i18nConfigId)],
+      stringLiteral('@next-translate-root/i18n')
+    )
+  )
+
+  const localLoaderId = removeNamedExport(body, loaderId)
+
+  const nextTranslateLoaderId = identifier(`__next_translate_${loaderId.name}`)
+  body.push(
+    buildNextTranslateLoader({
+      nextTranslateLoaderId,
+      hasLoadLocaleFrom,
+      i18nConfigId,
+      loadNamespacesId,
+      loaderId,
+      page,
+      revalidate,
+      userLoaderId: localLoaderId,
+    })
+  )
+
+  body.push(
+    exportNamedDeclaration(undefined, [
+      exportSpecifier(nextTranslateLoaderId, loaderId),
+    ])
+  )
+
+  return generate(ast).code
+}
+
+interface NextTranslateLoaderOptions {
+  nextTranslateLoaderId: Identifier
+  userLoaderId: Identifier | null
+  loadNamespacesId: Identifier
+  i18nConfigId: Identifier
+  loaderId: Identifier
+  page: string
+  hasLoadLocaleFrom: boolean
+  revalidate: number
+}
+
+function buildNextTranslateLoader({
+  nextTranslateLoaderId,
+  userLoaderId,
+  loadNamespacesId,
+  i18nConfigId,
+  loaderId,
+  page,
+  hasLoadLocaleFrom,
+  revalidate,
+}: NextTranslateLoaderOptions) {
+  const contextId = identifier('ctx')
+
+  const loadNamespaces = callExpression(loadNamespacesId, [
+    objectExpression([
+      spreadElement(contextId),
+      objectProperty(identifier('pathname'), stringLiteral(page)),
+      objectProperty(identifier('loaderName'), stringLiteral(loaderId.name)),
+      spreadElement(i18nConfigId),
+    ]),
+  ])
+
+  if (!hasLoadLocaleFrom) {
+    const argument = loadNamespaces.arguments[0] as ObjectExpression
+
+    argument.properties.push(
+      objectProperty(identifier('loadLocaleFrom'), defaultLoaderAst)
+    )
   }
 
-  let template = `
-    import __i18nConfig from '@next-translate-root/i18n'
-    import __loadNamespaces from 'next-translate/loadNamespaces'
-    ${tokenToReplace}
-    export async function ${loader}(ctx) {
-        ${hasLoader ? `let res = _${loader}(ctx)` : ''}
-        ${hasLoader ? `if(typeof res.then === 'function') res = await res` : ''}
-        return {
-          ${hasLoader && revalidate > 0 ? `revalidate: ${revalidate},` : ''}
-          ${hasLoader ? '...res,' : ''}
-          props: {
-            ${hasLoader ? '...(res.props || {}),' : ''}
-            ...(await __loadNamespaces({
-              ...ctx,
-              pathname: '${page}',
-              loaderName: '${loader}',
-              ...__i18nConfig,
-              ${overwriteLoadLocales(hasLoadLocaleFrom)}
-            }))
-          }
-        }
-    }
-  `
+  const sharedProperties: ObjectProperty[] = []
+  if (revalidate > 0) {
+    sharedProperties.push(
+      objectProperty(identifier('revalidate'), numericLiteral(revalidate))
+    )
+  }
 
-  if (typescript) template = template.replace(/\n/g, '\n// @ts-ignore\n')
+  const propsId = identifier('props')
+  const userLoaderResultId = identifier('userLoaderResult')
+  const namespacePropsId = identifier('namespaceProps')
 
-  // Use callback to avoid parsing special patterns specific for .replace()
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_a_parameter
-  return template.replace(tokenToReplace, () => {
-    return `\n${modifiedCode}\n`
-  })
+  const body = userLoaderId
+    ? blockStatement([
+        variableDeclaration('const', [
+          variableDeclarator(
+            arrayPattern([userLoaderResultId, namespacePropsId]),
+            awaitExpression(
+              callExpression(
+                memberExpression(identifier('Promise'), identifier('all')),
+                [
+                  arrayExpression([
+                    callExpression(userLoaderId, [contextId]),
+                    loadNamespaces,
+                  ]),
+                ]
+              )
+            )
+          ),
+        ]),
+
+        returnStatement(
+          objectExpression([
+            ...sharedProperties,
+            spreadElement(userLoaderResultId),
+            objectProperty(
+              propsId,
+              objectExpression([
+                spreadElement(memberExpression(userLoaderResultId, propsId)),
+                spreadElement(namespacePropsId),
+              ])
+            ),
+          ])
+        ),
+      ])
+    : blockStatement([
+        returnStatement(
+          objectExpression([
+            ...sharedProperties,
+            objectProperty(propsId, awaitExpression(loadNamespaces)),
+          ])
+        ),
+      ])
+
+  return functionDeclaration(
+    nextTranslateLoaderId,
+    [contextId],
+    body,
+    false,
+    true
+  )
 }

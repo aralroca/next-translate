@@ -1,10 +1,8 @@
-import templateWithLoader from '../src/plugin/templateWithLoader'
-import { specialStringsRenderer } from './templateWith.utils'
-import prettier from 'prettier'
+import * as babelParser from '@babel/parser'
+import { identifier } from '@babel/types'
 
-function clean(code) {
-  return prettier.format(code, { parser: 'typescript' })
-}
+import templateWithLoader from '../src/plugin/templateWithLoader'
+import { clean } from './templateWith.utils'
 
 const tests = [
   {
@@ -73,7 +71,7 @@ const tests = [
         return <div>Hello world</div>
       }
 
-      function getServerSideProps() {
+      function getServerSideProps() {
         return { props: {} }
       }
 
@@ -168,7 +166,7 @@ const tests = [
         return <div>Hello world</div>
       }
 
-      const getStaticProps = () => ({ props: {} })
+      const getStaticProps = () => ({ props: {} })
       export { getStaticProps }
   `,
     cases: [
@@ -186,7 +184,7 @@ const tests = [
         return <div>Hello world</div>
       }
 
-      const getStaticProps = wrapper.getStaticProps(() => ({ props: {} }))
+      const getStaticProps = wrapper.getStaticProps(() => ({ props: {} }))
       export { getStaticProps }
   `,
     cases: [
@@ -222,7 +220,7 @@ const tests = [
   {
     describe: 'loader with named import to another place',
     code: `
-      import { getStaticProps } from 'somewhere/getStaticProps'
+      import { getStaticProps } from 'somewhere/getStaticProps'
       import { getStaticPaths } from 'somewhere/getStaticPaths'
 
       const config = {}
@@ -244,7 +242,7 @@ const tests = [
   {
     describe: 'loader with one named import to another place',
     code: `
-      import { getStaticPaths, getStaticProps, config } from 'somewhere/getStaticProps'
+      import { getStaticPaths, getStaticProps, config } from 'somewhere/getStaticProps'
 
       export default function Page() {
         const test = 'getStaticProps'
@@ -265,7 +263,7 @@ const tests = [
   {
     describe: 'loader with named import to another place + rename',
     code: `
-      import { getStaticPropsA as getStaticProps } from 'somewhere/getStaticProps'
+      import { getStaticPropsA as getStaticProps } from 'somewhere/getStaticProps'
       import { getStaticProps as getStaticPaths } from 'somewhere/getStaticPaths'
 
       const config = {}
@@ -286,25 +284,16 @@ const tests = [
   },
   {
     describe: 'should add the "as" on the import only when is necessary',
-    code: `import { getStaticProps } from "somewhere/getStaticProps";
-    import {getStaticProps} from "somewhere/getStaticProps";
-    
-    import { getStaticPropsA, getStaticProps, getStaticPropsB } from "somewhere/getStaticProps";
+    code: `
     import { getStaticProps as getStaticPaths } from 'somewhere/getStaticPaths'
     import { fake_getStaticProps } from 'somewhere/getStaticPaths'
     
     import { 
       getStaticPropsA, 
-      getStaticProps, 
+      getStaticProps,
       getStaticPropsB
     } from "somewhere/getStaticProps";
-    
-    import {
-      getStaticPropsA, 
-      getStaticProps, 
-      getStaticPropsB
-    } from "somewhere/getStaticProps";
-    let getStaticProps = false
+
     // Comment to import getStaticProps
     const a = 'import { getStaticProps }'`,
     cases: [
@@ -317,15 +306,17 @@ const tests = [
   },
   {
     describe: 'should remove exports of existings loaders with "as"',
-    code: `export { test as    getStaticProps }
+    code: `
+    const test = 0, anotherThing = 0, something = 0, getStaticPropsA = 0, getStaticPropsB = 0
+
+    export { test as    getStaticProps1 }
     export {
       test as getStaticProps,
       anotherThing
     }
     
-    export {something,getStaticPropsA as getStaticProps}
-    export {something,AgetStaticProps as getStaticProps}
-    export {something,AgetStaticProps as getStaticProps, getStaticPropsB}`,
+    export {something,getStaticPropsA as getStaticProps2}
+    export {getStaticPropsB}`,
     cases: [
       {
         page: '/index',
@@ -427,10 +418,7 @@ const tests = [
       },
     ],
   },
-].map((t) => {
-  t.code = specialStringsRenderer + '\n' + t.code
-  return t
-})
+]
 
 describe('templateWithLoader', () => {
   tests.forEach((d) => {
@@ -438,8 +426,21 @@ describe('templateWithLoader', () => {
       d.cases.forEach(({ expected, debug, ...options }) => {
         const fn = debug ? test.only : test
         const testname = Object.entries(options).map(([k, v]) => `${k}: ${v}`)
-        fn(testname.join(' | '), () => {
-          expect(clean(templateWithLoader(d.code, options))).toMatchSnapshot()
+        fn(testname.join(' | '), () => {
+          expect(
+            clean(
+              templateWithLoader(
+                babelParser.parse(d.code, {
+                  sourceType: 'module',
+                  plugins: ['jsx', 'typescript'],
+                }),
+                {
+                  ...options,
+                  loaderId: identifier(options.loader),
+                }
+              )
+            )
+          ).toMatchSnapshot()
         })
       })
     })
