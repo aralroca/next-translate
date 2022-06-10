@@ -343,12 +343,20 @@
       ]
     },
     {
-
       "login": "duc-gp",
       "name": "Duc Ngo Viet",
       "avatar_url": "https://avatars.githubusercontent.com/u/40763918?v=4",
       "profile": "http://dviet.de",
       "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "bilLkarkariy",
+      "name": "Billel Helali",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43569083?v=4",
+      "profile": "https://github.com/bilLkarkariy",
+       "contributions": [
         "code"
       ]
     },
