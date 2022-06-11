@@ -433,7 +433,8 @@ Remember that `['dynamic']` namespace should **not** be listed on `pages` config
 
 Asynchronous function to load the `t` function outside components / pages. It works on both server-side and client-side.
 
-Unlike the useTranslation hook, we can use here any namespace, it doesn't have to be a namespace defined in the "pages" configuration. It downloads the namespace indicated as a parameter on runtime.
+Unlike the useTranslation hook, we can use here any namespace, it doesn't have to be a namespace defined in the "pages" configuration. It downloads the namespace indicated as a parameter on runtime.  
+You can load multiple namespaces by giving an array as a paramater, in this case the default namespace will be the fist one.   
 
 Example inside `getStaticProps`:
 
@@ -455,6 +456,23 @@ import getT from 'next-translate/getT'
 export default async function handler(req, res) {
   const t = await getT(req.query.__nextLocale, 'common')
   const title = t('title')
+
+  res.statusCode = 200
+  res.setHeader('Content-Type', 'application/json')
+  res.end(JSON.stringify({ title }))
+}
+```
+
+
+Example of loading multiple namespaces:
+
+```js
+import getT from 'next-translate/getT'
+
+export default async function handler(req, res) {
+  const t = await getT(req.query.__nextLocale, ['common', 'errors'])
+  const title = t('title') // The default namespace is the first one.
+  const errorMessage = t('errors:app_error') // The default namespace is the first one.
 
   res.statusCode = 200
   res.setHeader('Content-Type', 'application/json')
