@@ -703,6 +703,20 @@ t('namespace:array-example', { count: 1 }, { returnObjects: true })
 */
 ```
 
+Also it is possible to get all the translations by using the keySeparator as the key, default is `'.'` :  
+```js
+t('namespace:.', { count: 1 }, { returnObjects: true })
+/*
+{
+  "array-example": [
+    { "example": "Example 1" },
+    { "another-example": "Another example 1" }
+  ]
+}
+*/
+
+```
+
 ### 8. Fallbacks
 
 If no translation exists you can define fallbacks (`string|string[]`) to search for other translations:
