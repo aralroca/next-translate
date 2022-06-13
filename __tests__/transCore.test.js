@@ -13,6 +13,14 @@ const nsRootKeys = {
   root_key_2: 'root message 2',
 }
 
+const nsInterpolate = {
+  key_1: {
+    key_1_nested: 'message 1 {{count}}',
+    key_2_nested: 'message 2 {{count}}',
+  },
+  key_2: 'message 2',
+}
+
 describe('transCore', () => {
   test('should return an object of root keys', async () => {
     const t = transCore({
@@ -67,6 +75,29 @@ describe('transCore', () => {
     )
     expect(t('nsObject:key_2', null, { returnObjects: true })).toEqual(
       nsNestedKeys.key_2
+    )
+  })
+
+  test('should return an object of nested keys and interpolate correctly', async () => {
+    const t = transCore({
+      config: {},
+      allNamespaces: { nsInterpolate },
+      pluralRules: { select() {}, resolvedOptions() {} },
+      lang: 'en',
+    })
+
+    const count = 999
+    const expected = {
+      key_1: {
+        key_1_nested: `message 1 ${count}`,
+        key_2_nested: `message 2 ${count}`,
+      },
+      key_2: 'message 2',
+    }
+
+    expect(typeof t).toBe('function')
+    expect(t('nsInterpolate:.', { count }, { returnObjects: true })).toEqual(
+      expected
     )
   })
 })
