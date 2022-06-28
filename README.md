@@ -1001,6 +1001,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://dviet.de"><img src="https://avatars.githubusercontent.com/u/40763918?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Duc Ngo Viet</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=duc-gp" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/wuifdesign"><img src="https://avatars.githubusercontent.com/u/5678318?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Wuif</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=wuifdesign" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/bilLkarkariy"><img src="https://avatars.githubusercontent.com/u/43569083?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Billel Helali</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=bilLkarkariy" title="Code">💻</a></td>
+    <td align="center"><a href="https://michal.bar"><img src="https://avatars.githubusercontent.com/u/9134970?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Michał Bar</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=MrPumpking" title="Code">💻</a></td>
   </tr>
 </table>
 

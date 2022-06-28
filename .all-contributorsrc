@@ -369,6 +369,15 @@
         "code"
       ]
     },
+    {
+        "login": "MrPumpking",
+        "name": "Michał Bar",
+        "avatar_url": "https://avatars.githubusercontent.com/u/9134970?v=4",
+        "profile": "https://michal.bar",
+        "contributions": [
+        "code"
+      ]
+    },
   ],
   "contributorsPerLine": 7,
   "projectName": "next-translate",
