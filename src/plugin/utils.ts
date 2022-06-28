@@ -40,15 +40,14 @@ export function hasExportName(data: string, name: string) {
   )
 }
 
-export function isPageToIgnore(page: string) {
-  const fileName = page.substring(page.lastIndexOf('/') + 1)
-  return Boolean(
-    page.startsWith('/api/') ||
-      page.startsWith('/api.') ||
-      page.startsWith('/_document.') ||
-      page.startsWith('/middleware.') ||
-      fileName.startsWith('_middleware.') ||
-      page.match(specFileOrFolderRgx)
+export function isPageToIgnore(filePath: string) {
+  const fileName = filePath.substring(filePath.lastIndexOf('/') + 1)
+  return (
+    filePath.startsWith('/api/') ||
+    filePath.startsWith('/_document.') ||
+    filePath.startsWith('/middleware.') ||
+    fileName.startsWith('_middleware.') ||
+    specFileOrFolderRgx.test(filePath)
   )
 }
 
