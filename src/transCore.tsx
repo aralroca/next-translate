@@ -109,6 +109,8 @@ function getDicValue(
   const { keySeparator = '.' } = config || {}
   const keyParts = keySeparator ? key.split(keySeparator) : [key]
 
+  if (key === keySeparator && options.returnObjects) return dic
+
   const value: string | object = keyParts.reduce(
     (val: I18nDictionary | string, key: string) => {
       if (typeof val === 'string') {
