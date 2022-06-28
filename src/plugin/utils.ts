@@ -41,11 +41,13 @@ export function hasExportName(data: string, name: string) {
 }
 
 export function isPageToIgnore(page: string) {
+  const fileName = page.substring(page.lastIndexOf('/') + 1)
   return Boolean(
     page.startsWith('/api/') ||
       page.startsWith('/api.') ||
       page.startsWith('/_document.') ||
-      page.startsWith('_middleware') ||
+      page.startsWith('/middleware.') ||
+      fileName.startsWith('_middleware.') ||
       page.match(specFileOrFolderRgx)
   )
 }
