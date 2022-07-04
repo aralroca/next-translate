@@ -17,6 +17,7 @@ export default function I18nProvider({
   const { locale, defaultLocale } = useRouter() || {}
   const internal = useContext(InternalContext)
   const allNamespaces: Record<string, I18nDictionary> = {
+    ...initialBrowserNamespaces(),
     ...internal.ns,
     ...namespaces,
   }
@@ -34,4 +35,9 @@ export default function I18nProvider({
       </InternalContext.Provider>
     </I18nContext.Provider>
   )
+}
+
+function initialBrowserNamespaces() {
+  if (typeof window === 'undefined') return {}
+  return window.__NEXT_DATA__?.props?.__namespaces || {}
 }
