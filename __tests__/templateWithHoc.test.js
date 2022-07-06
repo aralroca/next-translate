@@ -1,10 +1,7 @@
-import templateWithHoc from '../src/plugin/templateWithHoc'
-import { specialStringsRenderer } from './templateWith.utils'
-import prettier from 'prettier'
+import * as babelParser from '@babel/parser'
 
-function clean(code) {
-  return prettier.format(code, { parser: 'typescript' })
-}
+import templateWithHoc from '../src/plugin/templateWithHoc'
+import { clean } from './templateWith.utils'
 
 const tests = [
   {
@@ -84,7 +81,7 @@ const tests = [
   },
   {
     describe:
-      'exporting a class with a getInitialProps static | exporting apart',
+      'exporting a class with a getInitialProps static | exporting apart',
     code: `
     import React from 'react';
 
@@ -151,10 +148,7 @@ const tests = [
   `,
     cases: [{ skipInitialProps: false }, { skipInitialProps: true }],
   },
-].map((t) => {
-  t.code = specialStringsRenderer + '\n' + t.code
-  return t
-})
+]
 
 describe('templateWithHoc', () => {
   tests.forEach((d) => {
@@ -162,8 +156,18 @@ describe('templateWithHoc', () => {
       d.cases.forEach(({ expected, debug, ...options }) => {
         const fn = debug ? test.only : test
         const testname = Object.entries(options).map(([k, v]) => `${k}: ${v}`)
-        fn(testname.join(' | '), () => {
-          expect(clean(templateWithHoc(d.code, options))).toMatchSnapshot()
+        fn(testname.join(' | '), () => {
+          expect(
+            clean(
+              templateWithHoc(
+                babelParser.parse(d.code, {
+                  sourceType: 'module',
+                  plugins: ['jsx', 'typescript'],
+                }),
+                options
+              )
+            )
+          ).toMatchSnapshot()
         })
       })
     })

@@ -1,3 +1,6 @@
+import { parse } from '@babel/parser'
+import { ArrowFunctionExpression, ExpressionStatement } from '@babel/types'
+
 const specFileOrFolderRgx =
   /(__mocks__|__tests__)|(\.(spec|test)\.(tsx|ts|js|jsx)$)/
 
@@ -5,6 +8,10 @@ export const clearCommentsRgx = /\/\*[\s\S]*?\*\/|\/\/.*/g
 
 export const defaultLoader =
   '(l, n) => import(`@next-translate-root/locales/${l}/${n}`).then(m => m.default)'
+
+export const defaultLoaderAst = (
+  parse(defaultLoader).program.body[0] as ExpressionStatement
+).expression as ArrowFunctionExpression
 
 export function getDefaultAppJs(hasLoadLocaleFrom: boolean) {
   return `
@@ -29,7 +36,7 @@ export function overwriteLoadLocales(exist: boolean): string {
   return `loadLocaleFrom: ${defaultLoader},`
 }
 
-export function hasExportName(data: string, name: string) {
+function hasExportName(data: string, name: string) {
   return Boolean(
     data.match(
       new RegExp(`export +(const|var|let|async +function|function) +${name}`)
