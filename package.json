@@ -1,6 +1,6 @@
 {
   "name": "next-translate",
-  "version": "1.4.0",
+  "version": "1.5.0-canary.5",
   "description": "Tiny and powerful i18n tools (Next plugin + API) to translate your Next.js pages.",
   "license": "MIT",
   "keywords": [
@@ -67,6 +67,7 @@
     "@babel/preset-env": "7.16.4",
     "@babel/preset-typescript": "7.16.0",
     "@testing-library/react": "12.1.2",
+    "@types/jest": "27.4.0",
     "@types/node": "16.11.7",
     "@types/react": "17.0.35",
     "@types/react-dom": "17.0.11",

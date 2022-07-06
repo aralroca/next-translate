@@ -433,7 +433,8 @@ Remember that `['dynamic']` namespace should **not** be listed on `pages` config
 
 Asynchronous function to load the `t` function outside components / pages. It works on both server-side and client-side.
 
-Unlike the useTranslation hook, we can use here any namespace, it doesn't have to be a namespace defined in the "pages" configuration. It downloads the namespace indicated as a parameter on runtime.
+Unlike the useTranslation hook, we can use here any namespace, it doesn't have to be a namespace defined in the "pages" configuration. It downloads the namespace indicated as a parameter on runtime.  
+You can load multiple namespaces by giving an array as a paramater, in this case the default namespace will be the fist one.   
 
 Example inside `getStaticProps`:
 
@@ -455,6 +456,23 @@ import getT from 'next-translate/getT'
 export default async function handler(req, res) {
   const t = await getT(req.query.__nextLocale, 'common')
   const title = t('title')
+
+  res.statusCode = 200
+  res.setHeader('Content-Type', 'application/json')
+  res.end(JSON.stringify({ title }))
+}
+```
+
+
+Example of loading multiple namespaces:
+
+```js
+import getT from 'next-translate/getT'
+
+export default async function handler(req, res) {
+  const t = await getT(req.query.__nextLocale, ['common', 'errors'])
+  const title = t('title') // The default namespace is the first one.
+  const errorMessage = t('errors:app_error') // The default namespace is the first one.
 
   res.statusCode = 200
   res.setHeader('Content-Type', 'application/json')
@@ -683,6 +701,20 @@ t('namespace:array-example', { count: 1 }, { returnObjects: true })
   { "another-example": "Another example 1" }
 ]
 */
+```
+
+Also it is possible to get all the translations by using the keySeparator as the key, default is `'.'` :  
+```js
+t('namespace:.', { count: 1 }, { returnObjects: true })
+/*
+{
+  "array-example": [
+    { "example": "Example 1" },
+    { "another-example": "Another example 1" }
+  ]
+}
+*/
+
 ```
 
 ### 8. Fallbacks
@@ -966,6 +998,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="http://ajb.cat"><img src="https://avatars.githubusercontent.com/u/57961822?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Arnau Jiménez</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=ajmnz" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/edwinveldhuizen"><img src="https://avatars.githubusercontent.com/u/1787915?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Edwin Veldhuizen</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=edwinveldhuizen" title="Code">💻</a></td>
+    <td align="center"><a href="http://dviet.de"><img src="https://avatars.githubusercontent.com/u/40763918?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Duc Ngo Viet</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=duc-gp" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/wuifdesign"><img src="https://avatars.githubusercontent.com/u/5678318?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Wuif</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=wuifdesign" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/bilLkarkariy"><img src="https://avatars.githubusercontent.com/u/43569083?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Billel Helali</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=bilLkarkariy" title="Code">💻</a></td>
+    <td align="center"><a href="https://michal.bar"><img src="https://avatars.githubusercontent.com/u/9134970?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Michał Bar</b></sub></a><br /><a href="https://github.com/vinissimus/next-translate/commits?author=MrPumpking" title="Code">💻</a></td>
   </tr>
 </table>
 

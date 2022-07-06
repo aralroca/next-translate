@@ -109,6 +109,8 @@ function getDicValue(
   const { keySeparator = '.' } = config || {}
   const keyParts = keySeparator ? key.split(keySeparator) : [key]
 
+  if (key === keySeparator && options.returnObjects) return dic
+
   const value: string | object = keyParts.reduce(
     (val: I18nDictionary | string, key: string) => {
       if (typeof val === 'string') {
@@ -189,6 +191,8 @@ function interpolation({
   const regexEnd =
     suffix === '' ? '' : `(?:[\\s,]+([\\w-]*))?\\s*${escapeRegex(suffix)}`
   return Object.keys(query).reduce((all, varKey) => {
+    if (typeof all !== 'string') return all
+
     const regex = new RegExp(
       `${escapeRegex(prefix)}\\s*${varKey}${regexEnd}`,
       'gm'
