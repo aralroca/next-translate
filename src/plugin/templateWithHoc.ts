@@ -1,52 +1,117 @@
-import { clearCommentsRgx, overwriteLoadLocales } from './utils'
+import generate from '@babel/generator'
+import * as babelParser from '@babel/parser'
+import {
+  ExportDefaultDeclaration,
+  identifier,
+  exportDefaultDeclaration,
+  Identifier,
+  CallExpression,
+  callExpression,
+  objectExpression,
+  spreadElement,
+  objectProperty,
+  booleanLiteral,
+  ObjectExpression,
+  variableDeclaration,
+  variableDeclarator,
+  isExpression,
+  importDeclaration,
+  importDefaultSpecifier,
+  stringLiteral,
+  File,
+  isExportDefaultDeclaration,
+} from '@babel/types'
+import { defaultLoaderAst } from './utils'
+
+interface Options
+  extends Pick<HocOptions, 'skipInitialProps' | 'hasLoadLocaleFrom'> {
+  pageName?: string
+}
 
 export default function templateWithHoc(
-  code: string,
-  {
-    skipInitialProps = false,
-    typescript = false,
-    pageName = '__Page_Next_Translate__',
-    hasLoadLocaleFrom = false,
-  } = {}
-) {
-  const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
-  const codeWithoutComments = code.replace(clearCommentsRgx, '')
+  ast: babelParser.ParseResult<File>,
+  { pageName = '__Page_Next_Translate__', ...hocOptions }: Options = {}
+): string {
+  const { body } = ast.program
 
-  // Replacing all the possible "export default" (if there are comments
-  // can be possible to have more than one)
-  let modifiedCode = code.replace(/export +default/g, `const ${pageName} =`)
+  const defaultExportIndex = body.findIndex((s) =>
+    isExportDefaultDeclaration(s)
+  )
+  if (defaultExportIndex === -1) {
+    throw new Error('Missing default export.')
+  }
 
-  // It is necessary to change the name of the page that uses getInitialProps
-  // to ours, this way we avoid issues.
-  const [, , componentName] =
-    codeWithoutComments.match(
-      /export +default +(function|class) +([A-Z]\w*)/
-    ) || []
+  const { declaration } = body[defaultExportIndex] as ExportDefaultDeclaration
 
-  if (componentName) {
-    modifiedCode = modifiedCode.replace(
-      new RegExp(`\\W${componentName}\\.getInitialProps`, 'g'),
-      `${pageName}.getInitialProps`
+  // function and class declarations could already have a name which is used in the source code, f.e.
+  // export default function Page(props) { return null }
+  // in this case we have to preserve that name
+  const pageId =
+    isExpression(declaration) || !declaration.id
+      ? identifier(pageName)
+      : declaration.id
+
+  // overwrite and thereby remove the default export
+  body[defaultExportIndex] = isExpression(declaration)
+    ? variableDeclaration('const', [variableDeclarator(pageId, declaration)])
+    : declaration
+
+  const i18nConfigId = identifier('__i18nConfig')
+  const hocId = identifier('__appWithI18n')
+
+  body.unshift(
+    importDeclaration(
+      [importDefaultSpecifier(hocId)],
+      stringLiteral('next-translate/appWithI18n')
+    ),
+    importDeclaration(
+      [importDefaultSpecifier(i18nConfigId)],
+      stringLiteral('@next-translate-root/i18n')
+    )
+  )
+
+  body.push(
+    exportDefaultDeclaration(
+      wrapWithHoc(pageId, {
+        ...hocOptions,
+        hocId,
+        i18nConfigId,
+      })
+    )
+  )
+
+  return generate(ast).code
+}
+
+interface HocOptions {
+  hocId: Identifier
+  i18nConfigId: Identifier
+  skipInitialProps?: boolean
+  hasLoadLocaleFrom?: boolean
+}
+
+function wrapWithHoc(
+  pageId: Identifier,
+  { hocId, i18nConfigId, skipInitialProps, hasLoadLocaleFrom }: HocOptions
+): CallExpression {
+  const wrapped = callExpression(hocId, [
+    pageId,
+    objectExpression([
+      spreadElement(i18nConfigId),
+      objectProperty(identifier('isLoader'), booleanLiteral(true)),
+      objectProperty(
+        identifier('skipInitialProps'),
+        booleanLiteral(Boolean(skipInitialProps))
+      ),
+    ]),
+  ])
+
+  if (!hasLoadLocaleFrom) {
+    const options = wrapped.arguments[1] as ObjectExpression
+    options.properties.push(
+      objectProperty(identifier('loadLocaleFrom'), defaultLoaderAst)
     )
   }
 
-  let template = `
-    import __i18nConfig from '@next-translate-root/i18n'
-    import __appWithI18n from 'next-translate/appWithI18n'
-    ${tokenToReplace}
-    export default __appWithI18n(__Page_Next_Translate__, {
-      ...__i18nConfig,
-      isLoader: true,
-      skipInitialProps: ${skipInitialProps},
-      ${overwriteLoadLocales(hasLoadLocaleFrom)}
-    });
-  `
-
-  if (typescript) template = template.replace(/\n/g, '\n// @ts-ignore\n')
-
-  // Use callback to avoid parsing special patterns specific for .replace()
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_a_parameter
-  return template.replace(tokenToReplace, () => {
-    return `\n${modifiedCode}\n`
-  })
+  return wrapped
 }

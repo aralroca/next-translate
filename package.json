@@ -54,7 +54,7 @@
     "example:without-loader": "yarn build && cd examples/without-loader && yarn && yarn dev",
     "format": "pretty-quick",
     "husky": "pretty-quick --staged && yarn test",
-    "prepare": "husky install",
+    "prepare": "husky install && cross-env NODE_ENV=production && npm run tsc",
     "prepublish": "yarn test && yarn build",
     "test": "cross-env NODE_ENV=test jest --env=jsdom",
     "test:coverage": "cross-env NODE_ENV=test jest --env=jsdom --coverage",
@@ -104,10 +104,16 @@
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",
-      ".utils.js"
+      ".utils.js",
+      ".testCases.js"
     ],
     "transform": {
       "^.+\\.(j|t)sx?$": "babel-jest"
     }
+  },
+  "dependencies": {
+    "@babel/generator": "^7.17.10",
+    "@babel/parser": "^7.17.10",
+    "@babel/types": "^7.17.10"
   }
 }
