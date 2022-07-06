@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@mdx-js/loader": "1.6.22",
-    "@next/mdx": "12.0.7",
-    "next": "12.0.7",
+    "@next/mdx": "12.2.0",
+    "next": "12.2.0",
     "next-translate": "link:../../",
     "react": "link:../../node_modules/react",
     "react-dom": "link:../../node_modules/react-dom"

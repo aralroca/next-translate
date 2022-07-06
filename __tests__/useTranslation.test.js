@@ -758,6 +758,32 @@ describe('useTranslation', () => {
       )
       expect(container.textContent).toContain(expected)
     })
+    test('should work with returnObjects option and Object locale with default property', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const { title, description } = t(
+          'ns:template-object-default',
+          { count: 2, something: 'of title' },
+          {
+            returnObjects: true,
+            default: {
+              title: 'Default title',
+              description: 'Default description',
+            },
+          }
+        )
+        return <>{`${title} ${description}`}</>
+      }
+
+      const expected = 'Default title Default description'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns: {} }}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
     test('should work with returnObjects option and Object locale with interpolation and highly nested object', () => {
       const Inner = () => {
         const { t } = useTranslation()
