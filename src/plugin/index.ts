@@ -51,7 +51,6 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
     ...nextConfig,
     i18n: {
       ...i18n,
-      ...restI18n,
       locales,
       defaultLocale,
     },
