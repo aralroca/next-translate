@@ -1,6 +1,7 @@
 import { hasHOC } from './utils'
+import type { NextConfig } from 'next'
 
-export default function nextTranslate(nextConfig: any = {}) {
+export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
   const fs = require('fs')
   const path = require('path')
   const test = /\.(tsx|ts|js|mjs|jsx)$/
@@ -54,7 +55,7 @@ export default function nextTranslate(nextConfig: any = {}) {
       locales,
       defaultLocale,
     },
-    webpack(conf: any, options: Record<string, any>) {
+    webpack(conf, options) {
       const config =
         typeof nextConfig.webpack === 'function'
           ? nextConfig.webpack(conf, options)
