@@ -13,8 +13,6 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
 
   const i18n = nextConfig.i18n || {}
   let {
-    locales,
-    defaultLocale,
     loader = true,
     pagesInDir,
     pages,
@@ -47,12 +45,25 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
       !!code.match(/\WgetInitialProps\W/g) || hasHOC(code)
   }
 
+  const mergedConfigs = {
+    ...i18n,
+    ...restI18n,
+  }
+
+  const {
+    locales,
+    defaultLocale,
+    domains,
+    localeDetection,
+  } = mergedConfigs
+
   return {
     ...nextConfig,
     i18n: {
-      ...i18n,
       locales,
       defaultLocale,
+      domains,
+      localeDetection,
     },
     webpack(conf, options) {
       const config =
