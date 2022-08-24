@@ -75,6 +75,7 @@ export default function transCore({
       // Use the default value if necessary
       value =
         typeof options.default === 'string' ||
+        typeof options.default?.other !== 'string' ||
         Object.keys(options.default).some((x) => !PLURAL_KEY_REGEX.test(x))
           ? options.default
           : getDicValue(
@@ -82,7 +83,7 @@ export default function transCore({
               pluralRules.select(query?.count || 0),
               config,
               options
-            )
+            ) || options.default.other
     } else if (empty) {
       // no need to try interpolation
       return k
