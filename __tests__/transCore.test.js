@@ -119,10 +119,19 @@ describe('transCore', () => {
       lang: 'en',
     })
 
-    const count = 4
-    const expected = '4 messages'
+    const oneCount = 1
+    const otherCount = 4
+    const oneExpected = '1 message'
+    const otherExpected = '4 messages'
 
     expect(typeof t).toBe('function')
-    expect(t('nsObject:key_1', { count })).toEqual(expected)
+    expect(t('nsObject:key_1', { count: oneCount })).toEqual(oneExpected)
+    expect(t('nsObject:key_1', { count: otherCount })).toEqual(otherExpected)
+    expect(
+      t('nsObject:key_2', { count: oneCount }, { default: nsPlural.key_1 })
+    ).toEqual(oneExpected)
+    expect(
+      t('nsObject:key_2', { count: otherCount }, { default: nsPlural.key_1 })
+    ).toEqual(otherExpected)
   })
 })
