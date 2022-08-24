@@ -21,6 +21,14 @@ const nsInterpolate = {
   key_2: 'message 2',
 }
 
+const nsPlural = {
+  key_1: {
+    0: 'No messages',
+    one: '{{count}} message',
+    other: '{{count}} messages',
+  },
+}
+
 describe('transCore', () => {
   test('should return an object of root keys', async () => {
     const t = transCore({
@@ -99,5 +107,22 @@ describe('transCore', () => {
     expect(t('nsInterpolate:.', { count }, { returnObjects: true })).toEqual(
       expected
     )
+  })
+
+  test('should work with pluralization', async () => {
+    const t = transCore({
+      config: {},
+      allNamespaces: { nsObject: nsPlural },
+      pluralRules: {
+        select: (count) => (Math.abs(count) === 1 ? 'one' : 'other'),
+      },
+      lang: 'en',
+    })
+
+    const count = 4
+    const expected = '4 messages'
+
+    expect(typeof t).toBe('function')
+    expect(t('nsObject:key_1', { count })).toEqual(expected)
   })
 })
