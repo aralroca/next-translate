@@ -7,6 +7,8 @@ import {
 } from '.'
 import { Translate } from './index'
 
+const PLURAL_KEY_REGEX = /^(\n+|zero|one|two|few|many|other)$/
+
 function splitNsKey(key: string, nsSeparator: string | false) {
   if (!nsSeparator) return { i18nKey: key }
   const i = key.indexOf(nsSeparator)
@@ -70,7 +72,17 @@ export default function transCore({
     }
 
     if (empty && options?.default && fallbacks?.length == 0) {
-      value = options?.default
+      // Use the default value if necessary
+      value =
+        typeof options.default === 'string' ||
+        Object.keys(options.default).some((x) => !PLURAL_KEY_REGEX.test(x))
+          ? options.default
+          : getDicValue(
+              options.default || {},
+              pluralRules.select(query?.count || 0),
+              config,
+              options
+            )
     } else if (empty) {
       // no need to try interpolation
       return k
