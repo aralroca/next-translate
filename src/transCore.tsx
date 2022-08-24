@@ -41,7 +41,7 @@ export default function transCore({
 
     const dic = (namespace && allNamespaces[namespace]) || {}
     const keyWithPlural = plural(pluralRules, dic, i18nKey, config, query)
-    const value = getDicValue(dic, keyWithPlural, config, options)
+    let value = getDicValue(dic, keyWithPlural, config, options)
 
     const empty =
       typeof value === 'undefined' ||
@@ -70,11 +70,9 @@ export default function transCore({
     }
 
     if (empty && options?.default && fallbacks?.length == 0) {
-      return interpolation({ text: options?.default, query, config, lang })
-    }
-
-    // no need to try interpolation
-    if (empty) {
+      value = options?.default
+    } else if (empty) {
+      // no need to try interpolation
       return k
     }
 
