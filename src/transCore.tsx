@@ -7,7 +7,7 @@ import {
 } from '.'
 import { Translate } from './index'
 
-const PLURAL_KEY_REGEX = /^(\n+|zero|one|two|few|many|other)$/
+const PLURAL_KEY_REGEX = /^(\d+|zero|one|two|few|many|other)$/
 
 function splitNsKey(key: string, nsSeparator: string | false) {
   if (!nsSeparator) return { i18nKey: key }
