@@ -49,8 +49,8 @@ export default function nextTranslate(nextConfig: any = {}) {
   return {
     ...nextConfig,
     i18n: {
-      ...i18n,
-      ...restI18n,
+      domains: i18n.domains ?? restI18n.domains,
+      localeDetection: i18n.localeDetection ?? restI18n.localeDetection,
       locales,
       defaultLocale,
     },
