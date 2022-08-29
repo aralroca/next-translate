@@ -58,6 +58,7 @@ export interface I18nConfig {
   loader?: boolean
   logBuild?: boolean
   revalidate?: number
+  pagesInDir?: string
   interpolation?: {
     format?: Function
     prefix: string

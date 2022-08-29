@@ -1,6 +1,8 @@
+import type { NextConfig } from 'next'
+import type { I18nConfig } from '..'
 import { hasHOC } from './utils'
 
-export default function nextTranslate(nextConfig: any = {}) {
+export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
   const fs = require('fs')
   const path = require('path')
   const test = /\.(tsx|ts|js|mjs|jsx)$/
@@ -10,16 +12,24 @@ export default function nextTranslate(nextConfig: any = {}) {
     path.relative(pkgDir(), process.env.NEXT_TRANSLATE_PATH || '.')
   )
 
-  const i18n = nextConfig.i18n || {}
   let {
-    locales,
-    defaultLocale,
-    loader = true,
-    pagesInDir,
+    loadLocaleFrom,
+    localesToIgnore,
     pages,
     logger,
+    loggerEnvironment,
+    staticsHoc,
+    extensionsRgx,
+    loader = true,
+    logBuild,
+    revalidate,
+    pagesInDir,
+    interpolation,
+    keySeparator,
+    nsSeparator,
+    defaultNS,
     ...restI18n
-  } = require(path.join(dir, 'i18n'))
+  } = require(path.join(dir, 'i18n')) as I18nConfig & NextConfig["i18n"]
 
   let hasGetInitialPropsOnAppJs = false
 
@@ -44,6 +54,11 @@ export default function nextTranslate(nextConfig: any = {}) {
     const code = fs.readFileSync(path.join(pagesPath, app)).toString('UTF-8')
     hasGetInitialPropsOnAppJs =
       !!code.match(/\WgetInitialProps\W/g) || hasHOC(code)
+  }
+
+  const i18n = {
+    ...(nextConfig.i18n || {}),
+    ...restI18n,
   }
 
   return {
@@ -75,12 +90,12 @@ export default function nextTranslate(nextConfig: any = {}) {
         use: {
           loader: 'next-translate/plugin/loader',
           options: {
-            extensionsRgx: restI18n.extensionsRgx || test,
-            revalidate: restI18n.revalidate || 0,
+            extensionsRgx: extensionsRgx || test,
+            revalidate: revalidate || 0,
             hasGetInitialPropsOnAppJs,
             hasAppJs: !!app,
             pagesPath: path.join(pagesPath, '/'),
-            hasLoadLocaleFrom: typeof restI18n.loadLocaleFrom === 'function',
+            hasLoadLocaleFrom: typeof loadLocaleFrom === 'function',
           },
         },
       })
