@@ -10,30 +10,36 @@ export default function nextTranslate(nextConfig: any = {}) {
     path.relative(pkgDir(), process.env.NEXT_TRANSLATE_PATH || '.')
   )
 
+  // https://github.com/blitz-js/blitz/blob/canary/nextjs/packages/next/build/utils.ts#L54-L59
+  const getDefaultPageDir = () => {
+    if (fs.existsSync(path.join(dir, 'src/pages'))) {
+      return 'src/pages'
+    } else if (fs.existsSync(path.join(dir, 'app/pages'))) {
+      return 'app/pages'
+    } else if (fs.existsSync(path.join(dir, 'integrations/pages'))) {
+      return 'integrations/pages'
+    }
+    return 'pages'
+  }
+
   const i18n = nextConfig.i18n || {}
-  let {
+  const {
     locales,
     defaultLocale,
     loader = true,
-    pagesInDir,
+    pagesInDir = getDefaultPageDir(),
     pages,
     logger,
+    keySeparator,
+    nsSeparator,
+    defaultNS,
+    loadLocaleFrom,
+    extensionsRgx = test,
+    revalidate = 0,
     ...restI18n
   } = require(path.join(dir, 'i18n'))
 
   let hasGetInitialPropsOnAppJs = false
-
-  // https://github.com/blitz-js/blitz/blob/canary/nextjs/packages/next/build/utils.ts#L54-L59
-  if (!pagesInDir) {
-    pagesInDir = 'pages'
-    if (fs.existsSync(path.join(dir, 'src/pages'))) {
-      pagesInDir = 'src/pages'
-    } else if (fs.existsSync(path.join(dir, 'app/pages'))) {
-      pagesInDir = 'app/pages'
-    } else if (fs.existsSync(path.join(dir, 'integrations/pages'))) {
-      pagesInDir = 'integrations/pages'
-    }
-  }
 
   const pagesPath = path.join(dir, pagesInDir)
   const app = fs
@@ -75,12 +81,12 @@ export default function nextTranslate(nextConfig: any = {}) {
         use: {
           loader: 'next-translate/plugin/loader',
           options: {
-            extensionsRgx: restI18n.extensionsRgx || test,
-            revalidate: restI18n.revalidate || 0,
+            extensionsRgx,
+            revalidate,
             hasGetInitialPropsOnAppJs,
             hasAppJs: !!app,
             pagesPath: path.join(pagesPath, '/'),
-            hasLoadLocaleFrom: typeof restI18n.loadLocaleFrom === 'function',
+            hasLoadLocaleFrom: typeof loadLocaleFrom === 'function',
           },
         },
       })
