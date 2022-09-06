@@ -54,7 +54,7 @@ export interface I18nConfig {
   logger?: I18nLogger
   loggerEnvironment?: 'node' | 'browser' | 'both'
   staticsHoc?: Function
-  extensionsRgx?: string
+  extensionsRgx?: string | RegExp;
   loader?: boolean
   logBuild?: boolean
   revalidate?: number
