@@ -365,15 +365,24 @@
       "name": "Wuif",
       "avatar_url": "https://avatars.githubusercontent.com/u/5678318?v=4",
       "profile": "https://github.com/wuifdesign",
-      "contributions": [
+       "contributions": [
         "code"
       ]
-    },
+      },
     {
       "login": "MrPumpking",
       "name": "Michał Bar",
       "avatar_url": "https://avatars.githubusercontent.com/u/9134970?v=4",
       "profile": "https://michal.bar",
+        "contributions": [
+        "code"
+      ]
+      },
+      {
+      "login": "wuifdesign",
+      "name": "Wuif",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5678318?v=4",
+      "profile": "https://github.com/wuifdesign",
       "contributions": [
         "code"
       ]
@@ -383,14 +392,42 @@
       "name": "Marces Engel",
       "avatar_url": "https://avatars.githubusercontent.com/u/6208890?v=4",
       "profile": "https://github.com/marcesengel",
+       "contributions": [
+        "code"
+      ]
+      },
+      {
+      "login": "MrPumpking",
+      "name": "Michał Bar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9134970?v=4",
+      "profile": "https://michal.bar",
       "contributions": [
+        "code"
+      ]
+    },
+    {
+    {     
+      "login": "marcesengel",
+      "name": "Marces Engel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6208890?v=4",
+      "profile": "https://github.com/marcesengel",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+     "login": "Dragate",
+      "name": "Dragate",
+      "avatar_url": "https://avatars.githubusercontent.com/u/28112929?v=4",
+      "profile": "https://github.com/Dragate",
+       "contributions": [
         "code"
       ]
     }
   ],
   "contributorsPerLine": 7,
   "projectName": "next-translate",
-  "projectOwner": "vinissimus",
+  "projectOwner": "aralroca",
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": true
