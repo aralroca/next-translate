@@ -1,29 +1,35 @@
+import type webpack from 'webpack'
+
 import templateWithHoc from './templateWithHoc'
 import templateWithLoader from './templateWithLoader'
 import {
-  clearCommentsRgx,
+  parseFile,
   getDefaultAppJs,
+  getDefaultExport,
   hasExportName,
-  hasHOC,
+  hasStaticName,
   isPageToIgnore,
+  hasHOC,
 } from './utils'
+import { LoaderOptions } from './types'
 
-export default function loader(rawCode: string) {
+export default function loader(
+  this: webpack.LoaderContext<LoaderOptions>,
+  rawCode: string
+) {
   const {
-    hasGetInitialPropsOnAppJs,
-    hasAppJs,
-    extensionsRgx,
+    basePath,
     pagesPath,
+    hasAppJs,
+    hasGetInitialPropsOnAppJs,
     hasLoadLocaleFrom,
+    extensionsRgx,
     revalidate,
-    // @ts-ignore
-  } = this.query
+  } = this.getOptions()
 
   // Normalize slashes in a file path to be posix/unix-like forward slashes
   const normalizedPagesPath = pagesPath.replace(/\\/g, '/')
-  const normalizedResourcePath: string =
-    // @ts-ignore
-    this.resourcePath.replace(/\\/g, '/')
+  const normalizedResourcePath = this.resourcePath.replace(/\\/g, '/')
 
   // In case that there aren't /_app.js we want to overwrite the default _app
   // to provide the I18Provider on top.
@@ -40,16 +46,16 @@ export default function loader(rawCode: string) {
 
   const page = normalizedResourcePath.replace(normalizedPagesPath, '/')
   const pageNoExt = page.replace(extensionsRgx, '')
-  const code = rawCode.replace(clearCommentsRgx, '')
-  const typescript = page.endsWith('.ts') || page.endsWith('.tsx')
+  const pagePkg = parseFile(basePath, normalizedResourcePath)
+  const defaultExport = getDefaultExport(pagePkg)
 
   // Skip any transformation if for some reason they forgot to write the
   // "export default" on the page
-  if (!code.includes('export default')) return rawCode
+  if (!defaultExport) return rawCode
 
   // Skip any transformation if the page is not in raw code
   // Fixes issue with Nx: https://github.com/vinissimus/next-translate/issues/677
-  if (code.match(/export *\w* *(__N_SSP|__N_SSG) *=/)) {
+  if (hasExportName(pagePkg, '__N_SSP') || hasExportName(pagePkg, '__N_SSG')) {
     return rawCode
   }
 
@@ -62,16 +68,15 @@ export default function loader(rawCode: string) {
   // This way, the only modified file has to be the _app.js.
   if (hasGetInitialPropsOnAppJs) {
     return pageNoExt === '/_app'
-      ? templateWithHoc(rawCode, { typescript, hasLoadLocaleFrom })
+      ? templateWithHoc(pagePkg, { hasLoadLocaleFrom })
       : rawCode
   }
 
   // In case the _app does not have getInitialProps, we can add only the
   // I18nProvider to ensure that translations work inside _app.js
   if (pageNoExt === '/_app') {
-    return templateWithHoc(rawCode, {
+    return templateWithHoc(pagePkg, {
       skipInitialProps: true,
-      typescript,
       hasLoadLocaleFrom,
     })
   }
@@ -93,17 +98,22 @@ export default function loader(rawCode: string) {
   //   This is in order to avoid issues because the getInitialProps is the only
   //   one that can be overwritten on a HoC.
   // Use getInitialProps to load the namespaces
-  const isWrapperWithExternalHOC = hasHOC(code)
+  const isWrapperWithExternalHOC = hasHOC(pagePkg)
   const isDynamicPage = page.includes('[')
-  const isGetInitialProps = !!code.match(/\WgetInitialProps\W/g)
-  const isGetServerSideProps = hasExportName(code, 'getServerSideProps')
-  const isGetStaticPaths = hasExportName(code, 'getStaticPaths')
-  const isGetStaticProps = hasExportName(code, 'getStaticProps')
+  const isGetStaticProps = hasExportName(pagePkg, 'getStaticProps')
+  const isGetStaticPaths = hasExportName(pagePkg, 'getStaticPaths')
+  const isGetServerSideProps = hasExportName(pagePkg, 'getServerSideProps')
+  const isGetInitialProps = hasStaticName(
+    pagePkg,
+    defaultExport,
+    'getInitialProps'
+  )
+
   const hasLoader =
     isGetStaticProps || isGetServerSideProps || isGetInitialProps
 
   if (isGetInitialProps || (!hasLoader && isWrapperWithExternalHOC)) {
-    return templateWithHoc(rawCode, { typescript, hasLoadLocaleFrom })
+    return templateWithHoc(pagePkg, { hasLoadLocaleFrom })
   }
 
   const loader =
@@ -111,11 +121,9 @@ export default function loader(rawCode: string) {
       ? 'getServerSideProps'
       : 'getStaticProps'
 
-  return templateWithLoader(rawCode, {
+  return templateWithLoader(pagePkg, {
     page: pageNoExt,
-    typescript,
     loader,
-    hasLoader,
     hasLoadLocaleFrom,
     revalidate,
   })

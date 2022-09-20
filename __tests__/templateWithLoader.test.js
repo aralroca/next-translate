@@ -1,10 +1,6 @@
 import templateWithLoader from '../src/plugin/templateWithLoader'
-import { specialStringsRenderer } from './templateWith.utils'
-import prettier from 'prettier'
-
-function clean(code) {
-  return prettier.format(code, { parser: 'typescript' })
-}
+import { parseCode } from '../src/plugin/utils'
+import { specialStringsRenderer, clean } from './templateWith.utils'
 
 const tests = [
   {
@@ -26,7 +22,6 @@ const tests = [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
       },
     ],
   },
@@ -41,12 +36,10 @@ const tests = [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: false,
       },
       {
         page: '/blog/[post]/[...catchall]',
         loader: 'getServerSideProps',
-        hasLoader: false,
       },
     ],
   },
@@ -57,23 +50,21 @@ const tests = [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: false,
       },
       {
         page: '/blog/[post]/[...catchall]',
         loader: 'getServerSideProps',
-        hasLoader: false,
       },
     ],
   },
   {
-    describe: 'exporting as a function in diferent line - with loader',
+    describe: 'exporting as a function in different line - with loader',
     code: `
       function Page() {
         return <div>Hello world</div>
       }
 
-      function getServerSideProps() {
+      function getServerSideProps() {
         return { props: {} }
       }
 
@@ -84,12 +75,11 @@ const tests = [
       {
         page: '/index',
         loader: 'getServerSideProps',
-        hasLoader: true,
       },
     ],
   },
   {
-    describe: 'exporting as a function in diferent line - without loader',
+    describe: 'exporting as a function in different line - without loader',
     code: `
       function Page() {
         return <div>Hello world</div>
@@ -101,12 +91,10 @@ const tests = [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: false,
       },
       {
         page: '/blog/[post]/[...catchall]',
         loader: 'getServerSideProps',
-        hasLoader: false,
       },
     ],
   },
@@ -129,12 +117,11 @@ const tests = [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
       },
     ],
   },
   {
-    describe: 'exporting as a class in a diferent line - without loader',
+    describe: 'exporting as a class in a different line - without loader',
     code: `
       import React from 'react'
 
@@ -152,12 +139,10 @@ const tests = [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: false,
       },
       {
         page: '/blog/[post]/[...catchall]',
         loader: 'getServerSideProps',
-        hasLoader: false,
       },
     ],
   },
@@ -168,14 +153,13 @@ const tests = [
         return <div>Hello world</div>
       }
 
-      const getStaticProps = () => ({ props: {} })
+      const getStaticProps = () => ({ props: {} })
       export { getStaticProps }
   `,
     cases: [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
       },
     ],
   },
@@ -186,14 +170,13 @@ const tests = [
         return <div>Hello world</div>
       }
 
-      const getStaticProps = wrapper.getStaticProps(() => ({ props: {} }))
+      const getStaticProps = wrapper.getStaticProps(() => ({ props: {} }))
       export { getStaticProps }
   `,
     cases: [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
       },
     ],
   },
@@ -215,14 +198,13 @@ const tests = [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
       },
     ],
   },
   {
     describe: 'loader with named import to another place',
     code: `
-      import { getStaticProps } from 'somewhere/getStaticProps'
+      import { getStaticProps } from 'somewhere/getStaticProps'
       import { getStaticPaths } from 'somewhere/getStaticPaths'
 
       const config = {}
@@ -237,14 +219,13 @@ const tests = [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
       },
     ],
   },
   {
     describe: 'loader with one named import to another place',
     code: `
-      import { getStaticPaths, getStaticProps, config } from 'somewhere/getStaticProps'
+      import { getStaticPaths, getStaticProps, config } from 'somewhere/getStaticProps'
 
       export default function Page() {
         const test = 'getStaticProps'
@@ -258,14 +239,13 @@ const tests = [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
       },
     ],
   },
   {
     describe: 'loader with named import to another place + rename',
     code: `
-      import { getStaticPropsA as getStaticProps } from 'somewhere/getStaticProps'
+      import { getStaticPropsA as getStaticProps } from 'somewhere/getStaticProps'
       import { getStaticProps as getStaticPaths } from 'somewhere/getStaticPaths'
 
       const config = {}
@@ -280,72 +260,97 @@ const tests = [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
       },
     ],
   },
   {
-    describe: 'should add the "as" on the import only when is necessary',
-    code: `import { getStaticProps } from "somewhere/getStaticProps";
-    import {getStaticProps} from "somewhere/getStaticProps";
-    
-    import { getStaticPropsA, getStaticProps, getStaticPropsB } from "somewhere/getStaticProps";
-    import { getStaticProps as getStaticPaths } from 'somewhere/getStaticPaths'
-    import { fake_getStaticProps } from 'somewhere/getStaticPaths'
-    
-    import { 
-      getStaticPropsA, 
-      getStaticProps, 
-      getStaticPropsB
-    } from "somewhere/getStaticProps";
-    
-    import {
-      getStaticPropsA, 
-      getStaticProps, 
-      getStaticPropsB
-    } from "somewhere/getStaticProps";
-    let getStaticProps = false
-    // Comment to import getStaticProps
-    const a = 'import { getStaticProps }'`,
+    describe: 'should ignore not exported loader',
+    code: `
+      export default function Page() {
+        return <div>Hello world</div>
+      }
+
+      const getStaticProps = () => ({ props: {} })
+    `,
     cases: [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
       },
     ],
   },
   {
-    describe: 'should remove exports of existings loaders with "as"',
-    code: `export { test as    getStaticProps }
-    export {
-      test as getStaticProps,
-      anotherThing
-    }
-    
-    export {something,getStaticPropsA as getStaticProps}
-    export {something,AgetStaticProps as getStaticProps}
-    export {something,AgetStaticProps as getStaticProps, getStaticPropsB}`,
+    describe: 'should remove exports of existing loader with "as" #1',
+    code: `
+      export {
+        test as getStaticProps,
+        anotherThing
+      }
+    `,
     cases: [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
+      },
+    ],
+  },
+  {
+    describe: 'should remove exports of existing loaders with "as" #2',
+    code: `
+      export { test as    getStaticProps }
+    `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+      },
+    ],
+  },
+  {
+    describe: 'should remove exports of existing loaders with "as" #3',
+    code: `
+      export {something,AgetStaticProps as getStaticProps, getStaticPropsB}
+    `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
+      },
+    ],
+  },
+  {
+    describe: 'should import and use loader exported via "export { } from ..."',
+    code: `
+      function Page() {
+        return <div>Hello world</div>
+      }
+
+      export { loader as getStaticProps } from 'somewhere'
+
+      export default Page
+    `,
+    cases: [
+      {
+        page: '/index',
+        loader: 'getStaticProps',
       },
     ],
   },
   {
     describe: 'should add "revalidate: 55" prop into getStaticProps',
-    code: `function Page() {
-      return <div>Hello world</div>
-    }
+    code: `
+      function Page() {
+        return <div>Hello world</div>
+      }
 
-    export default Page`,
+      export const getStaticProps = (ctx) => ({})
+
+      export default Page
+    `,
     cases: [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
         revalidate: 55,
       },
     ],
@@ -353,16 +358,19 @@ const tests = [
   {
     describe:
       'should not add "revalidate" prop into getStaticProps because revalidate = 0',
-    code: `function Page() {
-      return <div>Hello world</div>
-    }
+    code: `
+      function Page() {
+        return <div>Hello world</div>
+      }
 
-    export default Page`,
+      export const getStaticProps = (ctx) => ({})
+
+      export default Page
+    `,
     cases: [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
         revalidate: 0,
       },
     ],
@@ -370,16 +378,19 @@ const tests = [
   {
     describe:
       'should not add "revalidate" prop into getStaticProps because revalidate < 0',
-    code: `function Page() {
-      return <div>Hello world</div>
-    }
+    code: `
+      function Page() {
+        return <div>Hello world</div>
+      }
 
-    export default Page`,
+      export const getStaticProps = (ctx) => ({})
+
+      export default Page
+    `,
     cases: [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
         revalidate: -1,
       },
     ],
@@ -387,19 +398,19 @@ const tests = [
   {
     describe:
       'should allow developers to override revalidate prop per page, by having the "default" revalidate defined before "...res"',
-    code: `export default function Page() {
-      return <div>Hello world</div>
-    }
-    
-    export function getStaticProps(){
-      return { revalidate:10, props: { prop1: 'hello' } }
-    }
+    code: `
+      export default function Page() {
+        return <div>Hello world</div>
+      }
+
+      export function getStaticProps(){
+        return { revalidate:10, props: { prop1: 'hello' } }
+      }
     `,
     cases: [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
         revalidate: 88,
       },
     ],
@@ -408,21 +419,20 @@ const tests = [
     describe:
       'should use the revalidate value already present on getStaticProps arrow function',
     code: `
-    import { GetStaticProps } from 'next'
-
-    export default function Page() {
-      return <div>Hello world</div>
-    }
-    
-    export const getStaticProps: GetStaticProps = () => {
-      return { revalidate:10, props: { prop1: 'hello' } }
-    }
+      import { GetStaticProps } from 'next'
+  
+      export default function Page() {
+        return <div>Hello world</div>
+      }
+      
+      export const getStaticProps: GetStaticProps = () => {
+        return { revalidate:10, props: { prop1: 'hello' } }
+      }
     `,
     cases: [
       {
         page: '/index',
         loader: 'getStaticProps',
-        hasLoader: true,
         revalidate: 77,
       },
     ],
@@ -437,9 +447,12 @@ describe('templateWithLoader', () => {
     describe(d.describe, () => {
       d.cases.forEach(({ expected, debug, ...options }) => {
         const fn = debug ? test.only : test
-        const testname = Object.entries(options).map(([k, v]) => `${k}: ${v}`)
-        fn(testname.join(' | '), () => {
-          expect(clean(templateWithLoader(d.code, options))).toMatchSnapshot()
+        const testName = Object.entries(options).map(([k, v]) => `${k}: ${v}`)
+        fn(testName.join(' | '), () => {
+          Date.now = jest.fn(() => 587764800000)
+          expect(
+            clean(templateWithLoader(parseCode('jsx', d.code), options))
+          ).toMatchSnapshot()
         })
       })
     })
