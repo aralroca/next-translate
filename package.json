@@ -61,6 +61,9 @@
     "test:watch": "cross-env NODE_ENV=test jest --env=jsdom --watch",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && node build-packages.js"
   },
+  "dependencies": {
+    "typescript": "4.5.2"
+  },
   "devDependencies": {
     "@babel/cli": "7.16.0",
     "@babel/core": "7.16.0",
@@ -84,8 +87,7 @@
     "pretty-quick": "3.1.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "supertest": "6.1.6",
-    "typescript": "4.5.2"
+    "supertest": "6.1.6"
   },
   "peerDependencies": {
     "next": ">= 10.0.0",
