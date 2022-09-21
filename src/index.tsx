@@ -47,8 +47,11 @@ export type LocaleLoader = (
 ) => Promise<I18nDictionary>
 
 // Built-in i18n Next.js options
-type RawNextI18nConfig = Exclude<NextConfig['i18n'], null | undefined>
-type NextI18nConfig = Omit<RawNextI18nConfig, 'locales' | 'defaultLocale'>
+export type RawNextI18nConfig = Exclude<NextConfig['i18n'], null | undefined>
+export type NextI18nConfig = Omit<
+  RawNextI18nConfig,
+  'locales' | 'defaultLocale'
+>
 
 export interface I18nConfig extends NextI18nConfig {
   locales?: string[]
@@ -117,3 +120,4 @@ declare global {
 }
 
 module.exports = nextTranslate
+export default nextTranslate
