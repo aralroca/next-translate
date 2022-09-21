@@ -89,7 +89,7 @@ export interface I18nLogger {
 }
 
 export interface I18nDictionary {
-  [key: string]: string | I18nDictionary
+  [key: string]: string | string[] | I18nDictionary
 }
 
 export interface DynamicNamespacesProps {
