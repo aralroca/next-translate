@@ -14,7 +14,8 @@
     "lib": ["esnext", "dom"],
     "forceConsistentCasingInFileNames": true,
     "outDir": "./lib/esm",
-    "declarationDir": "./types"
+    "declarationDir": "./"
   },
-  "include": ["./src"]
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+  "exclude": ["node_modules"]
 }
