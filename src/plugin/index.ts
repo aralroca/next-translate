@@ -5,7 +5,7 @@ import type { NextConfig } from 'next'
 
 import { parseFile, getDefaultExport, hasStaticName, hasHOC } from './utils'
 import { LoaderOptions } from './types'
-import { I18nConfig } from '../'
+import { NextI18nConfig, I18nConfig } from '../'
 
 export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
   const test = /\.(tsx|ts|js|mjs|jsx)$/
@@ -16,14 +16,14 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
     path.relative(basePath, process.env.NEXT_TRANSLATE_PATH || '.')
   )
 
-  const nextConfigI18n = nextConfig.i18n || {}
+  const nextConfigI18n: NextI18nConfig = nextConfig.i18n || {}
   let {
     locales = [],
     defaultLocale = 'en',
     loader = true,
+    domains = nextConfigI18n.domains,
+    localeDetection = nextConfigI18n.localeDetection,
     pagesInDir,
-    pages,
-    logger,
     ...restI18n
   } = require(path.join(translationDir, 'i18n')) as I18nConfig
 
@@ -62,9 +62,10 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
     ...nextConfig,
     i18n: {
       ...nextConfigI18n,
-      ...restI18n,
       locales,
       defaultLocale,
+      domains,
+      localeDetection,
     },
     webpack(conf: webpack.Configuration, options) {
       const config: webpack.Configuration =
