@@ -11,6 +11,14 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
   const test = /\.(tsx|ts|js|mjs|jsx)$/
   const basePath = pkgDir()
 
+  // https://github.com/blitz-js/blitz/blob/canary/nextjs/packages/next/build/utils.ts#L54-L59
+  const possiblePageDirs = [
+    'pages',
+    'src/pages',
+    'app/pages',
+    'integrations/pages',
+  ] as const
+
   // NEXT_TRANSLATE_PATH env is supported both relative and absolute path
   const translationDir = path.resolve(
     path.relative(basePath, process.env.NEXT_TRANSLATE_PATH || '.')
@@ -18,27 +26,39 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
 
   const nextConfigI18n: NextI18nConfig = nextConfig.i18n || {}
   let {
-    locales = [],
-    defaultLocale = 'en',
-    loader = true,
+    locales = nextConfigI18n.locales || [],
+    defaultLocale = nextConfigI18n.defaultLocale || 'en',
     domains = nextConfigI18n.domains,
     localeDetection = nextConfigI18n.localeDetection,
+    loader = true,
     pagesInDir,
     ...restI18n
   } = require(path.join(translationDir, 'i18n')) as I18nConfig
 
+  const nextConfigWithI18n: NextConfig = {
+    ...nextConfig,
+    i18n: {
+      locales,
+      defaultLocale,
+      domains,
+      localeDetection,
+    },
+  }
+
   let hasGetInitialPropsOnAppJs = false
 
-  // https://github.com/blitz-js/blitz/blob/canary/nextjs/packages/next/build/utils.ts#L54-L59
   if (!pagesInDir) {
-    pagesInDir = 'pages'
-    if (fs.existsSync(path.join(basePath, 'src/pages'))) {
-      pagesInDir = 'src/pages'
-    } else if (fs.existsSync(path.join(basePath, 'app/pages'))) {
-      pagesInDir = 'app/pages'
-    } else if (fs.existsSync(path.join(basePath, 'integrations/pages'))) {
-      pagesInDir = 'integrations/pages'
+    for (const possiblePageDir of possiblePageDirs) {
+      if (fs.existsSync(path.join(basePath, possiblePageDir))) {
+        pagesInDir = possiblePageDir
+        break
+      }
     }
+  }
+
+  if (!pagesInDir) {
+    // Pages folder not found, so we're not using the loader
+    return nextConfigWithI18n
   }
 
   const pagesPath = path.join(basePath, pagesInDir)
@@ -59,14 +79,7 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
   }
 
   return {
-    ...nextConfig,
-    i18n: {
-      ...nextConfigI18n,
-      locales,
-      defaultLocale,
-      domains,
-      localeDetection,
-    },
+    ...nextConfigWithI18n,
     webpack(conf: webpack.Configuration, options) {
       const config: webpack.Configuration =
         typeof nextConfig.webpack === 'function'
