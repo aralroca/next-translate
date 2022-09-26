@@ -109,7 +109,11 @@ export interface DynamicNamespacesProps {
 }
 
 declare global {
-  module NodeJS {
+  // For NodeJS 16+
+  // eslint-disable-next-line no-var
+  var i18nConfig: LoaderConfig
+
+  namespace NodeJS {
     interface Global {
       i18nConfig: LoaderConfig
     }
