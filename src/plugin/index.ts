@@ -56,7 +56,7 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
     }
   }
 
-  if (!pagesInDir) {
+  if (!pagesInDir || !fs.existsSync(path.join(basePath, pagesInDir))) {
     // Pages folder not found, so we're not using the loader
     return nextConfigWithI18n
   }
