@@ -12,7 +12,7 @@ export type Translate = <T = string>(
   options?: {
     returnObjects?: boolean
     fallback?: string | string[]
-    default?: string
+    default?: T | string
     ns?: string
   }
 ) => T
