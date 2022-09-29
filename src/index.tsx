@@ -6,7 +6,16 @@ export interface TranslationQuery {
   [name: string]: any
 }
 
-export type Translate = <T = string>(
+
+export interface NestedStringObject {
+  [key:string]: string | NestedStringObject | NestedStringArray
+}
+type ValueOrArray<T> = T | ValueOrArray<T>[];
+type NestedStringArray = ValueOrArray<string | NestedStringObject>;
+
+export type TranslateValue = string | NestedStringObject | NestedStringArray
+
+export type Translate = <T extends TranslateValue = string>(
   i18nKey: string | TemplateStringsArray,
   query?: TranslationQuery | null,
   options?: {

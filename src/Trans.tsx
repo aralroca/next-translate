@@ -23,7 +23,7 @@ export default function Trans({
    * Memoize the transformation
    */
   const result = useMemo(() => {
-    const text = t(i18nKey, values, { fallback, default: defaultTrans })
+    const text = t<string>(i18nKey, values, { fallback, default: defaultTrans })
 
     if (!components || components.length === 0) return text
 
