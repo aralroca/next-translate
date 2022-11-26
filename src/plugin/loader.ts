@@ -61,14 +61,14 @@ export default function loader(rawCode: string) {
   //
   // This way, the only modified file has to be the _app.js.
   if (hasGetInitialPropsOnAppJs) {
-    return pageNoExt === '/_app'
+    return pageNoExt.startsWith('/_app')
       ? templateWithHoc(rawCode, { typescript, hasLoadLocaleFrom })
       : rawCode
   }
 
   // In case the _app does not have getInitialProps, we can add only the
   // I18nProvider to ensure that translations work inside _app.js
-  if (pageNoExt === '/_app') {
+  if (pageNoExt.startsWith('/_app')) {
     return templateWithHoc(rawCode, {
       skipInitialProps: true,
       typescript,
