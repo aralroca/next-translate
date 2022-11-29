@@ -12,7 +12,7 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
   const basePath = pkgDir()
 
   // NEXT_TRANSLATE_PATH env is supported both relative and absolute path
-  const translationDir = path.resolve(
+  const dir = path.resolve(
     path.relative(basePath, process.env.NEXT_TRANSLATE_PATH || '.')
   )
 
@@ -25,27 +25,27 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
     localeDetection = nextConfigI18n.localeDetection,
     pagesInDir,
     ...restI18n
-  } = require(path.join(translationDir, 'i18n')) as I18nConfig
+  } = require(path.join(dir, 'i18n')) as I18nConfig
 
   let hasGetInitialPropsOnAppJs = false
 
   // https://github.com/blitz-js/blitz/blob/canary/nextjs/packages/next/build/utils.ts#L54-L59
   if (!pagesInDir) {
     pagesInDir = 'pages'
-    if (fs.existsSync(path.join(basePath, 'src/pages'))) {
+    if (fs.existsSync(path.join(dir, 'src/pages'))) {
       pagesInDir = 'src/pages'
-    } else if (fs.existsSync(path.join(basePath, 'app/pages'))) {
+    } else if (fs.existsSync(path.join(dir, 'app/pages'))) {
       pagesInDir = 'app/pages'
-    } else if (fs.existsSync(path.join(basePath, 'integrations/pages'))) {
+    } else if (fs.existsSync(path.join(dir, 'integrations/pages'))) {
       pagesInDir = 'integrations/pages'
     }
   }
 
-  const pagesPath = path.join(basePath, pagesInDir)
+  const pagesPath = path.join(dir, pagesInDir)
   const app = fs.readdirSync(pagesPath).find((page) => page.startsWith('_app.'))
 
   if (app) {
-    const appPkg = parseFile(basePath, path.join(pagesPath, app))
+    const appPkg = parseFile(dir, path.join(pagesPath, app))
     const defaultExport = getDefaultExport(appPkg)
 
     if (defaultExport) {
@@ -80,7 +80,7 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
 
       config.resolve.alias = {
         ...(config.resolve.alias || {}),
-        '@next-translate-root': path.resolve(translationDir),
+        '@next-translate-root': path.resolve(dir),
       }
 
       // we give the opportunity for people to use next-translate without altering
