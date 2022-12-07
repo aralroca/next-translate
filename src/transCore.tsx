@@ -1,3 +1,4 @@
+import clonedeep from 'lodash.clonedeep'
 import {
   I18nConfig,
   I18nDictionary,
@@ -41,7 +42,7 @@ export default function transCore({
 
     const dic = (namespace && allNamespaces[namespace]) || {}
     const keyWithPlural = plural(pluralRules, dic, i18nKey, config, query)
-    const value = getDicValue(dic, keyWithPlural, config, options)
+    const value = clonedeep(getDicValue(dic, keyWithPlural, config, options))
 
     const empty =
       typeof value === 'undefined' ||

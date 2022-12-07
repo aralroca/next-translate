@@ -68,6 +68,7 @@
     "@babel/preset-typescript": "7.16.0",
     "@testing-library/react": "12.1.2",
     "@types/jest": "27.4.0",
+    "@types/lodash.clonedeep": "^4.5.7",
     "@types/node": "16.11.7",
     "@types/react": "17.0.35",
     "@types/react-dom": "17.0.11",
@@ -109,5 +110,8 @@
     "transform": {
       "^.+\\.(j|t)sx?$": "babel-jest"
     }
+  },
+  "dependencies": {
+    "lodash.clonedeep": "^4.5.0"
   }
 }
