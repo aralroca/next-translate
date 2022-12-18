@@ -30,6 +30,12 @@ export default function transCore({
 }): Translate {
   const { logger = missingKeyLogger } = config
 
+  // By default, keys translated to empty strings
+  // are translated to empty strings or fallbacks/default options.
+  // If allowEmptyStrings is passed as false, result is
+  // the key itself.
+  const allowEmptyStrings = config.allowEmptyStrings || true
+
   const t: Translate = (key = '', query, options) => {
     const k = Array.isArray(key) ? key[0] : key
     const { nsSeparator = ':', loggerEnvironment = 'browser' } = config
@@ -45,7 +51,8 @@ export default function transCore({
 
     const empty =
       typeof value === 'undefined' ||
-      (typeof value === 'object' && !Object.keys(value).length)
+      (typeof value === 'object' && !Object.keys(value).length) ||
+      (value === '' && !allowEmptyStrings)
 
     const fallbacks =
       typeof options?.fallback === 'string'

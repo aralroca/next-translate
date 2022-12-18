@@ -61,12 +61,13 @@ export interface I18nConfig {
   pagesInDir?: string
   interpolation?: {
     format?: Function
-    prefix?: string
-    suffix?: string
+    prefix: string
+    suffix: string
   }
   keySeparator?: string | false
   nsSeparator?: string | false
   defaultNS?: string
+  allowEmptyStrings?: string
 }
 
 export interface LoaderConfig extends I18nConfig {
