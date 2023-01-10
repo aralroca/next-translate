@@ -105,7 +105,7 @@ describe('transCore', () => {
     )
   })
 
-  test('should return empty string when allowEmptyStrings is passed as true.', async () => {
+  test('should return empty string when allowEmptyStrings is passed as true.', () => {
     const t = transCore({
       config: {
         allowEmptyStrings: true,
@@ -118,7 +118,7 @@ describe('transCore', () => {
     expect(t('nsWithEmpty:emptyKey')).toEqual('')
   })
 
-  test.only('should return empty string when allowEmptyStrings is omitted.', async () => {
+  test('should return empty string when allowEmptyStrings is omitted.', () => {
     const t = transCore({
       allNamespaces: { nsWithEmpty },
       config: {},
@@ -129,7 +129,7 @@ describe('transCore', () => {
     expect(t('nsWithEmpty:emptyKey')).toEqual('')
   })
 
-  test('should return the key name when allowEmptyStrings is omit passed as false.', async () => {
+  test('should return the key name when allowEmptyStrings is omit passed as false.', () => {
     const t = transCore({
       config: {
         allowEmptyStrings: false,

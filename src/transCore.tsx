@@ -28,13 +28,14 @@ export default function transCore({
   pluralRules: Intl.PluralRules
   lang: string | undefined
 }): Translate {
-  const { logger = missingKeyLogger } = config
-
-  // By default, keys translated to empty strings
-  // are translated to empty strings or fallbacks/default options.
-  // If allowEmptyStrings is passed as false, result is
-  // the key itself.
-  const allowEmptyStrings = config.allowEmptyStrings || true
+  const {
+    logger = missingKeyLogger,
+    // An optional parameter allowEmptyStrings - true as default.
+    // If allowEmptyStrings parameter is marked as false,
+    // it should log an error when an empty string is attempted to be translated
+    // and return the namespace and key as result of the translation.
+    allowEmptyStrings = true,
+  } = config
 
   const t: Translate = (key = '', query, options) => {
     const k = Array.isArray(key) ? key[0] : key
