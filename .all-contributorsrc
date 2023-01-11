@@ -422,6 +422,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "StLyn4",
+      "name": "Vsevolod Volkov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73965070?v=4",
+      "profile": "https://github.com/StLyn4",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -429,5 +438,6 @@
   "projectOwner": "aralroca",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular"
 }
