@@ -23,6 +23,12 @@ export interface I18n {
   lang: string
 }
 
+export interface DynamicI18n {
+  t: Translate
+  lang: string
+  ready: boolean
+}
+
 export interface I18nProviderProps {
   lang?: string
   namespaces?: Record<string, I18nDictionary>

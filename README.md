@@ -429,6 +429,50 @@ Remember that `['dynamic']` namespace should **not** be listed on `pages` config
   - `fallback`- ReactNode - Fallback to display meanwhile the namespaces are loading. - **Optional**.
   - `dynamic` - function - By default it uses the [loadLocaleFrom](#3-configuration) in the configuration to load the namespaces, but you can specify another destination. - **Optional**.
 
+### useDynamicTranslation
+
+**Size**: ~?kb 📦
+
+It's a dynamic alternative to `useTranslation` hook, combining its functionality with `DynamicNamespaces`. As a hook, it does not provide a fallback by itself, but returns a `ready` value instead, around which you can create your own logic.
+
+Namespaces from the `pages` configuration are immediately available.
+
+Example:
+
+```jsx
+import React from 'react'
+import useDynamicTranslation from 'next-translate/useDynamicTranslation'
+
+export default function Description() {
+  const { t, ready } = useDynamicTranslation("dynamic") // dynamic namespace (required)
+
+  const title = t("dynamic:title") // Available once ready === true
+  const description = t("dynamic:description")
+  const loading = t("common:loading") // Available from the first render
+
+  return (ready ?
+    <>
+      <h1>{title}</h1>
+      <p>{description}</p>
+    </>
+  ) : <p>{loading}<p>
+}
+```
+
+The `useDynamicTranslation` hook accepts a namespace like `useTranslation`, but also a loader function as a second parameter, like the `dynamic` prop in `DynamicNamespaces`.
+
+The `t` function has the same signature as `t` from `useTranslation`:
+
+- **Input**:
+  - **i18nKey**: string (namespace:key)
+  - **query**: Object _(optional)_ (example: { name: 'Leonard' })
+  - **options**: Object _(optional)_
+    - **fallback**: string | string[] - fallback if i18nKey doesn't exist. [See more](#8-fallbacks).
+    - **returnObjects**: boolean - Get part of the JSON with all the translations. [See more](#7-nested-translations).
+    - **default**: string - Default translation for the key. If fallback keys are used, it will be used only after exhausting all the fallbacks.
+    - **ns**: string - Namespace to use when none is embded in the `i18nKey`.
+- **Output**: string
+
 ### getT
 
 **Size**: ~1.3kb 📦
