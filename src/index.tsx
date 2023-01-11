@@ -75,6 +75,7 @@ export interface I18nConfig extends NextI18nConfig {
   keySeparator?: string | false
   nsSeparator?: string | false
   defaultNS?: string
+  allowEmptyStrings?: boolean
 }
 
 export interface LoaderConfig extends I18nConfig {
