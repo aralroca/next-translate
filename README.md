@@ -240,6 +240,8 @@ In the configuration file you can use both the configuration that we specified h
 | `revalidate`   | If you want to have a default revalidate on each page we give you the opportunity to do so by passing a number to revalidate. You can still define getStaticProps on a page with a different revalidate amount and override this default override. | `Number` | If you don't define it, by default the pages will have no revalidate.
 | `pagesInDir`   | If you run `next ./my-app` to change where your pages are, you can here define `my-app/pages` so that next-translate can guess where they are. | `String` | If you don't define it, by default the pages will be searched for in the classic places like `pages` and `src/pages`.
 | `localesToIgnore`   | Indicate these locales to ignore when you are prefixing the default locale using a middleware (in Next +12, [learn how to do it](https://nextjs.org/docs/advanced-features/i18n-routing#prefixing-the-default-locale)) | `Array<string>` | `['default']`
+| `allowEmptyStrings`   | Change how translated empty strings should be handled. If omitted or passed as true, it returns an empty string. If passed as false, returns the key name itself (including ns). | `Boolean` | `true`
+
 
 ## 4. API
 
@@ -1010,6 +1012,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://michal.bar"><img src="https://avatars.githubusercontent.com/u/9134970?v=4?s=100" width="100px;" alt="Michał Bar"/><br /><sub><b>Michał Bar</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=MrPumpking" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/marcesengel"><img src="https://avatars.githubusercontent.com/u/6208890?v=4?s=100" width="100px;" alt="Marces Engel"/><br /><sub><b>Marces Engel</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=marcesengel" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Dragate"><img src="https://avatars.githubusercontent.com/u/28112929?v=4?s=100" width="100px;" alt="Dragate"/><br /><sub><b>Dragate</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=Dragate" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/vascosilvaa"><img src="https://avatars.githubusercontent.com/u/16561642?v=4?s=100" width="100px;" alt="Vasco Silva"/><br /><sub><b>Vasco Silva</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=vascosilvaa" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/StLyn4"><img src="https://avatars.githubusercontent.com/u/73965070?v=4?s=100" width="100px;" alt="Vsevolod Volkov"/><br /><sub><b>Vsevolod Volkov</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=StLyn4" title="Code">💻</a></td>
     </tr>
   </tbody>

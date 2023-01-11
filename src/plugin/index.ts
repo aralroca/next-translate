@@ -1,78 +1,99 @@
+import fs from 'fs'
+import path from 'path'
+import type webpack from 'webpack'
 import type { NextConfig } from 'next'
-import type { I18nConfig } from '..'
-import { hasHOC } from './utils'
+
+import { parseFile, getDefaultExport, hasStaticName, hasHOC } from './utils'
+import { LoaderOptions } from './types'
+import { NextI18nConfig, I18nConfig } from '../'
 
 export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
-  const fs = require('fs')
-  const path = require('path')
   const test = /\.(tsx|ts|js|mjs|jsx)$/
+  const basePath = pkgDir()
+
+  // https://github.com/blitz-js/blitz/blob/canary/nextjs/packages/next/build/utils.ts#L54-L59
+  const possiblePageDirs = [
+    'pages',
+    'src/pages',
+    'app/pages',
+    'integrations/pages',
+  ] as const
 
   // NEXT_TRANSLATE_PATH env is supported both relative and absolute path
-  const dir = path.resolve(
-    path.relative(pkgDir(), process.env.NEXT_TRANSLATE_PATH || '.')
+  const translationDir = path.resolve(
+    path.relative(basePath, process.env.NEXT_TRANSLATE_PATH || '.')
   )
 
+  const nextConfigI18n: NextI18nConfig = nextConfig.i18n || {}
   let {
-    loadLocaleFrom,
-    localesToIgnore,
-    pages,
-    logger,
-    loggerEnvironment,
-    staticsHoc,
-    extensionsRgx,
+    locales = nextConfigI18n.locales || [],
+    defaultLocale = nextConfigI18n.defaultLocale || 'en',
+    domains = nextConfigI18n.domains,
+    localeDetection = nextConfigI18n.localeDetection,
     loader = true,
-    logBuild,
-    revalidate,
     pagesInDir,
-    interpolation,
-    keySeparator,
-    nsSeparator,
-    defaultNS,
     ...restI18n
-  } = require(path.join(dir, 'i18n')) as I18nConfig & NextConfig["i18n"]
+  } = require(path.join(translationDir, 'i18n')) as I18nConfig
+
+  const nextConfigWithI18n: NextConfig = {
+    ...nextConfig,
+    i18n: {
+      locales,
+      defaultLocale,
+      domains,
+      localeDetection,
+    },
+  }
 
   let hasGetInitialPropsOnAppJs = false
 
-  // https://github.com/blitz-js/blitz/blob/canary/nextjs/packages/next/build/utils.ts#L54-L59
   if (!pagesInDir) {
-    pagesInDir = 'pages'
-    if (fs.existsSync(path.join(dir, 'src/pages'))) {
-      pagesInDir = 'src/pages'
-    } else if (fs.existsSync(path.join(dir, 'app/pages'))) {
-      pagesInDir = 'app/pages'
-    } else if (fs.existsSync(path.join(dir, 'integrations/pages'))) {
-      pagesInDir = 'integrations/pages'
+    for (const possiblePageDir of possiblePageDirs) {
+      if (fs.existsSync(path.join(basePath, possiblePageDir))) {
+        pagesInDir = possiblePageDir
+        break
+      }
     }
   }
 
-  const pagesPath = path.join(dir, pagesInDir)
-  const app = fs
-    .readdirSync(pagesPath)
-    .find((page: string) => page.startsWith('_app.'))
-
-  if (app) {
-    const code = fs.readFileSync(path.join(pagesPath, app)).toString('UTF-8')
-    hasGetInitialPropsOnAppJs =
-      !!code.match(/\WgetInitialProps\W/g) || hasHOC(code)
+  if (!pagesInDir || !fs.existsSync(path.join(basePath, pagesInDir))) {
+    // Pages folder not found, so we're not using the loader
+    return nextConfigWithI18n
   }
 
-  const i18n = {
-    ...(nextConfig.i18n || {}),
-    ...restI18n,
+  const pagesPath = path.join(basePath, pagesInDir)
+  const app = fs.readdirSync(pagesPath).find((page) => page.startsWith('_app.'))
+
+  if (app) {
+    const appPkg = parseFile(basePath, path.join(pagesPath, app))
+    const defaultExport = getDefaultExport(appPkg)
+
+    if (defaultExport) {
+      const isGetInitialProps = hasStaticName(
+        appPkg,
+        defaultExport,
+        'getInitialProps'
+      )
+      hasGetInitialPropsOnAppJs = isGetInitialProps || hasHOC(appPkg)
+    }
   }
 
   return {
-    ...nextConfig,
-    i18n,
-    webpack(conf, options) {
-      const config =
+    ...nextConfigWithI18n,
+    webpack(conf: webpack.Configuration, options) {
+      const config: webpack.Configuration =
         typeof nextConfig.webpack === 'function'
           ? nextConfig.webpack(conf, options)
           : conf
 
+      // Creating some "slots" if they don't exist
+      if (!config.resolve) config.resolve = {}
+      if (!config.module) config.module = {}
+      if (!config.module.rules) config.module.rules = []
+
       config.resolve.alias = {
         ...(config.resolve.alias || {}),
-        '@next-translate-root': path.resolve(dir),
+        '@next-translate-root': path.resolve(translationDir),
       }
 
       // we give the opportunity for people to use next-translate without altering
@@ -85,13 +106,14 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
         use: {
           loader: 'next-translate/plugin/loader',
           options: {
-            extensionsRgx: extensionsRgx || test,
-            revalidate: revalidate || 0,
-            hasGetInitialPropsOnAppJs,
-            hasAppJs: !!app,
+            basePath,
             pagesPath: path.join(pagesPath, '/'),
-            hasLoadLocaleFrom: typeof loadLocaleFrom === 'function',
-          },
+            hasAppJs: Boolean(app),
+            hasGetInitialPropsOnAppJs,
+            hasLoadLocaleFrom: typeof restI18n.loadLocaleFrom === 'function',
+            extensionsRgx: restI18n.extensionsRgx || test,
+            revalidate: restI18n.revalidate || 0,
+          } as LoaderOptions,
         },
       })
 
@@ -102,7 +124,7 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
 
 function pkgDir() {
   try {
-    return require('pkg-dir').sync() || process.cwd()
+    return (require('pkg-dir').sync() as string) || process.cwd()
   } catch (e) {
     return process.cwd()
   }

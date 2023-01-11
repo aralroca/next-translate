@@ -1,110 +1,50 @@
-import { overwriteLoadLocales } from './utils'
+import { interceptExport, overwriteLoadLocales } from './utils'
+import { ParsedFilePkg } from './types'
 
 export default function templateWithLoader(
-  rawCode: string,
+  pagePkg: ParsedFilePkg,
   {
     page = '',
-    typescript = false,
     loader = 'getStaticProps',
-    hasLoader = false,
-    hasLoadLocaleFrom = false,
     revalidate = 0,
+    hasLoadLocaleFrom = false,
   } = {}
 ) {
-  const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
-  let modifiedCode = rawCode
+  // Random string based on current time
+  const hash = Date.now().toString(16)
 
-  if (hasLoader) {
-    modifiedCode = modifiedCode
-      // Replacing:
-      //    const getStaticProps = () => console.log('getStaticProps')
-      //    import getStaticProps from './getStaticProps'
-      // To:
-      //    const _getStaticProps = () => console.log('getStaticProps')
-      //    import _getStaticProps from './getStaticProps'
-      .replace(
-        new RegExp(
-          `(const|var|let|async +function|function|import|import {.* as) +${loader}\\W`
-        ),
-        (v: string) =>
-          v.replace(new RegExp(`\\W${loader}\\W`), (r) =>
-            r.replace(loader, '_' + loader)
-          )
-      )
-      // Replacing:
-      //    export const _getStaticProps = () => ({ props: {} })
-      // To:
-      //    const _getStaticProps = () => ({ props: {} })
-      .replace(
-        new RegExp(
-          `export +(const|var|let|async +function|function) +_${loader}`
-        ),
-        (v: string) => v.replace('export', '')
-      )
-      // Replacing: "export { getStaticProps }" to ""
-      .replace(/export +\{ *(getStaticProps|getServerSideProps)( |,)*\}/, '')
-      // Replacing:
-      //    export { something, getStaticProps, somethingelse }
-      // To:
-      //    export { something, somethingelse }
-      // And:
-      //    export { getStaticPropsFake, somethingelse, b as getStaticProps }
-      // To:
-      //    export { getStaticPropsFake, somethingelse }
-      .replace(
-        new RegExp(`^ *export {(.|\n)*${loader}(.|\n)*}`, 'gm'),
-        (v: string) => {
-          return v
-            .replace(new RegExp(`(\\w+ +as +)?${loader}\\W`, 'gm'), (v) =>
-              v.endsWith(loader) ? '' : v[v.length - 1]
-            )
-            .replace(/,( |\n)*,/gm, ',')
-            .replace(/{( |\n)*,/gm, '{')
-            .replace(/{,( \n)*}/gm, '}')
-            .replace(/^ *export +{( |\n)*}\W*$/gm, '')
-        }
-      )
-      // Replacing:
-      //    import { something, getStaticProps, somethingelse } from './getStaticProps'
-      // To:
-      //    import { something, getStaticProps as _getStaticProps, somethingelse } from './getStaticProps'
-      .replace(/^ *import +{( |\n)*[^}]*/gm, (v: string) => {
-        if (v.match(new RegExp(`\\W+${loader} +as `))) return v
-        return v.replace(new RegExp(`\\W+${loader}(\\W|$)`), (r) =>
-          r.replace(loader, `${loader} as _${loader}`)
-        )
-      })
-  }
+  // Removes export modifiers from the loader, if any,
+  // and tells under what name we can get it
+  const oldLoaderName = interceptExport(
+    pagePkg,
+    loader,
+    `__Next_Translate_old_${loader}__${hash}__`
+  )
 
-  let template = `
+  const newLoaderName = `__Next_Translate__${loader}__${hash}__`
+  const hasLoader = Boolean(oldLoaderName)
+
+  return `
     import __i18nConfig from '@next-translate-root/i18n'
     import __loadNamespaces from 'next-translate/loadNamespaces'
-    ${tokenToReplace}
-    export async function ${loader}(ctx) {
-        ${hasLoader ? `let res = _${loader}(ctx)` : ''}
-        ${hasLoader ? `if(typeof res.then === 'function') res = await res` : ''}
-        return {
-          ${hasLoader && revalidate > 0 ? `revalidate: ${revalidate},` : ''}
-          ${hasLoader ? '...res,' : ''}
-          props: {
-            ${hasLoader ? '...(res.props || {}),' : ''}
-            ...(await __loadNamespaces({
-              ...ctx,
-              pathname: '${page}',
-              loaderName: '${loader}',
-              ...__i18nConfig,
-              ${overwriteLoadLocales(hasLoadLocaleFrom)}
-            }))
-          }
+    ${pagePkg.getCode()}
+    async function ${newLoaderName}(ctx) {
+      ${hasLoader ? `const res = await ${oldLoaderName}(ctx)` : ''}
+      return {
+        ${hasLoader && revalidate > 0 ? `revalidate: ${revalidate},` : ''}
+        ${hasLoader ? '...res,' : ''}
+        props: {
+          ${hasLoader ? '...(res.props || {}),' : ''}
+          ...(await __loadNamespaces({
+            ...ctx,
+            ...__i18nConfig,
+            pathname: '${page}',
+            loaderName: '${loader}',
+            ${overwriteLoadLocales(hasLoadLocaleFrom)}
+          }))
         }
+      }
     }
+    export { ${newLoaderName} as ${loader} }
   `
-
-  if (typescript) template = template.replace(/\n/g, '\n// @ts-ignore\n')
-
-  // Use callback to avoid parsing special patterns specific for .replace()
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_a_parameter
-  return template.replace(tokenToReplace, () => {
-    return `\n${modifiedCode}\n`
-  })
 }

@@ -1,10 +1,6 @@
 import templateWithHoc from '../src/plugin/templateWithHoc'
-import { specialStringsRenderer } from './templateWith.utils'
-import prettier from 'prettier'
-
-function clean(code) {
-  return prettier.format(code, { parser: 'typescript' })
-}
+import { parseCode } from '../src/plugin/utils'
+import { specialStringsRenderer, clean } from './templateWith.utils'
 
 const tests = [
   {
@@ -84,7 +80,7 @@ const tests = [
   },
   {
     describe:
-      'exporting a class with a getInitialProps static | exporting apart',
+      'exporting a class with a getInitialProps static | exporting apart',
     code: `
     import React from 'react';
 
@@ -161,9 +157,12 @@ describe('templateWithHoc', () => {
     describe(d.describe, () => {
       d.cases.forEach(({ expected, debug, ...options }) => {
         const fn = debug ? test.only : test
-        const testname = Object.entries(options).map(([k, v]) => `${k}: ${v}`)
-        fn(testname.join(' | '), () => {
-          expect(clean(templateWithHoc(d.code, options))).toMatchSnapshot()
+        const testName = Object.entries(options).map(([k, v]) => `${k}: ${v}`)
+        fn(testName.join(' | '), () => {
+          Date.now = jest.fn(() => 587764800000)
+          expect(
+            clean(templateWithHoc(parseCode('jsx', d.code), options))
+          ).toMatchSnapshot()
         })
       })
     })
