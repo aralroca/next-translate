@@ -46,16 +46,17 @@ export type LocaleLoader = (
   namespace: string
 ) => Promise<I18nDictionary>
 
+// Makes the specified properties within a Typescript interface optional
+export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>
+
 // Built-in i18n Next.js options
 export type RawNextI18nConfig = Exclude<NextConfig['i18n'], null | undefined>
-export type NextI18nConfig = Omit<
+export type NextI18nConfig = Optional<
   RawNextI18nConfig,
   'locales' | 'defaultLocale'
 >
 
 export interface I18nConfig extends NextI18nConfig {
-  locales?: string[]
-  defaultLocale?: string
   loadLocaleFrom?: LocaleLoader
   localesToIgnore?: string[]
   pages?: Record<string, PageValue>
@@ -109,7 +110,11 @@ export interface DynamicNamespacesProps {
 }
 
 declare global {
-  module NodeJS {
+  // For NodeJS 16+
+  // eslint-disable-next-line no-var
+  var i18nConfig: LoaderConfig
+
+  namespace NodeJS {
     interface Global {
       i18nConfig: LoaderConfig
     }
