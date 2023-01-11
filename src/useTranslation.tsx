@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react'
 import { I18n } from '.'
 import wrapTWithDefaultNs from './wrapTWithDefaultNs'
-import I18nContext from './_context'
+import I18nContext from './context'
 
 export default function useTranslation(defaultNS?: string): I18n {
   const ctx = useContext(I18nContext)
