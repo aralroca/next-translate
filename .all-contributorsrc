@@ -438,6 +438,5 @@
   "projectOwner": "aralroca",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true,
-  "commitConvention": "angular"
+  "skipCi": true
 }

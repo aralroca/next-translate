@@ -240,6 +240,8 @@ In the configuration file you can use both the configuration that we specified h
 | `revalidate`   | If you want to have a default revalidate on each page we give you the opportunity to do so by passing a number to revalidate. You can still define getStaticProps on a page with a different revalidate amount and override this default override. | `Number` | If you don't define it, by default the pages will have no revalidate.
 | `pagesInDir`   | If you run `next ./my-app` to change where your pages are, you can here define `my-app/pages` so that next-translate can guess where they are. | `String` | If you don't define it, by default the pages will be searched for in the classic places like `pages` and `src/pages`.
 | `localesToIgnore`   | Indicate these locales to ignore when you are prefixing the default locale using a middleware (in Next +12, [learn how to do it](https://nextjs.org/docs/advanced-features/i18n-routing#prefixing-the-default-locale)) | `Array<string>` | `['default']`
+| `allowEmptyStrings`   | Change how translated empty strings should be handled. If omitted or passed as true, it returns an empty string. If passed as false, returns the key name itself (including ns). | `Boolean` | `true`
+
 
 ## 4. API
 

@@ -1,23 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`templateWithLoader exporting as a arrow function - without loader page: /blog/[post]/[...catchall] | loader: getServerSideProps | hasLoader: false 1`] = `
+exports[`templateWithLoader exporting as a arrow function - without loader page: /blog/[post]/[...catchall] | loader: getServerSideProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
 export default () => <div>Hello world</div>;
 
-export async function getServerSideProps(ctx) {
+async function __Next_Translate__getServerSideProps__88d9831a00__(ctx) {
   return {
     props: {
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/blog/[post]/[...catchall]\\",
         loaderName: \\"getServerSideProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -26,27 +25,27 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getServerSideProps__88d9831a00__ as getServerSideProps };
 "
 `;
 
-exports[`templateWithLoader exporting as a arrow function - without loader page: /index | loader: getStaticProps | hasLoader: false 1`] = `
+exports[`templateWithLoader exporting as a arrow function - without loader page: /index | loader: getStaticProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
 export default () => <div>Hello world</div>;
 
-export async function getStaticProps(ctx) {
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
   return {
     props: {
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -55,42 +54,38 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;
 
-exports[`templateWithLoader exporting as a class - with loader page: /index | loader: getStaticProps | hasLoader: true 1`] = `
+exports[`templateWithLoader exporting as a class - with loader page: /index | loader: getStaticProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
 import React from \\"react\\";
-
 export default class Page extends React.Component {
   render() {
     return <div>Hello world</div>;
   }
 }
-
-function _getStaticProps() {
+function getStaticProps() {
   return { props: {} };
 }
 
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await getStaticProps(ctx);
   return {
     ...res,
     props: {
       ...(res.props || {}),
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -99,38 +94,34 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;
 
-exports[`templateWithLoader exporting as a class in a diferent line - without loader page: /blog/[post]/[...catchall] | loader: getServerSideProps | hasLoader: false 1`] = `
+exports[`templateWithLoader exporting as a class in a different line - without loader page: /blog/[post]/[...catchall] | loader: getServerSideProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
 import React from \\"react\\";
-
 class Page extends React.Component {
   render() {
     return <div>Hello world</div>;
   }
 }
-
 const myPage = Page;
-
 export default myPage;
 
-export async function getServerSideProps(ctx) {
+async function __Next_Translate__getServerSideProps__88d9831a00__(ctx) {
   return {
     props: {
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/blog/[post]/[...catchall]\\",
         loaderName: \\"getServerSideProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -139,38 +130,34 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getServerSideProps__88d9831a00__ as getServerSideProps };
 "
 `;
 
-exports[`templateWithLoader exporting as a class in a diferent line - without loader page: /index | loader: getStaticProps | hasLoader: false 1`] = `
+exports[`templateWithLoader exporting as a class in a different line - without loader page: /index | loader: getStaticProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
 import React from \\"react\\";
-
 class Page extends React.Component {
   render() {
     return <div>Hello world</div>;
   }
 }
-
 const myPage = Page;
-
 export default myPage;
 
-export async function getStaticProps(ctx) {
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
   return {
     props: {
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -179,42 +166,38 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;
 
-exports[`templateWithLoader exporting as a function - with loader page: /index | loader: getStaticProps | hasLoader: true 1`] = `
+exports[`templateWithLoader exporting as a function - with loader page: /index | loader: getStaticProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
 export default function Page() {
   return <div>Hello world</div>;
 }
-
 export function getStaticPaths() {
   return {};
 }
-
-function _getStaticProps() {
+function getStaticProps() {
   return { props: {} };
 }
 
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await getStaticProps(ctx);
   return {
     ...res,
     props: {
       ...(res.props || {}),
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -223,30 +206,29 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;
 
-exports[`templateWithLoader exporting as a function - without loader page: /blog/[post]/[...catchall] | loader: getServerSideProps | hasLoader: false 1`] = `
+exports[`templateWithLoader exporting as a function - without loader page: /blog/[post]/[...catchall] | loader: getServerSideProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
 export default function Page() {
   return <div>Hello world</div>;
 }
 
-export async function getServerSideProps(ctx) {
+async function __Next_Translate__getServerSideProps__88d9831a00__(ctx) {
   return {
     props: {
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/blog/[post]/[...catchall]\\",
         loaderName: \\"getServerSideProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -255,30 +237,29 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getServerSideProps__88d9831a00__ as getServerSideProps };
 "
 `;
 
-exports[`templateWithLoader exporting as a function - without loader page: /index | loader: getStaticProps | hasLoader: false 1`] = `
+exports[`templateWithLoader exporting as a function - without loader page: /index | loader: getStaticProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
 export default function Page() {
   return <div>Hello world</div>;
 }
 
-export async function getStaticProps(ctx) {
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
   return {
     props: {
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -287,40 +268,37 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;
 
-exports[`templateWithLoader exporting as a function in diferent line - with loader page: /index | loader: getServerSideProps | hasLoader: true 1`] = `
+exports[`templateWithLoader exporting as a function in different line - with loader page: /index | loader: getServerSideProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
 function Page() {
   return <div>Hello world</div>;
 }
-
-function _getServerSideProps() {
+function getServerSideProps() {
   return { props: {} };
 }
-
+export {};
 export default Page;
 
-export async function getServerSideProps(ctx) {
-  let res = _getServerSideProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
+async function __Next_Translate__getServerSideProps__88d9831a00__(ctx) {
+  const res = await getServerSideProps(ctx);
   return {
     ...res,
     props: {
       ...(res.props || {}),
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getServerSideProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -329,32 +307,30 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getServerSideProps__88d9831a00__ as getServerSideProps };
 "
 `;
 
-exports[`templateWithLoader exporting as a function in diferent line - without loader page: /blog/[post]/[...catchall] | loader: getServerSideProps | hasLoader: false 1`] = `
+exports[`templateWithLoader exporting as a function in different line - without loader page: /blog/[post]/[...catchall] | loader: getServerSideProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
 function Page() {
   return <div>Hello world</div>;
 }
-
 export default Page;
 
-export async function getServerSideProps(ctx) {
+async function __Next_Translate__getServerSideProps__88d9831a00__(ctx) {
   return {
     props: {
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/blog/[post]/[...catchall]\\",
         loaderName: \\"getServerSideProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -363,32 +339,30 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getServerSideProps__88d9831a00__ as getServerSideProps };
 "
 `;
 
-exports[`templateWithLoader exporting as a function in diferent line - without loader page: /index | loader: getStaticProps | hasLoader: false 1`] = `
+exports[`templateWithLoader exporting as a function in different line - without loader page: /index | loader: getStaticProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
 function Page() {
   return <div>Hello world</div>;
 }
-
 export default Page;
 
-export async function getStaticProps(ctx) {
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
   return {
     props: {
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -397,36 +371,34 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;
 
-exports[`templateWithLoader loader as a arrow function page: /index | loader: getStaticProps | hasLoader: true 1`] = `
+exports[`templateWithLoader loader as a arrow function page: /index | loader: getStaticProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
 export default function Page() {
   return <div>Hello world</div>;
 }
+const getStaticProps = () => ({ props: {} });
+export {};
 
-const _getStaticProps = () => ({ props: {} });
-
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await getStaticProps(ctx);
   return {
     ...res,
     props: {
       ...(res.props || {}),
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -435,36 +407,34 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;
 
-exports[`templateWithLoader loader as a wrapper page: /index | loader: getStaticProps | hasLoader: true 1`] = `
+exports[`templateWithLoader loader as a wrapper page: /index | loader: getStaticProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
 export default function Page() {
   return <div>Hello world</div>;
 }
+const getStaticProps = wrapper.getStaticProps(() => ({ props: {} }));
+export {};
 
-const _getStaticProps = wrapper.getStaticProps(() => ({ props: {} }));
-
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await getStaticProps(ctx);
   return {
     ...res,
     props: {
       ...(res.props || {}),
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -473,41 +443,36 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;
 
-exports[`templateWithLoader loader imported to another place page: /index | loader: getStaticProps | hasLoader: true 1`] = `
+exports[`templateWithLoader loader imported to another place page: /index | loader: getStaticProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
-import _getStaticProps from \\"somewhere/getStaticProps\\";
+import getStaticProps from \\"somewhere/getStaticProps\\";
 import getStaticPaths from \\"somewhere/getStaticPaths\\";
-
 const config = {};
-
 export default function Page() {
   return <div>Hello world</div>;
 }
-
 export { config, getStaticPaths };
 
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await getStaticProps(ctx);
   return {
     ...res,
     props: {
       ...(res.props || {}),
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -516,41 +481,36 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;
 
-exports[`templateWithLoader loader with named import to another place + rename page: /index | loader: getStaticProps | hasLoader: true 1`] = `
+exports[`templateWithLoader loader with named import to another place + rename page: /index | loader: getStaticProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
-import { getStaticPropsA as _getStaticProps } from \\"somewhere/getStaticProps\\";
+import { getStaticPropsA as getStaticProps } from \\"somewhere/getStaticProps\\";
 import { getStaticProps as getStaticPaths } from \\"somewhere/getStaticPaths\\";
-
 const config = {};
-
 export default function Page() {
   return <div>Hello world</div>;
 }
-
 export { config, getStaticPaths };
 
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await getStaticProps(ctx);
   return {
     ...res,
     props: {
       ...(res.props || {}),
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -559,41 +519,36 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;
 
-exports[`templateWithLoader loader with named import to another place page: /index | loader: getStaticProps | hasLoader: true 1`] = `
+exports[`templateWithLoader loader with named import to another place page: /index | loader: getStaticProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
-import { getStaticProps as _getStaticProps } from \\"somewhere/getStaticProps\\";
+import { getStaticProps } from \\"somewhere/getStaticProps\\";
 import { getStaticPaths } from \\"somewhere/getStaticPaths\\";
-
 const config = {};
-
 export default function Page() {
   return <div>Hello world</div>;
 }
-
 export { config, getStaticPaths };
 
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await getStaticProps(ctx);
   return {
     ...res,
     props: {
       ...(res.props || {}),
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -602,44 +557,40 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;
 
-exports[`templateWithLoader loader with one named import to another place page: /index | loader: getStaticProps | hasLoader: true 1`] = `
+exports[`templateWithLoader loader with one named import to another place page: /index | loader: getStaticProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-
 import {
   getStaticPaths,
-  getStaticProps as _getStaticProps,
+  getStaticProps,
   config,
 } from \\"somewhere/getStaticProps\\";
-
 export default function Page() {
   const test = \\"getStaticProps\\";
   console.log(\\"This should log getStaticProps without any modification\\");
   return <div>Hello getStaticProps</div>;
 }
-
 export { config, getStaticPaths };
 
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await getStaticProps(ctx);
   return {
     ...res,
     props: {
       ...(res.props || {}),
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -648,13 +599,13 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;
 
-exports[`templateWithLoader should add "revalidate: 55" prop into getStaticProps page: /index | loader: getStaticProps | hasLoader: true | revalidate: 55 1`] = `
+exports[`templateWithLoader should add "revalidate: 55" prop into getStaticProps page: /index | loader: getStaticProps | revalidate: 55 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
@@ -662,12 +613,11 @@ $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 function Page() {
   return <div>Hello world</div>;
 }
-
+const getStaticProps = (ctx) => ({});
 export default Page;
 
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await getStaticProps(ctx);
   return {
     revalidate: 55,
     ...res,
@@ -675,9 +625,9 @@ export async function getStaticProps(ctx) {
       ...(res.props || {}),
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -686,70 +636,13 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;
 
-exports[`templateWithLoader should add the "as" on the import only when is necessary page: /index | loader: getStaticProps | hasLoader: true 1`] = `
+exports[`templateWithLoader should allow developers to override revalidate prop per page, by having the "default" revalidate defined before "...res" page: /index | loader: getStaticProps | revalidate: 88 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-import { getStaticProps as _getStaticProps } from \\"somewhere/getStaticProps\\";
-import { getStaticProps as _getStaticProps } from \\"somewhere/getStaticProps\\";
-
-import {
-  getStaticPropsA,
-  getStaticProps as _getStaticProps,
-  getStaticPropsB,
-} from \\"somewhere/getStaticProps\\";
-import { getStaticProps as getStaticPaths } from \\"somewhere/getStaticPaths\\";
-import { fake_getStaticProps } from \\"somewhere/getStaticPaths\\";
-
-import {
-  getStaticPropsA,
-  getStaticProps as _getStaticProps,
-  getStaticPropsB,
-} from \\"somewhere/getStaticProps\\";
-
-import {
-  getStaticPropsA,
-  getStaticProps as _getStaticProps,
-  getStaticPropsB,
-} from \\"somewhere/getStaticProps\\";
-let _getStaticProps = false;
-// Comment to import getStaticProps
-const a = \\"import { getStaticProps }\\";
-
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
-  return {
-    ...res,
-    props: {
-      ...(res.props || {}),
-      ...(await __loadNamespaces({
-        ...ctx,
-        pathname: \\"/index\\",
-        loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
-        loadLocaleFrom: (l, n) =>
-          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
-      })),
-    },
-  };
-}
-"
-`;
-
-exports[`templateWithLoader should allow developers to override revalidate prop per page, by having the "default" revalidate defined before "...res" page: /index | loader: getStaticProps | hasLoader: true | revalidate: 88 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
@@ -757,14 +650,12 @@ $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 export default function Page() {
   return <div>Hello world</div>;
 }
-
-function _getStaticProps() {
+function getStaticProps() {
   return { revalidate: 10, props: { prop1: \\"hello\\" } };
 }
 
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await getStaticProps(ctx);
   return {
     revalidate: 88,
     ...res,
@@ -772,9 +663,9 @@ export async function getStaticProps(ctx) {
       ...(res.props || {}),
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -783,143 +674,264 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;
 
-exports[`templateWithLoader should not add "revalidate" prop into getStaticProps because revalidate < 0 page: /index | loader: getStaticProps | hasLoader: true | revalidate: -1 1`] = `
+exports[`templateWithLoader should ignore not exported loader page: /index | loader: getStaticProps 1`] = `
 "import __i18nConfig from \\"@next-translate-root/i18n\\";
 import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
 (\\"$SomeString$\\");
 $$SomeString$$ & $SomeString$ & \`$SomeString$\`;
 (\\".cssClass{content:' ';\\");
 ('Hello \\"world\\"');
-function Page() {
-  return <div>Hello world</div>;
-}
-
-export default Page;
-
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
-  return {
-    ...res,
-    props: {
-      ...(res.props || {}),
-      ...(await __loadNamespaces({
-        ...ctx,
-        pathname: \\"/index\\",
-        loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
-        loadLocaleFrom: (l, n) =>
-          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
-      })),
-    },
-  };
-}
-"
-`;
-
-exports[`templateWithLoader should not add "revalidate" prop into getStaticProps because revalidate = 0 page: /index | loader: getStaticProps | hasLoader: true | revalidate: 0 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-function Page() {
-  return <div>Hello world</div>;
-}
-
-export default Page;
-
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
-  return {
-    ...res,
-    props: {
-      ...(res.props || {}),
-      ...(await __loadNamespaces({
-        ...ctx,
-        pathname: \\"/index\\",
-        loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
-        loadLocaleFrom: (l, n) =>
-          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
-      })),
-    },
-  };
-}
-"
-`;
-
-exports[`templateWithLoader should remove exports of existings loaders with "as" page: /index | loader: getStaticProps | hasLoader: true 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
-export { anotherThing };
-
-export { something };
-export { something };
-export { something, getStaticPropsB };
-
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
-  return {
-    ...res,
-    props: {
-      ...(res.props || {}),
-      ...(await __loadNamespaces({
-        ...ctx,
-        pathname: \\"/index\\",
-        loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
-        loadLocaleFrom: (l, n) =>
-          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
-            (m) => m.default
-          ),
-      })),
-    },
-  };
-}
-"
-`;
-
-exports[`templateWithLoader should use the revalidate value already present on getStaticProps arrow function page: /index | loader: getStaticProps | hasLoader: true | revalidate: 77 1`] = `
-"import __i18nConfig from \\"@next-translate-root/i18n\\";
-import __loadNamespaces from \\"next-translate/loadNamespaces\\";
-
-(\\"$SomeString$\\");
-$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
-(\\".cssClass{content:' ';\\");
-('Hello \\"world\\"');
-
-import { GetStaticProps } from \\"next\\";
-
 export default function Page() {
   return <div>Hello world</div>;
 }
+const getStaticProps = () => ({ props: {} });
 
-const _getStaticProps: GetStaticProps = () => {
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  return {
+    props: {
+      ...(await __loadNamespaces({
+        ...ctx,
+        ...__i18nConfig,
+        pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
+        loadLocaleFrom: (l, n) =>
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
+      })),
+    },
+  };
+}
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
+"
+`;
+
+exports[`templateWithLoader should import and use loader exported via "export { } from ..." page: /index | loader: getStaticProps 1`] = `
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
+import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+import { loader as __Next_Translate_old_getStaticProps__88d9831a00__ } from \\"somewhere\\";
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+function Page() {
+  return <div>Hello world</div>;
+}
+export {} from \\"somewhere\\";
+export default Page;
+
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await __Next_Translate_old_getStaticProps__88d9831a00__(ctx);
+  return {
+    ...res,
+    props: {
+      ...(res.props || {}),
+      ...(await __loadNamespaces({
+        ...ctx,
+        ...__i18nConfig,
+        pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
+        loadLocaleFrom: (l, n) =>
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
+      })),
+    },
+  };
+}
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
+"
+`;
+
+exports[`templateWithLoader should not add "revalidate" prop into getStaticProps because revalidate < 0 page: /index | loader: getStaticProps | revalidate: -1 1`] = `
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
+import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+function Page() {
+  return <div>Hello world</div>;
+}
+const getStaticProps = (ctx) => ({});
+export default Page;
+
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await getStaticProps(ctx);
+  return {
+    ...res,
+    props: {
+      ...(res.props || {}),
+      ...(await __loadNamespaces({
+        ...ctx,
+        ...__i18nConfig,
+        pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
+        loadLocaleFrom: (l, n) =>
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
+      })),
+    },
+  };
+}
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
+"
+`;
+
+exports[`templateWithLoader should not add "revalidate" prop into getStaticProps because revalidate = 0 page: /index | loader: getStaticProps | revalidate: 0 1`] = `
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
+import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+function Page() {
+  return <div>Hello world</div>;
+}
+const getStaticProps = (ctx) => ({});
+export default Page;
+
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await getStaticProps(ctx);
+  return {
+    ...res,
+    props: {
+      ...(res.props || {}),
+      ...(await __loadNamespaces({
+        ...ctx,
+        ...__i18nConfig,
+        pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
+        loadLocaleFrom: (l, n) =>
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
+      })),
+    },
+  };
+}
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
+"
+`;
+
+exports[`templateWithLoader should remove exports of existing loader with "as" #1 page: /index | loader: getStaticProps 1`] = `
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
+import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+export { anotherThing };
+
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await test(ctx);
+  return {
+    ...res,
+    props: {
+      ...(res.props || {}),
+      ...(await __loadNamespaces({
+        ...ctx,
+        ...__i18nConfig,
+        pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
+        loadLocaleFrom: (l, n) =>
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
+      })),
+    },
+  };
+}
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
+"
+`;
+
+exports[`templateWithLoader should remove exports of existing loaders with "as" #2 page: /index | loader: getStaticProps 1`] = `
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
+import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+export {};
+
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await test(ctx);
+  return {
+    ...res,
+    props: {
+      ...(res.props || {}),
+      ...(await __loadNamespaces({
+        ...ctx,
+        ...__i18nConfig,
+        pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
+        loadLocaleFrom: (l, n) =>
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
+      })),
+    },
+  };
+}
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
+"
+`;
+
+exports[`templateWithLoader should remove exports of existing loaders with "as" #3 page: /index | loader: getStaticProps 1`] = `
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
+import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+export { something, getStaticPropsB };
+
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await AgetStaticProps(ctx);
+  return {
+    ...res,
+    props: {
+      ...(res.props || {}),
+      ...(await __loadNamespaces({
+        ...ctx,
+        ...__i18nConfig,
+        pathname: \\"/index\\",
+        loaderName: \\"getStaticProps\\",
+        loadLocaleFrom: (l, n) =>
+          import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
+            (m) => m.default
+          ),
+      })),
+    },
+  };
+}
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
+"
+`;
+
+exports[`templateWithLoader should use the revalidate value already present on getStaticProps arrow function page: /index | loader: getStaticProps | revalidate: 77 1`] = `
+"import __i18nConfig from \\"@next-translate-root/i18n\\";
+import __loadNamespaces from \\"next-translate/loadNamespaces\\";
+(\\"$SomeString$\\");
+$$SomeString$$ & $SomeString$ & \`$SomeString$\`;
+(\\".cssClass{content:' ';\\");
+('Hello \\"world\\"');
+import { GetStaticProps } from \\"next\\";
+export default function Page() {
+  return <div>Hello world</div>;
+}
+const getStaticProps: GetStaticProps = () => {
   return { revalidate: 10, props: { prop1: \\"hello\\" } };
 };
 
-export async function getStaticProps(ctx) {
-  let res = _getStaticProps(ctx);
-  if (typeof res.then === \\"function\\") res = await res;
+async function __Next_Translate__getStaticProps__88d9831a00__(ctx) {
+  const res = await getStaticProps(ctx);
   return {
     revalidate: 77,
     ...res,
@@ -927,9 +939,9 @@ export async function getStaticProps(ctx) {
       ...(res.props || {}),
       ...(await __loadNamespaces({
         ...ctx,
+        ...__i18nConfig,
         pathname: \\"/index\\",
         loaderName: \\"getStaticProps\\",
-        ...__i18nConfig,
         loadLocaleFrom: (l, n) =>
           import(\`@next-translate-root/locales/\${l}/\${n}\`).then(
             (m) => m.default
@@ -938,5 +950,6 @@ export async function getStaticProps(ctx) {
     },
   };
 }
+export { __Next_Translate__getStaticProps__88d9831a00__ as getStaticProps };
 "
 `;

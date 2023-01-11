@@ -1,4 +1,5 @@
 import { ReactElement, ReactNode } from 'react'
+import type { NextConfig } from 'next'
 
 import nextTranslate from './plugin'
 
@@ -45,9 +46,16 @@ export type LocaleLoader = (
   namespace: string
 ) => Promise<I18nDictionary>
 
-export interface I18nConfig {
-  defaultLocale?: string
+// Built-in i18n Next.js options
+export type RawNextI18nConfig = Exclude<NextConfig['i18n'], null | undefined>
+export type NextI18nConfig = Omit<
+  RawNextI18nConfig,
+  'locales' | 'defaultLocale'
+>
+
+export interface I18nConfig extends NextI18nConfig {
   locales?: string[]
+  defaultLocale?: string
   loadLocaleFrom?: LocaleLoader
   localesToIgnore?: string[]
   pages?: Record<string, PageValue>
@@ -61,12 +69,13 @@ export interface I18nConfig {
   pagesInDir?: string
   interpolation?: {
     format?: Function
-    prefix: string
-    suffix: string
+    prefix?: string
+    suffix?: string
   }
   keySeparator?: string | false
   nsSeparator?: string | false
   defaultNS?: string
+  allowEmptyStrings?: boolean
 }
 
 export interface LoaderConfig extends I18nConfig {
@@ -112,3 +121,4 @@ declare global {
 }
 
 module.exports = nextTranslate
+export default nextTranslate

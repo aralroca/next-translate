@@ -1,52 +1,34 @@
-import { clearCommentsRgx, overwriteLoadLocales } from './utils'
+import { interceptExport, overwriteLoadLocales } from './utils'
+import { ParsedFilePkg } from './types'
 
 export default function templateWithHoc(
-  code: string,
-  {
-    skipInitialProps = false,
-    typescript = false,
-    pageName = '__Page_Next_Translate__',
-    hasLoadLocaleFrom = false,
-  } = {}
+  pagePkg: ParsedFilePkg,
+  { skipInitialProps = false, hasLoadLocaleFrom = false } = {}
 ) {
-  const tokenToReplace = `__CODE_TOKEN_${Date.now().toString(16)}__`
-  const codeWithoutComments = code.replace(clearCommentsRgx, '')
+  // Random string based on current time
+  const hash = Date.now().toString(16)
 
-  // Replacing all the possible "export default" (if there are comments
-  // can be possible to have more than one)
-  let modifiedCode = code.replace(/export +default/g, `const ${pageName} =`)
+  // Removes export modifiers from the page
+  // and tells under what name we can get the old export
+  const pageVariableName = interceptExport(
+    pagePkg,
+    'default',
+    `__Next_Translate__Page__${hash}__`
+  )
 
-  // It is necessary to change the name of the page that uses getInitialProps
-  // to ours, this way we avoid issues.
-  const [, , componentName] =
-    codeWithoutComments.match(
-      /export +default +(function|class) +([A-Z]\w*)/
-    ) || []
+  // Do not process code if there is no default export
+  const hasDefaultExport = Boolean(pageVariableName)
+  if (!hasDefaultExport) return pagePkg.getCode()
 
-  if (componentName) {
-    modifiedCode = modifiedCode.replace(
-      new RegExp(`\\W${componentName}\\.getInitialProps`, 'g'),
-      `${pageName}.getInitialProps`
-    )
-  }
-
-  let template = `
+  return `
     import __i18nConfig from '@next-translate-root/i18n'
     import __appWithI18n from 'next-translate/appWithI18n'
-    ${tokenToReplace}
-    export default __appWithI18n(__Page_Next_Translate__, {
+    ${pagePkg.getCode()}
+    export default __appWithI18n(${pageVariableName}, {
       ...__i18nConfig,
       isLoader: true,
       skipInitialProps: ${skipInitialProps},
       ${overwriteLoadLocales(hasLoadLocaleFrom)}
     });
   `
-
-  if (typescript) template = template.replace(/\n/g, '\n// @ts-ignore\n')
-
-  // Use callback to avoid parsing special patterns specific for .replace()
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_a_parameter
-  return template.replace(tokenToReplace, () => {
-    return `\n${modifiedCode}\n`
-  })
 }
