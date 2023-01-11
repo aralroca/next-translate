@@ -28,7 +28,14 @@ export default function transCore({
   pluralRules: Intl.PluralRules
   lang: string | undefined
 }): Translate {
-  const { logger = missingKeyLogger } = config
+  const {
+    logger = missingKeyLogger,
+    // An optional parameter allowEmptyStrings - true as default.
+    // If allowEmptyStrings parameter is marked as false,
+    // it should log an error when an empty string is attempted to be translated
+    // and return the namespace and key as result of the translation.
+    allowEmptyStrings = true,
+  } = config
 
   const t: Translate = (key = '', query, options) => {
     const k = Array.isArray(key) ? key[0] : key
@@ -45,7 +52,8 @@ export default function transCore({
 
     const empty =
       typeof value === 'undefined' ||
-      (typeof value === 'object' && !Object.keys(value).length)
+      (typeof value === 'object' && !Object.keys(value).length) ||
+      (value === '' && !allowEmptyStrings)
 
     const fallbacks =
       typeof options?.fallback === 'string'

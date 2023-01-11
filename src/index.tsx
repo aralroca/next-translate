@@ -70,12 +70,13 @@ export interface I18nConfig extends NextI18nConfig {
   pagesInDir?: string
   interpolation?: {
     format?: Function
-    prefix: string
-    suffix: string
+    prefix?: string
+    suffix?: string
   }
   keySeparator?: string | false
   nsSeparator?: string | false
   defaultNS?: string
+  allowEmptyStrings?: boolean
 }
 
 export interface LoaderConfig extends I18nConfig {
