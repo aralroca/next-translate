@@ -406,15 +406,6 @@
       ]
     },
     {
-      "login": "marcesengel",
-      "name": "Marces Engel",
-      "avatar_url": "https://avatars.githubusercontent.com/u/6208890?v=4",
-      "profile": "https://github.com/marcesengel",
-      "contributions": [
-        "code"
-      ]
-    },
-    {
       "login": "Dragate",
       "name": "Dragate",
       "avatar_url": "https://avatars.githubusercontent.com/u/28112929?v=4",
@@ -437,7 +428,7 @@
       "name": "Vsevolod Volkov",
       "avatar_url": "https://avatars.githubusercontent.com/u/73965070?v=4",
       "profile": "https://github.com/StLyn4",
-       "contributions": [
+      "contributions": [
         "code"
       ]
     }

@@ -139,11 +139,8 @@ export function parseCode(format: string, code: string): ParsedFilePkg {
  * @returns Entity for more detailed analysis by the compiler
  */
 export function getSymbol(filePkg: ParsedFilePkg, node: ts.Node) {
-  if (ts.isVariableDeclaration(node)) {
-    return filePkg.checker.getSymbolAtLocation(node.name)
-  } else {
-    return filePkg.checker.getSymbolAtLocation(node)
-  }
+  const location = ts.isVariableDeclaration(node) ? node.name : node
+  return filePkg.checker.getSymbolAtLocation(location)
 }
 
 /**
