@@ -9,18 +9,18 @@
     "analyze": "ANALYZE=true yarn build"
   },
   "dependencies": {
-    "@mdx-js/loader": "1.6.22",
-    "@next/mdx": "12.2.0",
-    "next": "12.2.0",
+    "@mdx-js/loader": "2.2.1",
+    "@next/mdx": "13.1.2",
+    "next": "13.1.2",
     "next-translate": "link:../../",
     "react": "link:../../node_modules/react",
     "react-dom": "link:../../node_modules/react-dom"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "12.0.7",
-    "@types/node": "16.11.12",
-    "@types/react": "17.0.37",
-    "typescript": "4.5.2"
+    "@next/bundle-analyzer": "13.1.1",
+    "@types/node": "18.11.18",
+    "@types/react": "18.0.26",
+    "typescript": "4.9.4"
   },
   "resolutions": {
     "webpack": "5.11.1"

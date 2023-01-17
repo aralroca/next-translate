@@ -28,7 +28,7 @@ export default function MoreExamples() {
       {t`more-examples:nested-example.very-nested.nested`}
       <br />
       <Link href="/more-examples/dynamic-namespace">
-        <a>{t('more-examples:dynamic-namespaces-link')}</a>
+        {t('more-examples:dynamic-namespaces-link')}
       </Link>
       <br />
       <Link
@@ -37,12 +37,10 @@ export default function MoreExamples() {
           query: { another: 'another param' },
         }}
       >
-        <a>{t('more-examples:dynamic-route')}</a>
+        {t('more-examples:dynamic-route')}
       </Link>
       <br />
-      <Link href="/more-examples/catchall/this/is/an/example">
-        <a>Catchall</a>
-      </Link>
+      <Link href="/more-examples/catchall/this/is/an/example">Catchall</Link>
     </>
   )
 }

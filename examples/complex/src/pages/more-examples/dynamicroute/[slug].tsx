@@ -17,9 +17,7 @@ export default function DynamicRoute({ title = '' }) {
       <h3>
         {query.slug} - {lang}
       </h3>
-      <Link href="/">
-        <a>{t`more-examples:go-to-home`}</a>
-      </Link>
+      <Link href="/">{t`more-examples:go-to-home`}</Link>
     </>
   )
 }
