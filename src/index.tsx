@@ -135,10 +135,10 @@ function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
     #   or:                                                                 #
     #   > npm install next-translate-plugin --save-dev                      #
     #                                                                       #
-    #   replace in next.config.js file:                                                            #
+    #   replace in next.config.js file:                                     #
     #    const nextTranslate = require('next-translate')                    #
     #   to:                                                                 #
-    #    const nextTranslate = require('next-translate-plugin').default     #
+    #    const nextTranslate = require('next-translate-plugin')             #
     #                                                                       #
     #########################################################################
   `)
