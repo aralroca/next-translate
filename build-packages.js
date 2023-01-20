@@ -34,4 +34,3 @@ function createPackagesFromFolder(folder, prefix, subfolder = '') {
 }
 
 createPackagesFromFolder(path.join(__dirname, 'src'), '../')
-createPackageFromFile('loader.tsx', '../../', 'plugin/')

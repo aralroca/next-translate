@@ -1,3 +1,3 @@
-const nextTranslate = require('next-translate')
+const nextTranslate = require('next-translate-plugin').default
 
 module.exports = nextTranslate()
