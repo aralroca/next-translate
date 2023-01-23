@@ -1,8 +1,6 @@
 import { ReactElement, ReactNode } from 'react'
 import type { NextConfig } from 'next'
 
-import nextTranslate from './plugin'
-
 export interface TranslationQuery {
   [name: string]: any
 }
@@ -123,6 +121,28 @@ declare global {
   interface Window {
     i18nConfig: LoaderConfig
   }
+}
+
+// TODO: Remove this in future versions > 2.0.0
+function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
+  console.log(`
+    #########################################################################
+    #                                                                       #
+    #   next-translate plugin in 2.0.0 is replaced by                       #
+    #   next-translate-plugin package:                                      #
+    #                                                                       #
+    #   > yarn add next-translate-plugin -D                                 #
+    #   or:                                                                 #
+    #   > npm install next-translate-plugin --save-dev                      #
+    #                                                                       #
+    #   replace in next.config.js file:                                     #
+    #    const nextTranslate = require('next-translate')                    #
+    #   to:                                                                 #
+    #    const nextTranslate = require('next-translate-plugin')             #
+    #                                                                       #
+    #########################################################################
+  `)
+  return nextConfig
 }
 
 module.exports = nextTranslate
