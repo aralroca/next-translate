@@ -13,8 +13,8 @@
 
 [![npm version](https://badge.fury.io/js/next-translate.svg)](https://badge.fury.io/js/next-translate)
 [![PRs Welcome][badge-prwelcome]][prwelcome]
-<a href="https://github.com/vinissimus/next-translate/actions?query=workflow%3ACI" alt="Tests status">
-<img src="https://github.com/vinissimus/next-translate/workflows/CI/badge.svg" /></a>
+<a href="https://github.com/aralroca/next-translate/actions?query=workflow%3ACI" alt="Tests status">
+<img src="https://github.com/aralroca/next-translate/workflows/CI/badge.svg" /></a>
 <a href="https://twitter.com/intent/follow?screen_name=aralroca">
 <img src="https://img.shields.io/twitter/follow/aralroca?style=social&logo=twitter"
             alt="follow on Twitter"></a>
@@ -118,10 +118,14 @@ If for some reason you use a `getInitialProps` in your `_app.js` file, then the 
 
 ### Add next-translate plugin
 
+The `next-translate-plugin` is a tool that allows developers to efficiently handle translations on a page-by-page basis during the build process. It is distinct from the `next-translate` package, which allows developers to access the translations in the code where it is needed. The plugin works by parsing all pages, searching for the translations and rewriting the page file adding the translations to it. This makes the plugin a more efficient and flexible solution for handling translations within a Next.js application. It is recommended to install the plugin as a devDependency.
+
+- `yarn add next-translate-plugin -D`
+
 In your **next.config.js** file:
 
 ```js
-const nextTranslate = require('next-translate')
+const nextTranslate = require('next-translate-plugin')
 
 module.exports = nextTranslate()
 ```
@@ -129,7 +133,7 @@ module.exports = nextTranslate()
 Or if you already have **next.config.js** file and want to keep the changes in it, pass the config object to the `nextTranslate()`. For example for webpack you could do it like this:
 
 ```js
-const nextTranslate = require('next-translate')
+const nextTranslate = require('next-translate-plugin')
 
 module.exports = nextTranslate({
   webpack: (config, { isServer, webpack }) => {
@@ -914,7 +918,7 @@ yarn create next-app --example with-next-translate with-next-translate-app
 
 This demo is in this repository:
 
-- `git clone git@github.com:vinissimus/next-translate.git`
+- `git clone git@github.com:aralroca/next-translate.git`
 - `cd next-translate`
 - `yarn && yarn example:basic`
 
@@ -924,7 +928,7 @@ Similar than the basic demo but with some extras: TypeScript, Webpack 5, MDX, wi
 
 This demo is in this repository:
 
-- `git clone git@github.com:vinissimus/next-translate.git`
+- `git clone git@github.com:aralroca/next-translate.git`
 - `cd next-translate`
 - `yarn && yarn example:complex`
 
@@ -936,7 +940,7 @@ Similar than the basic example but loading the page namespaces manually deactiva
 
 This demo is in this repository:
 
-- `git clone git@github.com:vinissimus/next-translate.git`
+- `git clone git@github.com:aralroca/next-translate.git`
 - `cd next-translate`
 - `yarn && yarn example:without-loader`
 
