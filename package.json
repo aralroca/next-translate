@@ -59,7 +59,7 @@
     "test": "cross-env NODE_ENV=test jest --env=jsdom",
     "test:coverage": "cross-env NODE_ENV=test jest --env=jsdom --coverage",
     "test:watch": "cross-env NODE_ENV=test jest --env=jsdom --watch",
-    "tsc": "./node_modules/typescript/bin/tsc -p tsconfig.json && ./node_modules/typescript/bin/tsc -p tsconfig-cjs.json && node build-packages.js"
+    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && node build-packages.js"
   },
   "devDependencies": {
     "@babel/cli": "7.20.7",
