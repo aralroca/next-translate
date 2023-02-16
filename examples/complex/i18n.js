@@ -14,5 +14,5 @@ module.exports = {
     suffix: '}',
   },
   loadLocaleFrom: async (locale, namespace) =>
-    require(`./src/translations/${namespace}_${locale}`),
+    import(`./src/translations/${namespace}_${locale}`).then((r) => r.default),
 }

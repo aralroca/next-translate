@@ -12,6 +12,8 @@
 <div align="center">
 
 [![npm version](https://badge.fury.io/js/next-translate.svg)](https://badge.fury.io/js/next-translate)
+![npm](https://img.shields.io/npm/dw/next-translate)
+[![size](https://img.shields.io/bundlephobia/minzip/next-translate)](https://bundlephobia.com/package/next-translate)
 [![PRs Welcome][badge-prwelcome]][prwelcome]
 <a href="https://github.com/aralroca/next-translate/actions?query=workflow%3ACI" alt="Tests status">
 <img src="https://github.com/aralroca/next-translate/workflows/CI/badge.svg" /></a>
@@ -52,6 +54,7 @@
   - [Demo from Next.js](#demo-from-nextjs)
   - [Basic demo](#basic-demo)
   - [Complex demo](#complex-demo)
+  - [With app directory demo](#with-app-directory-demo)
   - [Without the webpack loader demo](#without-the-webpack-loader-demo)
 - [Contributors ✨](#contributors-)
 
@@ -931,6 +934,16 @@ This demo is in this repository:
 - `git clone git@github.com:aralroca/next-translate.git`
 - `cd next-translate`
 - `yarn && yarn example:complex`
+
+### With app directory demo
+
+Similar than the complex demo but with some extra: Instead of `pages` folder, we are using the Next.js +13 [app folder with the new layouts system](https://nextjs.org/blog/next-13#new-app-directory-beta).
+
+This demo is in this repository:
+
+- `git clone git@github.com:aralroca/next-translate.git`
+- `cd next-translate`
+- `yarn && yarn example:with-app-directory`
 
 ### Without the webpack loader demo
 

@@ -41,16 +41,18 @@
     "withTranslation*",
     "useTranslation*",
     "setLanguage*",
-    "index*"
+    "index*",
+    "app-dir*"
   ],
   "scripts": {
     "build": "yarn clean && cross-env NODE_ENV=production && yarn tsc",
     "clean": "yarn clean:build && yarn clean:examples",
-    "clean:build": "rm -rf lib appWith* Dynamic* I18n* index context loadNa* setLang* Trans* useT* withT* getP* getC* *.d.ts getT transC* wrapT* types formatElements",
+    "clean:build": "rm -rf lib appWith* Dynamic* I18n* index context loadNa* setLang* Trans* useT* withT* getP* getC* *.d.ts getT transC* wrapT* types formatElements app-dir*",
     "clean:examples": "rm -rf examples/**/.next && rm -rf examples/**/node_modules && rm -rf examples/**/yarn.lock",
     "example": "yarn example:complex",
     "example:basic": "yarn build && yarn --cwd examples/basic && yarn --cwd examples/basic dev",
     "example:complex": "yarn build && yarn --cwd examples/complex && yarn --cwd examples/complex dev",
+    "example:with-app-directory": "yarn build && yarn --cwd examples/with-app-directory && yarn --cwd examples/with-app-directory dev",
     "example:without-loader": "yarn build && yarn --cwd examples/without-loader && yarn --cwd examples/without-loader dev",
     "format": "pretty-quick",
     "husky": "pretty-quick --staged && yarn test",

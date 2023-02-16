@@ -111,15 +111,28 @@ declare global {
   // For NodeJS 16+
   // eslint-disable-next-line no-var
   var i18nConfig: LoaderConfig
+  // eslint-disable-next-line no-var
+  var __NEXT_TRANSLATE__: {
+    namespaces: Record<string, I18nDictionary>
+    lang: string
+  }
 
   namespace NodeJS {
     interface Global {
       i18nConfig: LoaderConfig
+      __NEXT_TRANSLATE__: {
+        namespaces: Record<string, I18nDictionary>
+        lang: string
+      }
     }
   }
 
   interface Window {
     i18nConfig: LoaderConfig
+    __NEXT_TRANSLATE__: {
+      namespaces: Record<string, I18nDictionary>
+      lang: string
+    }
   }
 }
 
