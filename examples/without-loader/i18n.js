@@ -11,5 +11,5 @@ module.exports = {
   },
   // When loader === false, then loadLocaleFrom is required
   loadLocaleFrom: async (locale, namespace) =>
-    require(`./locales/${locale}/${namespace}`),
+    import(`./locales/${locale}/${namespace}`).then((r) => r.default),
 }

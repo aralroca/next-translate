@@ -50,20 +50,7 @@ export default async function loadNamespaces(
       )
     )) || []
 
-  if (conf.logBuild !== false && typeof window === 'undefined') {
-    const color = (c: string) => (colorEnabled ? `\x1b[36m${c}\x1b[0m` : c)
-    console.log(
-      color('next-translate'),
-      `- compiled page:`,
-      color(page),
-      '- locale:',
-      color(__lang),
-      '- namespaces:',
-      color(namespaces.join(', ')),
-      '- used loader:',
-      color(conf.loaderName || '-')
-    )
-  }
+  log(conf, { page, lang: __lang, namespaces })
 
   return {
     __lang,
@@ -76,4 +63,27 @@ export default async function loadNamespaces(
 
 function removeTrailingSlash(path = '') {
   return path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path
+}
+
+type LogProps = {
+  page: string
+  lang: string
+  namespaces: string[]
+}
+
+export function log(conf: LoaderConfig, { page, lang, namespaces }: LogProps) {
+  if (conf.logBuild !== false && typeof window === 'undefined') {
+    const color = (c: string) => (colorEnabled ? `\x1b[36m${c}\x1b[0m` : c)
+    console.log(
+      color('next-translate'),
+      `- compiled page:`,
+      color(page),
+      '- locale:',
+      color(lang),
+      '- namespaces:',
+      color(namespaces.join(', ')),
+      '- used loader:',
+      color(conf.loaderName || '-')
+    )
+  }
 }

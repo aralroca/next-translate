@@ -12,6 +12,8 @@
 <div align="center">
 
 [![npm version](https://badge.fury.io/js/next-translate.svg)](https://badge.fury.io/js/next-translate)
+![npm](https://img.shields.io/npm/dw/next-translate)
+[![size](https://img.shields.io/bundlephobia/minzip/next-translate)](https://bundlephobia.com/package/next-translate)
 [![PRs Welcome][badge-prwelcome]][prwelcome]
 <a href="https://github.com/aralroca/next-translate/actions?query=workflow%3ACI" alt="Tests status">
 <img src="https://github.com/aralroca/next-translate/workflows/CI/badge.svg" /></a>
@@ -48,10 +50,12 @@
 - [11. How to save the user-defined language](#11-how-to-save-the-user-defined-language)
 - [12. How to use multi-language in a page](#12-how-to-use-multi-language-in-a-page)
 - [13. How to use next-translate in a mono-repo](#13-how-to-use-next-translate-in-a-mono-repo)
-- [14. Demos](#14-demos)
+- [14. Use Next 13 app directory](#14-use-next-13-app-directory)
+- [15. Demos](#15-demos)
   - [Demo from Next.js](#demo-from-nextjs)
   - [Basic demo](#basic-demo)
   - [Complex demo](#complex-demo)
+  - [With app directory demo](#with-app-directory-demo)
   - [Without the webpack loader demo](#without-the-webpack-loader-demo)
 - [Contributors ✨](#contributors-)
 
@@ -898,7 +902,39 @@ If you want to change it you can use :
 - the `NEXT_TRANSLATE_PATH` environment variable. It supports both relative and absolute path
 - the native NodeJS function `process.chdir(PATH_TO_NEXT_TRANSLATE)` to move the `process.cwd()`
 
-## 14. Demos
+## 14. Use Next 13 app directory
+
+When it comes to server components and client components, it can be challenging to load the same thing on different pages. To simplify this process, we have **extracted all the complexity** using the **[`next-translate-plugin`](https://github.com/aralroca/next-translate-plugin)**.
+
+### Regarding translations:
+
+If you use the "app" folder instead of the "pages" folder, the `next-translate-plugin` will automatically detect the change, and you won't need to touch any of the Next-translate configuration. The only difference is that the "pages" configuration property will reference the pages located within the "app" folder.
+
+**i18n.js**
+```js
+module.exports = {
+  locales: ['en', 'ca', 'es'],
+  defaultLocale: 'en',
+  pages: {
+    '*': ['common'],
+    '/': ['home'], // app/page.tsx
+    '/second-page': ['home'], // app/second-page/page.tsx
+  },
+}
+```
+
+By simply changing the "pages" folder to "app," you can consume translations within your pages using the **`useTranslation`** hook or the **`Trans`** component. You will still see the log (if enabled) to know which namespaces are loaded on each page, and everything else should be the same.
+
+### Regarding routing:
+
+The routing is part of the core of Next.js _(not from this library)_, but direct routing support is not yet available with the beta version of Next 13's app directory. As a workaround, Next.js recommends configuring it as described here: 
+- https://beta.nextjs.org/docs/guides/internationalization.
+
+The [`next-translate-plugin`](https://github.com/aralroca/next-translate-plugin) automatically detects the **"lang" parameter**. So, without any rewrite, you can test if your translations work by entering your page with the "lang" parameter. For example: `/some-page?lang=en`.
+
+With this in mind, you can do any rewrite as described in the Next documentation, and if the final page has this parameter, everything should work without any additional manual changes. For example, if you rewrite `/en-US/some-page` to `/some-page?lang=en-US`, then the `useTranslation` will look for translations in `en-US` without needing to pass this parameter.
+
+## 15. Demos
 
 ### Demo from Next.js
 
@@ -931,6 +967,16 @@ This demo is in this repository:
 - `git clone git@github.com:aralroca/next-translate.git`
 - `cd next-translate`
 - `yarn && yarn example:complex`
+
+### With app directory demo
+
+Similar than the complex demo but with some extra: Instead of `pages` folder, we are using the Next.js +13 [app folder with the new layouts system](https://nextjs.org/blog/next-13#new-app-directory-beta).
+
+This demo is in this repository:
+
+- `git clone git@github.com:aralroca/next-translate.git`
+- `cd next-translate`
+- `yarn && yarn example:with-app-directory`
 
 ### Without the webpack loader demo
 
