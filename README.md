@@ -71,7 +71,8 @@ Next-translate has two parts: **Next.js plugin** + **i18n API**.
 
 **Features** ✨
 
-- 🚀  ・ Works well with automatic page optimization.
+- 🚀  ・ Automatic page optimization (pages dir).
+- 🏝️  ・ React 18 server/client pages/components (app dir).
 - 🦄  ・ Easy to use and configure.
 - 🌍  ・ Basic i18n support: interpolation, plurals, useTranslation hook, Trans component...
 - 🈂️  ・ It loads only the necessary translations _(for page and for locale)_.
