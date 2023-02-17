@@ -1387,4 +1387,31 @@ describe('useTranslation', () => {
       expect(container.textContent).toContain(expected)
     })
   })
+
+  describe('Next.js 13 app-dir', () => {
+    test('should work without context (with globalThis.__NEXT_TRANSLATE__)', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:interpolation', {
+          count: 3,
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'There are 3 cats.'
+
+      globalThis.__NEXT_TRANSLATE__ = {
+        namespaces: {
+          ns: {
+            interpolation: 'There are {{count}} cats.',
+          },
+        },
+        lang: 'en',
+      }
+      globalThis.i18nConfig = {}
+
+      const { container } = render(<Inner />)
+      expect(container.textContent).toContain(expected)
+    })
+  })
 })
