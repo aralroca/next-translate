@@ -9,7 +9,9 @@ export default function Page() {
       <h1>{t`title`}</h1>
       <Trans i18nKey="common:second-page" components={[<b />]} />
       <div>
-        <Link href={`/?lang=${lang}`}>⬅️</Link>
+        <Link href={`/?lang=${lang}`} as={`/${lang}`}>
+          ⬅️
+        </Link>
       </div>
     </>
   )

@@ -12,20 +12,32 @@ export default function Page() {
       <ClientCode />
 
       <div style={{ marginTop: 20 }}>
-        <Link href="/?lang=en">English</Link>
+        <Link href="/?lang=en" as="/en">
+          English
+        </Link>
       </div>
 
       <div>
-        <Link href="/?lang=es">Español</Link>
+        <Link href="/?lang=es" as="/es">
+          Español
+        </Link>
       </div>
 
       <div>
-        <Link href="/?lang=ca">Català</Link>
+        <Link href="/?lang=ca" as="/ca">
+          Català
+        </Link>
       </div>
 
       <div>
-        <Link href={`/second-page?lang=${lang}`}>➡️</Link>
+        <Link href={`/second-page?lang=${lang}`} as={`/${lang}/second-page`}>
+          ➡️
+        </Link>
       </div>
     </>
   )
+}
+
+export const metadata = {
+  title: 'App directory',
 }
