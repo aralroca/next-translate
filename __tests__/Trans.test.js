@@ -111,8 +111,11 @@ describe('Trans', () => {
     })
 
     test('should work the same way than useTranslate with default value', () => {
+      console.warn = jest.fn()
       const i18nKey = 'ns:number'
       const expected = 'The number is 42'
+      const expectedWarning =
+        '[next-translate] "ns:number" is missing in current namespace configuration. Try adding "number" to the namespace "ns".'
 
       const { container } = render(
         <TestEnglish
@@ -123,6 +126,7 @@ describe('Trans', () => {
         />
       )
       expect(container.textContent).toContain(expected)
+      expect(console.warn).toBeCalledWith(expectedWarning)
     })
   })
 

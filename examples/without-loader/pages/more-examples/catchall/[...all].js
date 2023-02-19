@@ -11,9 +11,7 @@ export default function All() {
     <>
       {JSON.stringify({ query, lang })}
       <br />
-      <Link href="/">
-        <a>{t`more-examples:go-to-home`}</a>
-      </Link>
+      <Link href="/">{t`more-examples:go-to-home`}</Link>
     </>
   )
 }

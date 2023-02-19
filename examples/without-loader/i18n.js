@@ -10,6 +10,6 @@ module.exports = {
     'rgx:^/more-examples': ['more-examples'],
   },
   // When loader === false, then loadLocaleFrom is required
-  loadLocaleFrom: (locale, namespace) =>
-    import(`./locales/${locale}/${namespace}`).then((m) => m.default),
+  loadLocaleFrom: async (locale, namespace) =>
+    import(`./locales/${locale}/${namespace}`).then((r) => r.default),
 }

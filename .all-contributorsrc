@@ -406,6 +406,15 @@
       ]
     },
     {
+      "login": "Dragate",
+      "name": "Dragate",
+      "avatar_url": "https://avatars.githubusercontent.com/u/28112929?v=4",
+      "profile": "https://github.com/Dragate",
+       "contributions": [
+        "code"
+      ]
+    },
+    {
       "login": "marcesengel",
       "name": "Marces Engel",
       "avatar_url": "https://avatars.githubusercontent.com/u/6208890?v=4",
@@ -415,10 +424,19 @@
       ]
     },
     {
-      "login": "Dragate",
-      "name": "Dragate",
-      "avatar_url": "https://avatars.githubusercontent.com/u/28112929?v=4",
-      "profile": "https://github.com/Dragate",
+      "login": "vascosilvaa",
+      "name": "Vasco Silva",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16561642?v=4",
+      "profile": "https://github.com/vascosilvaa",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "StLyn4",
+      "name": "Vsevolod Volkov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73965070?v=4",
+      "profile": "https://github.com/StLyn4",
       "contributions": [
         "code"
       ]
@@ -429,5 +447,6 @@
   "projectOwner": "aralroca",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular"
 }

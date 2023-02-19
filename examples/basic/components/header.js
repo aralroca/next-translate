@@ -7,8 +7,9 @@ import useTranslation from 'next-translate/useTranslation'
 import styles from './header.module.css'
 
 export default function Header() {
-  const { t, lang } = useTranslation()
-  const title = t('common:title')
+  const { t, lang } = useTranslation('common')
+  const title = t('title')
+  const headTitle = `${title} (${lang.toUpperCase()})`
 
   function changeToEn() {
     Router.push('/', undefined, { locale: 'en' })
@@ -17,27 +18,25 @@ export default function Header() {
   return (
     <>
       <Head>
-        <title>
-          {title} | ({lang.toUpperCase()})
-        </title>
-        <link rel="icon" href="/favicon.ico" />
+        <title key="title">{headTitle}</title>
+        <link key="favicon" rel="icon" href="/favicon.ico" />
       </Head>
       <header className={styles.header}>
         <h1>{title}</h1>
         {lang !== 'es' && (
           <Link href="/" locale="es">
-            <a>Español</a>
+            Español
           </Link>
         )}
         {lang !== 'ca' && (
           <Link href="/" locale="ca">
-            <a>Català</a>
+            Català
           </Link>
         )}
         {lang !== 'en' && (
           <>
             <Link href="/" locale="en">
-              <a>English</a>
+              English
             </Link>
             <button onClick={changeToEn}>English Router.push</button>
           </>
