@@ -907,6 +907,8 @@ If you want to change it you can use :
 
 When it comes to server components and client components, it can be challenging to load the same thing on different pages. To simplify this process, we have **extracted all the complexity** using the **[`next-translate-plugin`](https://github.com/aralroca/next-translate-plugin)**.
 
+If you're interested in learning more about how Next-translate works with the new Next.js 13 app dir paradigm, check out **[this article](https://dev.to/aralroca/i18n-translations-in-nextjs-13s-app-dir-for-serverclient-components-4ek8)** for a detailed explanation. 
+
 ### Regarding translations:
 
 If you use the "app" folder instead of the "pages" folder, the `next-translate-plugin` will automatically detect the change, and you won't need to touch any of the Next-translate configuration. The only difference is that the "pages" configuration property will reference the pages located within the "app" folder.
@@ -926,14 +928,66 @@ module.exports = {
 
 By simply changing the "pages" folder to "app," you can consume translations within your pages using the **`useTranslation`** hook or the **`Trans`** component. You will still see the log (if enabled) to know which namespaces are loaded on each page, and everything else should be the same.
 
+**🌊 Server page/component (+0kb): `app/page.js`:**
+```js
+import useTranslation from 'next-translate/useTranslation'
+
+export default function HomePage() {
+  const { t, lang } = useTranslation('home')
+
+  return <h1>{t('title')}</h1>
+}
+```
+
+**🏝️ Client page/component (+498B): `app/checkout/page.js`**
+```js
+"use client"
+import useTranslation from 'next-translate/useTranslation'
+
+export default function CheckoutPage() {
+  const { t, lang } = useTranslation('checkout')
+
+  return <h1>{t('title')}</h1>
+}
+```
+
 ### Regarding routing:
 
-The routing is part of the core of Next.js _(not from this library)_, but direct routing support is not yet available with the beta version of Next 13's app directory. As a workaround, Next.js recommends configuring it as described here: 
+Next.js 10 introduced [i18n routing](https://nextjs.org/docs/advanced-features/i18n-routing) support, allowing pages to be rendered by navigating to `/es/page-name`, where the page `pages/page-name.js` was accessed using the `useRouter` hook to obtain the `locale`. 
+
+However, since the pages have been moved from the `pages` dir to the **app dir**, this i18n routing **no longer works correctly**.
+
+At Next-translate, we have chosen not to re-implement this functionality, as we aim to be a library for translating pages, rather than routing them. We hope that in the future, this feature will be implemented in the `app` directory, as it is still in beta and many features still need to be supported.
+
+However, all the support currently available is with the `lang` parameter. That is, `/es/page-name?lang=es` renders the page `app/page-name/page.js`, where we have internal access to the `lang` parameter, and you **do not need** to do **anything extra** other than using the `useTranslation` hook to consume your translations.
+
+All the same, if you wish to use the language as a subpath `/es/page-name` without the param, you can utilize middleware to append the `lang` parameter and perform a rewrite:
+
+```js
+// middleware.ts
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import i18n from './i18n'
+
+// /es/page-name -> rewrites to -> /es/page-name?lang=es
+export function middleware(request: NextRequest) {
+  const locale = request.nextUrl.locale || i18n.defaultLocale
+  request.nextUrl.searchParams.set('lang', locale)
+  return NextResponse.rewrite(request.nextUrl)
+}
+```
+
+Here in the middleware, we are not adding the locale as a subpath, but rather eliminating the need to manually add the `lang` parameter. By default, the **subpath still exists**, but you **cannot use `useRouter`** from `next/router` to access the `locale` within the components of the `app` directory. Therefore, we **still need the parameter**, even if we hide it from view.
+
+And to navigate:
+
+```js
+<Link href={`/?lang=${locale}`} as={`/${locale}`}>{locale}</Link>
+```
+
+If you need more i18n routing features like automatic locale detection you can follow these steps from the Next.js documentation:
+
 - https://beta.nextjs.org/docs/guides/internationalization.
-
-The [`next-translate-plugin`](https://github.com/aralroca/next-translate-plugin) automatically detects the **"lang" parameter**. So, without any rewrite, you can test if your translations work by entering your page with the "lang" parameter. For example: `/some-page?lang=en`.
-
-With this in mind, you can do any rewrite as described in the Next documentation, and if the final page has this parameter, everything should work without any additional manual changes. For example, if you rewrite `/en-US/some-page` to `/some-page?lang=en-US`, then the `useTranslation` will look for translations in `en-US` without needing to pass this parameter.
 
 ## 15. Demos
 
