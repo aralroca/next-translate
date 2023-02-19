@@ -410,7 +410,7 @@
       "name": "Dragate",
       "avatar_url": "https://avatars.githubusercontent.com/u/28112929?v=4",
       "profile": "https://github.com/Dragate",
-       "contributions": [
+      "contributions": [
         "code"
       ]
     },
@@ -439,6 +439,15 @@
       "profile": "https://github.com/StLyn4",
       "contributions": [
         "code"
+      ]
+    },
+    {
+      "login": "felixonmars",
+      "name": "Felix Yan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1006477?v=4",
+      "profile": "https://github.com/felixonmars",
+      "contributions": [
+        "doc"
       ]
     }
   ],
