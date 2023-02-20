@@ -13,6 +13,6 @@ module.exports = {
     prefix: '${',
     suffix: '}',
   },
-  loadLocaleFrom: (locale, namespace) =>
-    import(`./src/translations/${namespace}_${locale}`).then((m) => m.default),
+  loadLocaleFrom: async (locale, namespace) =>
+    import(`./src/translations/${namespace}_${locale}`).then((r) => r.default),
 }

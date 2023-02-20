@@ -365,20 +365,20 @@
       "name": "Wuif",
       "avatar_url": "https://avatars.githubusercontent.com/u/5678318?v=4",
       "profile": "https://github.com/wuifdesign",
-       "contributions": [
+      "contributions": [
         "code"
       ]
-      },
+    },
     {
       "login": "MrPumpking",
       "name": "Michał Bar",
       "avatar_url": "https://avatars.githubusercontent.com/u/9134970?v=4",
       "profile": "https://michal.bar",
-        "contributions": [
+      "contributions": [
         "code"
       ]
-      },
-      {
+    },
+    {
       "login": "wuifdesign",
       "name": "Wuif",
       "avatar_url": "https://avatars.githubusercontent.com/u/5678318?v=4",
@@ -392,11 +392,11 @@
       "name": "Marces Engel",
       "avatar_url": "https://avatars.githubusercontent.com/u/6208890?v=4",
       "profile": "https://github.com/marcesengel",
-       "contributions": [
+      "contributions": [
         "code"
       ]
-      },
-      {
+    },
+    {
       "login": "MrPumpking",
       "name": "Michał Bar",
       "avatar_url": "https://avatars.githubusercontent.com/u/9134970?v=4",
@@ -406,7 +406,15 @@
       ]
     },
     {
-    {     
+      "login": "Dragate",
+      "name": "Dragate",
+      "avatar_url": "https://avatars.githubusercontent.com/u/28112929?v=4",
+      "profile": "https://github.com/Dragate",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
       "login": "marcesengel",
       "name": "Marces Engel",
       "avatar_url": "https://avatars.githubusercontent.com/u/6208890?v=4",
@@ -416,12 +424,30 @@
       ]
     },
     {
-     "login": "Dragate",
-      "name": "Dragate",
-      "avatar_url": "https://avatars.githubusercontent.com/u/28112929?v=4",
-      "profile": "https://github.com/Dragate",
-       "contributions": [
+      "login": "vascosilvaa",
+      "name": "Vasco Silva",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16561642?v=4",
+      "profile": "https://github.com/vascosilvaa",
+      "contributions": [
         "code"
+      ]
+    },
+    {
+      "login": "StLyn4",
+      "name": "Vsevolod Volkov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73965070?v=4",
+      "profile": "https://github.com/StLyn4",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "felixonmars",
+      "name": "Felix Yan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1006477?v=4",
+      "profile": "https://github.com/felixonmars",
+      "contributions": [
+        "doc"
       ]
     }
   ],
@@ -430,5 +456,6 @@
   "projectOwner": "aralroca",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular"
 }

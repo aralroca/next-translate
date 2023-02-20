@@ -1,4 +1,4 @@
-const nextTranslate = require('next-translate')
+const nextTranslate = require('next-translate-plugin')
 const withMDX = require('@next/mdx')()
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',

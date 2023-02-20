@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react'
 import { useRouter } from 'next/router'
-import I18nContext from './_context'
+import I18nContext from './context'
 import transCore from './transCore'
 import useTranslation from './useTranslation'
 import { I18nDictionary, I18nProviderProps } from '.'
