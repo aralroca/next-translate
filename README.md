@@ -1123,6 +1123,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/alziqziq"><img src="https://avatars.githubusercontent.com/u/29282122?v=4?s=100" width="100px;" alt="Muhammad Al Ziqri"/><br /><sub><b>Muhammad Al Ziqri</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=alziqziq" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://teka.dev"><img src="https://avatars.githubusercontent.com/u/4443094?v=4?s=100" width="100px;" alt="Marcelo Oliveira"/><br /><sub><b>Marcelo Oliveira</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=marcelotk15" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
