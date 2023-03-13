@@ -467,6 +467,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "SimplyComplexable",
+      "name": "Zack Sunderland",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8563846?v=4",
+      "profile": "https://github.com/SimplyComplexable",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
