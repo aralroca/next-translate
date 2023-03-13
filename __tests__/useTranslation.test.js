@@ -1,5 +1,5 @@
-import React from 'react'
-import { render, cleanup } from '@testing-library/react'
+import React, { useState } from 'react'
+import { render, cleanup, fireEvent } from '@testing-library/react'
 import I18nProvider from '../src/I18nProvider'
 import useTranslation from '../src/useTranslation'
 
@@ -704,6 +704,44 @@ describe('useTranslation', () => {
         </I18nProvider>
       )
       expect(container.textContent).toContain(expected)
+    })
+
+    test('should update value when using dynamic query with returnObjects', async () => {
+      const templateString = {
+        'template-array': [{ title: 'Title {{number}}' }],
+      }
+      const Inner = () => {
+        const [number, setNumber] = useState(1)
+        const { t } = useTranslation()
+        const items = t(
+          'ns:template-array',
+          { number },
+          { returnObjects: true }
+        )
+
+        return (
+          <>
+            {items.map((i) => `${i.title} `)}{' '}
+            <button id="btn" onClick={() => setNumber(2)}>
+              click
+            </button>
+          </>
+        )
+      }
+
+      const { container, getByText } = render(
+        <I18nProvider lang="en" namespaces={{ ns: templateString }}>
+          <Inner />
+        </I18nProvider>
+      )
+
+      expect(container.textContent).toContain('Title 1')
+
+      // trigger for update value
+      fireEvent.click(getByText('click'))
+
+      expect(container.textContent).not.toContain('Title 1')
+      expect(container.textContent).toContain('Title 2')
     })
 
     test('should work with returnObjects option and Object locale', () => {
@@ -1436,6 +1474,33 @@ describe('useTranslation', () => {
           <Inner />
         </I18nProvider>
       )
+      expect(container.textContent).toContain(expected)
+    })
+  })
+
+  describe('Next.js 13 app-dir', () => {
+    test('should work without context (with globalThis.__NEXT_TRANSLATE__)', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t('ns:interpolation', {
+          count: 3,
+        })
+        return <>{text}</>
+      }
+
+      const expected = 'There are 3 cats.'
+
+      globalThis.__NEXT_TRANSLATE__ = {
+        namespaces: {
+          ns: {
+            interpolation: 'There are {{count}} cats.',
+          },
+        },
+        lang: 'en',
+      }
+      globalThis.i18nConfig = {}
+
+      const { container } = render(<Inner />)
       expect(container.textContent).toContain(expected)
     })
   })

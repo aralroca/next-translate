@@ -23,13 +23,6 @@ function createPackageFromFile(file, prefix, subfolder) {
   )
 
   fs.writeFileSync(`${subfolder}${name}/package.json`, packageJSON)
-
-  // It seems that VSCode and IDEs using auto-import are referenced by where the
-  // types are. So moving the types to the root fix the auto-imports.
-  fs.renameSync(
-    `./types/${subfolder}${name}.d.ts`,
-    `./${subfolder}${name}.d.ts`
-  )
 }
 
 function createPackagesFromFolder(folder, prefix, subfolder = '') {
@@ -41,5 +34,3 @@ function createPackagesFromFolder(folder, prefix, subfolder = '') {
 }
 
 createPackagesFromFolder(path.join(__dirname, 'src'), '../')
-fs.mkdirSync('plugin')
-createPackageFromFile('loader.tsx', '../../', 'plugin/')

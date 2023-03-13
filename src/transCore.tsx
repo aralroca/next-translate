@@ -29,7 +29,14 @@ export default function transCore({
   pluralRules: Intl.PluralRules
   lang: string | undefined
 }): Translate {
-  const { logger = missingKeyLogger } = config
+  const {
+    logger = missingKeyLogger,
+    // An optional parameter allowEmptyStrings - true as default.
+    // If allowEmptyStrings parameter is marked as false,
+    // it should log an error when an empty string is attempted to be translated
+    // and return the namespace and key as result of the translation.
+    allowEmptyStrings = true,
+  } = config
 
   const interpolateUnknown = (value: TranslateValue, query?: TranslationQuery | null): TranslateValue => {
     if (Array.isArray(value)) {
@@ -57,11 +64,16 @@ export default function transCore({
 
     const dic = (namespace && allNamespaces[namespace]) || {}
     const keyWithPlural = plural(pluralRules, dic, i18nKey, config, query)
-    const value = getDicValue(dic, keyWithPlural, config, options)
+    const dicValue = getDicValue(dic, keyWithPlural, config, options)
+    const value =
+      typeof dicValue === 'object'
+        ? JSON.parse(JSON.stringify(dicValue))
+        : dicValue
 
     const empty =
       typeof value === 'undefined' ||
-      (typeof value === 'object' && !Object.keys(value).length)
+      (typeof value === 'object' && !Object.keys(value).length) ||
+      (value === '' && !allowEmptyStrings)
 
     const fallbacks =
       typeof options?.fallback === 'string'
