@@ -81,6 +81,14 @@ export default function transCore({
       }
     }
 
+    // defaultNS fallback
+    if (empty && config.fallbackNS) {
+      const new_key = `${config.fallbackNS}:${i18nKey}`
+      if (new_key !== i18nKey && new_key != `${namespace}:${i18nKey}`) {
+        return t(new_key, query, { ...options })
+      }
+    }
+
     if (empty && options?.default && fallbacks?.length == 0) {
       return interpolation({ text: options?.default, query, config, lang })
     }

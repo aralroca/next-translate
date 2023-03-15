@@ -74,6 +74,7 @@ export interface I18nConfig extends NextI18nConfig {
   keySeparator?: string | false
   nsSeparator?: string | false
   defaultNS?: string
+  fallbackNS?: string
   allowEmptyStrings?: boolean
 }
 
