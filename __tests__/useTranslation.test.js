@@ -1177,6 +1177,58 @@ describe('useTranslation', () => {
       )
       expect(container.textContent).toBe(expected)
     })
+    test('should allow default object translation with interpolation', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t(
+          'ns:no-translation',
+          { count: 3 },
+          {
+            default: {
+              example: 'This is a default translation with a count: {{count}}'
+            },
+            returnObjects: true,
+            fallback: 'ns:no-translation2',
+          }
+        )
+        return <>{text.example}</>
+      }
+
+      const expected = 'This is a default translation with a count: 3'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{}}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+    test('should allow default array translation with interpolation', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t(
+          'ns:no-translation',
+          { count: 3 },
+          {
+            default: [
+              'This is a default translation with a count: {{count}}'
+            ],
+            returnObjects: true,
+            fallback: 'ns:no-translation2',
+          }
+        )
+        return <>{text[0]}</>
+      }
+
+      const expected = 'This is a default translation with a count: 3'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{}}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
   })
 
   describe('interpolation', () => {

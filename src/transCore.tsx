@@ -3,6 +3,7 @@ import {
   I18nDictionary,
   LoaderConfig,
   LoggerProps,
+  TranslateValue,
   TranslationQuery,
 } from '.'
 import { Translate } from './index'
@@ -36,6 +37,21 @@ export default function transCore({
     // and return the namespace and key as result of the translation.
     allowEmptyStrings = true,
   } = config
+
+  const interpolateUnknown = (value: TranslateValue, query?: TranslationQuery | null): TranslateValue => {
+    if (Array.isArray(value)) {
+      return value.map(val => interpolateUnknown(val, query));
+    }
+    if (value instanceof Object) {
+      return objectInterpolation({
+        obj: value as Record<string, unknown>,
+        query,
+        config,
+        lang,
+      })
+    }
+    return interpolation({ text: value as string, query, config, lang })
+  }
 
   const t: Translate = (key = '', query, options) => {
     const k = Array.isArray(key) ? key[0] : key
@@ -81,8 +97,8 @@ export default function transCore({
       }
     }
 
-    if (empty && options?.default && fallbacks?.length == 0) {
-      return interpolation({ text: options?.default, query, config, lang })
+    if (empty && options?.default && !fallbacks?.length) {
+      return interpolateUnknown(options.default, query)
     }
 
     // no need to try interpolation
@@ -90,18 +106,9 @@ export default function transCore({
       return k
     }
 
-    if (value instanceof Object) {
-      return objectInterpolation({
-        obj: value as Record<string, unknown>,
-        query,
-        config,
-        lang,
-      })
-    }
-
     // this can return an empty string if either value was already empty
     // or it contained only an interpolation (e.g. "{{name}}") and the query param was empty
-    return interpolation({ text: value as string, query, config, lang })
+    return interpolateUnknown(value, query)
   }
 
   return t
@@ -117,7 +124,7 @@ function getDicValue(
   options: { returnObjects?: boolean; fallback?: string | string[] } = {
     returnObjects: false,
   }
-): string | undefined | object {
+): TranslateValue | undefined {
   const { keySeparator = '.' } = config || {}
   const keyParts = keySeparator ? key.split(keySeparator) : [key]
 
@@ -141,7 +148,7 @@ function getDicValue(
     typeof value === 'string' ||
     ((value as unknown) instanceof Object && options.returnObjects)
   ) {
-    return value
+    return value as TranslateValue
   }
 
   return undefined
@@ -203,8 +210,6 @@ function interpolation({
   const regexEnd =
     suffix === '' ? '' : `(?:[\\s,]+([\\w-]*))?\\s*${escapeRegex(suffix)}`
   return Object.keys(query).reduce((all, varKey) => {
-    if (typeof all !== 'string') return all
-
     const regex = new RegExp(
       `${escapeRegex(prefix)}\\s*${varKey}${regexEnd}`,
       'gm'
@@ -232,7 +237,6 @@ function objectInterpolation({
   lang?: string
 }): any {
   if (!query || Object.keys(query).length === 0) return obj
-
   Object.keys(obj).forEach((key) => {
     if (obj[key] instanceof Object)
       objectInterpolation({
