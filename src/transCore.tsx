@@ -3,7 +3,6 @@ import {
   I18nDictionary,
   LoaderConfig,
   LoggerProps,
-  TranslateValue,
   TranslationQuery,
 } from '.'
 import { Translate } from './index'
@@ -38,9 +37,12 @@ export default function transCore({
     allowEmptyStrings = true,
   } = config
 
-  const interpolateUnknown = (value: TranslateValue, query?: TranslationQuery | null): TranslateValue => {
+  const interpolateUnknown = (
+    value: unknown,
+    query?: TranslationQuery | null
+  ): typeof value => {
     if (Array.isArray(value)) {
-      return value.map(val => interpolateUnknown(val, query));
+      return value.map((val) => interpolateUnknown(val, query))
     }
     if (value instanceof Object) {
       return objectInterpolation({
@@ -124,7 +126,7 @@ function getDicValue(
   options: { returnObjects?: boolean; fallback?: string | string[] } = {
     returnObjects: false,
   }
-): TranslateValue | undefined {
+): unknown | undefined {
   const { keySeparator = '.' } = config || {}
   const keyParts = keySeparator ? key.split(keySeparator) : [key]
 
@@ -148,7 +150,7 @@ function getDicValue(
     typeof value === 'string' ||
     ((value as unknown) instanceof Object && options.returnObjects)
   ) {
-    return value as TranslateValue
+    return value
   }
 
   return undefined
