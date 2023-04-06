@@ -99,8 +99,17 @@ export default function transCore({
       }
     }
 
-    if (empty && options?.default && !fallbacks?.length) {
-      return interpolateUnknown(options.default, query)
+    if (
+      empty &&
+      options &&
+      // options.default could be a nullish value so check that the property exists
+      options.hasOwnProperty('default') &&
+      !fallbacks?.length
+    ) {
+      // if options.default is falsey there's no reason to do interpolation
+      return options.default
+        ? interpolateUnknown(options.default, query)
+        : options.default
     }
 
     // no need to try interpolation
