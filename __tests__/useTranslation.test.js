@@ -1185,7 +1185,7 @@ describe('useTranslation', () => {
           { count: 3 },
           {
             default: {
-              example: 'This is a default translation with a count: {{count}}'
+              example: 'This is a default translation with a count: {{count}}',
             },
             returnObjects: true,
             fallback: 'ns:no-translation2',
@@ -1210,9 +1210,7 @@ describe('useTranslation', () => {
           'ns:no-translation',
           { count: 3 },
           {
-            default: [
-              'This is a default translation with a count: {{count}}'
-            ],
+            default: ['This is a default translation with a count: {{count}}'],
             returnObjects: true,
             fallback: 'ns:no-translation2',
           }
@@ -1221,6 +1219,30 @@ describe('useTranslation', () => {
       }
 
       const expected = 'This is a default translation with a count: 3'
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{}}>
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+    test('should return falsey default values', () => {
+      const Inner = () => {
+        const { t } = useTranslation()
+        const text = t(
+          'ns:no-translation',
+          { count: 3 },
+          {
+            default: undefined,
+            returnObjects: true,
+            fallback: 'ns:no-translation2',
+          }
+        )
+        return <>{`${text}`}</>
+      }
+
+      const expected = 'undefined'
 
       const { container } = render(
         <I18nProvider lang="en" namespaces={{}}>
