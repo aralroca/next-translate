@@ -476,6 +476,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "aovens-quantifi",
+      "name": "Andrew Ovens",
+      "avatar_url": "https://avatars.githubusercontent.com/u/107420510?v=4",
+      "profile": "http://andrewovens.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
