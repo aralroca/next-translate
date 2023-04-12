@@ -25,6 +25,8 @@ export default function Trans({
   const result = useMemo(() => {
     const text = t<string>(i18nKey, values, { fallback, default: defaultTrans })
 
+    if (!text) return text
+
     if (!components || components.length === 0) return text
 
     return formatElements(text, components)

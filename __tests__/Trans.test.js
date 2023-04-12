@@ -208,6 +208,23 @@ describe('Trans', () => {
       )
       expect(container.innerHTML).toContain(expectedHTML)
     })
+
+    test('should work if translation is missing', () => {
+      const i18nKey = 'common:test-html-missing'
+      const expectedHTML = ''
+      const common = {
+        'test-html': 'test <10>with missing translation</10>.',
+      }
+
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ common }}
+          i18nKey={i18nKey}
+          components={[<b />]}
+        />
+      )
+      expect(container.innerHTML).toContain(expectedHTML)
+    })
   })
 
   describe('components prop as a object', () => {
@@ -263,6 +280,23 @@ describe('Trans', () => {
           namespaces={{ common }}
           i18nKey={i18nKey}
           components={{ example: <Component />, u: <u /> }}
+        />
+      )
+      expect(container.innerHTML).toContain(expectedHTML)
+    })
+
+    test('should work if translation is missing', () => {
+      const i18nKey = 'common:test-html-missing'
+      const expectedHTML = ''
+      const common = {
+        'test-html': 'test <example>with missing translation</example>.',
+      }
+
+      const { container } = render(
+        <TestEnglish
+          namespaces={{ common }}
+          i18nKey={i18nKey}
+          components={{ example: <b /> }}
         />
       )
       expect(container.innerHTML).toContain(expectedHTML)
