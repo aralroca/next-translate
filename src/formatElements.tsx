@@ -19,6 +19,7 @@ export default function formatElements(
   value: string,
   elements: ReactElement[] | Record<string, ReactElement> = []
 ): string | ReactNode[] {
+  if (!value) return ""
   const parts = value.replace(nlRe, '').split(tagRe)
 
   if (parts.length === 1) return value
