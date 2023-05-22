@@ -589,7 +589,7 @@ export function getStaticProps({ locale }) {
 
 We support 6 plural forms (taken from [CLDR Plurals](http://cldr.unicode.org/index/cldr-spec/plural-rules) page) by adding to the key this suffix (or nesting it under the key with no `_` prefix):
 
-- `_zero`
+- `_0`
 - `_one` (singular)
 - `_two` (dual)
 - `_few` (paucal)
