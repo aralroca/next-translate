@@ -29,6 +29,10 @@ const nsPlural = {
   },
 }
 
+const nsWithEmpty = {
+  emptyKey: '',
+}
+
 describe('transCore', () => {
   test('should return an object of root keys', async () => {
     const t = transCore({
@@ -133,5 +137,42 @@ describe('transCore', () => {
     expect(
       t('nsObject:key_2', { count: otherCount }, { default: nsPlural.key_1 })
     ).toEqual(otherExpected)
+  })
+
+  test('should return empty string when allowEmptyStrings is passed as true.', () => {
+    const t = transCore({
+      config: {
+        allowEmptyStrings: true,
+      },
+      allNamespaces: { nsWithEmpty },
+      lang: 'en',
+    })
+
+    expect(typeof t).toBe('function')
+    expect(t('nsWithEmpty:emptyKey')).toEqual('')
+  })
+
+  test('should return empty string when allowEmptyStrings is omitted.', () => {
+    const t = transCore({
+      allNamespaces: { nsWithEmpty },
+      config: {},
+      lang: 'en',
+    })
+
+    expect(typeof t).toBe('function')
+    expect(t('nsWithEmpty:emptyKey')).toEqual('')
+  })
+
+  test('should return the key name when allowEmptyStrings is omit passed as false.', () => {
+    const t = transCore({
+      config: {
+        allowEmptyStrings: false,
+      },
+      allNamespaces: { nsWithEmpty },
+      lang: 'en',
+    })
+
+    expect(typeof t).toBe('function')
+    expect(t('nsWithEmpty:emptyKey')).toEqual('nsWithEmpty:emptyKey')
   })
 })

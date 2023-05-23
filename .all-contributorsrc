@@ -379,10 +379,28 @@
       ]
     },
     {
+      "login": "wuifdesign",
+      "name": "Wuif",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5678318?v=4",
+      "profile": "https://github.com/wuifdesign",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
       "login": "marcesengel",
       "name": "Marces Engel",
       "avatar_url": "https://avatars.githubusercontent.com/u/6208890?v=4",
       "profile": "https://github.com/marcesengel",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "MrPumpking",
+      "name": "Michał Bar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9134970?v=4",
+      "profile": "https://michal.bar",
       "contributions": [
         "code"
       ]
@@ -395,6 +413,78 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "marcesengel",
+      "name": "Marces Engel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6208890?v=4",
+      "profile": "https://github.com/marcesengel",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "vascosilvaa",
+      "name": "Vasco Silva",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16561642?v=4",
+      "profile": "https://github.com/vascosilvaa",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "StLyn4",
+      "name": "Vsevolod Volkov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73965070?v=4",
+      "profile": "https://github.com/StLyn4",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "felixonmars",
+      "name": "Felix Yan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1006477?v=4",
+      "profile": "https://github.com/felixonmars",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "alziqziq",
+      "name": "Muhammad Al Ziqri",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29282122?v=4",
+      "profile": "https://github.com/alziqziq",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "marcelotk15",
+      "name": "Marcelo Oliveira",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4443094?v=4",
+      "profile": "http://teka.dev",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "SimplyComplexable",
+      "name": "Zack Sunderland",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8563846?v=4",
+      "profile": "https://github.com/SimplyComplexable",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "aovens-quantifi",
+      "name": "Andrew Ovens",
+      "avatar_url": "https://avatars.githubusercontent.com/u/107420510?v=4",
+      "profile": "http://andrewovens.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -402,5 +492,6 @@
   "projectOwner": "aralroca",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular"
 }

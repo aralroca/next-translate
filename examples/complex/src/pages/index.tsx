@@ -12,9 +12,7 @@ export default function Home() {
     <>
       <Header />
       <p>{description}</p>
-      <Link href="/more-examples">
-        <a>{linkName}</a>
-      </Link>
+      <Link href="/more-examples">{linkName}</Link>
     </>
   )
 }

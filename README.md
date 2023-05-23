@@ -12,9 +12,11 @@
 <div align="center">
 
 [![npm version](https://badge.fury.io/js/next-translate.svg)](https://badge.fury.io/js/next-translate)
+![npm](https://img.shields.io/npm/dw/next-translate)
+[![size](https://img.shields.io/bundlephobia/minzip/next-translate)](https://bundlephobia.com/package/next-translate)
 [![PRs Welcome][badge-prwelcome]][prwelcome]
-<a href="https://github.com/vinissimus/next-translate/actions?query=workflow%3ACI" alt="Tests status">
-<img src="https://github.com/vinissimus/next-translate/workflows/CI/badge.svg" /></a>
+<a href="https://github.com/aralroca/next-translate/actions?query=workflow%3ACI" alt="Tests status">
+<img src="https://github.com/aralroca/next-translate/workflows/CI/badge.svg" /></a>
 <a href="https://twitter.com/intent/follow?screen_name=aralroca">
 <img src="https://img.shields.io/twitter/follow/aralroca?style=social&logo=twitter"
             alt="follow on Twitter"></a>
@@ -48,10 +50,12 @@
 - [11. How to save the user-defined language](#11-how-to-save-the-user-defined-language)
 - [12. How to use multi-language in a page](#12-how-to-use-multi-language-in-a-page)
 - [13. How to use next-translate in a mono-repo](#13-how-to-use-next-translate-in-a-mono-repo)
-- [14. Demos](#14-demos)
+- [14. Use Next 13 app directory](#14-use-next-13-app-directory)
+- [15. Demos](#15-demos)
   - [Demo from Next.js](#demo-from-nextjs)
   - [Basic demo](#basic-demo)
   - [Complex demo](#complex-demo)
+  - [With app directory demo](#with-app-directory-demo)
   - [Without the webpack loader demo](#without-the-webpack-loader-demo)
 - [Contributors ✨](#contributors-)
 
@@ -67,7 +71,8 @@ Next-translate has two parts: **Next.js plugin** + **i18n API**.
 
 **Features** ✨
 
-- 🚀  ・ Works well with automatic page optimization.
+- 🚀  ・ Automatic page optimization (pages dir).
+- 🏝️  ・ React 18 server/client pages/components (app dir).
 - 🦄  ・ Easy to use and configure.
 - 🌍  ・ Basic i18n support: interpolation, plurals, useTranslation hook, Trans component...
 - 🈂️  ・ It loads only the necessary translations _(for page and for locale)_.
@@ -118,10 +123,14 @@ If for some reason you use a `getInitialProps` in your `_app.js` file, then the 
 
 ### Add next-translate plugin
 
+The `next-translate-plugin` is a tool that allows developers to efficiently handle translations on a page-by-page basis during the build process. It is distinct from the `next-translate` package, which allows developers to access the translations in the code where it is needed. The plugin works by parsing all pages, searching for the translations and rewriting the page file adding the translations to it. This makes the plugin a more efficient and flexible solution for handling translations within a Next.js application. It is recommended to install the plugin as a devDependency.
+
+- `yarn add next-translate-plugin -D`
+
 In your **next.config.js** file:
 
 ```js
-const nextTranslate = require('next-translate')
+const nextTranslate = require('next-translate-plugin')
 
 module.exports = nextTranslate()
 ```
@@ -129,7 +138,7 @@ module.exports = nextTranslate()
 Or if you already have **next.config.js** file and want to keep the changes in it, pass the config object to the `nextTranslate()`. For example for webpack you could do it like this:
 
 ```js
-const nextTranslate = require('next-translate')
+const nextTranslate = require('next-translate-plugin')
 
 module.exports = nextTranslate({
   webpack: (config, { isServer, webpack }) => {
@@ -231,7 +240,7 @@ In the configuration file you can use both the configuration that we specified h
 | `loggerEnvironment`          | String to define if the logger should run in the browser, in node or both                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `"node"` &#124; `"browser"` &#124; `"both"`                      | `"browser"` |     |
 | `logBuild`        | Each page has a log indicating: namespaces, current language and method used to load the namespaces. With this you can disable it.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `Boolean`                       | `true`                                                                          |
 | `loader`        | If you wish to disable the webpack loader and manually load the namespaces on each page, we give you the opportunity to do so by disabling this option.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `Boolean`                       | `true`                                                                          |
-| `interpolation`   | Change the delimeter that is used for interpolation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `{prefix: string; suffix: string, formatter: function }` | `{prefix: '{{', suffix: '}}'}`
+| `interpolation`   | Change the delimiter that is used for interpolation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `{prefix: string; suffix: string, formatter: function }` | `{prefix: '{{', suffix: '}}'}`
 | `keySeparator`   | Change the separator that is used for nested keys. Set to `false` to disable keys nesting in JSON translation files. Can be useful if you want to use natural text as keys.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `string` &#124; `false` | `'.'`
 | `nsSeparator`   | char to split namespace from key. You should set it to `false` if you want to use natural text as keys.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `string` &#124; `false` | `':'`
 | `defaultNS`   | default namespace used if not passed to `useTranslation` or in the translation key.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `string` | `undefined`
@@ -240,6 +249,8 @@ In the configuration file you can use both the configuration that we specified h
 | `revalidate`   | If you want to have a default revalidate on each page we give you the opportunity to do so by passing a number to revalidate. You can still define getStaticProps on a page with a different revalidate amount and override this default override. | `Number` | If you don't define it, by default the pages will have no revalidate.
 | `pagesInDir`   | If you run `next ./my-app` to change where your pages are, you can here define `my-app/pages` so that next-translate can guess where they are. | `String` | If you don't define it, by default the pages will be searched for in the classic places like `pages` and `src/pages`.
 | `localesToIgnore`   | Indicate these locales to ignore when you are prefixing the default locale using a middleware (in Next +12, [learn how to do it](https://nextjs.org/docs/advanced-features/i18n-routing#prefixing-the-default-locale)) | `Array<string>` | `['default']`
+| `allowEmptyStrings`   | Change how translated empty strings should be handled. If omitted or passed as true, it returns an empty string. If passed as false, returns the key name itself (including ns). | `Boolean` | `true`
+
 
 ## 4. API
 
@@ -433,8 +444,8 @@ Remember that `['dynamic']` namespace should **not** be listed on `pages` config
 
 Asynchronous function to load the `t` function outside components / pages. It works on both server-side and client-side.
 
-Unlike the useTranslation hook, we can use here any namespace, it doesn't have to be a namespace defined in the "pages" configuration. It downloads the namespace indicated as a parameter on runtime.  
-You can load multiple namespaces by giving an array as a paramater, in this case the default namespace will be the fist one.   
+Unlike the useTranslation hook, we can use here any namespace, it doesn't have to be a namespace defined in the "pages" configuration. It downloads the namespace indicated as a parameter on runtime.
+You can load multiple namespaces by giving an array as a parameter, in this case the default namespace will be the fist one.
 
 Example inside `getStaticProps`:
 
@@ -542,7 +553,7 @@ function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />
 }
 
-// Wraping your _app.js
+// Wrapping your _app.js
 export default appWithI18n(MyApp, {
   ...i18nConfig,
   // Set to false if you want to load all the namespaces on _app.js getInitialProps
@@ -703,7 +714,7 @@ t('namespace:array-example', { count: 1 }, { returnObjects: true })
 */
 ```
 
-Also it is possible to get all the translations by using the keySeparator as the key, default is `'.'` :  
+Also it is possible to get all the translations by using the keySeparator as the key, default is `'.'` :
 ```js
 t('namespace:.', { count: 1 }, { returnObjects: true })
 /*
@@ -892,7 +903,94 @@ If you want to change it you can use :
 - the `NEXT_TRANSLATE_PATH` environment variable. It supports both relative and absolute path
 - the native NodeJS function `process.chdir(PATH_TO_NEXT_TRANSLATE)` to move the `process.cwd()`
 
-## 14. Demos
+## 14. Use Next 13 app directory
+
+When it comes to server components and client components, it can be challenging to load the same thing on different pages. To simplify this process, we have **extracted all the complexity** using the **[`next-translate-plugin`](https://github.com/aralroca/next-translate-plugin)**.
+
+If you're interested in learning more about how Next-translate works with the new Next.js 13 app dir paradigm, check out **[this article](https://dev.to/aralroca/i18n-translations-in-nextjs-13s-app-dir-for-serverclient-components-4ek8)** for a detailed explanation.
+
+### Regarding translations:
+
+If you use the "app" folder instead of the "pages" folder, the `next-translate-plugin` will automatically detect the change, and you won't need to touch any of the Next-translate configuration. The only difference is that the "pages" configuration property will reference the pages located within the "app" folder.
+
+**i18n.js**
+```js
+module.exports = {
+  locales: ['en', 'ca', 'es'],
+  defaultLocale: 'en',
+  pages: {
+    '*': ['common'],
+    '/': ['home'], // app/page.tsx
+    '/second-page': ['home'], // app/second-page/page.tsx
+  },
+}
+```
+
+By simply changing the "pages" folder to "app," you can consume translations within your pages using the **`useTranslation`** hook or the **`Trans`** component. You will still see the log (if enabled) to know which namespaces are loaded on each page, and everything else should be the same.
+
+**🌊 Server page/component (+0kb): `app/page.js`:**
+```js
+import useTranslation from 'next-translate/useTranslation'
+
+export default function HomePage() {
+  const { t, lang } = useTranslation('home')
+
+  return <h1>{t('title')}</h1>
+}
+```
+
+**🏝️ Client page/component (+498B): `app/checkout/page.js`**
+```js
+"use client"
+import useTranslation from 'next-translate/useTranslation'
+
+export default function CheckoutPage() {
+  const { t, lang } = useTranslation('checkout')
+
+  return <h1>{t('title')}</h1>
+}
+```
+
+### Regarding routing:
+
+Next.js 10 introduced [i18n routing](https://nextjs.org/docs/advanced-features/i18n-routing) support, allowing pages to be rendered by navigating to `/es/page-name`, where the page `pages/page-name.js` was accessed using the `useRouter` hook to obtain the `locale`.
+
+However, since the pages have been moved from the `pages` dir to the **app dir**, this i18n routing **no longer works correctly**.
+
+At Next-translate, we have chosen not to re-implement this functionality, as we aim to be a library for translating pages, rather than routing them. We hope that in the future, this feature will be implemented in the `app` directory, as it is still in beta and many features still need to be supported.
+
+However, all the support currently available is with the `lang` parameter. That is, `/es/page-name?lang=es` renders the page `app/page-name/page.js`, where we have internal access to the `lang` parameter, and you **do not need** to do **anything extra** other than using the `useTranslation` hook to consume your translations.
+
+All the same, if you wish to use the language as a subpath `/es/page-name` without the param, you can utilize middleware to append the `lang` parameter and perform a rewrite:
+
+```js
+// middleware.ts
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import i18n from './i18n'
+
+// /es/page-name -> rewrites to -> /es/page-name?lang=es
+export function middleware(request: NextRequest) {
+  const locale = request.nextUrl.locale || i18n.defaultLocale
+  request.nextUrl.searchParams.set('lang', locale)
+  request.nextUrl.href = request.nextUrl.href.replace(`/${locale}`, "")
+  return NextResponse.rewrite(request.nextUrl)
+}
+```
+
+Here in the middleware, we are not adding the locale as a subpath, but rather eliminating the need to manually add the `lang` parameter. By default, the **subpath still exists**, but you **cannot use `useRouter`** from `next/router` to access the `locale` within the components of the `app` directory. Therefore, we **still need the parameter**, even if we hide it from view.
+
+And to navigate:
+
+```js
+<Link href={`/?lang=${locale}`} as={`/${locale}`}>{locale}</Link>
+```
+
+If you need more i18n routing features like automatic locale detection you can follow these steps from the Next.js documentation:
+
+- https://beta.nextjs.org/docs/guides/internationalization.
+
+## 15. Demos
 
 ### Demo from Next.js
 
@@ -912,7 +1010,7 @@ yarn create next-app --example with-next-translate with-next-translate-app
 
 This demo is in this repository:
 
-- `git clone git@github.com:vinissimus/next-translate.git`
+- `git clone git@github.com:aralroca/next-translate.git`
 - `cd next-translate`
 - `yarn && yarn example:basic`
 
@@ -922,9 +1020,19 @@ Similar than the basic demo but with some extras: TypeScript, Webpack 5, MDX, wi
 
 This demo is in this repository:
 
-- `git clone git@github.com:vinissimus/next-translate.git`
+- `git clone git@github.com:aralroca/next-translate.git`
 - `cd next-translate`
 - `yarn && yarn example:complex`
+
+### With app directory demo
+
+Similar than the complex demo but with some extra: Instead of `pages` folder, we are using the Next.js +13 [app folder with the new layouts system](https://nextjs.org/blog/next-13#new-app-directory-beta).
+
+This demo is in this repository:
+
+- `git clone git@github.com:aralroca/next-translate.git`
+- `cd next-translate`
+- `yarn && yarn example:with-app-directory`
 
 ### Without the webpack loader demo
 
@@ -934,7 +1042,7 @@ Similar than the basic example but loading the page namespaces manually deactiva
 
 This demo is in this repository:
 
-- `git clone git@github.com:vinissimus/next-translate.git`
+- `git clone git@github.com:aralroca/next-translate.git`
 - `cd next-translate`
 - `yarn && yarn example:without-loader`
 
@@ -950,63 +1058,77 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
-  <tr>
-    <td align="center"><a href="https://aralroca.com"><img src="https://avatars3.githubusercontent.com/u/13313058?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Aral Roca Gomez</b></sub></a><br /><a href="#maintenance-aralroca" title="Maintenance">🚧</a> <a href="https://github.com/aralroca/next-translate/commits?author=aralroca" title="Code">💻</a></td>
-    <td align="center"><a href="https://twitter.com/vincentducorps"><img src="https://avatars0.githubusercontent.com/u/6338609?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Vincent Ducorps</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=vincentducorps" title="Code">💻</a></td>
-    <td align="center"><a href="https://www.rahwn.com"><img src="https://avatars3.githubusercontent.com/u/36173920?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Björn Rave</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=BjoernRave" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/justincy"><img src="https://avatars2.githubusercontent.com/u/1037458?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Justin</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=justincy" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/psanlorenzo"><img src="https://avatars2.githubusercontent.com/u/42739235?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pol</b></sub></a><br /><a href="#infra-psanlorenzo" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-    <td align="center"><a href="https://twitter.com/ftonato"><img src="https://avatars2.githubusercontent.com/u/5417662?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ademílson F. Tonato</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=ftonato" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/Faulik"><img src="https://avatars3.githubusercontent.com/u/749225?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Faul</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=Faulik" title="Code">💻</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://github.com/bickmaev5"><img src="https://avatars2.githubusercontent.com/u/13235737?v=4?s=100" width="100px;" alt=""/><br /><sub><b>bickmaev5</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=bickmaev5" title="Code">💻</a></td>
-    <td align="center"><a href="https://p.ier.re"><img src="https://avatars1.githubusercontent.com/u/1866496?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pierre Grimaud</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=pgrimaud" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://roman-minchyn.de"><img src="https://avatars0.githubusercontent.com/u/6419697?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Roman Minchyn</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=dnepro" title="Documentation">📖</a> <a href="https://github.com/aralroca/next-translate/commits?author=dnepro" title="Code">💻</a></td>
-    <td align="center"><a href="https://www.egorphilippov.me/"><img src="https://avatars2.githubusercontent.com/u/595980?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Egor</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=lone-cloud" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/dhobbs"><img src="https://avatars2.githubusercontent.com/u/367375?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Darren</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=dhobbs" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/giovannigiordano"><img src="https://avatars3.githubusercontent.com/u/15145952?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Giovanni Giordano</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=giovannigiordano" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/kidnapkin"><img src="https://avatars0.githubusercontent.com/u/9214135?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Eugene</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=kidnapkin" title="Code">💻</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://andrew-c.com"><img src="https://avatars2.githubusercontent.com/u/11482515?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andrew Chung</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=hibearpanda" title="Code">💻</a></td>
-    <td align="center"><a href="http://cuthanh.com"><img src="https://avatars0.githubusercontent.com/u/9281080?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Thanh Minh</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=thanhlmm" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/croutonn"><img src="https://avatars1.githubusercontent.com/u/68943932?v=4?s=100" width="100px;" alt=""/><br /><sub><b>crouton</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=croutonn" title="Code">💻</a></td>
-    <td align="center"><a href="http://patrickmuff.ch"><img src="https://avatars3.githubusercontent.com/u/3121902?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Patrick</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=dislick" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/vimutti77"><img src="https://avatars3.githubusercontent.com/u/27840664?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Vantroy</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=vimutti77" title="Code">💻</a></td>
-    <td align="center"><a href="https://www.npmjs.com/~farinajoey"><img src="https://avatars1.githubusercontent.com/u/17398284?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Joey</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=josephfarina" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/gurkerl83"><img src="https://avatars0.githubusercontent.com/u/301689?v=4?s=100" width="100px;" alt=""/><br /><sub><b>gurkerl83</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=gurkerl83" title="Code">💻</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://github.com/tperamaki"><img src="https://avatars0.githubusercontent.com/u/26067988?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Teemu Perämäki</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=tperamaki" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/luisgserrano"><img src="https://avatars3.githubusercontent.com/u/2024164?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Luis Serrano</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=luisgserrano" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/j-schumann"><img src="https://avatars.githubusercontent.com/u/114239?v=4?s=100" width="100px;" alt=""/><br /><sub><b>j-schumann</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=j-schumann" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/andrehsu"><img src="https://avatars.githubusercontent.com/u/4470828?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andre Hsu</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=andrehsu" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/slevy85"><img src="https://avatars.githubusercontent.com/u/18260229?v=4?s=100" width="100px;" alt=""/><br /><sub><b>slevy85</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=slevy85" title="Code">💻</a></td>
-    <td align="center"><a href="https://www.berndartmueller.com"><img src="https://avatars.githubusercontent.com/u/761018?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bernd Artmüller</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=berndartmueller" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/rihardssceredins"><img src="https://avatars.githubusercontent.com/u/23099574?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rihards Ščeredins</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=rihardssceredins" title="Code">💻</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://its-just-nans.github.io"><img src="https://avatars.githubusercontent.com/u/56606507?v=4?s=100" width="100px;" alt=""/><br /><sub><b>n4n5</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=Its-Just-Nans" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://rubenmoya.dev"><img src="https://avatars.githubusercontent.com/u/905225?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rubén Moya</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=rubenmoya" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/testerez"><img src="https://avatars.githubusercontent.com/u/815236?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tom Esterez</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=testerez" title="Code">💻</a></td>
-    <td align="center"><a href="http://www.dan-needham.com"><img src="https://avatars.githubusercontent.com/u/1122983?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dan Needham</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=dndhm" title="Code">💻</a> <a href="https://github.com/aralroca/next-translate/commits?author=dndhm" title="Tests">⚠️</a> <a href="https://github.com/aralroca/next-translate/commits?author=dndhm" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://www.youtube.com/BrunoAntunesPT"><img src="https://avatars.githubusercontent.com/u/9042965?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bruno Antunes</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=bmvantunes" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/kaan-atakan"><img src="https://avatars.githubusercontent.com/u/56063979?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kaan Atakan</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=kaan-atakan" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/groomain"><img src="https://avatars.githubusercontent.com/u/3601848?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Romain</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=groomain" title="Code">💻</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="http://ajb.cat"><img src="https://avatars.githubusercontent.com/u/57961822?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Arnau Jiménez</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=ajmnz" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/edwinveldhuizen"><img src="https://avatars.githubusercontent.com/u/1787915?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Edwin Veldhuizen</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=edwinveldhuizen" title="Code">💻</a></td>
-    <td align="center"><a href="http://dviet.de"><img src="https://avatars.githubusercontent.com/u/40763918?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Duc Ngo Viet</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=duc-gp" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/bilLkarkariy"><img src="https://avatars.githubusercontent.com/u/43569083?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Billel Helali</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=bilLkarkariy" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/wuifdesign"><img src="https://avatars.githubusercontent.com/u/5678318?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Wuif</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=wuifdesign" title="Code">💻</a></td>
-    <td align="center"><a href="https://michal.bar"><img src="https://avatars.githubusercontent.com/u/9134970?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Michał Bar</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=MrPumpking" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/marcesengel"><img src="https://avatars.githubusercontent.com/u/6208890?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Marces Engel</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=marcesengel" title="Code">💻</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://github.com/Dragate"><img src="https://avatars.githubusercontent.com/u/28112929?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dragate</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=Dragate" title="Code">💻</a></td>
-  </tr>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://aralroca.com"><img src="https://avatars3.githubusercontent.com/u/13313058?v=4?s=100" width="100px;" alt="Aral Roca Gomez"/><br /><sub><b>Aral Roca Gomez</b></sub></a><br /><a href="#maintenance-aralroca" title="Maintenance">🚧</a> <a href="https://github.com/aralroca/next-translate/commits?author=aralroca" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://twitter.com/vincentducorps"><img src="https://avatars0.githubusercontent.com/u/6338609?v=4?s=100" width="100px;" alt="Vincent Ducorps"/><br /><sub><b>Vincent Ducorps</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=vincentducorps" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.rahwn.com"><img src="https://avatars3.githubusercontent.com/u/36173920?v=4?s=100" width="100px;" alt="Björn Rave"/><br /><sub><b>Björn Rave</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=BjoernRave" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/justincy"><img src="https://avatars2.githubusercontent.com/u/1037458?v=4?s=100" width="100px;" alt="Justin"/><br /><sub><b>Justin</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=justincy" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/psanlorenzo"><img src="https://avatars2.githubusercontent.com/u/42739235?v=4?s=100" width="100px;" alt="Pol"/><br /><sub><b>Pol</b></sub></a><br /><a href="#infra-psanlorenzo" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://twitter.com/ftonato"><img src="https://avatars2.githubusercontent.com/u/5417662?v=4?s=100" width="100px;" alt="Ademílson F. Tonato"/><br /><sub><b>Ademílson F. Tonato</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=ftonato" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Faulik"><img src="https://avatars3.githubusercontent.com/u/749225?v=4?s=100" width="100px;" alt="Faul"/><br /><sub><b>Faul</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=Faulik" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/bickmaev5"><img src="https://avatars2.githubusercontent.com/u/13235737?v=4?s=100" width="100px;" alt="bickmaev5"/><br /><sub><b>bickmaev5</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=bickmaev5" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://p.ier.re"><img src="https://avatars1.githubusercontent.com/u/1866496?v=4?s=100" width="100px;" alt="Pierre Grimaud"/><br /><sub><b>Pierre Grimaud</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=pgrimaud" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://roman-minchyn.de"><img src="https://avatars0.githubusercontent.com/u/6419697?v=4?s=100" width="100px;" alt="Roman Minchyn"/><br /><sub><b>Roman Minchyn</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=dnepro" title="Documentation">📖</a> <a href="https://github.com/aralroca/next-translate/commits?author=dnepro" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.egorphilippov.me/"><img src="https://avatars2.githubusercontent.com/u/595980?v=4?s=100" width="100px;" alt="Egor"/><br /><sub><b>Egor</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=lone-cloud" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/dhobbs"><img src="https://avatars2.githubusercontent.com/u/367375?v=4?s=100" width="100px;" alt="Darren"/><br /><sub><b>Darren</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=dhobbs" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/giovannigiordano"><img src="https://avatars3.githubusercontent.com/u/15145952?v=4?s=100" width="100px;" alt="Giovanni Giordano"/><br /><sub><b>Giovanni Giordano</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=giovannigiordano" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kidnapkin"><img src="https://avatars0.githubusercontent.com/u/9214135?v=4?s=100" width="100px;" alt="Eugene"/><br /><sub><b>Eugene</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=kidnapkin" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://andrew-c.com"><img src="https://avatars2.githubusercontent.com/u/11482515?v=4?s=100" width="100px;" alt="Andrew Chung"/><br /><sub><b>Andrew Chung</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=hibearpanda" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://cuthanh.com"><img src="https://avatars0.githubusercontent.com/u/9281080?v=4?s=100" width="100px;" alt="Thanh Minh"/><br /><sub><b>Thanh Minh</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=thanhlmm" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/croutonn"><img src="https://avatars1.githubusercontent.com/u/68943932?v=4?s=100" width="100px;" alt="crouton"/><br /><sub><b>crouton</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=croutonn" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://patrickmuff.ch"><img src="https://avatars3.githubusercontent.com/u/3121902?v=4?s=100" width="100px;" alt="Patrick"/><br /><sub><b>Patrick</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=dislick" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/vimutti77"><img src="https://avatars3.githubusercontent.com/u/27840664?v=4?s=100" width="100px;" alt="Vantroy"/><br /><sub><b>Vantroy</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=vimutti77" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.npmjs.com/~farinajoey"><img src="https://avatars1.githubusercontent.com/u/17398284?v=4?s=100" width="100px;" alt="Joey"/><br /><sub><b>Joey</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=josephfarina" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/gurkerl83"><img src="https://avatars0.githubusercontent.com/u/301689?v=4?s=100" width="100px;" alt="gurkerl83"/><br /><sub><b>gurkerl83</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=gurkerl83" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/tperamaki"><img src="https://avatars0.githubusercontent.com/u/26067988?v=4?s=100" width="100px;" alt="Teemu Perämäki"/><br /><sub><b>Teemu Perämäki</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=tperamaki" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/luisgserrano"><img src="https://avatars3.githubusercontent.com/u/2024164?v=4?s=100" width="100px;" alt="Luis Serrano"/><br /><sub><b>Luis Serrano</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=luisgserrano" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/j-schumann"><img src="https://avatars.githubusercontent.com/u/114239?v=4?s=100" width="100px;" alt="j-schumann"/><br /><sub><b>j-schumann</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=j-schumann" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/andrehsu"><img src="https://avatars.githubusercontent.com/u/4470828?v=4?s=100" width="100px;" alt="Andre Hsu"/><br /><sub><b>Andre Hsu</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=andrehsu" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/slevy85"><img src="https://avatars.githubusercontent.com/u/18260229?v=4?s=100" width="100px;" alt="slevy85"/><br /><sub><b>slevy85</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=slevy85" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.berndartmueller.com"><img src="https://avatars.githubusercontent.com/u/761018?v=4?s=100" width="100px;" alt="Bernd Artmüller"/><br /><sub><b>Bernd Artmüller</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=berndartmueller" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/rihardssceredins"><img src="https://avatars.githubusercontent.com/u/23099574?v=4?s=100" width="100px;" alt="Rihards Ščeredins"/><br /><sub><b>Rihards Ščeredins</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=rihardssceredins" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://its-just-nans.github.io"><img src="https://avatars.githubusercontent.com/u/56606507?v=4?s=100" width="100px;" alt="n4n5"/><br /><sub><b>n4n5</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=Its-Just-Nans" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://rubenmoya.dev"><img src="https://avatars.githubusercontent.com/u/905225?v=4?s=100" width="100px;" alt="Rubén Moya"/><br /><sub><b>Rubén Moya</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=rubenmoya" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/testerez"><img src="https://avatars.githubusercontent.com/u/815236?v=4?s=100" width="100px;" alt="Tom Esterez"/><br /><sub><b>Tom Esterez</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=testerez" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://www.dan-needham.com"><img src="https://avatars.githubusercontent.com/u/1122983?v=4?s=100" width="100px;" alt="Dan Needham"/><br /><sub><b>Dan Needham</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=dndhm" title="Code">💻</a> <a href="https://github.com/aralroca/next-translate/commits?author=dndhm" title="Tests">⚠️</a> <a href="https://github.com/aralroca/next-translate/commits?author=dndhm" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.youtube.com/BrunoAntunesPT"><img src="https://avatars.githubusercontent.com/u/9042965?v=4?s=100" width="100px;" alt="Bruno Antunes"/><br /><sub><b>Bruno Antunes</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=bmvantunes" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kaan-atakan"><img src="https://avatars.githubusercontent.com/u/56063979?v=4?s=100" width="100px;" alt="Kaan Atakan"/><br /><sub><b>Kaan Atakan</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=kaan-atakan" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/groomain"><img src="https://avatars.githubusercontent.com/u/3601848?v=4?s=100" width="100px;" alt="Romain"/><br /><sub><b>Romain</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=groomain" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://ajb.cat"><img src="https://avatars.githubusercontent.com/u/57961822?v=4?s=100" width="100px;" alt="Arnau Jiménez"/><br /><sub><b>Arnau Jiménez</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=ajmnz" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/edwinveldhuizen"><img src="https://avatars.githubusercontent.com/u/1787915?v=4?s=100" width="100px;" alt="Edwin Veldhuizen"/><br /><sub><b>Edwin Veldhuizen</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=edwinveldhuizen" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://dviet.de"><img src="https://avatars.githubusercontent.com/u/40763918?v=4?s=100" width="100px;" alt="Duc Ngo Viet"/><br /><sub><b>Duc Ngo Viet</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=duc-gp" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/bilLkarkariy"><img src="https://avatars.githubusercontent.com/u/43569083?v=4?s=100" width="100px;" alt="Billel Helali"/><br /><sub><b>Billel Helali</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=bilLkarkariy" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/wuifdesign"><img src="https://avatars.githubusercontent.com/u/5678318?v=4?s=100" width="100px;" alt="Wuif"/><br /><sub><b>Wuif</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=wuifdesign" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://michal.bar"><img src="https://avatars.githubusercontent.com/u/9134970?v=4?s=100" width="100px;" alt="Michał Bar"/><br /><sub><b>Michał Bar</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=MrPumpking" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/wuifdesign"><img src="https://avatars.githubusercontent.com/u/5678318?v=4?s=100" width="100px;" alt="Wuif"/><br /><sub><b>Wuif</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=wuifdesign" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/marcesengel"><img src="https://avatars.githubusercontent.com/u/6208890?v=4?s=100" width="100px;" alt="Marces Engel"/><br /><sub><b>Marces Engel</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=marcesengel" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://michal.bar"><img src="https://avatars.githubusercontent.com/u/9134970?v=4?s=100" width="100px;" alt="Michał Bar"/><br /><sub><b>Michał Bar</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=MrPumpking" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Dragate"><img src="https://avatars.githubusercontent.com/u/28112929?v=4?s=100" width="100px;" alt="Dragate"/><br /><sub><b>Dragate</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=Dragate" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/marcesengel"><img src="https://avatars.githubusercontent.com/u/6208890?v=4?s=100" width="100px;" alt="Marces Engel"/><br /><sub><b>Marces Engel</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=marcesengel" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/vascosilvaa"><img src="https://avatars.githubusercontent.com/u/16561642?v=4?s=100" width="100px;" alt="Vasco Silva"/><br /><sub><b>Vasco Silva</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=vascosilvaa" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/StLyn4"><img src="https://avatars.githubusercontent.com/u/73965070?v=4?s=100" width="100px;" alt="Vsevolod Volkov"/><br /><sub><b>Vsevolod Volkov</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=StLyn4" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/felixonmars"><img src="https://avatars.githubusercontent.com/u/1006477?v=4?s=100" width="100px;" alt="Felix Yan"/><br /><sub><b>Felix Yan</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=felixonmars" title="Documentation">📖</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/alziqziq"><img src="https://avatars.githubusercontent.com/u/29282122?v=4?s=100" width="100px;" alt="Muhammad Al Ziqri"/><br /><sub><b>Muhammad Al Ziqri</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=alziqziq" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://teka.dev"><img src="https://avatars.githubusercontent.com/u/4443094?v=4?s=100" width="100px;" alt="Marcelo Oliveira"/><br /><sub><b>Marcelo Oliveira</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=marcelotk15" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/SimplyComplexable"><img src="https://avatars.githubusercontent.com/u/8563846?v=4?s=100" width="100px;" alt="Zack Sunderland"/><br /><sub><b>Zack Sunderland</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=SimplyComplexable" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://andrewovens.com"><img src="https://avatars.githubusercontent.com/u/107420510?v=4?s=100" width="100px;" alt="Andrew Ovens"/><br /><sub><b>Andrew Ovens</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=aovens-quantifi" title="Code">💻</a></td>
+    </tr>
+  </tbody>
 </table>
 
 <!-- markdownlint-restore -->

@@ -7,7 +7,7 @@
 !*.ts
 *.d.ts
 !*.tsx
-!src/plugin
+!src/app-dir
 !examples
 !examples/**/*
 !src
@@ -16,6 +16,8 @@
 !.husky
 !.husky/*
 !.prettierignore
+
+.DS_Store
 
 # dependencies
 /node_modules

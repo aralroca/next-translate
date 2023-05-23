@@ -18,12 +18,16 @@ describe('getT', () => {
     }
   })
 
-  test('should load one namespace and translate', async () => {
+  test('should load one namespace and translate + warning', async () => {
+    console.warn = jest.fn()
     const t = await getT('en', 'ns1')
-    expect(typeof t).toBe('function')
+    const expectedWarning =
+      '[next-translate] "ns2:key_ns2" is missing in current namespace configuration. Try adding "key_ns2" to the namespace "ns2".'
 
+    expect(typeof t).toBe('function')
     expect(t('ns1:key_ns1')).toEqual('message from ns1')
     expect(t('ns2:key_ns2')).toEqual('ns2:key_ns2')
+    expect(console.warn).toBeCalledWith(expectedWarning)
   })
 
   test('should load multiple namespaces and translate', async () => {
@@ -42,11 +46,15 @@ describe('getT', () => {
   })
 
   test('should use the first namespace as default', async () => {
+    console.warn = jest.fn()
     const t = await getT('en', ['ns2', 'ns1'])
-    expect(typeof t).toBe('function')
+    const expectedWarning =
+      '[next-translate] "ns2:key_ns1" is missing in current namespace configuration. Try adding "key_ns1" to the namespace "ns2".'
 
+    expect(typeof t).toBe('function')
     expect(t('key_ns2')).toEqual('message from ns2')
     expect(t('key_ns1')).toEqual('key_ns1')
     expect(t('ns1:key_ns1')).toEqual('message from ns1')
+    expect(console.warn).toBeCalledWith(expectedWarning)
   })
 })

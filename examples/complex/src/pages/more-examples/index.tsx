@@ -31,7 +31,7 @@ export default function MoreExamples() {
       <MdxExample />
       <br />
       <Link href="/more-examples/dynamic-namespace">
-        <a>{t('dynamic-namespaces-link')}</a>
+        {t('dynamic-namespaces-link')}
       </Link>
       <br />
       <Link
@@ -40,12 +40,10 @@ export default function MoreExamples() {
           query: { another: 'another param' },
         }}
       >
-        <a>{t('dynamic-route')}</a>
+        {t('dynamic-route')}
       </Link>
       <br />
-      <Link href="/more-examples/catchall/this/is/an/example">
-        <a>Catchall</a>
-      </Link>
+      <Link href="/more-examples/catchall/this/is/an/example">Catchall</Link>
     </>
   )
 }

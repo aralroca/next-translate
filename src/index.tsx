@@ -1,12 +1,11 @@
 import { ReactElement, ReactNode } from 'react'
-
-import nextTranslate from './plugin'
+import type { NextConfig } from 'next'
 
 export interface TranslationQuery {
   [name: string]: any
 }
 
-export type Translate = <T = string>(
+export type Translate = <T extends unknown = string>(
   i18nKey: string | TemplateStringsArray,
   query?: TranslationQuery | null,
   options?: {
@@ -45,9 +44,17 @@ export type LocaleLoader = (
   namespace: string
 ) => Promise<I18nDictionary>
 
-export interface I18nConfig {
-  defaultLocale?: string
-  locales?: string[]
+// Makes the specified properties within a Typescript interface optional
+export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>
+
+// Built-in i18n Next.js options
+export type RawNextI18nConfig = Exclude<NextConfig['i18n'], null | undefined>
+export type NextI18nConfig = Optional<
+  RawNextI18nConfig,
+  'locales' | 'defaultLocale'
+>
+
+export interface I18nConfig extends NextI18nConfig {
   loadLocaleFrom?: LocaleLoader
   localesToIgnore?: string[]
   pages?: Record<string, PageValue>
@@ -58,14 +65,16 @@ export interface I18nConfig {
   loader?: boolean
   logBuild?: boolean
   revalidate?: number
+  pagesInDir?: string
   interpolation?: {
     format?: Function
-    prefix: string
-    suffix: string
+    prefix?: string
+    suffix?: string
   }
   keySeparator?: string | false
   nsSeparator?: string | false
   defaultNS?: string
+  allowEmptyStrings?: boolean
 }
 
 export interface LoaderConfig extends I18nConfig {
@@ -99,15 +108,55 @@ export interface DynamicNamespacesProps {
 }
 
 declare global {
-  module NodeJS {
+  // For NodeJS 16+
+  // eslint-disable-next-line no-var
+  var i18nConfig: LoaderConfig
+  // eslint-disable-next-line no-var
+  var __NEXT_TRANSLATE__: {
+    namespaces: Record<string, I18nDictionary>
+    lang: string
+  }
+
+  namespace NodeJS {
     interface Global {
       i18nConfig: LoaderConfig
+      __NEXT_TRANSLATE__: {
+        namespaces: Record<string, I18nDictionary>
+        lang: string
+      }
     }
   }
 
   interface Window {
     i18nConfig: LoaderConfig
+    __NEXT_TRANSLATE__: {
+      namespaces: Record<string, I18nDictionary>
+      lang: string
+    }
   }
 }
 
+// TODO: Remove this in future versions > 2.0.0
+function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
+  console.log(`
+    #########################################################################
+    #                                                                       #
+    #   next-translate plugin in 2.0.0 is replaced by                       #
+    #   next-translate-plugin package:                                      #
+    #                                                                       #
+    #   > yarn add next-translate-plugin -D                                 #
+    #   or:                                                                 #
+    #   > npm install next-translate-plugin --save-dev                      #
+    #                                                                       #
+    #   replace in next.config.js file:                                     #
+    #    const nextTranslate = require('next-translate')                    #
+    #   to:                                                                 #
+    #    const nextTranslate = require('next-translate-plugin')             #
+    #                                                                       #
+    #########################################################################
+  `)
+  return nextConfig
+}
+
 module.exports = nextTranslate
+export default nextTranslate
