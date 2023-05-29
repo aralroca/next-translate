@@ -1,6 +1,7 @@
 import React, { cloneElement, Fragment, ReactElement, ReactNode } from 'react'
 
-const tagRe = /<(\w+)>(.*?)<\/\1>|<(\w+)\/>/
+export const tagParsingRegex = /<(\w+) *>(.*?)<\/\1 *>|<(\w+) *\/>/
+
 const nlRe = /(?:\r\n|\r|\n)/g
 
 function getElements(
@@ -19,7 +20,7 @@ export default function formatElements(
   value: string,
   elements: ReactElement[] | Record<string, ReactElement> = []
 ): string | ReactNode[] {
-  const parts = value.replace(nlRe, '').split(tagRe)
+  const parts = value.replace(nlRe, '').split(tagParsingRegex)
 
   if (parts.length === 1) return value
 
