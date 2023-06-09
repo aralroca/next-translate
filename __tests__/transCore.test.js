@@ -66,6 +66,18 @@ describe('transCore', () => {
     ).toEqual(nsRootKeys)
   })
 
+  test('should allow flat keys when keySeparator=false', async () => {
+    const t = transCore({
+      config: {
+        keySeparator: false,
+      },
+      allNamespaces: { common: { 'example.flat.key': 'works' } },
+      lang: 'en',
+    })
+
+    expect(t('common:example.flat.key')).toEqual('works')
+  })
+
   test('should return an object of nested keys', async () => {
     const t = transCore({
       config: {},

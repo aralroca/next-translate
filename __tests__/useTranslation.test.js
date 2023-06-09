@@ -227,6 +227,30 @@ describe('useTranslation', () => {
       expect(container.textContent).toBe(expected)
     })
 
+    test('should work with flat key', () => {
+      const Inner = () => {
+        const { t } = useTranslation('a')
+        return t`this.is.a.flat.key`
+      }
+
+      const ns = {
+        a: { 'this.is.a.flat.key': 'works' },
+      }
+
+      const expected = 'works'
+
+      const { container } = render(
+        <I18nProvider
+          lang="en"
+          namespaces={ns}
+          config={{ keySeparator: false }}
+        >
+          <Inner />
+        </I18nProvider>
+      )
+      expect(container.textContent).toBe(expected)
+    })
+
     test('should work with a defined default namespace | t as function', () => {
       const Inner = () => {
         const { t } = useTranslation('a')
