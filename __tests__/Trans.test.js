@@ -110,6 +110,23 @@ describe('Trans', () => {
       expect(container.textContent).toContain(expected)
     })
 
+    test('should work with flat keys', () => {
+      const i18nKey = 'this.is.a.flat.key'
+      const expected = 'The number is 42'
+      const ns = {
+        'this.is.a.flat.key': 'The number is 42',
+      }
+
+      const config = { keySeparator: false }
+
+      const { container } = render(
+        <I18nProvider lang="en" namespaces={{ ns }} config={config}>
+          <Trans i18nKey={i18nKey} ns="ns" />
+        </I18nProvider>
+      )
+      expect(container.textContent).toContain(expected)
+    })
+
     test('should work the same way than useTranslate with default value', () => {
       console.warn = jest.fn()
       const i18nKey = 'ns:number'

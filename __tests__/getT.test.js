@@ -1,23 +1,27 @@
 import getT from '../src/getT'
 
-describe('getT', () => {
-  beforeAll(() => {
-    global.i18nConfig = {
-      loadLocaleFrom: (__lang, ns) => {
-        if (ns === 'ns1') {
-          return Promise.resolve({
-            key_ns1: 'message from ns1',
-          })
-        }
-        if (ns === 'ns2') {
-          return Promise.resolve({
-            key_ns2: 'message from ns2',
-          })
-        }
-      },
-    }
-  })
+const mockLoadLocaleFrom = jest.fn()
 
+global.i18nConfig = {
+  keySeparator: false,
+  loadLocaleFrom: (...args) => mockLoadLocaleFrom(...args),
+}
+
+describe('getT', () => {
+  beforeEach(() => {
+    mockLoadLocaleFrom.mockImplementation((__lang, ns) => {
+      if (ns === 'ns1') {
+        return Promise.resolve({
+          key_ns1: 'message from ns1',
+        })
+      }
+      if (ns === 'ns2') {
+        return Promise.resolve({
+          key_ns2: 'message from ns2',
+        })
+      }
+    })
+  })
   test('should load one namespace and translate + warning', async () => {
     console.warn = jest.fn()
     const t = await getT('en', 'ns1')
@@ -28,6 +32,14 @@ describe('getT', () => {
     expect(t('ns1:key_ns1')).toEqual('message from ns1')
     expect(t('ns2:key_ns2')).toEqual('ns2:key_ns2')
     expect(console.warn).toBeCalledWith(expectedWarning)
+  })
+
+  test('should work with flat keys', async () => {
+    mockLoadLocaleFrom.mockImplementationOnce(async (__lang, ns) => ({
+      'this.is.a.flat.key': 'works',
+    }))
+    const t = await getT('en', 'common')
+    expect(t('this.is.a.flat.key')).toEqual('works')
   })
 
   test('should load multiple namespaces and translate', async () => {
