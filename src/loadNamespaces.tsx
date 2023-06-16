@@ -3,7 +3,7 @@ import getConfig from './getConfig'
 import getPageNamespaces from './getPageNamespaces'
 
 export default async function loadNamespaces(
-  config: LoaderConfig = {}
+  config: LoaderConfig = {} as LoaderConfig
 ): Promise<{
   __lang: string
   __namespaces?: Record<string, object>
@@ -49,7 +49,7 @@ export default async function loadNamespaces(
   return {
     __lang,
     __namespaces: namespaces.reduce((obj: Record<string, object>, ns, i) => {
-      obj[ns] = pageNamespaces[i] || null
+      obj[ns] = pageNamespaces[i] || (null as unknown as object)
       return obj
     }, {}),
   }

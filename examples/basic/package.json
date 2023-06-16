@@ -8,7 +8,7 @@
     "build": "next build"
   },
   "dependencies": {
-    "next": "13.1.7-canary.11",
+    "next": "13.4.6",
     "next-translate": "link:../../",
     "react": "link:../../node_modules/react",
     "react-dom": "link:../../node_modules/react-dom"
