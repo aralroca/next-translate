@@ -92,7 +92,7 @@
   },
   "peerDependencies": {
     "next": ">= 13.2.5",
-    "react": "18.0.0"
+    "react": ">= 18.0.0"
   },
   "prettier": {
     "trailingComma": "es5",
