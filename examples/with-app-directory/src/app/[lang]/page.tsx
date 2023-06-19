@@ -1,13 +1,16 @@
+import React from 'react'
 import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
 import ClientCode from '../../components/client-code'
 
-export default function Page() {
+export default async function Page() {
+  await sleep(500) // simulate slow page load to show loading page
+
   const { t, lang } = useTranslation('common')
 
   return (
     <>
-      <h1>{t('title')}</h1>
+      <h2>{t('title')}</h2>
 
       <ClientCode />
 
@@ -28,6 +31,10 @@ export default function Page() {
       </div>
     </>
   )
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 export const metadata = {

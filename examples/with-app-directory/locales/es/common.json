@@ -1,4 +1,6 @@
 {
   "title": "Librería next-translate",
-  "second-page": "Segunda <0>página</0>"
+  "second-page": "Segunda <0>página</0>",
+  "loading": "Cargando...",
+  "layout-title": "Título de la página (del layout)"
 }
