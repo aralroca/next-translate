@@ -5,6 +5,12 @@ export interface TranslationQuery {
   [name: string]: any
 }
 
+export type DataForStoreType = {
+  lang: string
+  namespaces: Record<string, I18nDictionary>
+  config: LoaderConfig
+}
+
 export type Translate = <T extends unknown = string>(
   i18nKey: string | TemplateStringsArray,
   query?: TranslationQuery | null,

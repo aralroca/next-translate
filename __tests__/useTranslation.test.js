@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { render, cleanup, fireEvent } from '@testing-library/react'
 import I18nProvider from '../src/I18nProvider'
 import useTranslation from '../src/useTranslation'
+import _store from '../src/_store'
 
 const Inner = ({ i18nKey, query }) => {
   const { t } = useTranslation()
@@ -1525,7 +1526,7 @@ describe('useTranslation', () => {
   })
 
   describe('Next.js 13 app-dir', () => {
-    test('should work without context (with globalThis.__NEXT_TRANSLATE__)', () => {
+    test('should work without context (with _store)', () => {
       const Inner = () => {
         const { t } = useTranslation()
         const text = t('ns:interpolation', {
@@ -1536,15 +1537,15 @@ describe('useTranslation', () => {
 
       const expected = 'There are 3 cats.'
 
-      globalThis.__NEXT_TRANSLATE__ = {
+      _store.set({
         namespaces: {
           ns: {
             interpolation: 'There are {{count}} cats.',
           },
         },
         lang: 'en',
-      }
-      globalThis.i18nConfig = {}
+        config: {},
+      })
 
       const { container } = render(<Inner />)
       expect(container.textContent).toContain(expected)
