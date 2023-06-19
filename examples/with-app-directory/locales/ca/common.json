@@ -1,4 +1,6 @@
 {
   "title": "Llibreria next-translate",
-  "second-page": "Segona <0>pàgina</0>"
+  "second-page": "Segona <0>pàgina</0>",
+  "loading": "Carregant...",
+  "layout-title": "Títol de la pàgina (del layout)"
 }

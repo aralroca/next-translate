@@ -6,7 +6,7 @@ export default function Page() {
   const { t, lang } = useTranslation('common')
   return (
     <>
-      <h1>{t`title`}</h1>
+      <h2>{t`title`}</h2>
       <Trans i18nKey="common:second-page" components={[<b />]} />
       <div>
         <Link href={`/${lang}`}>⬅️</Link>
