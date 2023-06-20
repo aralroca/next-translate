@@ -96,6 +96,7 @@ export interface LoaderConfig extends I18nConfig {
 export interface LoggerProps {
   namespace: string | undefined
   i18nKey: string
+  isKeyConflictWithKeySeparator?: boolean
 }
 
 export interface I18nLogger {
