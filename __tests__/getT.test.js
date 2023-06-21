@@ -1,4 +1,5 @@
 import getT from '../src/getT'
+import store from '../src/_store'
 
 const mockLoadLocaleFrom = jest.fn()
 
@@ -9,6 +10,7 @@ global.i18nConfig = {
 
 describe('getT', () => {
   beforeEach(() => {
+    store.set()
     mockLoadLocaleFrom.mockImplementation((__lang, ns) => {
       if (ns === 'ns1') {
         return Promise.resolve({
@@ -40,6 +42,21 @@ describe('getT', () => {
     }))
     const t = await getT('en', 'common')
     expect(t('this.is.a.flat.key')).toEqual('works')
+  })
+
+  test('should work inside appDir', async () => {
+    const mockAppDirLoadLocaleFrom = jest.fn()
+    store.set({
+      config: {
+        keySeparator: false,
+        loadLocaleFrom: (...args) => mockAppDirLoadLocaleFrom(...args),
+      },
+    })
+    mockAppDirLoadLocaleFrom.mockImplementationOnce(async (__lang, ns) => ({
+      'example-app-dir': 'works',
+    }))
+    const t = await getT('en', 'common')
+    expect(t('example-app-dir')).toEqual('works')
   })
 
   test('should load multiple namespaces and translate', async () => {
