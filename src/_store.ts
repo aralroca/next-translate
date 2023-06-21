@@ -8,7 +8,7 @@ export default {
       ...storeData,
       namespaces: {
         ...(data?.namespaces || {}),
-        ...(storeData.namespaces || {}),
+        ...(storeData?.namespaces || {}),
       },
     }
   },
