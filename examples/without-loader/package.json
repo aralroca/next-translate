@@ -8,12 +8,12 @@
     "build": "next build"
   },
   "dependencies": {
-    "next": "13.1.7-canary.11",
+    "next": "13.4.7",
     "next-translate": "link:../../",
     "react": "link:../../node_modules/react",
     "react-dom": "link:../../node_modules/react-dom"
   },
   "devDependencies": {
-    "next-translate-plugin": "2.0.0"
+    "next-translate-plugin": "2.4.0"
   }
 }
