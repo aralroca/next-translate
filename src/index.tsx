@@ -121,7 +121,7 @@ declare global {
   var __NEXT_TRANSLATE__: {
     namespaces: Record<string, I18nDictionary>
     lang: string
-    pathname?: string
+    config: LoaderConfig
   }
 
   namespace NodeJS {
