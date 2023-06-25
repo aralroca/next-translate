@@ -1,4 +1,4 @@
-import { LoaderConfig, LocaleLoader } from '.'
+import { I18nDictionary, LoaderConfig, LocaleLoader } from '.'
 import getConfig from './getConfig'
 import getPageNamespaces from './getPageNamespaces'
 
@@ -6,7 +6,7 @@ export default async function loadNamespaces(
   config: LoaderConfig = {} as LoaderConfig
 ): Promise<{
   __lang: string
-  __namespaces?: Record<string, object>
+  __namespaces?: Record<string, I18nDictionary>
 }> {
   const conf = { ...getConfig(), ...config }
   const localesToIgnore = conf.localesToIgnore || ['default']
@@ -48,10 +48,13 @@ export default async function loadNamespaces(
 
   return {
     __lang,
-    __namespaces: namespaces.reduce((obj: Record<string, object>, ns, i) => {
-      obj[ns] = pageNamespaces[i] || (null as unknown as object)
-      return obj
-    }, {}),
+    __namespaces: namespaces.reduce(
+      (obj: Record<string, I18nDictionary>, ns, i) => {
+        obj[ns] = pageNamespaces[i] || (null as unknown as I18nDictionary)
+        return obj
+      },
+      {}
+    ),
   }
 }
 

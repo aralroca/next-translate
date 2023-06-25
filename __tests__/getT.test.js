@@ -1,5 +1,4 @@
 import getT from '../src/getT'
-import store from '../src/_store'
 
 const mockLoadLocaleFrom = jest.fn()
 
@@ -10,7 +9,7 @@ global.i18nConfig = {
 
 describe('getT', () => {
   beforeEach(() => {
-    store.set()
+    globalThis.__NEXT_TRANSLATE__ = {}
     mockLoadLocaleFrom.mockImplementation((__lang, ns) => {
       if (ns === 'ns1') {
         return Promise.resolve({
@@ -46,12 +45,12 @@ describe('getT', () => {
 
   test('should work inside appDir', async () => {
     const mockAppDirLoadLocaleFrom = jest.fn()
-    store.set({
+    globalThis.__NEXT_TRANSLATE__ = {
       config: {
         keySeparator: false,
         loadLocaleFrom: (...args) => mockAppDirLoadLocaleFrom(...args),
       },
-    })
+    }
     mockAppDirLoadLocaleFrom.mockImplementationOnce(async (__lang, ns) => ({
       'example-app-dir': 'works',
     }))

@@ -1,6 +1,5 @@
 import { useContext, useMemo } from 'react'
 import { I18n } from '.'
-import store from './_store'
 import wrapTWithDefaultNs from './wrapTWithDefaultNs'
 import I18nContext from './context'
 import transCore from './transCore'
@@ -17,7 +16,7 @@ function useTranslationInPages(defaultNS?: string): I18n {
 }
 
 function useTranslationAppDir(defaultNS?: string) {
-  const { lang, namespaces, config } = store.get()
+  const { lang, namespaces, config } = globalThis.__NEXT_TRANSLATE__ ?? {}
   const localesToIgnore = config.localesToIgnore || ['default']
   const ignoreLang = localesToIgnore.includes(lang)
   const t = transCore({
@@ -31,7 +30,7 @@ function useTranslationAppDir(defaultNS?: string) {
 }
 
 export default function useTranslation(defaultNS?: string): I18n {
-  const appDir = store.get()
+  const appDir = globalThis.__NEXT_TRANSLATE__
   const useT = appDir?.config ? useTranslationAppDir : useTranslationInPages
   return useT(defaultNS)
 }

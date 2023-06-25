@@ -1,6 +1,5 @@
 import getConfig from './getConfig'
 import transCore from './transCore'
-import store from './_store'
 import wrapTWithDefaultNs from './wrapTWithDefaultNs'
 import { I18nDictionary, LocaleLoader } from './index'
 
@@ -8,7 +7,7 @@ export default async function getT(
   locale = '',
   namespace: string | string[] = ''
 ) {
-  const appDir = store.get()
+  const appDir = globalThis.__NEXT_TRANSLATE__
   const config = appDir?.config ?? getConfig()
   const defaultLoader = async () => Promise.resolve<I18nDictionary>({})
   const lang = locale || config.defaultLocale || ''
