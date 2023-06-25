@@ -963,7 +963,7 @@ At Next-translate, we have chosen not to re-implement this functionality, as we 
 
 - Add the dynamic path `[lang]` to the first level. That is, all your pages will be inside `/app/[lang]`.
 - If you need more control over which languages to support, or to detect the browser language, use the [middleware](https://nextjs.org/docs/app/building-your-application/routing/internationalization#routing-overview) that the Next.js team [recommends here](https://nextjs.org/docs/app/building-your-application/routing/internationalization#routing-overview).
-- Update all the pages inside `i18n.(js|ts)` file to contain the `/[lang]` at the beginning.
+- Update all the pages inside `i18n.(js|json)` file to contain the `/[lang]` at the beginning.
 
 ```diff
 module.exports = {
