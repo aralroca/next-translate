@@ -1,15 +1,20 @@
 import type { NextConfig } from 'next'
-import type { I18nConfig } from '..'
+import type { I18nConfig, NextConfigWithNextTranslate } from '..'
 import { hasHOC } from './utils'
 
-export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
+export default function nextTranslate(
+  nextConfig: NextConfigWithNextTranslate = {}
+): NextConfig {
   const fs = require('fs')
   const path = require('path')
   const test = /\.(tsx|ts|js|mjs|jsx)$/
 
+  const config = nextConfig.nextTranslate ?? {}
+  delete nextConfig['nextTranslate']
   // NEXT_TRANSLATE_PATH env is supported both relative and absolute path
+  const basePath = config.basePath ?? pkgDir()
   const dir = path.resolve(
-    path.relative(pkgDir(), process.env.NEXT_TRANSLATE_PATH || '.')
+    path.relative(basePath, process.env.NEXT_TRANSLATE_PATH || '.')
   )
 
   let {
@@ -29,7 +34,7 @@ export default function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
     nsSeparator,
     defaultNS,
     ...restI18n
-  } = require(path.join(dir, 'i18n')) as I18nConfig & NextConfig["i18n"]
+  } = require(path.join(dir, 'i18n')) as I18nConfig & NextConfig['i18n']
 
   let hasGetInitialPropsOnAppJs = false
 

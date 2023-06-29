@@ -1,6 +1,7 @@
 import { ReactElement, ReactNode } from 'react'
 
 import nextTranslate from './plugin'
+import { NextConfig } from 'next'
 
 export interface TranslationQuery {
   [name: string]: any
@@ -97,6 +98,12 @@ export interface DynamicNamespacesProps {
   namespaces?: string[]
   fallback?: ReactNode
   children?: ReactNode
+}
+
+export interface NextConfigWithNextTranslate extends NextConfig {
+  nextTranslate?: {
+    basePath?: string
+  }
 }
 
 declare global {
