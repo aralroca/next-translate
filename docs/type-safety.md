@@ -1,4 +1,4 @@
-# Type safety consuming translations
+# Type safety consuming translations (TypeScript only)
 
 To enable type safety consuming translations, you have to add this to the `next-translate.d.ts` file specifying the name and location of the namespaces:
 
