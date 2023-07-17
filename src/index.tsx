@@ -143,6 +143,57 @@ declare global {
   }
 }
 
+//////// For type safety (next-translate.d.ts):  ///////////
+/*
+ *
+ * import type { Paths, I18n, Translate } from "next-translate";
+ *
+ * export interface TranslationsKeys {
+ *   common: Paths<typeof import("./locales/en/common.json")>;
+ *   home: Paths<typeof import("./locales/en/home.json")>;
+ * }
+ *
+ * export interface TypeSafeTranslate<Namespace extends keyof TranslationsKeys>
+ *   extends Omit<I18n, "t"> {
+ *   t: {
+ *     (key: TranslationsKeys[Namespace], ...rest: Tail<Parameters<Translate>>): string;
+ *     <T extends string>(template: TemplateStringsArray): string;
+ *   };
+ * }
+ *
+ * declare module "next-translate/useTranslation" {
+ *   export default function useTranslation<
+ *     Namespace extends keyof TranslationsKeys,
+ *   >(namespace: Namespace): TypeSafeTranslate<Namespace>;
+ * }
+ */
+
+type RemovePlural<Key extends string> = Key extends `${infer Prefix}${
+  | '_zero'
+  | '_one'
+  | '_two'
+  | '_few'
+  | '_many'
+  | '_other'
+  | `_${infer Num}`}`
+  ? Prefix
+  : Key
+
+type Join<S1, S2> = S1 extends string
+  ? S2 extends string
+    ? `${S1}.${S2}`
+    : never
+  : never
+
+// @ts-ignore
+export type Paths<T> = RemovePlural<
+  {
+    [K in keyof T]: T[K] extends Record<string, unknown>
+      ? Join<K, Paths<T[K]>>
+      : K
+  }[keyof T]
+>
+
 // TODO: Remove this in future versions > 2.0.0
 function nextTranslate(nextConfig: NextConfig = {}): NextConfig {
   console.log(`
