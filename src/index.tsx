@@ -187,11 +187,13 @@ type Join<S1, S2> = S1 extends string
 
 // @ts-ignore
 export type Paths<T> = RemovePlural<
+  // @ts-ignore
   {
-    [K in keyof T]: T[K] extends Record<string, unknown>
+    // @ts-ignore
+    [K in Extract<keyof T, string>]: T[K] extends Record<string, unknown>
       ? Join<K, Paths<T[K]>>
       : K
-  }[keyof T]
+  }[Extract<keyof T, string>]
 >
 
 // TODO: Remove this in future versions > 2.0.0
