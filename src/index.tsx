@@ -175,7 +175,7 @@ type RemovePlural<Key extends string> = Key extends `${infer Prefix}${
   | '_few'
   | '_many'
   | '_other'
-  | `_${infer Num}`}`
+  | `_${number}`}`
   ? Prefix
   : Key
 
