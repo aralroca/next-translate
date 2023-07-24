@@ -1135,6 +1135,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="http://teka.dev"><img src="https://avatars.githubusercontent.com/u/4443094?v=4?s=100" width="100px;" alt="Marcelo Oliveira"/><br /><sub><b>Marcelo Oliveira</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=marcelotk15" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/SimplyComplexable"><img src="https://avatars.githubusercontent.com/u/8563846?v=4?s=100" width="100px;" alt="Zack Sunderland"/><br /><sub><b>Zack Sunderland</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=SimplyComplexable" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://andrewovens.com"><img src="https://avatars.githubusercontent.com/u/107420510?v=4?s=100" width="100px;" alt="Andrew Ovens"/><br /><sub><b>Andrew Ovens</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=aovens-quantifi" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/danielpid"><img src="https://avatars.githubusercontent.com/u/16427301?v=4?s=100" width="100px;" alt="dANi"/><br /><sub><b>dANi</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=danielpid" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
