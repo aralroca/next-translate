@@ -1137,6 +1137,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="http://andrewovens.com"><img src="https://avatars.githubusercontent.com/u/107420510?v=4?s=100" width="100px;" alt="Andrew Ovens"/><br /><sub><b>Andrew Ovens</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=aovens-quantifi" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/danielpid"><img src="https://avatars.githubusercontent.com/u/16427301?v=4?s=100" width="100px;" alt="dANi"/><br /><sub><b>dANi</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=danielpid" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://thematrixan.github.io/"><img src="https://avatars.githubusercontent.com/u/28862367?v=4?s=100" width="100px;" alt="Mateusz Lesiak"/><br /><sub><b>Mateusz Lesiak</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=TheMatrixan" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Curetix"><img src="https://avatars.githubusercontent.com/u/15160542?v=4?s=100" width="100px;" alt="Curetix"/><br /><sub><b>Curetix</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=Curetix" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
