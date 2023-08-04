@@ -5,6 +5,8 @@ To enable type safety consuming translations, you have to add this to the `next-
 ```ts
 import type { Paths, I18n, Translate } from 'next-translate'
 
+type Tail<T> = T extends [unknown, ...infer Rest] ? Rest : never;
+
 export interface TranslationsKeys {
   // Example with "common" and "home" namespaces in "en" (the default language):
   common: Paths<typeof import('./locales/en/common.json')>
