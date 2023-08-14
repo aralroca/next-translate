@@ -1139,6 +1139,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://thematrixan.github.io/"><img src="https://avatars.githubusercontent.com/u/28862367?v=4?s=100" width="100px;" alt="Mateusz Lesiak"/><br /><sub><b>Mateusz Lesiak</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=TheMatrixan" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Curetix"><img src="https://avatars.githubusercontent.com/u/15160542?v=4?s=100" width="100px;" alt="Curetix"/><br /><sub><b>Curetix</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=Curetix" title="Documentation">📖</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/crs1138"><img src="https://avatars.githubusercontent.com/u/1313681?v=4?s=100" width="100px;" alt="Honza"/><br /><sub><b>Honza</b></sub></a><br /><a href="#maintenance-crs1138" title="Maintenance">🚧</a></td>
+    </tr>
   </tbody>
 </table>
 
