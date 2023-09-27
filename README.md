@@ -34,6 +34,7 @@
 - [3. Configuration](#3-configuration)
 - [4. API](#4-api)
   - [useTranslation](#usetranslation)
+  - [createTranslation](#createtranslation)
   - [withTranslation](#withtranslation)
   - [Trans Component](#trans-component)
   - [DynamicNamespaces](#dynamicnamespaces)
@@ -298,6 +299,15 @@ The `t` function:
     - **default**: string - Default translation for the key. If fallback keys are used, it will be used only after exhausting all the fallbacks.
     - **ns**: string - Namespace to use when none is embded in the `i18nKey`.
 - **Output**: string
+
+### createTranslation
+
+Similar than `useTranslation` but without being a hook. This helper **only works** in **app dir**.
+
+```ts
+  const { t, lang } = createTranslation('ns1') // default namespace (optional)
+  const title = t('title')
+```
 
 ### withTranslation
 
