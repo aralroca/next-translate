@@ -12,16 +12,16 @@
   "dependencies": {
     "@mdx-js/loader": "2.3.0",
     "@mdx-js/react": "2.3.0",
-    "@next/mdx": "13.5.4",
-    "next": "13.5.4",
+    "@next/mdx": "13.5.6",
+    "next": "13.5.6",
     "next-translate": "link:../../",
     "react": "link:../../node_modules/react",
     "react-dom": "link:../../node_modules/react-dom"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "13.5.4",
-    "@types/node": "20.8.6",
-    "@types/react": "18.2.28",
+    "@next/bundle-analyzer": "13.5.6",
+    "@types/node": "20.8.7",
+    "@types/react": "18.2.31",
     "next-translate-plugin": "2.6.1",
     "typescript": "5.2.2"
   },
