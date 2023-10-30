@@ -18,7 +18,7 @@
 <a href="https://github.com/aralroca/next-translate/actions?query=workflow%3ACI" alt="Tests status">
 <img src="https://github.com/aralroca/next-translate/workflows/CI/badge.svg" /></a>
 <a href="https://twitter.com/intent/follow?screen_name=aralroca">
-<img src="https://img.shields.io/twitter/follow/aralroca?style=social&logo=twitter"
+<img src="https://img.shields.io/twitter/follow/aralroca?style=social&logo=x"
             alt="follow on Twitter"></a>
 
 </div>
