@@ -530,6 +530,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "timotew",
+      "name": "Tim O. Peters",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12928383?v=4",
+      "profile": "https://www.linkedin.com/in/timotew/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
