@@ -539,6 +539,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "hydRAnger",
+      "name": "Li Ming",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1228449?v=4",
+      "profile": "https://github.com/hydRAnger",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
