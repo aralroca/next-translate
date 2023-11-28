@@ -485,6 +485,60 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "danielpid",
+      "name": "dANi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16427301?v=4",
+      "profile": "https://github.com/danielpid",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "TheMatrixan",
+      "name": "Mateusz Lesiak",
+      "avatar_url": "https://avatars.githubusercontent.com/u/28862367?v=4",
+      "profile": "https://thematrixan.github.io/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Curetix",
+      "name": "Curetix",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15160542?v=4",
+      "profile": "https://github.com/Curetix",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "crs1138",
+      "name": "Honza",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1313681?v=4",
+      "profile": "https://github.com/crs1138",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "BandhiyaHardik",
+      "name": "HardikBandhiya",
+      "avatar_url": "https://avatars.githubusercontent.com/u/110784317?v=4",
+      "profile": "https://github.com/BandhiyaHardik",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "timotew",
+      "name": "Tim O. Peters",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12928383?v=4",
+      "profile": "https://www.linkedin.com/in/timotew/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -493,5 +547,6 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": true,
-  "commitConvention": "angular"
+  "commitConvention": "angular",
+  "commitType": "docs"
 }

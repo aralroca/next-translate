@@ -18,7 +18,7 @@
 <a href="https://github.com/aralroca/next-translate/actions?query=workflow%3ACI" alt="Tests status">
 <img src="https://github.com/aralroca/next-translate/workflows/CI/badge.svg" /></a>
 <a href="https://twitter.com/intent/follow?screen_name=aralroca">
-<img src="https://img.shields.io/twitter/follow/aralroca?style=social&logo=twitter"
+<img src="https://img.shields.io/twitter/follow/aralroca?style=social&logo=x"
             alt="follow on Twitter"></a>
 
 </div>
@@ -34,6 +34,7 @@
 - [3. Configuration](#3-configuration)
 - [4. API](#4-api)
   - [useTranslation](#usetranslation)
+  - [createTranslation](#createtranslation)
   - [withTranslation](#withtranslation)
   - [Trans Component](#trans-component)
   - [DynamicNamespaces](#dynamicnamespaces)
@@ -298,6 +299,15 @@ The `t` function:
     - **default**: string - Default translation for the key. If fallback keys are used, it will be used only after exhausting all the fallbacks.
     - **ns**: string - Namespace to use when none is embded in the `i18nKey`.
 - **Output**: string
+
+### createTranslation
+
+Similar than `useTranslation` but without being a hook. This helper **only works** in **app dir**.
+
+```ts
+  const { t, lang } = createTranslation('ns1') // default namespace (optional)
+  const title = t('title')
+```
 
 ### withTranslation
 
@@ -1135,6 +1145,14 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="http://teka.dev"><img src="https://avatars.githubusercontent.com/u/4443094?v=4?s=100" width="100px;" alt="Marcelo Oliveira"/><br /><sub><b>Marcelo Oliveira</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=marcelotk15" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/SimplyComplexable"><img src="https://avatars.githubusercontent.com/u/8563846?v=4?s=100" width="100px;" alt="Zack Sunderland"/><br /><sub><b>Zack Sunderland</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=SimplyComplexable" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://andrewovens.com"><img src="https://avatars.githubusercontent.com/u/107420510?v=4?s=100" width="100px;" alt="Andrew Ovens"/><br /><sub><b>Andrew Ovens</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=aovens-quantifi" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/danielpid"><img src="https://avatars.githubusercontent.com/u/16427301?v=4?s=100" width="100px;" alt="dANi"/><br /><sub><b>dANi</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=danielpid" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://thematrixan.github.io/"><img src="https://avatars.githubusercontent.com/u/28862367?v=4?s=100" width="100px;" alt="Mateusz Lesiak"/><br /><sub><b>Mateusz Lesiak</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=TheMatrixan" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Curetix"><img src="https://avatars.githubusercontent.com/u/15160542?v=4?s=100" width="100px;" alt="Curetix"/><br /><sub><b>Curetix</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=Curetix" title="Documentation">📖</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/crs1138"><img src="https://avatars.githubusercontent.com/u/1313681?v=4?s=100" width="100px;" alt="Honza"/><br /><sub><b>Honza</b></sub></a><br /><a href="#maintenance-crs1138" title="Maintenance">🚧</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/BandhiyaHardik"><img src="https://avatars.githubusercontent.com/u/110784317?v=4?s=100" width="100px;" alt="HardikBandhiya"/><br /><sub><b>HardikBandhiya</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=BandhiyaHardik" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/timotew/"><img src="https://avatars.githubusercontent.com/u/12928383?v=4?s=100" width="100px;" alt="Tim O. Peters"/><br /><sub><b>Tim O. Peters</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=timotew" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
