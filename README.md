@@ -112,7 +112,7 @@ In order to do this we use a **webpack loader** that loads the necessary transla
 - **`getServerSideProps`**. This is the **default method for dynamic pages** like `[slug].js` or `[...catchall].js`. This is because for these pages it is necessary to define the `getStaticPaths` and there is no knowledge of how the slugs should be for each locale. Likewise, how is it by default, only that you write the getStaticPaths then it will already use the getStaticProps to load the translations.
 - **`getInitialProps`**. This is the **default method for these pages that use a HoC**. This is in order to avoid conflicts because HoC could overwrite a `getInitialProps`.
 
-This **whole process is transparent**, so in your pages you can directly consume the `useTranslate` hook to use the namespaces, and you don't need to do anything else.
+This **whole process is transparent**, so in your pages you can directly consume the `useTranslation` hook to use the namespaces, and you don't need to do anything else.
 
 If for some reason you use a `getInitialProps` in your `_app.js` file, then the translations will only be loaded into your `getInitialProps` from `_app.js`. We recommend that for optimization reasons you don't use this approach unless it is absolutely necessary.
 
