@@ -1153,6 +1153,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/crs1138"><img src="https://avatars.githubusercontent.com/u/1313681?v=4?s=100" width="100px;" alt="Honza"/><br /><sub><b>Honza</b></sub></a><br /><a href="#maintenance-crs1138" title="Maintenance">🚧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/BandhiyaHardik"><img src="https://avatars.githubusercontent.com/u/110784317?v=4?s=100" width="100px;" alt="HardikBandhiya"/><br /><sub><b>HardikBandhiya</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=BandhiyaHardik" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/timotew/"><img src="https://avatars.githubusercontent.com/u/12928383?v=4?s=100" width="100px;" alt="Tim O. Peters"/><br /><sub><b>Tim O. Peters</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=timotew" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/hydRAnger"><img src="https://avatars.githubusercontent.com/u/1228449?v=4?s=100" width="100px;" alt="Li Ming"/><br /><sub><b>Li Ming</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=hydRAnger" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
