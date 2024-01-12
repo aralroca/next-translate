@@ -41,6 +41,7 @@ export interface TransProps {
   fallback?: string | string[]
   defaultTrans?: string
   ns?: string
+  returnObjects?: boolean
 }
 
 export type PageValue = string[] | ((context: object) => string[])
