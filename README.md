@@ -382,6 +382,7 @@ Or using `components` prop as a object:
   - `fallback` - string | string[] - Optional. Fallback i18nKey if the i18nKey doesn't match.
   - `defaultTrans` - string - Default translation for the key. If fallback keys are used, it will be used only after exhausting all the fallbacks.
   - `ns` - Namespace to use when none is embedded in `i18nKey`
+  - `returnObjects` -  boolean - Get part of the JSON with all the translations. [See more](#7-nested-translations).
 
 In cases where we require the functionality of the `Trans` component, but need a **string** to be interpolated, rather than the output of the `t(props.i18nKey)` function, there is also a `TransText` component, which takes a `text` prop instead of `i18nKey`.
 
