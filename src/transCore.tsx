@@ -65,7 +65,14 @@ export default function transCore({
     )
 
     const dic = (namespace && allNamespaces[namespace]) || {}
-    const keyWithPlural = plural(pluralRules, dic, i18nKey, config, query)
+    const keyWithPlural = plural(
+      pluralRules,
+      dic,
+      i18nKey,
+      config,
+      query,
+      options
+    )
     const dicValue = getDicValue(dic, keyWithPlural, config, options)
     const value =
       typeof dicValue === 'object'
@@ -157,11 +164,14 @@ function getDicValue(
 
   if (
     typeof value === 'string' ||
-    ((value as unknown) instanceof Object && options.returnObjects)
+    ((value as unknown) instanceof Object &&
+      options.returnObjects &&
+      Object.keys(value).length > 0)
   ) {
     return value
   }
 
+  if (Array.isArray(value) && options.returnObjects) return value
   return undefined
 }
 
@@ -173,23 +183,29 @@ function plural(
   dic: I18nDictionary,
   key: string,
   config: I18nConfig,
-  query?: TranslationQuery | null
+  query?: TranslationQuery | null,
+  options?: {
+    returnObjects?: boolean
+    fallback?: string | string[]
+  }
 ): string {
   if (!query || typeof query.count !== 'number') return key
 
   const numKey = `${key}_${query.count}`
-  if (getDicValue(dic, numKey, config) !== undefined) return numKey
+  if (getDicValue(dic, numKey, config, options) !== undefined) return numKey
 
   const pluralKey = `${key}_${pluralRules.select(query.count)}`
-  if (getDicValue(dic, pluralKey, config) !== undefined) {
+  if (getDicValue(dic, pluralKey, config, options) !== undefined) {
     return pluralKey
   }
 
   const nestedNumKey = `${key}.${query.count}`
-  if (getDicValue(dic, nestedNumKey, config) !== undefined) return nestedNumKey
+  if (getDicValue(dic, nestedNumKey, config, options) !== undefined)
+    return nestedNumKey
 
   const nestedKey = `${key}.${pluralRules.select(query.count)}`
-  if (getDicValue(dic, nestedKey, config) !== undefined) return nestedKey
+  if (getDicValue(dic, nestedKey, config, options) !== undefined)
+    return nestedKey
 
   return key
 }
