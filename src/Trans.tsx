@@ -16,6 +16,7 @@ export default function Trans({
   fallback,
   defaultTrans,
   ns,
+  returnObjects,
 }: TransProps): any {
   const { t, lang } = useTranslation(ns)
 
@@ -23,11 +24,19 @@ export default function Trans({
    * Memoize the transformation
    */
   const result = useMemo(() => {
-    const text = t<string>(i18nKey, values, { fallback, default: defaultTrans })
+    const text = t<string>(i18nKey, values, {
+      fallback,
+      default: defaultTrans,
+      returnObjects,
+    })
 
     if (!text) return text
 
-    if (!components || components.length === 0) return text
+    if (!components || components.length === 0)
+      return Array.isArray(text) ? text.map((item) => item) : text
+
+    if (Array.isArray(text))
+      return text.map((item) => formatElements(item, components))
 
     return formatElements(text, components)
   }, [i18nKey, values, components, lang]) as string

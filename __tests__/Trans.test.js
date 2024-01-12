@@ -49,6 +49,75 @@ describe('Trans', () => {
       expect(container.textContent).toContain(expected)
     })
 
+    test('should work with arrays', () => {
+      const i18nKey = 'ns:parent.child'
+      const expectedFirstElement = '<strong>First</strong> element 42'
+      const expectedSecondElement = '<strong>Second</strong> element 42'
+      const withSingular = {
+        parent: {
+          child: [
+            '<0>First</0> element {{num}}',
+            '<0>Second</0> element {{num}}',
+          ],
+        },
+      }
+      const { container } = render(
+        <TestEnglish
+          returnObjects
+          namespaces={{ ns: withSingular }}
+          i18nKey={i18nKey}
+          values={{ num: 42 }}
+          components={[<strong />]}
+        />
+      )
+      expect(container.innerHTML).toContain(expectedFirstElement)
+      expect(container.innerHTML).toContain(expectedSecondElement)
+    })
+
+    test('should work with arrays and singulars', () => {
+      const i18nKey = 'ns:withsingular'
+      const expected = '<strong>The number</strong> is one'
+      const withSingular = {
+        withsingular_0: ['<0>The number</0> is ZERO!'],
+        withsingular_one: ['<0>The number</0> is one'],
+        withsingular_other: ['<0>The number</0> is plural'],
+      }
+
+      const { container } = render(
+        <TestEnglish
+          returnObjects
+          namespaces={{ ns: withSingular }}
+          i18nKey={i18nKey}
+          values={{ count: 1 }}
+          components={[<strong />]}
+        />
+      )
+
+      expect(container.innerHTML).toContain(expected)
+    })
+
+    test('should work with arrays and plurals', () => {
+      const i18nKey = 'ns:withsingular'
+      const expected = '<strong>The number</strong> is plural'
+      const withSingular = {
+        withsingular: ['<0>First</0> is not zero'],
+        withsingular_0: ['<0>The number</0> is ZERO!'],
+        withsingular_other: ['<0>The number</0> is plural'],
+      }
+
+      const { container } = render(
+        <TestEnglish
+          returnObjects
+          namespaces={{ ns: withSingular }}
+          i18nKey={i18nKey}
+          values={{ count: 2 }}
+          components={[<strong />]}
+        />
+      )
+
+      expect(container.innerHTML).toContain(expected)
+    })
+
     test('should work with nested keys and custom keySeparator', () => {
       const i18nKey = 'ns:parent_child'
       const expected = 'The number is 42'
