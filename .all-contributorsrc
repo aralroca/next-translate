@@ -557,6 +557,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "please",
+      "name": "please",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2391996?v=4",
+      "profile": "https://github.com/please",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
