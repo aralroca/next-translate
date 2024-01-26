@@ -1156,7 +1156,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/timotew/"><img src="https://avatars.githubusercontent.com/u/12928383?v=4?s=100" width="100px;" alt="Tim O. Peters"/><br /><sub><b>Tim O. Peters</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=timotew" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/hydRAnger"><img src="https://avatars.githubusercontent.com/u/1228449?v=4?s=100" width="100px;" alt="Li Ming"/><br /><sub><b>Li Ming</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=hydRAnger" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/acidfernando"><img src="https://avatars.githubusercontent.com/u/86410308?v=4?s=100" width="100px;" alt="Fernando García Hernández"/><br /><sub><b>Fernando García Hernández</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=acidfernando" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/please"><img src="https://avatars.githubusercontent.com/u/2391996?v=4?s=100" width="100px;" alt="please"/><br /><sub><b>please</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=please" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
