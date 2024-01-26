@@ -14,21 +14,31 @@ export interface TranslationsKeys {
   // Specify here all the namespaces you have...
 }
 
-export interface TypeSafeTranslate<Namespace extends keyof TranslationsKeys>
+type TranslationNamespace = keyof TranslationsKeys;
+
+export interface TranslateFunction<Namespace extends TranslationNamespace>  {
+  (
+    key: TranslationsKeys[Namespace],
+    ...rest: Tail<Parameters<Translate>>
+  ): string
+  <T extends string>(template: TemplateStringsArray): string
+};
+
+export interface TypeSafeTranslate<Namespace extends TranslationNamespace>
   extends Omit<I18n, 't'> {
-  t: {
-    (
-      key: TranslationsKeys[Namespace],
-      ...rest: Tail<Parameters<Translate>>
-    ): string
-    <T extends string>(template: TemplateStringsArray): string
-  }
+  t: TranslateFunction<Namespace>
 }
 
 declare module 'next-translate/useTranslation' {
   export default function useTranslation<
-    Namespace extends keyof TranslationsKeys
+    Namespace extends TranslationNamespace
   >(namespace: Namespace): TypeSafeTranslate<Namespace>
+}
+
+declare module 'next-translate/getT' {
+  export default function getT<
+    Namespace extends TranslationNamespace
+  >(locale?: string, namespace: Namespace): Promise<TranslateFunction<Namespace>>  
 }
 ```
 
@@ -38,4 +48,4 @@ Then type safety should work:
 
 <img width="282" alt="Screenshot 2023-07-17 at 19 22 00" src="https://github.com/aralroca/next-translate/assets/13313058/616987b4-e49b-4cf2-b511-cdfaba57e1d2">
 
-Reference: https://github.com/aralroca/next-translate/pull/1108
+Reference: <https://github.com/aralroca/next-translate/pull/1108>
