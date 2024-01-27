@@ -10,7 +10,7 @@ export default function RootLayout({
   const { t, lang } = useTranslation('common')
 
   // Redirect to default locale if lang is not supported. /second-page -> /en/second-page
-  if (!i18n.locales.includes(lang)) redirect(`/${i18n.defaultLocale}/${lang}`)
+  // if (!i18n.locales.includes(lang)) redirect(`/${i18n.defaultLocale}/`)
 
   return (
     <html lang={lang}>
