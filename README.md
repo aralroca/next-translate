@@ -780,7 +780,7 @@ In Trans Component:
 
 ## 9. Formatter
 
-You can format params using the `interpolation.formatter` config function.
+You can format params using the `interpolation.format` config function.
 
 in `i18n.js`:
 
