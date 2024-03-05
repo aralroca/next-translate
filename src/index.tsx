@@ -74,7 +74,7 @@ export interface I18nConfig extends NextI18nConfig {
   revalidate?: number
   pagesInDir?: string
   interpolation?: {
-    format?: Function
+    format?: (value: TranslationQuery[string], format: any, lang: string | undefined) => string
     prefix?: string
     suffix?: string
   }
