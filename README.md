@@ -1157,6 +1157,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/hydRAnger"><img src="https://avatars.githubusercontent.com/u/1228449?v=4?s=100" width="100px;" alt="Li Ming"/><br /><sub><b>Li Ming</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=hydRAnger" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/acidfernando"><img src="https://avatars.githubusercontent.com/u/86410308?v=4?s=100" width="100px;" alt="Fernando García Hernández"/><br /><sub><b>Fernando García Hernández</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=acidfernando" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://www.hichemfantar.com/"><img src="https://avatars.githubusercontent.com/u/34947993?v=4?s=100" width="100px;" alt="Hichem Fantar"/><br /><sub><b>Hichem Fantar</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=hichemfantar" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/huseyinonalcom"><img src="https://avatars.githubusercontent.com/u/65453275?v=4?s=100" width="100px;" alt="Huseyin Onal"/><br /><sub><b>Huseyin Onal</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=huseyinonalcom" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
