@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { render, cleanup, fireEvent } from '@testing-library/react'
 import I18nProvider from '../src/I18nProvider'
 import useTranslation from '../src/useTranslation'
@@ -1548,6 +1548,34 @@ describe('useTranslation', () => {
 
       const { container } = render(<Inner />)
       expect(container.textContent).toContain(expected)
+    })
+
+    test('`t` is stable', () => {
+      const Inner = ({ effect }) => {
+        const { t } = useTranslation()
+
+        useEffect(() => {
+          const text = t('ns:interpolation', {
+            count: 3,
+          })
+          effect(text)
+        }, [effect, t])
+      }
+
+      globalThis.__NEXT_TRANSLATE__ = {
+        namespaces: {
+          ns: {
+            interpolation: 'There are {{count}} cats.',
+          },
+        },
+        lang: 'en',
+        config: {},
+      }
+
+      const effect = jest.fn()
+      const { rerender } = render(<Inner effect={effect} />)
+      rerender(<Inner effect={effect} />)
+      expect(effect).toBeCalledTimes(1)
     })
   })
 })
