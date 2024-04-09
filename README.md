@@ -1159,6 +1159,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://www.hichemfantar.com/"><img src="https://avatars.githubusercontent.com/u/34947993?v=4?s=100" width="100px;" alt="Hichem Fantar"/><br /><sub><b>Hichem Fantar</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=hichemfantar" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/huseyinonalcom"><img src="https://avatars.githubusercontent.com/u/65453275?v=4?s=100" width="100px;" alt="Huseyin Onal"/><br /><sub><b>Huseyin Onal</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=huseyinonalcom" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/jessemartin"><img src="https://avatars.githubusercontent.com/u/1626240?v=4?s=100" width="100px;" alt="Jesse Martin"/><br /><sub><b>Jesse Martin</b></sub></a><br /><a href="https://github.com/aralroca/next-translate/commits?author=jessemartin" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 
