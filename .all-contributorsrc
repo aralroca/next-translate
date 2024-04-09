@@ -575,6 +575,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "jessemartin",
+      "name": "Jesse Martin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1626240?v=4",
+      "profile": "https://github.com/jessemartin",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
