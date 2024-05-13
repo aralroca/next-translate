@@ -43,7 +43,8 @@
     "setLanguage*",
     "index*",
     "AppDirI18nProvider*",
-    "createTranslation*"
+    "createTranslation*",
+    "formatElements*"
   ],
   "scripts": {
     "build": "yarn clean && cross-env NODE_ENV=production && yarn tsc",
