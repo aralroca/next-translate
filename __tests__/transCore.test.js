@@ -25,6 +25,10 @@ const nsWithEmpty = {
   emptyKey: '',
 }
 
+const nsConflictWithKeySeparatorKey = {
+  'key likes sentence.': 'message 1 conflict',
+}
+
 describe('transCore', () => {
   test('should return an object of root keys', async () => {
     const t = transCore({
@@ -152,5 +156,18 @@ describe('transCore', () => {
 
     expect(typeof t).toBe('function')
     expect(t('nsWithEmpty:emptyKey')).toEqual('nsWithEmpty:emptyKey')
+  })
+
+  test('should return key string when key conficts with separator and log warning.', () => {
+    const t = transCore({
+      config: {},
+      allNamespaces: { nsConflictWithKeySeparatorKey },
+      lang: 'en',
+    })
+
+    expect(typeof t).toBe('function')
+    expect(t('nsConflictWithKeySeparatorKey:key likes sentence.')).toEqual(
+      'nsConflictWithKeySeparatorKey:key likes sentence.'
+    )
   })
 })
