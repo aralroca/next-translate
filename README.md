@@ -23,6 +23,10 @@
 
 </div>
 
+> [!NOTE]
+>
+> We are working with version **3.0.0** of Next-translate. In recent months we have been very focused on **[Brisa](https://brisa.build/)**. So it has been a long time since the last release, but we have not forgotten about Next-translate. We are working on a new version that will bring many improvements and new features. We are very excited to share it with all of you.
+
 - [1. About next-translate](#1-about-next-translate)
   - [How are translations loaded?](#how-are-translations-loaded)
 - [2. Getting started](#2-getting-started)
