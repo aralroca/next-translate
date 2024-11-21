@@ -57,7 +57,11 @@ export default function transCore({
 
   const t: Translate = (key = '', query, options) => {
     const k = Array.isArray(key) ? key[0] : key
-    const { nsSeparator = ':', loggerEnvironment = 'browser' } = config
+    const {
+      nsSeparator = ':',
+      loggerEnvironment = 'browser',
+      keySeparator = '.',
+    } = config
 
     const { i18nKey, namespace = options?.ns ?? config.defaultNS } = splitNsKey(
       k,
@@ -84,6 +88,17 @@ export default function transCore({
       (typeof value === 'object' && !Object.keys(value).length) ||
       (value === '' && !allowEmptyStrings)
 
+    const keyParts = keySeparator
+      ? keyWithPlural.split(keySeparator)
+      : [keyWithPlural]
+
+    const isKeyConflictWithKeySeparator =
+      keyWithPlural === keySeparator && options?.returnObjects
+        ? false
+        : !!keySeparator &&
+          keyWithPlural.includes(keySeparator) &&
+          !keyParts.at(-1)
+
     const fallbacks =
       typeof options?.fallback === 'string'
         ? [options.fallback]
@@ -95,7 +110,7 @@ export default function transCore({
         loggerEnvironment ===
           (typeof window === 'undefined' ? 'node' : 'browser'))
     ) {
-      logger({ namespace, i18nKey })
+      logger({ namespace, i18nKey, isKeyConflictWithKeySeparator })
     }
 
     // Fallbacks
@@ -284,13 +299,24 @@ function objectInterpolation({
   return obj
 }
 
-function missingKeyLogger({ namespace, i18nKey }: LoggerProps): void {
+function missingKeyLogger({
+  namespace,
+  i18nKey,
+  isKeyConflictWithKeySeparator,
+}: LoggerProps): void {
   if (process.env.NODE_ENV === 'production') return
 
   // This means that instead of "ns:value", "value" has been misspelled (without namespace)
   if (!namespace) {
     console.warn(
       `[next-translate] The text "${i18nKey}" has no namespace in front of it.`
+    )
+    return
+  }
+  // This means that key named likes "i am a sentence." will be regarded as nested keys which losts the last part of the key
+  if (isKeyConflictWithKeySeparator) {
+    console.warn(
+      `[next-translate] "${i18nKey}" is missing its last part of the key after key separator.`
     )
     return
   }
