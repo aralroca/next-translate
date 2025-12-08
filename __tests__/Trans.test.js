@@ -297,7 +297,7 @@ describe('Trans', () => {
 
     test('should work if translation is missing', () => {
       const i18nKey = 'common:test-html-missing'
-      const expectedHTML = ''
+      const expectedHTML = 'common:test-html-missing'
       const common = {
         'test-html': 'test <10>with missing translation</10>.',
       }
@@ -373,7 +373,7 @@ describe('Trans', () => {
 
     test('should work if translation is missing', () => {
       const i18nKey = 'common:test-html-missing'
-      const expectedHTML = ''
+      const expectedHTML = 'common:test-html-missing'
       const common = {
         'test-html': 'test <example>with missing translation</example>.',
       }

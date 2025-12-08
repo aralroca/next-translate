@@ -11,15 +11,17 @@ export type DataForStoreType = {
   config: LoaderConfig
 }
 
+export type TranslateOptions<T extends unknown = string> = {
+  returnObjects?: boolean
+  fallback?: string | string[]
+  default?: T | string
+  ns?: string
+}
+
 export type Translate = <T extends unknown = string>(
   i18nKey: string | TemplateStringsArray,
   query?: TranslationQuery | null,
-  options?: {
-    returnObjects?: boolean
-    fallback?: string | string[]
-    default?: T | string
-    ns?: string
-  }
+  options?: TranslateOptions
 ) => T
 
 export interface I18n {
@@ -74,7 +76,11 @@ export interface I18nConfig extends NextI18nConfig {
   revalidate?: number
   pagesInDir?: string
   interpolation?: {
-    format?: (value: TranslationQuery[string], format: any, lang: string | undefined) => string
+    format?: (
+      value: TranslationQuery[string],
+      format: any,
+      lang: string | undefined
+    ) => string
     prefix?: string
     suffix?: string
   }

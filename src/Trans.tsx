@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { TransProps } from '.'
+import { TransProps, TranslateOptions } from '.'
 import useTranslation from './useTranslation'
 import formatElements from './formatElements'
 
@@ -24,11 +24,12 @@ export default function Trans({
    * Memoize the transformation
    */
   const result = useMemo(() => {
-    const text = t<string>(i18nKey, values, {
-      fallback,
-      default: defaultTrans,
-      returnObjects,
-    })
+    const options: TranslateOptions = {}
+    if (fallback !== undefined) options.fallback = fallback
+    if (defaultTrans !== undefined) options.default = defaultTrans
+    if (returnObjects !== undefined) options.returnObjects = returnObjects
+
+    const text = t<string>(i18nKey, values, options)
 
     if (!text) return text
 
