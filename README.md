@@ -148,6 +148,31 @@ module.exports = nextTranslate({
 })
 ```
 
+#### Using Turbopack (Next.js 16+)
+
+As of **Next.js 16**, [Turbopack](https://turbo.build/pack) is enabled by default. Pass `{ turbopack: true }` as the second argument so that next-translate-plugin configures the Turbopack loader instead of the webpack one:
+
+```js
+const nextTranslate = require('next-translate-plugin')
+
+module.exports = nextTranslate({}, { turbopack: true })
+```
+
+Or with your existing config:
+
+```js
+const nextTranslate = require('next-translate-plugin')
+
+module.exports = nextTranslate(
+  {
+    // your Next.js config here
+  },
+  { turbopack: true }
+)
+```
+
+> **Note:** Omitting `{ turbopack: true }` when using Next.js 16+ with Turbopack will cause a startup error because the plugin would otherwise inject a webpack configuration that Turbopack doesn't accept.
+
 ### Add i18n.js config file
 
 Add a configuration file `i18n.json` _(or `i18n.js` with `module.exports`)_ in the root of the project. Each page should have its namespaces. Take a look at it in the [config](#3-configuration) section for more details.
@@ -989,6 +1014,21 @@ module.exports = {
   },
 }
 ```
+
+### Using Turbopack with app directory (Next.js 16+)
+
+When using the app directory with **Next.js 16+** (which defaults to Turbopack), you must pass `{ turbopack: true }` to the plugin:
+
+```js
+// next.config.js
+const nextTranslate = require('next-translate-plugin')
+
+module.exports = nextTranslate({}, { turbopack: true })
+```
+
+This is required because:
+- Turbopack does **not** accept webpack configuration, so the plugin must be told to emit Turbopack rules instead.
+- The `i18n` key in `next.config.js` is **not supported** in the App Router — the plugin automatically skips adding it when using the app directory.
 
 At Next-translate level we **already detect the language automatically** according to `searchParams.get('lang')` and `params.lang`. So you **don't need to configure it for each page**, you can use `next-translate` as **normal** within the server/client pages/components:
 
