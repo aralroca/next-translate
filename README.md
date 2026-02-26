@@ -277,6 +277,14 @@ In the configuration file you can use both the configuration that we specified h
 | `localesToIgnore`   | Indicate these locales to ignore when you are prefixing the default locale using a middleware (in Next +12, [learn how to do it](https://nextjs.org/docs/advanced-features/i18n-routing#prefixing-the-default-locale)) | `Array<string>` | `['default']`
 | `allowEmptyStrings`   | Change how translated empty strings should be handled. If omitted or passed as true, it returns an empty string. If passed as false, returns the key name itself (including ns). | `Boolean` | `true`
 
+**Plugin options** — passed as the second argument to `nextTranslate(config, pluginOptions)` in `next.config.js`:
+
+| Option       | Description                                                                                                                                              | Type      | Default |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------- |
+| `turbopack`  | Set to `true` when using **Next.js 16+** (Turbopack enabled by default). The plugin will configure Turbopack rules instead of webpack, and will skip injecting the unsupported `i18n` key in the App Router. | `Boolean` | `false` |
+
+
+
 
 ## 4. API
 
