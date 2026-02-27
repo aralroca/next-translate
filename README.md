@@ -163,11 +163,14 @@ Or with your existing config:
 ```js
 const nextTranslate = require('next-translate-plugin')
 
+// Note: only available in Next.js +16 (for 15, you need to force a boolean, default false)
+const isTurbopack = !process.argv.includes('--webpack')
+
 module.exports = nextTranslate(
   {
     // your Next.js config here
   },
-  { turbopack: true }
+  { turbopack: isTurbopack }
 )
 ```
 
@@ -1031,7 +1034,10 @@ When using the app directory with **Next.js 16+** (which defaults to Turbopack),
 // next.config.js
 const nextTranslate = require('next-translate-plugin')
 
-module.exports = nextTranslate({}, { turbopack: true })
+// Note: only available in Next.js +16 (for 15, you need to force a boolean, default false)
+const isTurbopack = !process.argv.includes('--webpack')
+
+module.exports = nextTranslate({}, { turbopack: isTurbopack })
 ```
 
 This is required because:
