@@ -1,6 +1,6 @@
 {
   "name": "next-translate",
-  "version": "3.0.0-canary.7",
+  "version": "3.0.0-canary.8",
   "description": "Tiny and powerful i18n tools (Next plugin + API) to translate your Next.js pages.",
   "license": "MIT",
   "keywords": [
@@ -98,19 +98,22 @@
   },
   "files": [
     "lib",
-    "appWithI18n*",
-    "DynamicNamespaces*",
-    "I18nProvider*",
-    "context*",
-    "getT*",
-    "loadNamespaces*",
-    "Trans*",
-    "withTranslation*",
-    "useTranslation*",
-    "setLanguage*",
-    "index*",
-    "AppDirI18nProvider*",
-    "createTranslation*"
+    "*.d.ts",
+    "appWithI18n",
+    "DynamicNamespaces",
+    "I18nProvider",
+    "context",
+    "getT",
+    "loadNamespaces",
+    "Trans",
+    "TransText",
+    "withTranslation",
+    "useTranslation",
+    "setLanguage",
+    "index",
+    "AppDirI18nProvider",
+    "createTranslation",
+    "formatElements"
   ],
   "scripts": {
     "build": "yarn clean && cross-env NODE_ENV=production && yarn tsc",
