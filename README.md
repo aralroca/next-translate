@@ -148,6 +148,31 @@ module.exports = nextTranslate({
 })
 ```
 
+#### Using Turbopack (Next.js 16+)
+
+As of **Next.js 16**, [Turbopack](https://turbo.build/pack) is enabled by default. Pass `{ turbopack: true }` as the second argument so that next-translate-plugin configures the Turbopack loader instead of the webpack one:
+
+```js
+const nextTranslate = require('next-translate-plugin')
+
+module.exports = nextTranslate({}, { turbopack: true })
+```
+
+Or with your existing config:
+
+```js
+const nextTranslate = require('next-translate-plugin')
+
+module.exports = nextTranslate(
+  {
+    // your Next.js config here
+  },
+  { turbopack: true }
+)
+```
+
+> **Note:** Omitting `{ turbopack: true }` when using Next.js 16+ with Turbopack will cause a startup error because the plugin would otherwise inject a webpack configuration that Turbopack doesn't accept.
+
 ### Add i18n.js config file
 
 Add a configuration file `i18n.json` _(or `i18n.js` with `module.exports`)_ in the root of the project. Each page should have its namespaces. Take a look at it in the [config](#3-configuration) section for more details.
@@ -251,6 +276,14 @@ In the configuration file you can use both the configuration that we specified h
 | `pagesInDir`   | If you run `next ./my-app` to change where your pages are, you can here define `my-app/pages` so that next-translate can guess where they are. | `String` | If you don't define it, by default the pages will be searched for in the classic places like `pages` and `src/pages`.
 | `localesToIgnore`   | Indicate these locales to ignore when you are prefixing the default locale using a middleware (in Next +12, [learn how to do it](https://nextjs.org/docs/advanced-features/i18n-routing#prefixing-the-default-locale)) | `Array<string>` | `['default']`
 | `allowEmptyStrings`   | Change how translated empty strings should be handled. If omitted or passed as true, it returns an empty string. If passed as false, returns the key name itself (including ns). | `Boolean` | `true`
+
+**Plugin options** — passed as the second argument to `nextTranslate(config, pluginOptions)` in `next.config.js`:
+
+| Option       | Description                                                                                                                                              | Type      | Default |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------- |
+| `turbopack`  | Set to `true` when using **Next.js 16+** (Turbopack enabled by default). The plugin will configure Turbopack rules instead of webpack, and will skip injecting the unsupported `i18n` key in the App Router. | `Boolean` | `false` |
+
+
 
 
 ## 4. API
@@ -989,6 +1022,21 @@ module.exports = {
   },
 }
 ```
+
+### Using Turbopack with app directory (Next.js 16+)
+
+When using the app directory with **Next.js 16+** (which defaults to Turbopack), you must pass `{ turbopack: true }` to the plugin:
+
+```js
+// next.config.js
+const nextTranslate = require('next-translate-plugin')
+
+module.exports = nextTranslate({}, { turbopack: true })
+```
+
+This is required because:
+- Turbopack does **not** accept webpack configuration, so the plugin must be told to emit Turbopack rules instead.
+- The `i18n` key in `next.config.js` is **not supported** in the App Router — the plugin automatically skips adding it when using the app directory.
 
 At Next-translate level we **already detect the language automatically** according to `searchParams.get('lang')` and `params.lang`. So you **don't need to configure it for each page**, you can use `next-translate` as **normal** within the server/client pages/components:
 
