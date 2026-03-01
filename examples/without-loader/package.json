@@ -8,12 +8,12 @@
     "build": "next build"
   },
   "dependencies": {
-    "next": "14.1.0",
+    "next": "^16.1.6",
     "next-translate": "link:../../",
-    "react": "link:../../node_modules/react",
-    "react-dom": "link:../../node_modules/react-dom"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "next-translate-plugin": "2.6.2"
+    "next-translate-plugin": "link:../../"
   }
 }
