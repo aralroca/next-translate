@@ -21,7 +21,7 @@
     "@next/bundle-analyzer": "14.1.0",
     "@types/node": "20.11.5",
     "@types/react": "^18.2.48",
-    "next-translate-plugin": "link:../../",
+    "next-translate-plugin": "3.0.0",
     "typescript": "5.3.3"
   },
   "resolutions": {
