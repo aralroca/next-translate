@@ -379,28 +379,10 @@
       ]
     },
     {
-      "login": "wuifdesign",
-      "name": "Wuif",
-      "avatar_url": "https://avatars.githubusercontent.com/u/5678318?v=4",
-      "profile": "https://github.com/wuifdesign",
-      "contributions": [
-        "code"
-      ]
-    },
-    {
       "login": "marcesengel",
       "name": "Marces Engel",
       "avatar_url": "https://avatars.githubusercontent.com/u/6208890?v=4",
       "profile": "https://github.com/marcesengel",
-      "contributions": [
-        "code"
-      ]
-    },
-    {
-      "login": "MrPumpking",
-      "name": "Michał Bar",
-      "avatar_url": "https://avatars.githubusercontent.com/u/9134970?v=4",
-      "profile": "https://michal.bar",
       "contributions": [
         "code"
       ]
@@ -410,15 +392,6 @@
       "name": "Dragate",
       "avatar_url": "https://avatars.githubusercontent.com/u/28112929?v=4",
       "profile": "https://github.com/Dragate",
-      "contributions": [
-        "code"
-      ]
-    },
-    {
-      "login": "marcesengel",
-      "name": "Marces Engel",
-      "avatar_url": "https://avatars.githubusercontent.com/u/6208890?v=4",
-      "profile": "https://github.com/marcesengel",
       "contributions": [
         "code"
       ]
@@ -572,6 +545,15 @@
       "name": "Huseyin Onal",
       "avatar_url": "https://avatars.githubusercontent.com/u/65453275?v=4",
       "profile": "https://github.com/huseyinonalcom",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "jessemartin",
+      "name": "Jesse Martin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1626240?v=4",
+      "profile": "https://github.com/jessemartin",
       "contributions": [
         "code"
       ]
