@@ -1,12 +1,12 @@
 import React from 'react'
 import Link from 'next/link'
-import useTranslation from 'next-translate/useTranslation'
+import createTranslation from 'next-translate/createTranslation'
 import ClientCode from '../../components/client-code'
 
 export default async function Page() {
   await sleep(500) // simulate slow page load to show loading page
 
-  const { t, lang } = useTranslation('common')
+  const { t, lang } = await createTranslation('common')
 
   return (
     <>
@@ -26,8 +26,12 @@ export default async function Page() {
         <Link href="/ca">Català</Link>
       </div>
 
+      <div style={{ marginTop: 20 }}>
+        <Link href={`/${lang}/second-page`}>Second page ➡️</Link>
+      </div>
+
       <div>
-        <Link href={`/${lang}/second-page`}>➡️</Link>
+        <Link href={`/${lang}/remote-loading`}>Remote loading example ➡️</Link>
       </div>
     </>
   )
