@@ -7,6 +7,7 @@
 !*.ts
 *.d.ts
 !*.tsx
+!*.md
 !src/app-dir
 !examples
 !examples/**/*

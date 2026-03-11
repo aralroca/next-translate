@@ -23,6 +23,11 @@ export default function Header() {
       </Head>
       <header className={styles.header}>
         <h1>{title}</h1>
+        <nav style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+          <Link href="/">Home</Link>
+          <Link href="/about">About</Link>
+          <Link href="/dashboard">Dashboard</Link>
+        </nav>
         {lang !== 'es' && (
           <Link href="/" locale="es">
             Español
