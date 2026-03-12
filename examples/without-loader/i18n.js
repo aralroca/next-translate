@@ -10,27 +10,6 @@ module.exports = {
     'rgx:^/more-examples': ['more-examples'],
   },
   // When loader === false (or when using Turbopack), then loadLocaleFrom is required
-  loadLocaleFrom: (locale, namespace) => {
-    const locales = {
-      en: {
-        common: () => require('./locales/en/common.json'),
-        home: () => require('./locales/en/home.json'),
-        'more-examples': () => require('./locales/en/more-examples.json'),
-        error: () => require('./locales/en/error.json'),
-      },
-      es: {
-        common: () => require('./locales/es/common.json'),
-        home: () => require('./locales/es/home.json'),
-        'more-examples': () => require('./locales/es/more-examples.json'),
-        error: () => require('./locales/es/error.json'),
-      },
-      ca: {
-        common: () => require('./locales/ca/common.json'),
-        home: () => require('./locales/ca/home.json'),
-        'more-examples': () => require('./locales/ca/more-examples.json'),
-        error: () => require('./locales/ca/error.json'),
-      },
-    }
-    return Promise.resolve(locales[locale]?.[namespace]?.() || {})
-  },
+  loadLocaleFrom: (locale, namespace) =>
+    import(`./locales/${locale}/${namespace}`).then((r) => r.default),
 }
