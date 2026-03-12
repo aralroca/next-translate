@@ -9,7 +9,7 @@ module.exports = {
     '/dashboard': ['home'],
     'rgx:^/more-examples': ['more-examples'],
   },
-  // When loader === false, then loadLocaleFrom is required
-  loadLocaleFrom: async (locale, namespace) =>
+  // When loader === false (or when using Turbopack), then loadLocaleFrom is required
+  loadLocaleFrom: (locale, namespace) =>
     import(`./locales/${locale}/${namespace}`).then((r) => r.default),
 }

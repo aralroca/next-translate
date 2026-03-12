@@ -35,13 +35,15 @@ export default function appWithI18n(
 
   function AppWithTranslations(props: Props) {
     const { defaultLocale } = config
+    const lang = props.pageProps?.__lang || props.__lang || defaultLocale
+    const namespaces = props.pageProps?.__namespaces || props.__namespaces
+
+    if (lang && namespaces) {
+      globalThis.__NEXT_TRANSLATE__ = { lang, namespaces, config }
+    }
 
     return (
-      <I18nProvider
-        lang={props.pageProps?.__lang || props.__lang || defaultLocale}
-        namespaces={props.pageProps?.__namespaces || props.__namespaces}
-        config={config}
-      >
+      <I18nProvider lang={lang} namespaces={namespaces} config={config}>
         <AppToTranslate {...props} />
       </I18nProvider>
     )
