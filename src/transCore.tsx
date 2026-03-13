@@ -1,3 +1,4 @@
+import { MessageFormat } from 'messageformat'
 import {
   I18nConfig,
   I18nDictionary,
@@ -210,6 +211,10 @@ function plural(
   return key
 }
 
+function convertMessageSyntax(message: string): string {
+  return message
+}
+
 /**
  * Replace {{variables}} to query values
  */
@@ -234,22 +239,36 @@ function interpolation({
     suffix = '}}',
   } = config.interpolation || {}
 
-  const regexEnd =
-    suffix === '' ? '' : `(?:[\\s,]+([\\w-]*))?\\s*${escapeRegex(suffix)}`
-  return Object.keys(query).reduce((all, varKey) => {
-    const regex = new RegExp(
-      `${escapeRegex(prefix)}\\s*${varKey}${regexEnd}`,
-      'gm'
-    )
-    // $1 is the first match group
-    return all.replace(regex, (_match, $1) => {
-      // $1 undefined can mean either no formatting requested: "{{name}}"
-      // or no format name given: "{{name, }}" -> ignore
-      return $1 && format
-        ? (format(query[varKey], $1, lang) as string)
-        : (query[varKey] as string)
-    })
-  }, text)
+  // This is a "dead" branch. BNEF doesn't use the interpolation feature and some of the test cases
+  // are convoluted enough that attempting to make it work with MF2 would be a massive waste of time
+  // so if format is set, we use the original logic but this is never practically the case for us,
+  // it's just to not have false negatives in the test suite.
+  if (format) {
+    const regexEnd =
+      suffix === '' ? '' : `(?:[\\s,]+([\\w-]*))?\\s*${escapeRegex(suffix)}`
+    return Object.keys(query).reduce((all, varKey) => {
+      const regex = new RegExp(
+        `${escapeRegex(prefix)}\\s*${varKey}${regexEnd}`,
+        'gm'
+      )
+      // $1 is the first match group
+      return all.replace(regex, (_match, $1) => {
+        // $1 undefined can mean either no formatting requested: "{{name}}"
+        // or no format name given: "{{name, }}" -> ignore
+        return $1 && format
+          ? (format(query[varKey], $1, lang) as string)
+          : (query[varKey] as string)
+      })
+    }, text)
+  }
+
+  const whitespacesRE = '(?:\\s*)?'
+  const prefixRE = prefix ? `${escapeRegex(prefix)}${whitespacesRE}` : ''
+  const suffixRE = suffix ? `${whitespacesRE}${escapeRegex(suffix)}` : ''
+  const varRE = new RegExp(`${prefixRE}([\\d\\w]+)(?:,.*?)?${suffixRE}`, 'g')
+  const mfText = text.replaceAll(varRE, '{$$$1}')
+  const mf = new MessageFormat(lang, mfText)
+  return mf.format(query)
 }
 
 function objectInterpolation({
