@@ -51,6 +51,11 @@
       "import": "./lib/esm/Trans.js",
       "require": "./lib/cjs/Trans.js"
     },
+     "./TransText": {
+      "types": "./TransText.d.ts",
+      "import": "./lib/esm/TransText.js",
+      "require": "./lib/cjs/TransText.js"
+    },
     "./I18nProvider": {
       "types": "./I18nProvider.d.ts",
       "import": "./lib/esm/I18nProvider.js",
