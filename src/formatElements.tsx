@@ -1,6 +1,7 @@
 import React, { cloneElement, Fragment, ReactElement, ReactNode } from 'react'
 
-export const tagParsingRegex = /<(\w+) *>(.*?)<\/\1 *>|<(\w+) *\/>/
+export const tagParsingRegex =
+  /<(\w+)((?: +[^>]*?)?)>(.*?)<\/\1 *>|<(\w+)((?: +[^>]*?)?)\/>/
 
 const nlRe = /(?:\r\n|\r|\n)/g
 
@@ -9,11 +10,19 @@ function getElements(
 ): Array<string | undefined>[] {
   if (!parts.length) return []
 
-  const [paired, children, unpaired, after] = parts.slice(0, 4)
+  const [paired, attrs, children, unpaired, unpairedAttrs, after] = parts.slice(
+    0,
+    6
+  )
 
   return [
-    [(paired || unpaired) as string, children || ('' as string), after],
-  ].concat(getElements(parts.slice(4, parts.length)))
+    [
+      (paired || unpaired) as string,
+      (attrs || unpairedAttrs) as string,
+      children || ('' as string),
+      after,
+    ],
+  ].concat(getElements(parts.slice(6, parts.length)))
 }
 
 export default function formatElements(
@@ -29,24 +38,33 @@ export default function formatElements(
   const before = parts.shift()
   if (before) tree.push(before)
 
-  getElements(parts).forEach(([key, children, after], realIndex: number) => {
-    const element =
-      // @ts-ignore
-      elements[key as string] || <Fragment />
+  getElements(parts).forEach(
+    ([key, attrs, children, after], realIndex: number) => {
+      const element =
+        // @ts-ignore
+        elements[key as string] || <Fragment />
 
-    tree.push(
-      cloneElement(
-        element,
-        { key: realIndex },
+      const props: any = { key: realIndex }
 
-        // format children for pair tags
-        // unpaired tags might have children if it's a component passed as a variable
-        children ? formatElements(children, elements) : element.props.children
+      if (attrs) {
+        const hrefMatch = attrs.match(/href=(['"])(.*?)\1/)
+        if (hrefMatch?.[2]) props.href = hrefMatch[2]
+      }
+
+      tree.push(
+        cloneElement(
+          element,
+          props,
+
+          // format children for pair tags
+          // unpaired tags might have children if it's a component passed as a variable
+          children ? formatElements(children, elements) : element.props.children
+        )
       )
-    )
 
-    if (after) tree.push(after)
-  })
+      if (after) tree.push(after)
+    }
+  )
 
   return tree
 }
