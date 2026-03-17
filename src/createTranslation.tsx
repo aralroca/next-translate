@@ -19,6 +19,6 @@ export default function createTranslation(defaultNS?: string) {
     return wrapTWithDefaultNs(t, defaultNS)
   }
 
-  const t = isServer() ? getT() : useMemo(getT, [defaultNS])
+  const t = isServer() ? getT() : useMemo(getT, [defaultNS, lang])
   return { t, lang }
 }
