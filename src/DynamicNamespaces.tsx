@@ -16,18 +16,27 @@ export default function DynamicNamespaces({
   const loadLocale =
     dynamic || config.loadLocaleFrom || (() => Promise.resolve({}))
 
-  async function loadNamespaces() {
-    if (typeof loadLocale !== 'function') return
-
-    const pageNamespaces = await Promise.all(
-      namespaces.map((ns) => loadLocale(lang, ns))
-    )
-    setPageNs(pageNamespaces)
-    setLoaded(true)
-  }
-
   useEffect(() => {
+    let isCancelled = false
+
+    async function loadNamespaces() {
+      if (typeof loadLocale !== 'function') return
+
+      const pageNamespaces = await Promise.all(
+        namespaces.map((ns) => loadLocale(lang, ns))
+      )
+
+      if (isCancelled) return
+
+      setPageNs(pageNamespaces)
+      setLoaded(true)
+    }
+
     loadNamespaces()
+
+    return () => {
+      isCancelled = true
+    }
   }, [namespaces.join(), lang])
 
   if (!loaded) return fallback || null
