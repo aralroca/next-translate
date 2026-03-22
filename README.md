@@ -484,6 +484,37 @@ Remember that `['dynamic']` namespace should **not** be listed on `pages` config
   }
 ```
 
+**Using DynamicNamespaces with App Router (app directory)**
+
+In the App Router, the `loadLocaleFrom` function from your `i18n.js` config is not available on the client side (it gets lost during RSC → Client Component serialization). You need to pass a `dynamic` prop with a loader function:
+
+```jsx
+'use client'
+
+import DynamicNamespaces from 'next-translate/DynamicNamespaces'
+import useTranslation from 'next-translate/useTranslation'
+
+const loadLocaleFrom = (lang, ns) =>
+  import(`../../../locales/${lang}/${ns}.json`).then((m) => m.default || m)
+
+function ToolContent() {
+  const { t } = useTranslation('tools/my-tool')
+  return <h1>{t('title')}</h1>
+}
+
+export default function MyComponent() {
+  return (
+    <DynamicNamespaces
+      dynamic={loadLocaleFrom}
+      namespaces={['tools/my-tool']}
+      fallback="Loading..."
+    >
+      <ToolContent />
+    </DynamicNamespaces>
+  )
+}
+```
+
 - **Props**:
   - `namespaces` - string[] - list of dynamic namespaces to download - **Required**.
   - `fallback`- ReactNode - Fallback to display meanwhile the namespaces are loading. - **Optional**.
