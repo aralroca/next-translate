@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import I18nContext from './context'
 import transCore from './transCore'
@@ -25,8 +25,14 @@ export default function I18nProvider({
   const config = { ...internal.config, ...newConfig }
   const localesToIgnore = config.localesToIgnore || ['default']
   const ignoreLang = !lang || localesToIgnore.includes(lang)
-  const pluralRules = new Intl.PluralRules(ignoreLang ? undefined : lang)
-  const t = transCore({ config, allNamespaces, pluralRules, lang })
+  const pluralRules = useMemo(
+    () => new Intl.PluralRules(ignoreLang ? undefined : lang),
+    [ignoreLang, lang]
+  )
+  const t = useMemo(
+    () => transCore({ config, allNamespaces, pluralRules, lang }),
+    [config, allNamespaces, pluralRules, lang]
+  )
 
   return (
     <I18nContext.Provider value={{ lang, t }}>
