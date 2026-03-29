@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import isServer from './isServer'
+import safePluralRules from './safePluralRules'
 import transCore from './transCore'
 import wrapTWithDefaultNs from './wrapTWithDefaultNs'
 
@@ -12,7 +13,7 @@ export default function createTranslation(defaultNS?: string) {
     const t = transCore({
       config,
       allNamespaces: namespaces,
-      pluralRules: new Intl.PluralRules(ignoreLang ? undefined : lang),
+      pluralRules: safePluralRules(ignoreLang ? undefined : lang),
       lang,
     })
 

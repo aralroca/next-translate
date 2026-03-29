@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import I18nContext from './context'
+import safePluralRules from './safePluralRules'
 import transCore from './transCore'
 import useTranslation from './useTranslation'
 import { I18nDictionary, I18nProviderProps } from '.'
@@ -26,7 +27,7 @@ export default function I18nProvider({
   const localesToIgnore = config.localesToIgnore || ['default']
   const ignoreLang = !lang || localesToIgnore.includes(lang)
   const pluralRules = useMemo(
-    () => new Intl.PluralRules(ignoreLang ? undefined : lang),
+    () => safePluralRules(ignoreLang ? undefined : lang),
     [ignoreLang, lang]
   )
   const t = useMemo(
