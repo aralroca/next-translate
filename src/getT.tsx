@@ -1,4 +1,5 @@
 import getConfig from './getConfig'
+import safePluralRules from './safePluralRules'
 import transCore from './transCore'
 import wrapTWithDefaultNs from './wrapTWithDefaultNs'
 import { I18nDictionary, LocaleLoader } from './index'
@@ -24,7 +25,7 @@ export default async function getT(
 
   const localesToIgnore = config.localesToIgnore || ['default']
   const ignoreLang = localesToIgnore.includes(lang)
-  const pluralRules = new Intl.PluralRules(ignoreLang ? undefined : lang)
+  const pluralRules = safePluralRules(ignoreLang ? undefined : lang)
   const t = transCore({ config, allNamespaces, pluralRules, lang })
 
   const defaultNamespace = namespaces[0]
