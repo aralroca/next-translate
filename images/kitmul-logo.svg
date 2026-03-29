@@ -1,0 +1,21 @@
+<svg viewBox="0 0 140 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Mark -->
+  <rect x="2" y="2" width="28" height="28" rx="6" fill="#137fec" fill-opacity="0.05"/>
+  <rect x="8" y="7" width="4" height="18" rx="2" fill="#137fec"/>
+  <path d="M12 16L20 8C21.1 6.9 23 7.7 23 9.3V11L12 20V16Z" fill="#137fec"/>
+  <path d="M12 16L23 21V22.7C23 24.3 21.1 25.1 20 24L12 16Z" fill="#137fec"/>
+
+  <!-- "Kit" text -->
+  <g fill="#0f172a">
+    <path d="M38 8H42V14.5L46 8H50L45 16L50 24H46L42 17.5V24H38V8Z"/>
+    <path d="M52 12H55V24H52V12ZM52 8H55V10H52V8Z"/>
+    <path d="M57 10H58V8H60V10H62V12H60V19C60 20.1 60.9 21 62 21H63V23H62C59.2 23 57 20.8 57 18V12H56V10H57Z"/>
+  </g>
+
+  <!-- "Mul" text -->
+  <g fill="#137fec">
+    <path d="M66 8H69L72 14L75 8H78V24H75V13L72 19L69 13V24H66V8Z"/>
+    <path d="M81 12H84V20C84 21.1 84.9 22 86 22C87.1 22 88 21.1 88 20V12H91V20C91 23.3 88.3 26 85 26C81.7 26 79 23.3 79 20V12H81Z"/>
+    <path d="M94 8H97V24H94V8Z"/>
+  </g>
+</svg>

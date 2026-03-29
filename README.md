@@ -23,6 +23,14 @@
 
 </div>
 
+<p align="center">
+    <b>Sponsored by:</b>
+    <br />
+    <a href="https://kitmul.com/en">
+        <img src="images/kitmul-logo.svg" width="200" alt="Kitmul" />
+    </a>
+</p>
+
 > [!NOTE]
 >
 > We are working with version **3.0.0** of Next-translate. In recent months we have been very focused on **[Brisa](https://brisa.build/)**. So it has been a long time since the last release, but we have not forgotten about Next-translate. We are working on a new version that will bring many improvements and new features. We are very excited to share it with all of you.
