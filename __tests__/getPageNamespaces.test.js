@@ -78,6 +78,62 @@ describe('getPageNamespaces', () => {
     })
   })
 
+  describe('route groups', () => {
+    test('should match pages config with route group when page path has no route group', async () => {
+      const config = {
+        pages: {
+          '*': ['common'],
+          '/[lang]/(main)/blog/[slug]': ['blog'],
+        },
+      }
+      const output = await getPageNamespaces(config, '/[lang]/blog/[slug]', ctx)
+
+      expect(output).toContain('common')
+      expect(output).toContain('blog')
+    })
+
+    test('should match pages config without route group when page path has route group', async () => {
+      const config = {
+        pages: {
+          '/[lang]/blog/[slug]': ['blog'],
+        },
+      }
+      const output = await getPageNamespaces(
+        config,
+        '/[lang]/(main)/blog/[slug]',
+        ctx
+      )
+
+      expect(output).toContain('blog')
+    })
+
+    test('should match when both config and page have different route groups', async () => {
+      const config = {
+        pages: {
+          '/[lang]/(auth)/dashboard': ['dashboard'],
+        },
+      }
+      const output = await getPageNamespaces(
+        config,
+        '/[lang]/(admin)/dashboard',
+        ctx
+      )
+
+      expect(output).toContain('dashboard')
+    })
+
+    test('should match with multiple route groups in path', async () => {
+      const config = {
+        pages: {
+          '/[lang]/(main)/(protected)/settings': ['settings'],
+        },
+      }
+      const output = await getPageNamespaces(config, '/[lang]/settings', ctx)
+
+      expect(output).toContain('settings')
+    })
+  })
+
   describe('as function', () => {
     test('should work as a fn', async () => {
       ctx.query.example = '1'
