@@ -20,6 +20,14 @@ export default function createTranslation(defaultNS?: string) {
     return wrapTWithDefaultNs(t, defaultNS)
   }
 
-  const t = isServer() ? getT() : useMemo(getT, [defaultNS, lang])
+  // A stable signature of the currently loaded namespace set. In the Pages
+  // Router the appWithI18n HoC reassigns globalThis.__NEXT_TRANSLATE__ on every
+  // navigation, so a translation function held by a component that never
+  // unmounts (e.g. lifted to _app or a context provider) would otherwise stay
+  // memoized on the first page's namespaces and miss namespaces loaded later.
+  // Keying on the namespace names refreshes t when the set actually changes,
+  // while keeping its identity stable otherwise (#447).
+  const nsKey = namespaces ? Object.keys(namespaces).sort().join('|') : ''
+  const t = isServer() ? getT() : useMemo(getT, [defaultNS, lang, nsKey])
   return { t, lang }
 }
