@@ -74,7 +74,11 @@ export interface I18nConfig extends NextI18nConfig {
   revalidate?: number
   pagesInDir?: string
   interpolation?: {
-    format?: (value: TranslationQuery[string], format: any, lang: string | undefined) => string
+    format?: (
+      value: TranslationQuery[string],
+      format: any,
+      lang: string | undefined
+    ) => string
     prefix?: string
     suffix?: string
   }
@@ -82,6 +86,9 @@ export interface I18nConfig extends NextI18nConfig {
   nsSeparator?: string | false
   defaultNS?: string
   allowEmptyStrings?: boolean
+  plurals?: {
+    fallbackForm?: Intl.LDMLPluralRule
+  }
 }
 
 export interface LoaderConfig extends I18nConfig {
