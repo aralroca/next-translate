@@ -187,7 +187,8 @@ function plural(
   options?: {
     returnObjects?: boolean
     fallback?: string | string[]
-  }
+  },
+  retry = false
 ): string {
   if (!query || typeof query.count !== 'number') return key
 
@@ -206,6 +207,19 @@ function plural(
   const nestedKey = `${key}.${pluralRules.select(query.count)}`
   if (getDicValue(dic, nestedKey, config, options) !== undefined)
     return nestedKey
+
+  if (config.plurals?.fallbackForm && !retry) {
+    const fallbackForm = config.plurals.fallbackForm
+    return plural(
+      Object.assign(pluralRules, { select: () => fallbackForm }),
+      dic,
+      key,
+      config,
+      query,
+      options,
+      true
+    )
+  }
 
   return key
 }

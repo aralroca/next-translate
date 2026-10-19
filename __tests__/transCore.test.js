@@ -25,6 +25,11 @@ const nsWithEmpty = {
   emptyKey: '',
 }
 
+const nsWithPlurals = {
+  key_one: 'one',
+  key_other: 'other',
+}
+
 describe('transCore', () => {
   test('should return an object of root keys', async () => {
     const t = transCore({
@@ -152,5 +157,27 @@ describe('transCore', () => {
 
     expect(typeof t).toBe('function')
     expect(t('nsWithEmpty:emptyKey')).toEqual('nsWithEmpty:emptyKey')
+  })
+
+  test('should use the plural form fallback', () => {
+    const fallback = 'other'
+    const pluralRules = new Intl.PluralRules('ro')
+
+    const t = transCore({
+      config: {
+        plurals: {
+          fallbackForm: fallback,
+        },
+      },
+      pluralRules,
+      allNamespaces: { nsWithPlurals },
+      lang: 'ro',
+    })
+
+    expect(typeof t).toBe('function')
+    expect(pluralRules.select(1)).toBe('one')
+    expect(t('nsWithPlurals:key', { count: 1 })).toBe('one')
+    expect(pluralRules.select(2)).toBe('few')
+    expect(t('nsWithPlurals:key', { count: 2 })).toBe(fallback) // Uses `other` instead of `few` since `few` doesn't exist as key
   })
 })
